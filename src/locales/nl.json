@@ -20,6 +20,14 @@
     "problemLabel": "Uitdaging",
     "solutionLabel": "Onze aanpak"
   },
+  "resultatenCases": {
+    "sectionLabel": "Resultaten & Cases",
+    "title": "Echte resultaten voor echte bedrijven",
+    "tagTimeSaving": "Tijdsbesparing",
+    "tagCostSaving": "Kostenbesparing",
+    "tagGrowth": "Groei",
+    "tagQuality": "Kwaliteit"
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",

@@ -14,7 +14,8 @@
       "Bash(npm update:*)",
       "Bash(start http://localhost:5173)",
       "Bash(open http://localhost:5173)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(start http://localhost:5174)"
     ]
   }
 }
