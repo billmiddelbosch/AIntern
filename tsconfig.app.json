@@ -8,6 +8,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "product/**/*"],
   "exclude": ["src/**/__tests__/*", "src/**/*.spec.ts", "src/**/*.test.ts"]
 }
