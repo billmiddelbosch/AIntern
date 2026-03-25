@@ -6,7 +6,15 @@
       "Bash(npm run:*)",
       "Bash(node:*)",
       "WebFetch(domain:orq.ai)",
-      "WebFetch(domain:alpic.ai)"
+      "WebFetch(domain:alpic.ai)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(find /c/Users/bmidd/AIntern/src -name *.test.ts -o -name *.spec.ts)",
+      "Bash(npx playwright:*)",
+      "Bash(npm update:*)",
+      "Bash(start http://localhost:5173)",
+      "Bash(open http://localhost:5173)",
+      "Skill(update-config)"
     ]
   }
 }

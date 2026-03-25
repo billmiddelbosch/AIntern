@@ -14,6 +14,12 @@
     "sectionLabel": "How it works",
     "title": "From idea to results in three steps"
   },
+  "problemsSolutions": {
+    "sectionLabel": "Problems & Solutions",
+    "title": "Do you recognize these challenges",
+    "problemLabel": "Challenge",
+    "solutionLabel": "Our approach"
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",
