@@ -1,0 +1,68 @@
+{
+  "_meta": {
+    "models": {
+      "pairs": "Één probleem-oplossing paar voor een MKB-pijnpunt. Heeft een vaste volgorde, een probleemicoon, een oplossingsicoon, en titels + beschrijvingen in NL en EN."
+    },
+    "relationships": [
+      "Pairs worden altijd in volgorde getoond (order 1 → 2 → 3)",
+      "Oneven order (1, 3) → probleem links, oplossing rechts",
+      "Even order (2) → gespiegeld: oplossing links, probleem rechts"
+    ]
+  },
+  "pairs": [
+    {
+      "id": "pair-01",
+      "order": 1,
+      "problemIcon": "clock",
+      "solutionIcon": "zap",
+      "nl": {
+        "problemTitle": "Repetitieve taken vreten tijd en energie",
+        "problemDescription": "Offertes schrijven, e-mails beantwoorden, facturen verwerken — iedere dag opnieuw dezelfde handelingen die niets toevoegen aan je bedrijf. Je team is bezig met werk dat een computer al lang voor je kon doen.",
+        "solutionTitle": "AI neemt het routinewerk over",
+        "solutionDescription": "AIntern analyseert welke processen geschikt zijn voor automatisering en implementeert gerichte AI-tools die dit werk volledig overnemen. Jij en je team focussen op wat echt waarde toevoegt."
+      },
+      "en": {
+        "problemTitle": "Repetitive tasks drain time and energy",
+        "problemDescription": "Writing quotes, answering emails, processing invoices — the same actions every day that add nothing to your business. Your team is stuck doing work a computer could have been doing for you all along.",
+        "solutionTitle": "AI takes over routine work",
+        "solutionDescription": "AIntern analyses which processes are suitable for automation and implements targeted AI tools that take over this work entirely. You and your team focus on what truly adds value."
+      }
+    },
+    {
+      "id": "pair-02",
+      "order": 2,
+      "problemIcon": "shield-alert",
+      "solutionIcon": "shield-check",
+      "nl": {
+        "problemTitle": "AI voelt risicovol en onbereikbaar voor het MKB",
+        "problemDescription": "Je hoort over AI, maar de investering voelt groot en het resultaat onzeker. Grote tech-bedrijven profiteren, maar voor jouw bedrijf lijkt het ver weg — te duur, te complex, te veel onbekenden.",
+        "solutionTitle": "No-cure-no-pay: je betaalt alleen bij resultaat",
+        "solutionDescription": "Bij AIntern draag jij nul risico. We werken op no-cure-no-pay basis: de investering volgt pas als de AI-oplossing aantoonbaar resultaat oplevert. Concreet, meetbaar en zonder verborgen kosten."
+      },
+      "en": {
+        "problemTitle": "AI feels risky and out of reach for SMEs",
+        "problemDescription": "You hear about AI everywhere, but the investment feels large and the outcome uncertain. Large tech companies benefit, but for your business it seems far away — too expensive, too complex, too many unknowns.",
+        "solutionTitle": "No-cure-no-pay: you only pay for results",
+        "solutionDescription": "With AIntern you carry zero risk. We work on a no-cure-no-pay basis: the investment only follows once the AI solution demonstrably delivers results. Concrete, measurable and without hidden costs."
+      }
+    },
+    {
+      "id": "pair-03",
+      "order": 3,
+      "problemIcon": "puzzle",
+      "solutionIcon": "settings",
+      "nl": {
+        "problemTitle": "Standaard software past niet bij hoe jij werkt",
+        "problemDescription": "Generieke tools dwingen jou om je processen aan te passen aan de software, niet andersom. Je eindigt met workarounds, onnodige abonnementen en frustratie — terwijl de kernproblemen onopgelost blijven.",
+        "solutionTitle": "AI op maat voor jouw werkwijze",
+        "solutionDescription": "AIntern configureert en implementeert AI die aansluit op jouw bestaande processen, systemen en werkwijze. Geen standaard pakket — maar een oplossing die werkt zoals jij werkt."
+      },
+      "en": {
+        "problemTitle": "Generic software doesn't fit the way you work",
+        "problemDescription": "Off-the-shelf tools force you to adapt your processes to the software, not the other way around. You end up with workarounds, unnecessary subscriptions and frustration — while the core problems remain unsolved.",
+        "solutionTitle": "AI tailored to your way of working",
+        "solutionDescription": "AIntern configures and implements AI that fits your existing processes, systems and working methods. No standard package — but a solution that works the way you work."
+      }
+    }
+  ]
+}
