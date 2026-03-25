@@ -16,7 +16,7 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 
 ## Key Features
 - Hero met sterke AI-gerichte value proposition + CTA gratis kennismaking
-- Uitleg no-cure-no-pay model
+- No-Cure-No-Pay & FAQ — risicovrij businessmodel uitgelegd met een prominente propositie-blok en een interactieve accordion met veelgestelde bezwaren proactief weggenomen
 - Problemen & Oplossingen — drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern
 - Resultaten & Cases — kwantificeerbare resultaten (tijds- en kostenbesparing) als social proof, met per case een meetbare metric, categorie-tag en locale-bewuste beschrijving
 - Over AIntern — visie op AI voor het MKB

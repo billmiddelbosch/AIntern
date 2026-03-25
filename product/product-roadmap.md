@@ -14,8 +14,8 @@ Drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern. Twee-koloms la
 ### 4. Resultaten & Cases (feature/resultaten-cases — implemented 2026-03-25)
 Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet. Toont vier resultaat-kaarten elk met een grote metric, categorie-tag, titel en beschrijving. Lichte achtergrond voor visueel ritme (donker → licht wisseling). Tweetalig NL/EN, inline locale data per case.
 
-### 5. No-Cure-No-Pay & FAQ
-Risicovrij businessmodel uitgelegd met veelgestelde bezwaren proactief weggenomen.
+### 5. No-Cure-No-Pay & FAQ (feature/l04-no-cure-no-pay-faq — in progress 2026-03-25)
+Risicovrij businessmodel uitgelegd met een prominente propositie-blok (garantiestatement, drie kernpunten, primaire CTA) en een interactieve FAQ-accordion met zes veelgestelde bezwaren. Donkere achtergrond (slate-900) voor visueel ritme na de lichte Resultaten-sectie. Tweetalig NL/EN.
 
 ### 6. Over AIntern & Contact
 Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen.
