@@ -8,8 +8,8 @@ Kernboodschap met concrete AI-resultaten en primaire CTA voor een gratis kennism
 ### 2. Hoe werkt het?
 Visuele stap-voor-stap flow: Analyse → AI-implementatie → Meetbaar resultaat.
 
-### 3. Problemen & Oplossingen
-Drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern.
+### 3. Problemen & Oplossingen ✓ (L-02 — geïmplementeerd 2026-03-25)
+Drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern. Twee-koloms layout per probleem: pijnpunt links, oplossing rechts. Visuele iconografie, tweetalig NL/EN.
 
 ### 4. Resultaten & Cases
 Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet.

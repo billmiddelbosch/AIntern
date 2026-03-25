@@ -14,6 +14,12 @@
     "sectionLabel": "Hoe het werkt",
     "title": "Van idee naar resultaat in drie stappen"
   },
+  "problemsSolutions": {
+    "sectionLabel": "Problemen & Oplossingen",
+    "title": "Herken je deze uitdagingen",
+    "problemLabel": "Uitdaging",
+    "solutionLabel": "Onze aanpak"
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",
