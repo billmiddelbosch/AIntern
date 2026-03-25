@@ -14,6 +14,53 @@
     "sectionLabel": "How it works",
     "title": "From idea to results in three steps"
   },
+  "problemsSolutions": {
+    "sectionLabel": "Problems & Solutions",
+    "title": "Do you recognize these challenges",
+    "problemLabel": "Challenge",
+    "solutionLabel": "Our approach"
+  },
+  "resultatenCases": {
+    "sectionLabel": "Results & Cases",
+    "title": "Real results for real businesses",
+    "tagTimeSaving": "Time saving",
+    "tagCostSaving": "Cost saving",
+    "tagGrowth": "Growth",
+    "tagQuality": "Quality"
+  },
+  "noCureNoPay": {
+    "sectionLabel": "No-Cure-No-Pay",
+    "title": "You only pay when it works",
+    "proposition": {
+      "badge": "Guaranteed results",
+      "heading": "No risk. No upfront investment. Just results.",
+      "point1": "Free process analysis — no commitment",
+      "point2": "You define the success criteria together with us",
+      "point3": "Pay only after verified, measurable results",
+      "cta": "Free consultation"
+    },
+    "faqTitle": "Frequently asked questions"
+  },
+  "overAIntern": {
+    "sectionLabel": "About AIntern",
+    "title": "AI that works for your business",
+    "story": {
+      "heading": "Our story",
+      "paragraph1": "AIntern was founded with one mission: making powerful AI technology accessible and risk-free for SMEs. Too many business owners were losing time to repetitive tasks that AI could handle — but the barrier to entry felt high.",
+      "paragraph2": "We built AIntern to change that. We analyse your processes, implement tailored AI solutions, and only charge you when the results are measurable and verified. No jargon. No large upfront investment. Just results."
+    },
+    "vision": {
+      "heading": "Our vision",
+      "text": "Every SME deserves access to the same AI advantages that large corporations enjoy — without the complexity or the risk."
+    },
+    "contact": {
+      "heading": "Ready to get started?",
+      "subtext": "Book a free, no-obligation intro call. We analyse your situation, identify the biggest opportunities, and show you exactly what AI can do for your business.",
+      "cta": "Book free intro call",
+      "or": "or",
+      "email": "Send us an email"
+    }
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",

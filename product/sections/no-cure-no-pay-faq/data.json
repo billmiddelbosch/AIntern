@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "models": {
+      "faqs": "Één veelgestelde vraag met bezwaar en antwoord, tweetalig NL/EN. Toont de meest voorkomende drempels die MKB-ondernemers hebben bij het inzetten van AI via AIntern."
+    },
+    "relationships": [
+      "FAQ-items worden getoond in volgorde van order (1→6)",
+      "Één item tegelijk open — accordion sluit vorig open item bij het openen van een nieuw item"
+    ]
+  },
+  "faqs": [
+    {
+      "id": "faq-01",
+      "order": 1,
+      "nl": {
+        "question": "Wat betekent no-cure-no-pay precies?",
+        "answer": "Je betaalt alleen als de AI-oplossing aantoonbaar resultaat oplevert. Wij definiëren samen met jou vooraf meetbare doelen — denk aan tijdsbesparing, kostenverlaging of verhoogde output. Halen we die doelen niet? Dan betaal je niets."
+      },
+      "en": {
+        "question": "What does no-cure-no-pay actually mean?",
+        "answer": "You only pay if the AI solution demonstrably delivers results. Together we define measurable goals upfront — such as time savings, cost reduction, or increased output. If we don't hit those goals, you pay nothing."
+      }
+    },
+    {
+      "id": "faq-02",
+      "order": 2,
+      "nl": {
+        "question": "Hoe lang duurt een gemiddeld traject?",
+        "answer": "De meeste trajecten duren vier tot acht weken van analyse tot live implementatie. Complexere processen kunnen langer duren, maar je hebt altijd zicht op de planning en tussentijdse mijlpalen."
+      },
+      "en": {
+        "question": "How long does a typical engagement take?",
+        "answer": "Most engagements run four to eight weeks from analysis to live implementation. More complex processes may take longer, but you always have visibility into the planning and interim milestones."
+      }
+    },
+    {
+      "id": "faq-03",
+      "order": 3,
+      "nl": {
+        "question": "Moet ik technische kennis hebben?",
+        "answer": "Nee. AIntern regelt de volledige technische implementatie. Jij hoeft alleen te vertellen hoe je bedrijfsproces nu werkt en wat je wilt bereiken. Wij vertalen dat naar een werkende AI-oplossing."
+      },
+      "en": {
+        "question": "Do I need technical knowledge?",
+        "answer": "No. AIntern handles the full technical implementation. You only need to explain how your business process currently works and what you want to achieve. We translate that into a working AI solution."
+      }
+    },
+    {
+      "id": "faq-04",
+      "order": 4,
+      "nl": {
+        "question": "Wat als de AI-oplossing niet werkt voor mijn bedrijf?",
+        "answer": "We beginnen altijd met een gratis analyse van jouw processen. Als we zien dat AI geen significante winst oplevert voor jouw specifieke situatie, zeggen we dat eerlijk — zodat je geen tijd en geld verspilt."
+      },
+      "en": {
+        "question": "What if the AI solution doesn't work for my business?",
+        "answer": "We always start with a free analysis of your processes. If we see that AI won't deliver significant value for your specific situation, we'll tell you honestly — so you don't waste time and money."
+      }
+    },
+    {
+      "id": "faq-05",
+      "order": 5,
+      "nl": {
+        "question": "Zijn mijn bedrijfsgegevens veilig?",
+        "answer": "Ja. We werken uitsluitend met GDPR-conforme oplossingen en verwerken jouw bedrijfsdata nooit buiten de afgesproken context. Vertrouwelijkheid is een basisvereiste, geen optie."
+      },
+      "en": {
+        "question": "Is my business data secure?",
+        "answer": "Yes. We work exclusively with GDPR-compliant solutions and never process your business data outside the agreed context. Confidentiality is a baseline requirement, not an option."
+      }
+    },
+    {
+      "id": "faq-06",
+      "order": 6,
+      "nl": {
+        "question": "Wat kost het als het wél resultaat oplevert?",
+        "answer": "De vergoeding is gebaseerd op een percentage van de behaalde besparing of een vaste fee die we samen bepalen op basis van de scope. Je betaalt pas als de resultaten zijn gemeten en geverifieerd."
+      },
+      "en": {
+        "question": "What does it cost when it does deliver results?",
+        "answer": "The fee is based on a percentage of the achieved savings or a fixed fee we determine together based on scope. You only pay once results have been measured and verified."
+      }
+    }
+  ]
+}
