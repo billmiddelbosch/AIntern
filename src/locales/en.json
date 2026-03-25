@@ -10,6 +10,10 @@
     "tagline": "AI solutions for SMEs — no risk, guaranteed results.",
     "rights": "All rights reserved."
   },
+  "howItWorks": {
+    "sectionLabel": "How it works",
+    "title": "From idea to results in three steps"
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",

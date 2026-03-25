@@ -10,6 +10,10 @@
     "tagline": "AI-oplossingen voor het MKB — zonder risico, met gegarandeerd resultaat.",
     "rights": "Alle rechten voorbehouden."
   },
+  "howItWorks": {
+    "sectionLabel": "Hoe het werkt",
+    "title": "Van idee naar resultaat in drie stappen"
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",

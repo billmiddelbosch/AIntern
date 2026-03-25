@@ -1,0 +1,51 @@
+{
+  "_meta": {
+    "models": {
+      "steps": "Eén stap in het AIntern-proces. Heeft een vaste volgorde, een icoon, een titel en een beschrijving in Nederlands en Engels."
+    },
+    "relationships": [
+      "Steps worden altijd in volgorde getoond (order 1 → 2 → 3)"
+    ]
+  },
+  "steps": [
+    {
+      "id": "step-01",
+      "order": 1,
+      "icon": "search",
+      "nl": {
+        "title": "Analyseer",
+        "description": "We leren jouw bedrijf kennen en brengen samen in kaart waar AI direct waarde toevoegt. Geen standaard aanpak — we kijken specifiek naar jouw processen, knelpunten en kansen."
+      },
+      "en": {
+        "title": "Analyse",
+        "description": "We get to know your business and map out together where AI can directly add value. No standard approach — we look specifically at your processes, bottlenecks, and opportunities."
+      }
+    },
+    {
+      "id": "step-02",
+      "order": 2,
+      "icon": "cpu",
+      "nl": {
+        "title": "Automatiseer",
+        "description": "AIntern configureert en implementeert de juiste AI-oplossing voor jouw situatie. Jij hoeft niets technisch te doen — wij zorgen dat het naadloos aansluit op hoe jij werkt."
+      },
+      "en": {
+        "title": "Automate",
+        "description": "AIntern configures and implements the right AI solution for your situation. You don't need to do anything technical — we make sure it fits seamlessly into how you work."
+      }
+    },
+    {
+      "id": "step-03",
+      "order": 3,
+      "icon": "trending-up",
+      "nl": {
+        "title": "Resultaat",
+        "description": "Je ziet het verschil vanaf dag één. Minder handwerk, lagere kosten of nieuwe groeikansen — en je betaalt pas als het resultaat er daadwerkelijk is."
+      },
+      "en": {
+        "title": "Results",
+        "description": "You see the difference from day one. Less manual work, lower costs, or new growth opportunities — and you only pay when the results are actually there."
+      }
+    }
+  ]
+}
