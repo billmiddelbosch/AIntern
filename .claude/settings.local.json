@@ -4,7 +4,9 @@
       "Bash(npm --version)",
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "WebFetch(domain:orq.ai)",
+      "WebFetch(domain:alpic.ai)"
     ]
   }
 }

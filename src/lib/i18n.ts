@@ -6,7 +6,7 @@ export type MessageSchema = typeof en
 
 export const i18n = createI18n<[MessageSchema], 'en' | 'nl'>({
   legacy: false,
-  locale: 'en',
+  locale: 'nl',
   fallbackLocale: 'en',
   messages: {
     en,

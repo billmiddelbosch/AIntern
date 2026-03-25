@@ -1,0 +1,89 @@
+{
+  "_meta": {
+    "models": {
+      "heroContent": "De tekst en kopij van de hero sectie, beschikbaar in Nederlands en Engels.",
+      "metricCards": "KPI-kaartjes in de dashboard mockup die concrete AI-resultaten tonen aan bezoekers.",
+      "automatedProcesses": "Voorbeeldprocessen in de dashboard mockup die laten zien welke taken AI automatisch afhandelt."
+    },
+    "relationships": [
+      "HeroContent bevat de volledige paginakopij voor de hero sectie",
+      "MetricCards en AutomatedProcesses worden samen getoond in de dashboard mockup rechts"
+    ]
+  },
+  "heroContent": {
+    "nl": {
+      "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",
+      "subtext": "AIntern zet AI in om jouw interne processen slimmer te maken — en je betaalt alleen als het werkt. Geen risico, wel resultaat.",
+      "cta": "Gratis kennismaking",
+      "socialProof": "Al 20+ MKB-bedrijven geholpen met AI"
+    },
+    "en": {
+      "headline": "Spending too much time on tasks that could run automatically?",
+      "subtext": "AIntern uses AI to make your internal processes smarter — and you only pay when it works. No risk, real results.",
+      "cta": "Free consultation",
+      "socialProof": "Already helping 20+ SMEs with AI"
+    }
+  },
+  "metricCards": [
+    {
+      "id": "metric-001",
+      "label": "Tijdsbesparing",
+      "value": "40%",
+      "trend": "up",
+      "description": "minder handmatig werk per week"
+    },
+    {
+      "id": "metric-002",
+      "label": "Kostenbesparing",
+      "value": "€ 1.200",
+      "trend": "up",
+      "description": "per maand bespaard op arbeidskosten"
+    },
+    {
+      "id": "metric-003",
+      "label": "Verwerkingstijd",
+      "value": "- 3 dagen",
+      "trend": "up",
+      "description": "snellere doorlooptijd per order"
+    },
+    {
+      "id": "metric-004",
+      "label": "Fouten",
+      "value": "- 90%",
+      "trend": "up",
+      "description": "minder handmatige invoerfouten"
+    }
+  ],
+  "automatedProcesses": [
+    {
+      "id": "proc-001",
+      "name": "Factuurverwerking",
+      "status": "active",
+      "tasksPerWeek": 47
+    },
+    {
+      "id": "proc-002",
+      "name": "Voorraadbeheer",
+      "status": "active",
+      "tasksPerWeek": 31
+    },
+    {
+      "id": "proc-003",
+      "name": "Klantmails beantwoorden",
+      "status": "active",
+      "tasksPerWeek": 89
+    },
+    {
+      "id": "proc-004",
+      "name": "Rapportage genereren",
+      "status": "active",
+      "tasksPerWeek": 12
+    },
+    {
+      "id": "proc-005",
+      "name": "Inkooporders verwerken",
+      "status": "inactive",
+      "tasksPerWeek": 0
+    }
+  ]
+}

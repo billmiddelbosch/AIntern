@@ -1,13 +1,27 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "About"
+    "about": "About AIntern",
+    "nocurenopay": "No-Cure-No-Pay",
+    "contact": "Contact",
+    "cta": "Free consultation",
+    "menu": "Open menu"
   },
-  "home": {
-    "title": "Welcome to AIntern",
-    "description": "A Vue 3 application powered by AI."
+  "footer": {
+    "tagline": "AI solutions for SMEs — no risk, guaranteed results.",
+    "rights": "All rights reserved."
   },
-  "about": {
-    "title": "About AIntern"
+  "hero": {
+    "eyebrow": "AI for SMEs",
+    "headline": "Spending too much time on tasks that could run automatically?",
+    "subtext": "AIntern uses AI to make your internal processes smarter — and you only pay when it works. No risk, real results.",
+    "cta": "Free consultation",
+    "ctaSecondary": "See how it works",
+    "socialProof": "Already helping 20+ SMEs with AI",
+    "mockupTitle": "AI Dashboard",
+    "mockupLive": "Live",
+    "processesTitle": "Automated processes",
+    "tasksPerWeek": "tasks/wk",
+    "statusActive": "Active",
+    "statusInactive": "Inactive"
   }
 }

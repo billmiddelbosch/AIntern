@@ -1,13 +1,27 @@
 {
   "nav": {
-    "home": "Home",
-    "about": "Over"
+    "about": "Over AIntern",
+    "nocurenopay": "No-Cure-No-Pay",
+    "contact": "Contact",
+    "cta": "Gratis kennismaking",
+    "menu": "Menu openen"
   },
-  "home": {
-    "title": "Welkom bij AIntern",
-    "description": "Een Vue 3-applicatie aangedreven door AI."
+  "footer": {
+    "tagline": "AI-oplossingen voor het MKB — zonder risico, met gegarandeerd resultaat.",
+    "rights": "Alle rechten voorbehouden."
   },
-  "about": {
-    "title": "Over AIntern"
+  "hero": {
+    "eyebrow": "AI voor het MKB",
+    "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",
+    "subtext": "AIntern zet AI in om jouw interne processen slimmer te maken — en je betaalt alleen als het werkt. Geen risico, wel resultaat.",
+    "cta": "Gratis kennismaking",
+    "ctaSecondary": "Bekijk hoe het werkt",
+    "socialProof": "Al 20+ MKB-bedrijven geholpen met AI",
+    "mockupTitle": "AI Dashboard",
+    "mockupLive": "Live",
+    "processesTitle": "Geautomatiseerde processen",
+    "tasksPerWeek": "taken/wk",
+    "statusActive": "Actief",
+    "statusInactive": "Inactief"
   }
 }
