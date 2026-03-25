@@ -14,6 +14,53 @@
     "sectionLabel": "Hoe het werkt",
     "title": "Van idee naar resultaat in drie stappen"
   },
+  "problemsSolutions": {
+    "sectionLabel": "Problemen & Oplossingen",
+    "title": "Herken je deze uitdagingen",
+    "problemLabel": "Uitdaging",
+    "solutionLabel": "Onze aanpak"
+  },
+  "resultatenCases": {
+    "sectionLabel": "Resultaten & Cases",
+    "title": "Echte resultaten voor echte bedrijven",
+    "tagTimeSaving": "Tijdsbesparing",
+    "tagCostSaving": "Kostenbesparing",
+    "tagGrowth": "Groei",
+    "tagQuality": "Kwaliteit"
+  },
+  "noCureNoPay": {
+    "sectionLabel": "No-Cure-No-Pay",
+    "title": "Je betaalt alleen als het werkt",
+    "proposition": {
+      "badge": "Gegarandeerd resultaat",
+      "heading": "Geen risico. Geen voorinvestering. Wel resultaat.",
+      "point1": "Gratis procesanalyse — vrijblijvend",
+      "point2": "Jij bepaalt de succescriteria samen met ons",
+      "point3": "Betalen pas na bewezen, meetbaar resultaat",
+      "cta": "Gratis kennismaking"
+    },
+    "faqTitle": "Veelgestelde vragen"
+  },
+  "overAIntern": {
+    "sectionLabel": "Over AIntern",
+    "title": "AI die werkt voor jouw bedrijf",
+    "story": {
+      "heading": "Ons verhaal",
+      "paragraph1": "AIntern is opgericht met één missie: krachtige AI-technologie toegankelijk en risicovrij maken voor het MKB. Te veel ondernemers verloren tijd aan repetitieve taken die AI al lang kan overnemen — maar de drempel voelde hoog.",
+      "paragraph2": "Wij bouwden AIntern om dat te veranderen. We analyseren jouw processen, implementeren gerichte AI-oplossingen, en sturen pas een factuur als de resultaten meetbaar en bewezen zijn. Geen jargon. Geen grote voorinvestering. Wel resultaat."
+    },
+    "vision": {
+      "heading": "Onze visie",
+      "text": "Elk MKB-bedrijf verdient toegang tot dezelfde AI-voordelen die grote corporaties genieten — zonder de complexiteit of het risico."
+    },
+    "contact": {
+      "heading": "Klaar om te beginnen?",
+      "subtext": "Plan een gratis, vrijblijvend kennismakingsgesprek. We analyseren jouw situatie, identificeren de grootste kansen en laten je precies zien wat AI voor jouw bedrijf kan betekenen.",
+      "cta": "Gratis kennismakingsgesprek",
+      "or": "of",
+      "email": "Stuur ons een e-mail"
+    }
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",
