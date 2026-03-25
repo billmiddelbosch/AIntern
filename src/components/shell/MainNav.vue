@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
@@ -28,9 +29,9 @@ function toggleLocale() {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-8">
 
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-2 shrink-0">
+      <RouterLink to="/" class="flex items-center gap-2 shrink-0">
         <span class="font-heading text-xl font-bold text-indigo-600 tracking-tight">AIntern</span>
-      </a>
+      </RouterLink>
 
       <!-- Desktop nav -->
       <nav class="hidden lg:flex items-center gap-6">
