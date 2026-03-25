@@ -1,0 +1,85 @@
+{
+  "_meta": {
+    "models": {
+      "cases": "Één kwantificeerbaar resultaat dat AIntern heeft behaald voor een MKB-klant. Bevat een grote metric, eenheid, categorie-tag, icoon en tweetalige titel + beschrijving."
+    },
+    "relationships": [
+      "Cases worden getoond in volgorde van order (1→4)",
+      "2×2 grid op desktop: order 1 & 2 bovenste rij, order 3 & 4 onderste rij"
+    ]
+  },
+  "cases": [
+    {
+      "id": "case-01",
+      "order": 1,
+      "metric": "70",
+      "metricUnit": "%",
+      "tag": "tijdsbesparing",
+      "icon": "clock",
+      "nl": {
+        "title": "Minder tijd aan administratie",
+        "description": "Een groothandel automatiseerde factuurverwerking en orderbevestigingen. Het team bespaart nu gemiddeld 14 uur per week.",
+        "metricLabel": "minder administratietijd"
+      },
+      "en": {
+        "title": "Less time on administration",
+        "description": "A wholesale distributor automated invoice processing and order confirmations. The team now saves an average of 14 hours per week.",
+        "metricLabel": "less admin time"
+      }
+    },
+    {
+      "id": "case-02",
+      "order": 2,
+      "metric": "€ 18K",
+      "metricUnit": "/jaar",
+      "tag": "kostenbesparing",
+      "icon": "trending-down",
+      "nl": {
+        "title": "Lagere operationele kosten",
+        "description": "Een logistiek bedrijf verving handmatige planningsprocessen door AI-gestuurde planning. Resultaat: minder fouten, minder overuren.",
+        "metricLabel": "bespaard per jaar"
+      },
+      "en": {
+        "title": "Lower operational costs",
+        "description": "A logistics company replaced manual scheduling with AI-driven planning. Result: fewer errors, less overtime.",
+        "metricLabel": "saved per year"
+      }
+    },
+    {
+      "id": "case-03",
+      "order": 3,
+      "metric": "3×",
+      "metricUnit": "",
+      "tag": "groei",
+      "icon": "trending-up",
+      "nl": {
+        "title": "Drie keer zo veel offertes verwerkt",
+        "description": "Een installatiebureau gebruikt AI om offerteaanvragen automatisch te kwalificeren en te beantwoorden. Volume verdrievoudigd zonder extra personeel.",
+        "metricLabel": "meer offertes verwerkt"
+      },
+      "en": {
+        "title": "Triple the quote throughput",
+        "description": "An installation firm uses AI to automatically qualify and respond to quote requests. Volume tripled without extra headcount.",
+        "metricLabel": "more quotes processed"
+      }
+    },
+    {
+      "id": "case-04",
+      "order": 4,
+      "metric": "98",
+      "metricUnit": "%",
+      "tag": "kwaliteit",
+      "icon": "check-circle",
+      "nl": {
+        "title": "Nauwkeurigheid van gegevensverwerking",
+        "description": "Een accountantskantoor migreerde naar AI-gestuurde dataververing. Fouten in rapportages zijn vrijwel geëlimineerd.",
+        "metricLabel": "nauwkeurigheid bereikt"
+      },
+      "en": {
+        "title": "Data processing accuracy",
+        "description": "An accounting firm switched to AI-driven data extraction. Errors in reports have been virtually eliminated.",
+        "metricLabel": "accuracy achieved"
+      }
+    }
+  ]
+}
