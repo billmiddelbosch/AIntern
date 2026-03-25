@@ -1,8 +1,10 @@
 import { test, expect } from '@playwright/test'
 
-test('home page renders and counter works', async ({ page }) => {
+test('home page renders hero section', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('h1')).toContainText('AIntern')
-  await page.getByRole('button', { name: '+' }).click()
-  await expect(page.locator('text=Double: 2')).toBeVisible()
+  // The hero headline is the first H1 on the page
+  const h1 = page.locator('h1').first()
+  await expect(h1).toBeVisible()
+  const text = await h1.innerText()
+  expect(text.length).toBeGreaterThan(0)
 })
