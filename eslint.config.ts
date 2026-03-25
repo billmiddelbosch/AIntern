@@ -3,8 +3,11 @@ import tsParser from '@typescript-eslint/parser'
 import tsPlugin from '@typescript-eslint/eslint-plugin'
 import vueParser from 'vue-eslint-parser'
 import prettier from 'eslint-config-prettier'
+import type { Linter } from 'eslint'
 
-export default [
+// Double-cast needed: @typescript-eslint/eslint-plugin's Plugin type is
+// incompatible with ESLint 9's stricter Plugin interface (known upstream issue).
+const config = [
   {
     ignores: ['dist/**', 'node_modules/**', 'coverage/**', 'e2e/**', '*.d.ts'],
   },
@@ -46,3 +49,5 @@ export default [
   // Prettier last to disable conflicting rules
   prettier,
 ]
+
+export default config as unknown as Linter.Config[]
