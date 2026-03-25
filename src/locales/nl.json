@@ -61,6 +61,17 @@
       "email": "Stuur ons een e-mail"
     }
   },
+  "contactModal": {
+    "title": "Stel ons een vraag",
+    "namePlaceholder": "Jouw naam",
+    "emailPlaceholder": "Jouw e-mailadres",
+    "messagePlaceholder": "Wat wil je graag weten?",
+    "submit": "Vraag versturen",
+    "submitting": "Versturen…",
+    "success": "Bedankt! We nemen zo snel mogelijk contact met je op.",
+    "error": "Er ging iets mis. Probeer het opnieuw of mail ons direct.",
+    "close": "Sluiten"
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",

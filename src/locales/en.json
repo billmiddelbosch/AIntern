@@ -61,6 +61,17 @@
       "email": "Send us an email"
     }
   },
+  "contactModal": {
+    "title": "Ask us a question",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "Your email address",
+    "messagePlaceholder": "What would you like to know?",
+    "submit": "Send question",
+    "submitting": "Sending…",
+    "success": "Thanks! We'll get back to you shortly.",
+    "error": "Something went wrong. Please try again or email us directly.",
+    "close": "Close"
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",
