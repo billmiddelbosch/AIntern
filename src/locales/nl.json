@@ -28,6 +28,19 @@
     "tagGrowth": "Groei",
     "tagQuality": "Kwaliteit"
   },
+  "noCureNoPay": {
+    "sectionLabel": "No-Cure-No-Pay",
+    "title": "Je betaalt alleen als het werkt",
+    "proposition": {
+      "badge": "Gegarandeerd resultaat",
+      "heading": "Geen risico. Geen voorinvestering. Wel resultaat.",
+      "point1": "Gratis procesanalyse — vrijblijvend",
+      "point2": "Jij bepaalt de succescriteria samen met ons",
+      "point3": "Betalen pas na bewezen, meetbaar resultaat",
+      "cta": "Gratis kennismaking"
+    },
+    "faqTitle": "Veelgestelde vragen"
+  },
   "hero": {
     "eyebrow": "AI voor het MKB",
     "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",

@@ -28,6 +28,19 @@
     "tagGrowth": "Growth",
     "tagQuality": "Quality"
   },
+  "noCureNoPay": {
+    "sectionLabel": "No-Cure-No-Pay",
+    "title": "You only pay when it works",
+    "proposition": {
+      "badge": "Guaranteed results",
+      "heading": "No risk. No upfront investment. Just results.",
+      "point1": "Free process analysis — no commitment",
+      "point2": "You define the success criteria together with us",
+      "point3": "Pay only after verified, measurable results",
+      "cta": "Free consultation"
+    },
+    "faqTitle": "Frequently asked questions"
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",
