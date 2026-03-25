@@ -17,6 +17,7 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 ## Key Features
 - Hero met sterke AI-gerichte value proposition + CTA gratis kennismaking
 - Uitleg no-cure-no-pay model
+- Problemen & Oplossingen — drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern
 - Concrete voorbeelden van AI-resultaten (tijdsbesparing, kostenbesparing, nieuwe kansen)
 - Over AIntern — visie op AI voor het MKB
 - Tweetalig NL/EN
