@@ -17,5 +17,5 @@ Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet. Toont 
 ### 5. No-Cure-No-Pay & FAQ (feature/l04-no-cure-no-pay-faq — in progress 2026-03-25)
 Risicovrij businessmodel uitgelegd met een prominente propositie-blok (garantiestatement, drie kernpunten, primaire CTA) en een interactieve FAQ-accordion met zes veelgestelde bezwaren. Donkere achtergrond (slate-900) voor visueel ritme na de lichte Resultaten-sectie. Tweetalig NL/EN.
 
-### 6. Over AIntern & Contact
-Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen.
+### 6. Over AIntern & Contact (main — implemented 2026-03-25)
+Verhaal, visie en finale CTA om een vrijblijvend kennismakingsgesprek in te plannen. Twee-koloms layout: story/vision links, prominente indigo gradient CTA-kaart rechts. Lichte achtergrond (slate-50) sluit het donker/licht ritme af. Draagt het `id="contact"` anchor. Tweetalig NL/EN.
