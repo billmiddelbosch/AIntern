@@ -20,6 +20,14 @@
     "problemLabel": "Challenge",
     "solutionLabel": "Our approach"
   },
+  "resultatenCases": {
+    "sectionLabel": "Results & Cases",
+    "title": "Real results for real businesses",
+    "tagTimeSaving": "Time saving",
+    "tagCostSaving": "Cost saving",
+    "tagGrowth": "Growth",
+    "tagQuality": "Quality"
+  },
   "hero": {
     "eyebrow": "AI for SMEs",
     "headline": "Spending too much time on tasks that could run automatically?",
