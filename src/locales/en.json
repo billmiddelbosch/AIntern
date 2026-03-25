@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About"
+  },
+  "home": {
+    "title": "Welcome to AIntern",
+    "description": "A Vue 3 application powered by AI."
+  },
+  "about": {
+    "title": "About AIntern"
+  }
+}

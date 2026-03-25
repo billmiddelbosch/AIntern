@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "Over"
+  },
+  "home": {
+    "title": "Welkom bij AIntern",
+    "description": "Een Vue 3-applicatie aangedreven door AI."
+  },
+  "about": {
+    "title": "Over AIntern"
+  }
+}
