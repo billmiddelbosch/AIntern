@@ -15,7 +15,8 @@
       "Bash(start http://localhost:5173)",
       "Bash(open http://localhost:5173)",
       "Skill(update-config)",
-      "Bash(start http://localhost:5174)"
+      "Bash(start http://localhost:5174)",
+      "Bash(git -C C:/Users/bmidd/AIntern log --oneline -10)"
     ]
   }
 }
