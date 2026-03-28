@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { onMounted, onUnmounted, watch } from 'vue'
 
 const props = defineProps<{
   /** Full Calendly embed URL — driven by VITE_CALENDLY_URL */
@@ -10,73 +10,73 @@ const props = defineProps<{
   primaryColor?: string
 }>()
 
-const resolvedHeight = computed(() => props.height ?? 630)
-const resolvedColor = computed(() => props.primaryColor ?? '4f46e5')
+const resolvedHeight = () => props.height ?? 630
+const resolvedColor = () => (props.primaryColor ?? '4f46e5').replace('#', '')
 
-const iframeSrc = computed(() => {
-  if (!props.url) return ''
-  const base = props.url.replace(/\/$/, '')
-  return `${base}?embed_type=Inline&hide_event_type_details=0&hide_gdpr_banner=1&primary_color=${resolvedColor.value}`
+const SCRIPT_ID = 'calendly-widget-script'
+
+function injectScript() {
+  if (document.getElementById(SCRIPT_ID)) return
+  const script = document.createElement('script')
+  script.id = SCRIPT_ID
+  script.src = 'https://assets.calendly.com/assets/external/widget.js'
+  script.async = true
+  document.head.appendChild(script)
+}
+
+function removeScript() {
+  const script = document.getElementById(SCRIPT_ID)
+  if (script) script.remove()
+}
+
+onMounted(() => {
+  if (props.url) injectScript()
 })
 
-const hasUrl = computed(() => Boolean(props.url))
+watch(() => props.url, (url) => {
+  if (url) injectScript()
+})
+
+onUnmounted(() => {
+  removeScript()
+})
 </script>
 
 <template>
-  <!-- Calendly inline embed -->
-  <div class="cw-root" :style="{ height: resolvedHeight + 'px' }">
-    <iframe
-      v-if="hasUrl"
-      :src="iframeSrc"
-      :height="resolvedHeight"
-      class="cw-iframe"
-      frameborder="0"
-      scrolling="yes"
-      title="Calendly booking widget"
-      loading="lazy"
-    />
+  <!-- Calendly inline widget — initialised by widget.js -->
+  <div
+    v-if="url"
+    class="calendly-inline-widget"
+    :data-url="`${url}?hide_gdpr_banner=1&primary_color=${resolvedColor()}`"
+    :style="{ minWidth: '320px', height: resolvedHeight() + 'px' }"
+  />
 
-    <!-- Placeholder when no URL is configured -->
-    <div v-else class="cw-placeholder">
-      <div class="cw-placeholder-icon" aria-hidden="true">
-        <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-          <rect x="3" y="5" width="26" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
-          <path d="M3 12h26" stroke="currentColor" stroke-width="1.5"/>
-          <path d="M10 3v4M22 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-          <rect x="8" y="17" width="5" height="4" rx="1" fill="currentColor" opacity="0.4"/>
-          <rect x="16" y="17" width="5" height="4" rx="1" fill="currentColor" opacity="0.6"/>
-        </svg>
-      </div>
-      <p class="cw-placeholder-text">Calendly booking widget</p>
-      <p class="cw-placeholder-sub">Configure <code>VITE_CALENDLY_URL</code> to enable inline scheduling.</p>
+  <!-- Placeholder when no URL is configured -->
+  <div v-else class="cw-placeholder" :style="{ height: resolvedHeight() + 'px' }">
+    <div class="cw-placeholder-icon" aria-hidden="true">
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+        <rect x="3" y="5" width="26" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        <path d="M3 12h26" stroke="currentColor" stroke-width="1.5"/>
+        <path d="M10 3v4M22 3v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="8" y="17" width="5" height="4" rx="1" fill="currentColor" opacity="0.4"/>
+        <rect x="16" y="17" width="5" height="4" rx="1" fill="currentColor" opacity="0.6"/>
+      </svg>
     </div>
+    <p class="cw-placeholder-text">Calendly booking widget</p>
+    <p class="cw-placeholder-sub">Configure <code>VITE_CALENDLY_URL</code> to enable inline scheduling.</p>
   </div>
 </template>
 
 <style scoped>
-.cw-root {
+.cw-placeholder {
   width: 100%;
   overflow: hidden;
   border-radius: 0.75rem;
   background: #1e293b;
-  position: relative;
-}
-
-.cw-iframe {
-  width: 100%;
-  height: 100%;
-  border: none;
-  display: block;
-  border-radius: 0.75rem;
-}
-
-/* Placeholder state */
-.cw-placeholder {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100%;
   gap: 0.75rem;
   padding: 2rem;
   text-align: center;
