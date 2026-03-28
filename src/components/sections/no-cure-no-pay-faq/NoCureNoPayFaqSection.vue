@@ -17,7 +17,7 @@ function toggle(index: number) {
 </script>
 
 <template>
-  <section class="ncnp-section" id="no-cure-no-pay">
+  <section id="no-cure-no-pay" class="ncnp-section">
     <div class="ncnp-container">
 
       <!-- Section header -->

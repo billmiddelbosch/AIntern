@@ -9,7 +9,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="rc-section" id="resultaten-cases">
+  <section id="resultaten-cases" class="rc-section">
     <div class="rc-container">
 
       <!-- Section header -->

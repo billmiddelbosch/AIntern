@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import type { Step } from '@/../product/sections/hoe-werkt-het/types'
 
@@ -25,7 +24,7 @@ const stepOffsets = ['step-offset-0', 'step-offset-1', 'step-offset-2']
 </script>
 
 <template>
-  <section class="hiw-section" id="hoe-werkt-het">
+  <section id="hoe-werkt-het" class="hiw-section">
     <div class="hiw-container">
 
       <!-- Section header -->

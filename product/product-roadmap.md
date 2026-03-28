@@ -18,4 +18,7 @@ Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet. Toont 
 Risicovrij businessmodel uitgelegd met een prominente propositie-blok (garantiestatement, drie kernpunten, primaire CTA) en een interactieve FAQ-accordion met zes veelgestelde bezwaren. Donkere achtergrond (slate-900) voor visueel ritme na de lichte Resultaten-sectie. Tweetalig NL/EN.
 
 ### 6. Over AIntern & Contact (main — implemented 2026-03-25)
-Verhaal, visie en finale CTA om een vrijblijvend kennismakingsgesprek in te plannen. Twee-koloms layout: story/vision links, prominente indigo gradient CTA-kaart rechts. Lichte achtergrond (slate-50) sluit het donker/licht ritme af. Draagt het `id="contact"` anchor. Tweetalig NL/EN.
+Verhaal, visie en finale CTA om een vrijblijvend kennismakingsgesprek in te plannen. Twee-koloms layout: story/vision links, prominente indigo gradient CTA-kaart rechts. Lichte achtergrond (slate-50) sluit het donker/licht ritme af. Tweetalig NL/EN.
+
+### 7. Contact Form & Calendly Booking Widget (feature/l08-contact-form-calendly — in progress 2026-03-28)
+Dedicated contactsectie onderaan de pagina met `id="contact"` anchor. Twee-koloms layout: links een inline Calendly-bookingwidget voor directe afspraakinplanning, rechts een contactformulier als alternatief. Donkere achtergrond (slate-900) voor visueel contrast na de lichte Over-sectie. Vervangt de modal-gebaseerde CTA in de Over AIntern sectie door een directe inline ervaring. Tweetalig NL/EN.
