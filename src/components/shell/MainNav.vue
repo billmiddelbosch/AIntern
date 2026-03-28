@@ -30,6 +30,7 @@ function toggleLocale() {
 
       <!-- Logo -->
       <RouterLink to="/" class="flex items-center gap-2 shrink-0">
+        <img src="@/assets/brand/mascot-nav.png" alt="AIntern" class="h-8 w-auto" />
         <span class="font-heading text-xl font-bold text-indigo-600 tracking-tight">AIntern</span>
       </RouterLink>
 

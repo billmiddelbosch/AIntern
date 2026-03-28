@@ -1,0 +1,11 @@
+{
+  "mascot": {
+    "source": "AItern-beeldmerk.jpeg",
+    "variants": {
+      "mascot-full.png":  { "size": 512, "use": "Hero section" },
+      "mascot-card.png":  { "size": 192, "use": "Cards / sections" },
+      "mascot-thumb.png": { "size": 96,  "use": "Favicon / small" },
+      "mascot-nav.png":   { "size": 48,  "use": "Navbar logo" }
+    }
+  }
+}

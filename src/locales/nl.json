@@ -7,16 +7,16 @@
     "menu": "Menu openen"
   },
   "footer": {
-    "tagline": "AI-oplossingen voor het MKB — zonder risico, met gegarandeerd resultaat.",
+    "tagline": "Jouw AI-stagiaire voor het MKB — zonder risico, met gegarandeerd resultaat.",
     "rights": "Alle rechten voorbehouden."
   },
   "howItWorks": {
     "sectionLabel": "Hoe het werkt",
-    "title": "Van idee naar resultaat in drie stappen"
+    "title": "Jouw AI-stagiaire in drie stappen"
   },
   "problemsSolutions": {
     "sectionLabel": "Problemen & Oplossingen",
-    "title": "Herken je deze uitdagingen",
+    "title": "Herken jij dit?",
     "problemLabel": "Uitdaging",
     "solutionLabel": "Onze aanpak"
   },
@@ -43,31 +43,42 @@
   },
   "overAIntern": {
     "sectionLabel": "Over AIntern",
-    "title": "AI die werkt voor jouw bedrijf",
+    "title": "Gebouwd voor jouw bedrijf",
     "story": {
       "heading": "Ons verhaal",
-      "paragraph1": "AIntern is opgericht met één missie: krachtige AI-technologie toegankelijk en risicovrij maken voor het MKB. Te veel ondernemers verloren tijd aan repetitieve taken die AI al lang kan overnemen — maar de drempel voelde hoog.",
-      "paragraph2": "Wij bouwden AIntern om dat te veranderen. We analyseren jouw processen, implementeren gerichte AI-oplossingen, en sturen pas een factuur als de resultaten meetbaar en bewezen zijn. Geen jargon. Geen grote voorinvestering. Wel resultaat."
+      "paragraph1": "AIntern is opgericht met één missie: elk MKB-bedrijf zijn eigen dedicated AI-stagiaire geven — één die jouw bedrijf kent, jouw interne processen uitvoert en werkt als een extra medewerker zonder de bijbehorende overhead.",
+      "paragraph2": "We bouwen jouw AI-stagiaire van de grond af: we analyseren jouw processen, bepalen waar AI echt waarde toevoegt en bouwen een oplossing die precies aansluit bij hoe jij werkt. Je betaalt pas als de resultaten bewezen zijn."
     },
     "vision": {
       "heading": "Onze visie",
-      "text": "Elk MKB-bedrijf verdient toegang tot dezelfde AI-voordelen die grote corporaties genieten — zonder de complexiteit of het risico."
+      "text": "Elk MKB-bedrijf verdient zijn eigen AI-stagiaire — gebouwd voor jouw bedrijf, niet voor een ander."
     },
     "contact": {
-      "heading": "Klaar om te beginnen?",
-      "subtext": "Plan een gratis, vrijblijvend kennismakingsgesprek. We analyseren jouw situatie, identificeren de grootste kansen en laten je precies zien wat AI voor jouw bedrijf kan betekenen.",
+      "heading": "Klaar om te starten?",
+      "subtext": "Plan een gratis kennismakingsgesprek. We analyseren jouw situatie en laten je zien wat jouw AI-stagiaire kan doen.",
       "cta": "Gratis kennismakingsgesprek",
       "or": "of",
       "email": "Stuur ons een e-mail"
     }
   },
+  "contactModal": {
+    "title": "Stel ons een vraag",
+    "namePlaceholder": "Jouw naam",
+    "emailPlaceholder": "Jouw e-mailadres",
+    "messagePlaceholder": "Wat wil je graag weten?",
+    "submit": "Vraag versturen",
+    "submitting": "Versturen…",
+    "success": "Bedankt! We nemen zo snel mogelijk contact met je op.",
+    "error": "Er ging iets mis. Probeer het opnieuw of mail ons direct.",
+    "close": "Sluiten"
+  },
   "hero": {
-    "eyebrow": "AI voor het MKB",
-    "headline": "Te veel tijd kwijt aan taken die ook automatisch kunnen?",
-    "subtext": "AIntern zet AI in om jouw interne processen slimmer te maken — en je betaalt alleen als het werkt. Geen risico, wel resultaat.",
+    "eyebrow": "Jouw AI-stagiaire",
+    "headline": "Jouw eigen AI-stagiaire, altijd aan het werk",
+    "subtext": "AIntern bouwt een dedicated AI-stagiaire voor jouw bedrijf — die jouw interne processen automatiseert als een extra medewerker. AI waar het werkt. Resultaat dat je kunt meten.",
     "cta": "Gratis kennismaking",
     "ctaSecondary": "Bekijk hoe het werkt",
-    "socialProof": "Al 20+ MKB-bedrijven geholpen met AI",
+    "socialProof": "20+ MKB-bedrijven draaien al hun eigen AI-stagiaire",
     "mockupTitle": "AI Dashboard",
     "mockupLive": "Live",
     "processesTitle": "Geautomatiseerde processen",
