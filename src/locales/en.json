@@ -7,16 +7,16 @@
     "menu": "Open menu"
   },
   "footer": {
-    "tagline": "AI solutions for SMEs — no risk, guaranteed results.",
+    "tagline": "Your AI intern for SMEs — no risk, guaranteed results.",
     "rights": "All rights reserved."
   },
   "howItWorks": {
     "sectionLabel": "How it works",
-    "title": "From idea to results in three steps"
+    "title": "Your AI intern in three steps"
   },
   "problemsSolutions": {
     "sectionLabel": "Problems & Solutions",
-    "title": "Do you recognize these challenges",
+    "title": "Do any of these sound familiar?",
     "problemLabel": "Challenge",
     "solutionLabel": "Our approach"
   },
@@ -43,19 +43,19 @@
   },
   "overAIntern": {
     "sectionLabel": "About AIntern",
-    "title": "AI that works for your business",
+    "title": "Built for your business",
     "story": {
       "heading": "Our story",
-      "paragraph1": "AIntern was founded with one mission: making powerful AI technology accessible and risk-free for SMEs. Too many business owners were losing time to repetitive tasks that AI could handle — but the barrier to entry felt high.",
-      "paragraph2": "We built AIntern to change that. We analyse your processes, implement tailored AI solutions, and only charge you when the results are measurable and verified. No jargon. No large upfront investment. Just results."
+      "paragraph1": "AIntern was founded with one mission: give every SME their own dedicated AI intern — one that knows your business, runs your internal processes, and works like an extra employee without the overhead.",
+      "paragraph2": "We develop your AI intern from scratch: analysing your processes, identifying where AI adds real value, and building a solution that fits exactly how you work. You only pay when results are verified."
     },
     "vision": {
       "heading": "Our vision",
-      "text": "Every SME deserves access to the same AI advantages that large corporations enjoy — without the complexity or the risk."
+      "text": "Every SME deserves their own AI intern — built to know your business, not anyone else's."
     },
     "contact": {
-      "heading": "Ready to get started?",
-      "subtext": "Book a free, no-obligation intro call. We analyse your situation, identify the biggest opportunities, and show you exactly what AI can do for your business.",
+      "heading": "Ready to start?",
+      "subtext": "Book a free intro call. We'll analyse your situation and show you exactly what your AI intern can do.",
       "cta": "Book free intro call",
       "or": "or",
       "email": "Send us an email"
@@ -73,12 +73,12 @@
     "close": "Close"
   },
   "hero": {
-    "eyebrow": "AI for SMEs",
-    "headline": "Spending too much time on tasks that could run automatically?",
-    "subtext": "AIntern uses AI to make your internal processes smarter — and you only pay when it works. No risk, real results.",
+    "eyebrow": "Your AI intern",
+    "headline": "Your own AI intern, working 24/7",
+    "subtext": "AIntern builds a dedicated AI intern for your business — automating your internal processes like an extra employee. AI where it works. Results you can measure.",
     "cta": "Free consultation",
     "ctaSecondary": "See how it works",
-    "socialProof": "Already helping 20+ SMEs with AI",
+    "socialProof": "20+ SMEs already running their own AI intern",
     "mockupTitle": "AI Dashboard",
     "mockupLive": "Live",
     "processesTitle": "Automated processes",
