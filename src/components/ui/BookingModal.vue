@@ -4,7 +4,7 @@ import CalendlyWidget from '@/components/ui/CalendlyWidget.vue'
 
 const { isOpen, closeBookingModal } = useBookingModal()
 
-const calendlyUrl = (import.meta.env.VITE_CALENDLY_URL as string | undefined) ?? ''
+const calendlyUrl = 'https://calendly.com/w-middelbosch/30min'
 
 function handleBackdropClick(e: MouseEvent) {
   if (e.target === e.currentTarget) closeBookingModal()
