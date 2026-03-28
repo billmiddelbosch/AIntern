@@ -1,7 +1,10 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
+import ContactModal from '@/components/ui/ContactModal.vue'
 
 const { t } = useI18n()
+const modalOpen = ref(false)
 </script>
 
 <template>
@@ -43,9 +46,11 @@ const { t } = useI18n()
           <h3 class="oac-cta-heading">{{ t('overAIntern.contact.heading') }}</h3>
           <p class="oac-cta-subtext">{{ t('overAIntern.contact.subtext') }}</p>
 
-          <a href="#" class="oac-cta-button">
+          <button class="oac-cta-button" @click="modalOpen = true">
             {{ t('overAIntern.contact.cta') }}
-          </a>
+          </button>
+
+          <ContactModal :open="modalOpen" @close="modalOpen = false" />
 
           <div class="oac-cta-divider">
             <span class="oac-cta-or">{{ t('overAIntern.contact.or') }}</span>
@@ -232,6 +237,9 @@ const { t } = useI18n()
   font-weight: 700;
   border-radius: 9999px;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
   transition:
     background 0.2s ease,
     color 0.2s ease,
