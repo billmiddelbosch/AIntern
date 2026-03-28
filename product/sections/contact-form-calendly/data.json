@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "models": {
+      "contactForm": "The contact form a visitor fills in to send a message to AIntern. Contains the visitor's name, email, and message.",
+      "calendlyConfig": "Configuration for the Calendly inline booking widget. Contains the embed URL and fallback link for when the widget cannot be displayed.",
+      "sectionContent": "Static display content for the section header and column labels, sourced from i18n locale files."
+    },
+    "relationships": [
+      "The section contains one contactForm and one calendlyConfig side by side",
+      "When contactForm is submitted it posts to VITE_CONTACT_ENDPOINT via useContactForm composable",
+      "calendlyConfig.url is driven by the VITE_CALENDLY_URL environment variable"
+    ]
+  },
+  "contactForm": {
+    "fields": [
+      {
+        "id": "name",
+        "type": "text",
+        "required": true,
+        "maxLength": 100
+      },
+      {
+        "id": "email",
+        "type": "email",
+        "required": true,
+        "maxLength": 254
+      },
+      {
+        "id": "message",
+        "type": "textarea",
+        "required": true,
+        "maxLength": 1000,
+        "rows": 5
+      }
+    ],
+    "statuses": ["idle", "loading", "success", "error"],
+    "sampleSubmissions": [
+      {
+        "name": "Jeroen van der Berg",
+        "email": "j.vanderberg@bouwbedrijf-vdb.nl",
+        "message": "Wij hebben een bouwbedrijf met 15 medewerkers en besteden veel tijd aan het verwerken van offertes en facturen. Graag meer informatie over hoe AI ons hierbij kan helpen."
+      },
+      {
+        "name": "Sophie Meijer",
+        "email": "sophie@meijerkapsalon.nl",
+        "message": "Ik run een kapsalon en wil graag weten of AI mijn afsprakenbeheer en klantcommunicatie kan overnemen. Is een gratis analyse mogelijk?"
+      },
+      {
+        "name": "Thomas Bakker",
+        "email": "t.bakker@bakkerlogistiek.nl",
+        "message": "We verwerken dagelijks veel vrachtbrieven en planningswijzigingen handmatig. Benieuwd wat jullie AI-stagiaire hiervoor kan betekenen."
+      }
+    ]
+  },
+  "calendlyConfig": {
+    "embedType": "inline",
+    "minWidth": 320,
+    "height": 630,
+    "placeholderLink": "https://calendly.com/aintern/kennismaking",
+    "hideEventTypeDetails": false,
+    "hideLandingPageDetails": false,
+    "primaryColor": "4f46e5"
+  },
+  "sectionContent": {
+    "nl": {
+      "eyebrow": "Neem contact op",
+      "title": "Klaar om te starten?",
+      "subtext": "Plan direct een gratis kennismakingsgesprek in of stuur ons een bericht. We reageren binnen één werkdag.",
+      "calendlyColumn": {
+        "heading": "Plan een gesprek",
+        "subtext": "Kies een moment dat jou uitkomt — direct in onze agenda."
+      },
+      "formColumn": {
+        "heading": "Stuur een bericht",
+        "subtext": "Liever eerst een vraag stellen? Wij antwoorden binnen één werkdag."
+      }
+    },
+    "en": {
+      "eyebrow": "Get in touch",
+      "title": "Ready to get started?",
+      "subtext": "Schedule a free intro call directly or send us a message. We respond within one business day.",
+      "calendlyColumn": {
+        "heading": "Book a call",
+        "subtext": "Pick a time that suits you — straight into our calendar."
+      },
+      "formColumn": {
+        "heading": "Send a message",
+        "subtext": "Prefer to ask a question first? We'll reply within one business day."
+      }
+    }
+  }
+}
