@@ -10,7 +10,7 @@
 | L-05 | **Over AIntern & Contact** | S | Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen. Roadmap section 6. |
 | L-06 | **SEO & Meta Tags** | S | Page title, meta description, Open Graph tags, and canonical URLs for all routes. |
 | L-07 | **Analytics Integration** | S | Google Analytics or Plausible integration; track page views and CTA clicks. |
-| L-08 | **Contact Form / Calendly Booking Widget** | M | Embedded Calendly widget or custom form to schedule a no-obligation intro call. |
+| ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |
 | L-09 | **Cookie Consent Banner (GDPR)** | S | Consent banner required before loading analytics; stores preference in localStorage. |
 | L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
 | L-11 | **Blog / Kennisbank stub** | M | Placeholder section or route for future knowledge-base articles; improves SEO. |

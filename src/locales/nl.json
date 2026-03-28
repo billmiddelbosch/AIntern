@@ -94,6 +94,19 @@
       "privacy": "We gebruiken jouw gegevens alleen om op jouw bericht te reageren. Vragen? Mail ons op"
     }
   },
+  "seo": {
+    "home": {
+      "title": "AIntern — Jouw AI-stagiaire voor het MKB | No-Cure-No-Pay",
+      "description": "AIntern bouwt een dedicated AI-stagiaire voor jouw bedrijf — die interne processen automatiseert als een extra medewerker. Geen risico: je betaalt pas bij bewezen resultaat. Gratis kennismaking.",
+      "ogImageAlt": "AIntern — Jouw AI-stagiaire voor het MKB"
+    }
+  },
+  "cookieConsent": {
+    "message": "We gebruiken analytics om te begrijpen hoe bezoekers onze site gebruiken. Er worden geen persoonlijke gegevens opgeslagen.",
+    "acceptLabel": "Accepteren",
+    "declineLabel": "Weigeren",
+    "learnMore": "Privacybeleid"
+  },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
     "headline": "Jouw eigen AI-stagiaire, altijd aan het werk",
