@@ -2,21 +2,27 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { useBookingModal } from '@/composables/useBookingModal'
 
 const { t, locale } = useI18n()
+const { openBookingModal } = useBookingModal()
 
 const mobileMenuOpen = ref(false)
 
 const navItems = [
   { labelKey: 'nav.about', anchor: '#over-aintern' },
   { labelKey: 'nav.nocurenopay', anchor: '#no-cure-no-pay' },
-  { labelKey: 'nav.contact', anchor: '#contact' },
 ]
 
 function scrollTo(anchor: string) {
   mobileMenuOpen.value = false
   const el = document.querySelector(anchor)
   if (el) el.scrollIntoView({ behavior: 'smooth' })
+}
+
+function handleCta() {
+  mobileMenuOpen.value = false
+  openBookingModal()
 }
 
 function toggleLocale() {
@@ -56,7 +62,7 @@ function toggleLocale() {
         </button>
         <button
           class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
-          @click="scrollTo('#contact')"
+          @click="handleCta"
         >
           {{ t('nav.cta') }}
         </button>
@@ -105,7 +111,7 @@ function toggleLocale() {
         </button>
         <button
           class="flex-1 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
-          @click="scrollTo('#contact')"
+          @click="handleCta"
         >
           {{ t('nav.cta') }}
         </button>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
+import { useBookingModal } from '@/composables/useBookingModal'
 
 const { t } = useI18n()
+const { openBookingModal } = useBookingModal()
 </script>
 
 <template>
@@ -40,9 +42,9 @@ const { t } = useI18n()
     </ul>
 
     <!-- CTA -->
-    <RouterLink to="#contact" class="ncnp-prop__cta">
+    <button class="ncnp-prop__cta" @click="openBookingModal">
       {{ t('noCureNoPay.proposition.cta') }}
-    </RouterLink>
+    </button>
   </div>
 </template>
 
@@ -114,7 +116,9 @@ const { t } = useI18n()
   color: #fff;
   font-size: 0.9375rem;
   font-weight: 600;
-  text-decoration: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
   width: fit-content;
   transition: background 0.2s ease, transform 0.15s ease;
 }

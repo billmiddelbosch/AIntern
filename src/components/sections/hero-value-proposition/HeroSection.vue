@@ -16,8 +16,6 @@ const { t } = useI18n()
 
 function scrollToContact() {
   emit('cta-click')
-  const el = document.querySelector('#contact')
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
 }
 
 function scrollToHowItWorks() {
