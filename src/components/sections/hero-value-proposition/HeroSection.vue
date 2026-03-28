@@ -279,6 +279,7 @@ function scrollToHowItWorks() {
     margin: 0 auto;
     width: 100%;
   }
+
 }
 
 @media (max-width: 639px) {
