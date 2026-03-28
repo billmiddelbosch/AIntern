@@ -38,7 +38,7 @@ function handleBackdropClick(e: MouseEvent) {
           </div>
 
           <!-- Calendly widget -->
-          <CalendlyWidget :url="calendlyUrl" :height="580" primary-color="4f46e5" />
+          <CalendlyWidget :url="calendlyUrl" :height="700" />
         </div>
       </div>
     </Transition>
