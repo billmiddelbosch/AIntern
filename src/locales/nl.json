@@ -72,6 +72,28 @@
     "error": "Er ging iets mis. Probeer het opnieuw of mail ons direct.",
     "close": "Sluiten"
   },
+  "contact": {
+    "eyebrow": "Neem contact op",
+    "title": "Klaar om te starten?",
+    "subtext": "Plan direct een gratis kennismakingsgesprek in of stuur ons een bericht. We reageren binnen één werkdag.",
+    "or": "of",
+    "calendlyColumn": {
+      "heading": "Plan een gesprek",
+      "subtext": "Kies een moment dat jou uitkomt — direct in onze agenda."
+    },
+    "formColumn": {
+      "heading": "Stuur een bericht",
+      "subtext": "Liever eerst een vraag stellen? Wij antwoorden binnen één werkdag."
+    },
+    "form": {
+      "nameLabel": "Jouw naam",
+      "emailLabel": "Jouw e-mailadres",
+      "messageLabel": "Jouw bericht",
+      "successHeading": "Bericht verzonden!",
+      "sendAnother": "Nog een bericht sturen",
+      "privacy": "We gebruiken jouw gegevens alleen om op jouw bericht te reageren. Vragen? Mail ons op"
+    }
+  },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
     "headline": "Jouw eigen AI-stagiaire, altijd aan het werk",

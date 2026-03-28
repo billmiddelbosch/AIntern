@@ -25,7 +25,8 @@
       "Bash(convert --version)",
       "Bash(pip3 list:*)",
       "Bash(npm list:*)",
-      "Bash(pip install:*)"
+      "Bash(pip install:*)",
+      "Bash(npx eslint:*)"
     ]
   }
 }

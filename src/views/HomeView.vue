@@ -6,6 +6,7 @@ import ProbleemOplossingSectionView from '@/views/sections/ProbleemOplossingSect
 import ResultatenCasesSectionView from '@/views/sections/ResultatenCasesSectionView.vue'
 import NoCureNoPayFaqSectionView from '@/views/sections/NoCureNoPayFaqSectionView.vue'
 import OverAInternContactSectionView from '@/views/sections/OverAInternContactSectionView.vue'
+import BookingModal from '@/components/ui/BookingModal.vue'
 </script>
 
 <template>
@@ -16,5 +17,6 @@ import OverAInternContactSectionView from '@/views/sections/OverAInternContactSe
     <ResultatenCasesSectionView />
     <NoCureNoPayFaqSectionView />
     <OverAInternContactSectionView />
+    <BookingModal />
   </AppShell>
 </template>
