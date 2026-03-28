@@ -12,19 +12,19 @@
     {
       "id": "case-01",
       "order": 1,
-      "metric": "70",
+      "metric": "98",
       "metricUnit": "%",
       "tag": "tijdsbesparing",
       "icon": "clock",
       "nl": {
-        "title": "Minder tijd aan administratie",
-        "description": "Een groothandel automatiseerde factuurverwerking en orderbevestigingen. Het team bespaart nu gemiddeld 14 uur per week.",
-        "metricLabel": "minder administratietijd"
+        "title": "Producten uploaden naar alle kanalen",
+        "description": "Een webshop automatiseerde het uploaden van producten naar alle online verkoopkanalen. Wat vroeger een uur kostte per batch, doet de AI nu in één minuut.",
+        "metricLabel": "minder uploadtijd"
       },
       "en": {
-        "title": "Less time on administration",
-        "description": "A wholesale distributor automated invoice processing and order confirmations. The team now saves an average of 14 hours per week.",
-        "metricLabel": "less admin time"
+        "title": "Uploading products across all channels",
+        "description": "A webshop automated uploading products to all online sales channels. What used to take an hour per batch now takes one minute with AI.",
+        "metricLabel": "less upload time"
       }
     },
     {
@@ -48,19 +48,19 @@
     {
       "id": "case-03",
       "order": 3,
-      "metric": "3×",
+      "metric": "48×",
       "metricUnit": "",
       "tag": "groei",
       "icon": "trending-up",
       "nl": {
-        "title": "Drie keer zo veel offertes verwerkt",
-        "description": "Een installatiebureau gebruikt AI om offerteaanvragen automatisch te kwalificeren en te beantwoorden. Volume verdrievoudigd zonder extra personeel.",
-        "metricLabel": "meer offertes verwerkt"
+        "title": "Meer verkoopselecties in dezelfde tijd",
+        "description": "Een salesteam verving handmatige verkoopselectie door AI. Wat eerder 4 uur duurde, is nu klaar in 5 minuten — ruimte voor drastisch meer prospects zonder extra mensen.",
+        "metricLabel": "meer selectiecapaciteit"
       },
       "en": {
-        "title": "Triple the quote throughput",
-        "description": "An installation firm uses AI to automatically qualify and respond to quote requests. Volume tripled without extra headcount.",
-        "metricLabel": "more quotes processed"
+        "title": "More sales selections in the same time",
+        "description": "A sales team replaced manual sales selection with AI. What previously took 4 hours is done in 5 minutes — room for far more prospects without extra headcount.",
+        "metricLabel": "more selection capacity"
       }
     },
     {
