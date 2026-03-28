@@ -9,7 +9,7 @@ const { t } = useI18n()
 </script>
 
 <template>
-  <section class="pos-section" id="problemen-oplossingen">
+  <section id="problemen-oplossingen" class="pos-section">
     <div class="pos-container">
 
       <!-- Section header -->

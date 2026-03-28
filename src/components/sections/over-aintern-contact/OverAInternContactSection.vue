@@ -1,14 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import ContactModal from '@/components/ui/ContactModal.vue'
+import { useBookingModal } from '@/composables/useBookingModal'
 
 const { t } = useI18n()
-const modalOpen = ref(false)
+const { openBookingModal } = useBookingModal()
 </script>
 
 <template>
-  <section id="contact" class="oac-section">
+  <section class="oac-section">
     <div class="oac-container">
 
       <!-- Two-column body -->
@@ -46,11 +45,9 @@ const modalOpen = ref(false)
           <h3 class="oac-cta-heading">{{ t('overAIntern.contact.heading') }}</h3>
           <p class="oac-cta-subtext">{{ t('overAIntern.contact.subtext') }}</p>
 
-          <button class="oac-cta-button" @click="modalOpen = true">
+          <button class="oac-cta-button" @click="openBookingModal">
             {{ t('overAIntern.contact.cta') }}
           </button>
-
-          <ContactModal :open="modalOpen" @close="modalOpen = false" />
 
           <div class="oac-cta-divider">
             <span class="oac-cta-or">{{ t('overAIntern.contact.or') }}</span>
