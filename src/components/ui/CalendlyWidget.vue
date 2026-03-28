@@ -1,58 +1,34 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch } from 'vue'
+import { onMounted } from 'vue'
 
 const props = defineProps<{
-  /** Full Calendly embed URL — driven by VITE_CALENDLY_URL */
   url: string
-  /** Pixel height of the embed (default 630) */
   height?: number
-  /** Primary accent colour passed to Calendly embed, hex without # (default 4f46e5) */
-  primaryColor?: string
 }>()
 
-const resolvedHeight = () => props.height ?? 630
-const resolvedColor = () => (props.primaryColor ?? '4f46e5').replace('#', '')
-
-const SCRIPT_ID = 'calendly-widget-script'
-
-function injectScript() {
-  if (document.getElementById(SCRIPT_ID)) return
+onMounted(() => {
+  if (!props.url) return
+  if (document.getElementById('calendly-widget-script')) return
   const script = document.createElement('script')
-  script.id = SCRIPT_ID
+  script.id = 'calendly-widget-script'
+  script.type = 'text/javascript'
   script.src = 'https://assets.calendly.com/assets/external/widget.js'
   script.async = true
   document.head.appendChild(script)
-}
-
-function removeScript() {
-  const script = document.getElementById(SCRIPT_ID)
-  if (script) script.remove()
-}
-
-onMounted(() => {
-  if (props.url) injectScript()
-})
-
-watch(() => props.url, (url) => {
-  if (url) injectScript()
-})
-
-onUnmounted(() => {
-  removeScript()
 })
 </script>
 
 <template>
-  <!-- Calendly inline widget — initialised by widget.js -->
+  <!-- Calendly inline widget -->
   <div
     v-if="url"
     class="calendly-inline-widget"
-    :data-url="`${url}?hide_gdpr_banner=1&primary_color=${resolvedColor()}`"
-    :style="{ minWidth: '320px', height: resolvedHeight() + 'px' }"
+    :data-url="`${url}?hide_event_type_details=1&hide_gdpr_banner=1`"
+    :style="{ minWidth: '320px', height: (height ?? 700) + 'px' }"
   />
 
-  <!-- Placeholder when no URL is configured -->
-  <div v-else class="cw-placeholder" :style="{ height: resolvedHeight() + 'px' }">
+  <!-- Placeholder when no URL configured -->
+  <div v-else class="cw-placeholder" :style="{ height: (height ?? 700) + 'px' }">
     <div class="cw-placeholder-icon" aria-hidden="true">
       <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
         <rect x="3" y="5" width="26" height="24" rx="3" stroke="currentColor" stroke-width="1.5" fill="none"/>
@@ -70,7 +46,6 @@ onUnmounted(() => {
 <style scoped>
 .cw-placeholder {
   width: 100%;
-  overflow: hidden;
   border-radius: 0.75rem;
   background: #1e293b;
   display: flex;
@@ -80,7 +55,6 @@ onUnmounted(() => {
   gap: 0.75rem;
   padding: 2rem;
   text-align: center;
-  color: #64748b;
 }
 
 .cw-placeholder-icon {
