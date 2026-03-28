@@ -21,12 +21,12 @@ async function handleSubmit() {
 <template>
   <Teleport to="body">
     <Transition name="modal">
-      <div v-if="open" class="cm-backdrop" @click.self="close" role="dialog" aria-modal="true" :aria-label="t('contactModal.title')">
+      <div v-if="open" class="cm-backdrop" role="dialog" aria-modal="true" :aria-label="t('contactModal.title')" @click.self="close">
         <div class="cm-panel">
           <!-- Header -->
           <div class="cm-header">
             <h2 class="cm-title">{{ t('contactModal.title') }}</h2>
-            <button class="cm-close" @click="close" :aria-label="t('contactModal.close')">
+            <button class="cm-close" :aria-label="t('contactModal.close')" @click="close">
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                 <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>
@@ -44,7 +44,7 @@ async function handleSubmit() {
           </div>
 
           <!-- Form state -->
-          <form v-else @submit.prevent="handleSubmit" class="cm-form">
+          <form v-else class="cm-form" @submit.prevent="handleSubmit">
             <div class="cm-field">
               <input
                 v-model="name"

@@ -20,5 +20,6 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 - Problemen & Oplossingen — drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern
 - Resultaten & Cases — kwantificeerbare resultaten (tijds- en kostenbesparing) als social proof, met per case een meetbare metric, categorie-tag en locale-bewuste beschrijving
 - Over AIntern — visie op AI voor het MKB
+- Contact & Calendly — dedicated contactsectie met inline Calendly-bookingwidget voor directe afspraken en een alternatief contactformulier; vervangt de modal-flow
 - Tweetalig NL/EN
 - Toon: innovatief, professioneel en nuchter

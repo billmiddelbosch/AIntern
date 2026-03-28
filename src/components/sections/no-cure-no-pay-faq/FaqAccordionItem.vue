@@ -19,7 +19,7 @@ const content = computed(() => (locale.value === 'nl' ? props.faq.nl : props.faq
 
 <template>
   <div class="ncnp-faq-item" :class="{ 'ncnp-faq-item--open': isOpen }">
-    <button class="ncnp-faq-item__trigger" @click="emit('toggle')" :aria-expanded="isOpen">
+    <button class="ncnp-faq-item__trigger" :aria-expanded="isOpen" @click="emit('toggle')">
       <span class="ncnp-faq-item__question">{{ content.question }}</span>
       <svg
         class="ncnp-faq-item__chevron"
