@@ -72,6 +72,28 @@
     "error": "Something went wrong. Please try again or email us directly.",
     "close": "Close"
   },
+  "contact": {
+    "eyebrow": "Get in touch",
+    "title": "Ready to get started?",
+    "subtext": "Schedule a free intro call directly or send us a message. We respond within one business day.",
+    "or": "or",
+    "calendlyColumn": {
+      "heading": "Book a call",
+      "subtext": "Pick a time that suits you — straight into our calendar."
+    },
+    "formColumn": {
+      "heading": "Send a message",
+      "subtext": "Prefer to ask a question first? We'll reply within one business day."
+    },
+    "form": {
+      "nameLabel": "Your name",
+      "emailLabel": "Your email",
+      "messageLabel": "Your message",
+      "successHeading": "Message sent!",
+      "sendAnother": "Send another message",
+      "privacy": "We'll only use your details to respond to your message. Questions? Email us at"
+    }
+  },
   "hero": {
     "eyebrow": "Your AI intern",
     "headline": "Your own AI intern, working 24/7",
