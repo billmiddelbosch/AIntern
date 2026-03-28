@@ -14,11 +14,11 @@
       "icon": "search",
       "nl": {
         "title": "Analyseer",
-        "description": "We leren jouw bedrijf kennen en brengen samen in kaart waar AI direct waarde toevoegt. Geen standaard aanpak — we kijken specifiek naar jouw processen, knelpunten en kansen."
+        "description": "We leren jouw bedrijf kennen en brengen precies in kaart waar AI voor jou kan werken. Geen standaard aanpak — we kijken naar jouw specifieke processen, werkwijzen en knelpunten om jouw persoonlijke AI-stagiaire te ontwerpen."
       },
       "en": {
         "title": "Analyse",
-        "description": "We get to know your business and map out together where AI can directly add value. No standard approach — we look specifically at your processes, bottlenecks, and opportunities."
+        "description": "We learn your business and map out exactly where AI can work for you. No generic approach — we look at your specific processes, workflows, and pain points to design your personal AI intern."
       }
     },
     {
@@ -26,12 +26,12 @@
       "order": 2,
       "icon": "cpu",
       "nl": {
-        "title": "Automatiseer",
-        "description": "AIntern configureert en implementeert de juiste AI-oplossing voor jouw situatie. Jij hoeft niets technisch te doen — wij zorgen dat het naadloos aansluit op hoe jij werkt."
+        "title": "Bouw jouw AI-stagiaire",
+        "description": "We ontwikkelen jouw AI-stagiaire met behulp van AI — specifiek geconfigureerd voor hoe jouw bedrijf werkt. Jij hoeft niets technisch te doen. Jouw AI-stagiaire integreert naadloos in je bestaande werkwijze."
       },
       "en": {
-        "title": "Automate",
-        "description": "AIntern configures and implements the right AI solution for your situation. You don't need to do anything technical — we make sure it fits seamlessly into how you work."
+        "title": "Build your AI intern",
+        "description": "We develop your AI intern using AI — configured specifically for how your business operates. No technical involvement needed from you. Your AI intern integrates seamlessly into your existing workflows."
       }
     },
     {
@@ -40,11 +40,11 @@
       "icon": "trending-up",
       "nl": {
         "title": "Resultaat",
-        "description": "Je ziet het verschil vanaf dag één. Minder handwerk, lagere kosten of nieuwe groeikansen — en je betaalt pas als het resultaat er daadwerkelijk is."
+        "description": "Jouw AI-stagiaire begint jouw interne processen te draaien — als één of meer extra medewerkers die 24/7 werken. Minder handwerk, lagere kosten, en je betaalt pas als het resultaat er daadwerkelijk is."
       },
       "en": {
         "title": "Results",
-        "description": "You see the difference from day one. Less manual work, lower costs, or new growth opportunities — and you only pay when the results are actually there."
+        "description": "Your AI intern starts running your internal processes — like one or more extra employees working 24/7. Less manual work, lower costs, and you only pay when results are real and measurable."
       }
     }
   ]
