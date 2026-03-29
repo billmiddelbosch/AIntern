@@ -15,5 +15,4 @@ app.use(router)
 app.use(i18n)
 app.use(head)
 
-await router.isReady()
-app.mount('#app')
+router.isReady().then(() => app.mount('#app'))
