@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useBookingModal } from '@/composables/useBookingModal'
+import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t } = useI18n()
 const { openBookingModal } = useBookingModal()
+const { trackEvent } = useAnalytics()
 </script>
 
 <template>
@@ -45,7 +47,7 @@ const { openBookingModal } = useBookingModal()
           <h3 class="oac-cta-heading">{{ t('overAIntern.contact.heading') }}</h3>
           <p class="oac-cta-subtext">{{ t('overAIntern.contact.subtext') }}</p>
 
-          <button class="oac-cta-button" @click="openBookingModal">
+          <button class="oac-cta-button" @click="() => { trackEvent('cta_click', { location: 'over_aintern' }); openBookingModal() }">
             {{ t('overAIntern.contact.cta') }}
           </button>
 
