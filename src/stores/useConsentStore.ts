@@ -8,7 +8,10 @@ const PLAUSIBLE_DOMAIN = import.meta.env.VITE_PLAUSIBLE_DOMAIN ?? 'aintern.nl'
 const PLAUSIBLE_SCRIPT_ID = 'plausible-analytics'
 const PLAUSIBLE_SRC = 'https://plausible.io/js/script.js'
 
+const isBrowser = typeof window !== 'undefined'
+
 function injectPlausibleScript(): void {
+  if (!isBrowser) return
   if (document.getElementById(PLAUSIBLE_SCRIPT_ID)) return
   const script = document.createElement('script')
   script.id = PLAUSIBLE_SCRIPT_ID
@@ -25,6 +28,7 @@ export const useConsentStore = defineStore('consent', () => {
   const isAccepted = computed(() => status.value === 'accepted')
 
   function init(): void {
+    if (!isBrowser) return
     const stored = localStorage.getItem(STORAGE_KEY)
     if (stored === 'accepted') {
       status.value = 'accepted'
@@ -36,13 +40,13 @@ export const useConsentStore = defineStore('consent', () => {
 
   function accept(): void {
     status.value = 'accepted'
-    localStorage.setItem(STORAGE_KEY, 'accepted')
+    if (isBrowser) localStorage.setItem(STORAGE_KEY, 'accepted')
     injectPlausibleScript()
   }
 
   function decline(): void {
     status.value = 'declined'
-    localStorage.setItem(STORAGE_KEY, 'declined')
+    if (isBrowser) localStorage.setItem(STORAGE_KEY, 'declined')
   }
 
   return {
