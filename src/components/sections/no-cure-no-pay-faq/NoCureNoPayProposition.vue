@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import { useBookingModal } from '@/composables/useBookingModal'
+import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t } = useI18n()
 const { openBookingModal } = useBookingModal()
+const { trackEvent } = useAnalytics()
 </script>
 
 <template>
@@ -42,7 +44,7 @@ const { openBookingModal } = useBookingModal()
     </ul>
 
     <!-- CTA -->
-    <button class="ncnp-prop__cta" @click="openBookingModal">
+    <button class="ncnp-prop__cta" @click="() => { trackEvent('cta_click', { location: 'nocurenopay' }); openBookingModal() }">
       {{ t('noCureNoPay.proposition.cta') }}
     </button>
   </div>
