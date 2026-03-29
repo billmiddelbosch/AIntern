@@ -1,5 +1,18 @@
 <script setup lang="ts">
-import { onMounted, nextTick, useTemplateRef } from 'vue'
+import { onMounted, useTemplateRef } from 'vue'
+
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (options: {
+        url: string
+        parentElement: HTMLElement
+        prefill?: Record<string, unknown>
+        utm?: Record<string, unknown>
+      }) => void
+    }
+  }
+}
 
 const props = defineProps<{
   url: string
@@ -8,46 +21,38 @@ const props = defineProps<{
 
 const widgetEl = useTemplateRef<HTMLDivElement>('widget')
 
-type CalendlyAPI = {
-  initInlineWidget(options: { url: string; parentElement: Element }): void
-}
-
 function initWidget() {
-  nextTick(() => {
-    const calendly = (window as unknown as { Calendly?: CalendlyAPI }).Calendly
-    if (calendly && widgetEl.value) {
-      calendly.initInlineWidget({
-        url: `${props.url}?hide_event_type_details=1&hide_gdpr_banner=1`,
-        parentElement: widgetEl.value,
-      })
-    }
+  if (!widgetEl.value || !props.url || !window.Calendly) return
+  window.Calendly.initInlineWidget({
+    url: `${props.url}?hide_event_type_details=1&hide_gdpr_banner=1`,
+    parentElement: widgetEl.value,
   })
 }
 
 onMounted(() => {
   if (!props.url) return
+
   if (document.getElementById('calendly-widget-script')) {
-    // Script already loaded — Calendly won't auto-scan, so init manually
+    // Script already loaded — initialise widget directly
     initWidget()
     return
   }
-  // First load — Calendly will auto-scan for .calendly-inline-widget[data-url]
+
   const script = document.createElement('script')
   script.id = 'calendly-widget-script'
   script.type = 'text/javascript'
   script.src = 'https://assets.calendly.com/assets/external/widget.js'
   script.async = true
+  script.onload = initWidget
   document.head.appendChild(script)
 })
 </script>
 
 <template>
-  <!-- Calendly inline widget -->
+  <!-- Calendly inline widget (programmatic init via Calendly.initInlineWidget) -->
   <div
     v-if="url"
     ref="widget"
-    class="calendly-inline-widget"
-    :data-url="`${url}?hide_event_type_details=1&hide_gdpr_banner=1`"
     :style="{ minWidth: '320px', height: (height ?? 700) + 'px' }"
   />
 
