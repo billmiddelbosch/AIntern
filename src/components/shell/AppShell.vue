@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import MainNav from '@/components/shell/MainNav.vue'
 import AppFooter from '@/components/shell/AppFooter.vue'
+import CookieConsentBanner from '@/components/ui/CookieConsentBanner.vue'
+import { useConsentStore } from '@/stores/useConsentStore'
+
+const consentStore = useConsentStore()
+
+onMounted(() => {
+  consentStore.init()
+})
 </script>
 
 <template>
@@ -10,5 +19,6 @@ import AppFooter from '@/components/shell/AppFooter.vue'
       <slot />
     </main>
     <AppFooter />
+    <CookieConsentBanner />
   </div>
 </template>

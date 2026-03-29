@@ -21,5 +21,7 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 - Resultaten & Cases — kwantificeerbare resultaten (tijds- en kostenbesparing) als social proof, met per case een meetbare metric, categorie-tag en locale-bewuste beschrijving
 - Over AIntern — visie op AI voor het MKB
 - Contact & Calendly — dedicated contactsectie met inline Calendly-bookingwidget voor directe afspraken en een alternatief contactformulier; vervangt de modal-flow
+- SEO & Meta Tags — dynamische page title, meta description, Open Graph tags en canonical URL per route; locale-bewuste meta via vue-i18n; structured data (JSON-LD Organization)
+- Analytics & Cookie Consent — GDPR-compliant analytics tracking via Plausible; consent-aware stub/no-op mode totdat de bezoeker toestemming geeft; CTA-click tracking en page-view tracking; persistent consent voorkeur opgeslagen in localStorage
 - Tweetalig NL/EN
 - Toon: innovatief, professioneel en nuchter
