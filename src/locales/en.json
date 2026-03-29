@@ -94,6 +94,19 @@
       "privacy": "We'll only use your details to respond to your message. Questions? Email us at"
     }
   },
+  "seo": {
+    "home": {
+      "title": "AIntern — Your AI Intern for SMEs | No-Cure-No-Pay",
+      "description": "AIntern builds a dedicated AI intern for your business — automating internal processes like an extra employee. No risk: you only pay when results are verified. Free consultation.",
+      "ogImageAlt": "AIntern — Your AI Intern for SMEs"
+    }
+  },
+  "cookieConsent": {
+    "message": "We use analytics to understand how visitors use this site. No personal data is stored.",
+    "acceptLabel": "Accept",
+    "declineLabel": "Decline",
+    "learnMore": "Privacy policy"
+  },
   "hero": {
     "eyebrow": "Your AI intern",
     "headline": "Your own AI intern, working 24/7",
