@@ -34,6 +34,9 @@ coverage/
 .env.*
 !.env.example
 
+# Claude Code local settings (machine-specific permissions)
+.claude/settings.local.json
+
 # TypeScript build info
 *.tsbuildinfo
 
