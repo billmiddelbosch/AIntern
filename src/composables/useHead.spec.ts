@@ -2,6 +2,7 @@ import { describe, it, expect, beforeEach, afterEach } from 'vitest'
 import { defineComponent, nextTick } from 'vue'
 import { mount } from '@vue/test-utils'
 import { createRouter, createWebHistory } from 'vue-router'
+import { createHead, renderDOMHead } from '@unhead/vue/client'
 import { useHead } from '@/composables/useHead'
 import { i18n } from '@/lib/i18n'
 
@@ -20,23 +21,34 @@ function buildWrapper() {
     },
   })
 
-  return mount(TestComponent, {
+  const head = createHead()
+
+  const wrapper = mount(TestComponent, {
     global: {
-      plugins: [i18n, router],
+      plugins: [i18n, router, head],
     },
   })
+
+  return { wrapper, head }
+}
+
+// Flush @unhead/vue v2 DOM updates
+async function flushHead(head: ReturnType<typeof createHead>) {
+  await nextTick()
+  await renderDOMHead(head)
 }
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
 describe('useHead', () => {
-  let wrapper: ReturnType<typeof buildWrapper>
+  let wrapper: ReturnType<typeof buildWrapper>['wrapper']
+  let head: ReturnType<typeof createHead>
 
   beforeEach(async () => {
     // Reset locale to NL (the app default)
     i18n.global.locale.value = 'nl'
-    wrapper = buildWrapper()
-    await nextTick()
+    ;({ wrapper, head } = buildWrapper())
+    await flushHead(head)
   })
 
   afterEach(() => {
@@ -46,94 +58,79 @@ describe('useHead', () => {
   })
 
   it('sets document.title to the NL SEO title', async () => {
-    await nextTick()
-    await nextTick()
     expect(document.title).toContain('AIntern')
     expect(document.title.length).toBeGreaterThan(10)
   })
 
   it('sets <html lang> to "nl" when locale is NL', async () => {
-    await nextTick()
     expect(document.documentElement.getAttribute('lang')).toBe('nl')
   })
 
   it('sets <meta name="description"> with non-empty content', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     expect(el).not.toBeNull()
     expect(el!.content.length).toBeGreaterThan(20)
   })
 
   it('sets <meta name="robots"> to "index, follow"', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[name="robots"]')
     expect(el).not.toBeNull()
     expect(el!.content).toBe('index, follow')
   })
 
   it('sets og:title meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[property="og:title"]')
     expect(el).not.toBeNull()
     expect(el!.getAttribute('content')).toContain('AIntern')
   })
 
   it('sets og:description meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[property="og:description"]')
     expect(el).not.toBeNull()
     expect(el!.getAttribute('content')!.length).toBeGreaterThan(20)
   })
 
   it('sets og:type to "website"', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[property="og:type"]')
     expect(el).not.toBeNull()
     expect(el!.getAttribute('content')).toBe('website')
   })
 
   it('sets og:url meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[property="og:url"]')
     expect(el).not.toBeNull()
     expect(el!.getAttribute('content')).toBeTruthy()
   })
 
   it('sets og:image meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[property="og:image"]')
     expect(el).not.toBeNull()
     expect(el!.getAttribute('content')).toContain('og-image.png')
   })
 
   it('sets twitter:card meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[name="twitter:card"]')
     expect(el).not.toBeNull()
     expect(el!.content).toBe('summary_large_image')
   })
 
   it('sets twitter:title meta tag', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLMetaElement>('meta[name="twitter:title"]')
     expect(el).not.toBeNull()
     expect(el!.content).toContain('AIntern')
   })
 
   it('sets <link rel="canonical"> with a non-empty href', async () => {
-    await nextTick()
     const el = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
     expect(el).not.toBeNull()
     expect(el!.href).toBeTruthy()
   })
 
   it('updates document.title when locale changes to EN', async () => {
-    await nextTick()
     const nlTitle = document.title
 
     i18n.global.locale.value = 'en'
-    await nextTick()
-    await nextTick()
+    await flushHead(head)
 
     const enTitle = document.title
     expect(enTitle).not.toBe(nlTitle)
@@ -141,10 +138,8 @@ describe('useHead', () => {
   })
 
   it('updates <html lang> to "en" when locale changes to EN', async () => {
-    await nextTick()
     i18n.global.locale.value = 'en'
-    await nextTick()
-    await nextTick()
+    await flushHead(head)
     expect(document.documentElement.getAttribute('lang')).toBe('en')
   })
 })
