@@ -5,7 +5,6 @@ import { createHead } from '@unhead/vue/client'
 import App from './App.vue'
 import { createAppRouter } from './router'
 import { i18n } from './lib/i18n'
-import './assets/main.css'
 
 const app = createApp(App)
 const router = createAppRouter()
