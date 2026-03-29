@@ -1,6 +1,6 @@
 # Data Model
 
-## Entities
+## Entities 
 
 ### Problem
 Een MKB-pijnpunt dat AIntern adresseert, met een bijbehorende AI-oplossing. Vormt de basis van de "Problemen & Oplossingen" sectie.
