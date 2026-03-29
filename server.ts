@@ -48,7 +48,6 @@ async function createServer() {
           path.resolve(__dirname, 'dist/client/index.html'),
           'utf-8',
         )
-        // @ts-ignore — dist artifact does not exist at type-check time
         render = (await import('./dist/server/entry-server.js')).render
       }
 
