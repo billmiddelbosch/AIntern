@@ -1,14 +1,37 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, nextTick, useTemplateRef } from 'vue'
 
 const props = defineProps<{
   url: string
   height?: number
 }>()
 
+const widgetEl = useTemplateRef<HTMLDivElement>('widget')
+
+type CalendlyAPI = {
+  initInlineWidget(options: { url: string; parentElement: Element }): void
+}
+
+function initWidget() {
+  nextTick(() => {
+    const calendly = (window as unknown as { Calendly?: CalendlyAPI }).Calendly
+    if (calendly && widgetEl.value) {
+      calendly.initInlineWidget({
+        url: `${props.url}?hide_event_type_details=1&hide_gdpr_banner=1`,
+        parentElement: widgetEl.value,
+      })
+    }
+  })
+}
+
 onMounted(() => {
   if (!props.url) return
-  if (document.getElementById('calendly-widget-script')) return
+  if (document.getElementById('calendly-widget-script')) {
+    // Script already loaded — Calendly won't auto-scan, so init manually
+    initWidget()
+    return
+  }
+  // First load — Calendly will auto-scan for .calendly-inline-widget[data-url]
   const script = document.createElement('script')
   script.id = 'calendly-widget-script'
   script.type = 'text/javascript'
@@ -22,6 +45,7 @@ onMounted(() => {
   <!-- Calendly inline widget -->
   <div
     v-if="url"
+    ref="widget"
     class="calendly-inline-widget"
     :data-url="`${url}?hide_event_type_details=1&hide_gdpr_banner=1`"
     :style="{ minWidth: '320px', height: (height ?? 700) + 'px' }"
