@@ -18,6 +18,7 @@ const navItems = [
 
 function scrollTo(anchor: string) {
   mobileMenuOpen.value = false
+  if (typeof document === 'undefined') return
   const el = document.querySelector(anchor)
   if (el) el.scrollIntoView({ behavior: 'smooth' })
 }
