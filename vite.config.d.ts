@@ -1,2 +1,3 @@
-declare const _default: import("vite").UserConfig & Promise<import("vite").UserConfig> & import("vite").UserConfigFnObject & import("vite").UserConfigFnPromise & import("vite").UserConfigFn;
+import 'vite-ssg';
+declare const _default: import("vite").UserConfig;
 export default _default;

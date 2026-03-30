@@ -3,6 +3,7 @@ import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
 import generateSitemap from 'vite-ssg-sitemap';
+import 'vite-ssg';
 export default defineConfig({
     plugins: [
         vue(),
