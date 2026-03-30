@@ -43,6 +43,7 @@
     "tsx": "^4.21.0",
     "typescript": "~5.7.2",
     "vite": "^6.0.11",
+    "vite-ssg-sitemap": "^0.10.0",
     "vitest": "^3.0.4",
     "vue-eslint-parser": "^10.0.0",
     "vue-tsc": "^2.2.0"
