@@ -8,10 +8,10 @@
 | ~~L-03~~ | ~~**Resultaten & Cases**~~ | M | ~~Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet. Roadmap section 4.~~ Geimplementeerd 2026-03-25. |
 | ~~L-04~~ | ~~**No-Cure-No-Pay & FAQ**~~ | M | ~~Risicovrij businessmodel uitgelegd met veelgestelde bezwaren proactief weggenomen. Roadmap section 5.~~ In progress 2026-03-25. |
 | L-05 | **Over AIntern & Contact** | S | Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen. Roadmap section 6. |
-| L-06 | **SEO & Meta Tags** | S | Page title, meta description, Open Graph tags, and canonical URLs for all routes. |
-| L-07 | **Analytics Integration** | S | Google Analytics or Plausible integration; track page views and CTA clicks. |
+| ~~L-06~~ | ~~**SEO & Meta Tags**~~ | S | ~~Page title, meta description, Open Graph tags, and canonical URLs for all routes.~~ Geimplementeerd 2026-03-30. |
+| ~~L-07~~ | ~~**Analytics Integration**~~ | S | ~~Google Analytics or Plausible integration; track page views and CTA clicks.~~ Geimplementeerd 2026-03-30. |
 | ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |
-| L-09 | **Cookie Consent Banner (GDPR)** | S | Consent banner required before loading analytics; stores preference in localStorage. |
+| ~~L-09~~ | ~~**Cookie Consent Banner (GDPR)**~~ | S | ~~Consent banner required before loading analytics; stores preference in localStorage.~~ Geimplementeerd 2026-03-30. |
 | L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
 | L-11 | **Blog / Kennisbank stub** | M | Placeholder section or route for future knowledge-base articles; improves SEO. |
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
