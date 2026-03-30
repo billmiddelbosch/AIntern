@@ -1,0 +1,29 @@
+# AIntern
+
+> AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven — no-cure-no-pay.
+
+AIntern helps Dutch SMEs automate internal business processes with a dedicated AI intern.
+Clients only pay when measurable results are delivered (no-cure-no-pay model).
+
+## Services
+
+- AI process automation (invoice processing, inventory management, customer email responses, report generation)
+- Dedicated AI intern tailored to each business's existing workflows
+- GDPR compliant, no upfront investment required
+- Implementation in 4–8 weeks: process analysis → custom AI development → live deployment
+
+## Results
+
+- Up to 40% time savings on manual work
+- €1,200+ monthly cost reductions
+- 90% fewer data entry errors
+
+## Contact
+
+- Email: info@aintern.nl
+- Web: https://aintern.nl
+
+## Pages
+
+- Homepage: https://aintern.nl/
+- Sitemap: https://aintern.nl/sitemap.xml
