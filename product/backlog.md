@@ -7,7 +7,7 @@
 | ~~L-02~~ | ~~**Problemen & Oplossingen**~~ | M | ~~Drie MKB-pijnpunten vertaald naar concrete AI-aanpak van AIntern. Roadmap section 3.~~ Geïmplementeerd 2026-03-25. |
 | ~~L-03~~ | ~~**Resultaten & Cases**~~ | M | ~~Kwantificeerbare voorbeelden van tijds- en kostenbesparing door AI-inzet. Roadmap section 4.~~ Geimplementeerd 2026-03-25. |
 | ~~L-04~~ | ~~**No-Cure-No-Pay & FAQ**~~ | M | ~~Risicovrij businessmodel uitgelegd met veelgestelde bezwaren proactief weggenomen. Roadmap section 5.~~ In progress 2026-03-25. |
-| L-05 | **Over AIntern & Contact** | S | Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen. Roadmap section 6. |
+| ~~L-05~~ | ~~**Over AIntern & Contact**~~ | S | ~~Verhaal, visie en CTA om een vrijblijvend kennismakingsgesprek in te plannen. Roadmap section 6.~~ Geimplementeerd 2026-03-31. |
 | ~~L-06~~ | ~~**SEO & Meta Tags**~~ | S | ~~Page title, meta description, Open Graph tags, and canonical URLs for all routes.~~ Geimplementeerd 2026-03-30. |
 | ~~L-07~~ | ~~**Analytics Integration**~~ | S | ~~Google Analytics or Plausible integration; track page views and CTA clicks.~~ Geimplementeerd 2026-03-30. |
 | ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |

@@ -3,6 +3,7 @@
     "about": "Over AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
+    "kennisbank": "Kennisbank",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
   },
@@ -106,6 +107,24 @@
     "acceptLabel": "Accepteren",
     "declineLabel": "Weigeren",
     "learnMore": "Privacybeleid"
+  },
+  "kennisbank": {
+    "sectionLabel": "Kennisbank",
+    "teaserTitle": "Praktische AI-kennis voor het MKB",
+    "teaserSubtitle": "Tips, cases en inzichten — geschreven door AI, gecheckt door mensen, relevant voor jouw bedrijf.",
+    "overviewTitle": "Kennisbank",
+    "overviewSubtitle": "Alle artikelen over AI voor het MKB — praktisch, leesbaar, direct toepasbaar.",
+    "viewAll": "Bekijk alle artikelen",
+    "readMore": "Lees meer",
+    "backToKennisbank": "← Terug naar Kennisbank",
+    "allCategories": "Alle categorieën",
+    "categoryFilter": "Filter op categorie",
+    "loading": "Laden…",
+    "emptyState": "Er zijn nog geen artikelen gevonden. Kom later terug.",
+    "errorState": "Artikelen konden niet geladen worden. Probeer het later opnieuw.",
+    "articleNotFound": "Artikel niet gevonden. Het is mogelijk verwijderd of de link klopt niet.",
+    "metaTitle": "Kennisbank — Praktische AI-tips voor het MKB | AIntern",
+    "metaDescription": "De AIntern Kennisbank: praktische artikelen over AI voor het MKB. AI-automatisering, implementatietips en echte praktijkcases — geen technische kennis vereist."
   },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",

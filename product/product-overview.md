@@ -23,5 +23,6 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 - Contact & Calendly — dedicated contactsectie met inline Calendly-bookingwidget voor directe afspraken en een alternatief contactformulier; vervangt de modal-flow
 - SEO & Meta Tags — dynamische page title, meta description, Open Graph tags en canonical URL per route; locale-bewuste meta via vue-i18n; structured data (JSON-LD Organization)
 - Analytics & Cookie Consent — GDPR-compliant analytics tracking via Plausible; consent-aware stub/no-op mode totdat de bezoeker toestemming geeft; CTA-click tracking en page-view tracking; persistent consent voorkeur opgeslagen in localStorage
+- Kennisbank / Blog — AI-gedreven blogplatform; artikelen gegenereerd door Claude/NotebookLM-agents, opgeslagen als JSON in AWS S3, gepubliceerd zonder code-deploy; homepage teaser + /kennisbank overzicht + /kennisbank/:slug detailpagina's; SEO-geoptimaliseerd per artikel
 - Tweetalig NL/EN
 - Toon: innovatief, professioneel en nuchter

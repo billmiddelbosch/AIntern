@@ -1,0 +1,63 @@
+{
+  "/AInternKennisbankStack": [
+    {
+      "type": "aws:cdk:stack-tags",
+      "data": [
+        {
+          "key": "Feature",
+          "value": "kennisbank"
+        },
+        {
+          "key": "ManagedBy",
+          "value": "cdk"
+        },
+        {
+          "key": "Project",
+          "value": "aintern"
+        }
+      ]
+    }
+  ],
+  "/AInternKennisbankStack/BucketName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BucketName"
+    }
+  ],
+  "/AInternKennisbankStack/BucketUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BucketUrl"
+    }
+  ],
+  "/AInternKennisbankStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/AInternKennisbankStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/AInternKennisbankStack/KennisbankBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KennisbankBucket42E7E4FE"
+    }
+  ],
+  "/AInternKennisbankStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ],
+  "/AInternKennisbankStack/KennisbankBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "KennisbankBucketPolicy5E4CBFC4"
+    }
+  ]
+}

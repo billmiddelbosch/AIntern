@@ -9,7 +9,7 @@ const { trackEvent } = useAnalytics()
 </script>
 
 <template>
-  <section class="oac-section">
+  <section id="over-aintern" class="oac-section">
     <div class="oac-container">
 
       <!-- Two-column body -->
@@ -35,7 +35,7 @@ const { trackEvent } = useAnalytics()
         </div>
 
         <!-- Right: CTA card -->
-        <div class="oac-cta-card">
+        <div id="contact" class="oac-cta-card">
           <!-- Decorative icon -->
           <div class="oac-cta-icon">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none" aria-hidden="true">
