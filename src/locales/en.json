@@ -3,6 +3,7 @@
     "about": "About AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
+    "kennisbank": "Knowledge Base",
     "cta": "Free consultation",
     "menu": "Open menu"
   },
@@ -106,6 +107,24 @@
     "acceptLabel": "Accept",
     "declineLabel": "Decline",
     "learnMore": "Privacy policy"
+  },
+  "kennisbank": {
+    "sectionLabel": "Knowledge Base",
+    "teaserTitle": "Practical AI knowledge for SMEs",
+    "teaserSubtitle": "Tips, cases, and insights — written by AI, reviewed by humans, relevant for your business.",
+    "overviewTitle": "Knowledge Base",
+    "overviewSubtitle": "All articles about AI for SMEs — practical, readable, directly applicable.",
+    "viewAll": "View all articles",
+    "readMore": "Read more",
+    "backToKennisbank": "Back to Knowledge Base",
+    "allCategories": "All categories",
+    "categoryFilter": "Filter by category",
+    "loading": "Loading…",
+    "emptyState": "No articles found yet. Check back soon.",
+    "errorState": "Could not load articles. Please try again later.",
+    "articleNotFound": "Article not found. It may have been removed or the link is incorrect.",
+    "metaTitle": "Knowledge Base — Practical AI tips for SMEs | AIntern",
+    "metaDescription": "The AIntern Knowledge Base: practical articles about AI for SMEs. AI automation, implementation tips, and real business cases — no technical knowledge required."
   },
   "hero": {
     "eyebrow": "Your AI intern",

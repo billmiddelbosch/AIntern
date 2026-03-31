@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
@@ -8,6 +9,8 @@ const navItems = [
   { labelKey: 'nav.nocurenopay', anchor: '#no-cure-no-pay' },
   { labelKey: 'nav.contact', anchor: '#contact' },
 ]
+
+const routeNavItems = [{ labelKey: 'nav.kennisbank', to: '/kennisbank' }]
 
 function scrollTo(anchor: string) {
   if (typeof document === 'undefined') return
@@ -41,6 +44,14 @@ function toggleLocale() {
           >
             {{ t(item.labelKey) }}
           </button>
+          <RouterLink
+            v-for="item in routeNavItems"
+            :key="item.to"
+            :to="item.to"
+            class="text-sm text-slate-400 hover:text-white text-left transition-colors"
+          >
+            {{ t(item.labelKey) }}
+          </RouterLink>
         </nav>
       </div>
 

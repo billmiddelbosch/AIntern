@@ -7,4 +7,14 @@ export const routes: RouteRecordRaw[] = [
     name: 'home',
     component: HomeView,
   },
+  {
+    path: '/kennisbank',
+    name: 'kennisbank',
+    component: () => import('@/views/KennisbankView.vue'),
+  },
+  {
+    path: '/kennisbank/:slug',
+    name: 'kennisbank-artikel',
+    component: () => import('@/views/KennisbankArtikelView.vue'),
+  },
 ]
