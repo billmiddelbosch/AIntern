@@ -4,6 +4,19 @@ _Opgesteld: 2026-04-01_
 
 ---
 
+## Big Idea
+
+> *"Iedereen voelt dat AI iets kan veranderen. Wij nemen het herhaalwerk dat uw dag opslokt uit handen."*
+
+**Gebruik:** website hero, LinkedIn bio, openingszin in elk gesprek.
+
+**Waarom het werkt:**
+- Valideert het gevoel dat elke MKB-ondernemer herkent (AI is hot, ik doe er nog niks mee)
+- Benoemt de dagelijkse pijn concreet (herhaalwerk dat de dag opslokt)
+- Legt de actie bij AIntern — de ondernemer hoeft niks te doen
+
+---
+
 ## Droomklant
 
 **Sector (beachhead):** Lightspeed webshophouders in retail of wholesale
@@ -84,10 +97,9 @@ Lightspeed is de deur, niet het plafond.
 2. **Herformuleer het offer** ✅
    Godfather Offer vastgesteld (zie boven).
 
-3. **Schrijf de kernpropositie (Big Idea)**
-   De centrale waarheid voor website, LinkedIn bio, en elk gesprek.
-   Richting: *"Uw processen zijn uniek. SaaS past niet. Maatwerk is te duur.
-   Wij bouwen uw eigen AI-medewerker — betaalbaar, specifiek, van u."*
+3. **Schrijf de kernpropositie (Big Idea)** ✅
+   *"Iedereen voelt dat AI iets kan veranderen. Wij nemen het herhaalwerk
+   dat uw dag opslokt uit handen."*
 
 4. **Maak de pilot-story je eerste content**
    Wat was het proces, hoe zag het er voor uit, wat is het resultaat?
