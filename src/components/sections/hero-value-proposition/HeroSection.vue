@@ -2,11 +2,13 @@
 import { useI18n } from 'vue-i18n'
 import type { MetricCard, AutomatedProcess } from '@/../product/sections/hero-value-proposition/types'
 import DashboardMockup from './DashboardMockup.vue'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
-defineProps<{
+const props = withDefaults(defineProps<{
   metricCards: MetricCard[]
   automatedProcesses: AutomatedProcess[]
-}>()
+  bg?: BgColor
+}>(), { bg: 'dark' })
 
 const emit = defineEmits<{
   (e: 'cta-click'): void
@@ -25,7 +27,7 @@ function scrollToHowItWorks() {
 </script>
 
 <template>
-  <section class="hero">
+  <section class="hero" :style="{ background: BRAND_COLORS[props.bg] }">
     <!-- Background decoration -->
     <div class="hero-bg" aria-hidden="true">
       <div class="hero-orb hero-orb-1" />
@@ -55,13 +57,6 @@ function scrollToHowItWorks() {
           <button class="btn-secondary" @click="scrollToHowItWorks">
             {{ t('hero.ctaSecondary') }}
           </button>
-        </div>
-
-        <div class="hero-social-proof">
-          <div class="avatar-stack" aria-hidden="true">
-            <div v-for="i in 4" :key="i" class="avatar-placeholder" />
-          </div>
-          <span>{{ t('hero.socialProof') }}</span>
         </div>
       </div>
 
@@ -148,7 +143,8 @@ function scrollToHowItWorks() {
   letter-spacing: 0.08em;
 }
 
-.hero-eyebrow::before {
+.hero-eyebrow::before, 
+.hero-eyebrow::after {
   content: '';
   display: block;
   width: 1.5rem;
@@ -228,33 +224,6 @@ function scrollToHowItWorks() {
   text-decoration-color: #4f46e5;
 }
 
-/* Social proof */
-.hero-social-proof {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-size: 0.875rem;
-  color: #64748b;
-  font-weight: 500;
-}
-
-.avatar-stack {
-  display: flex;
-}
-
-.avatar-placeholder {
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
-  border: 2px solid white;
-  background: linear-gradient(135deg, #818cf8, #a78bfa);
-  margin-left: -0.5rem;
-}
-
-.avatar-placeholder:first-child {
-  margin-left: 0;
-}
-
 /* Visual */
 .hero-visual {
   width: 100%;
@@ -308,9 +277,5 @@ function scrollToHowItWorks() {
 
   .hero-orb-1 { opacity: 0.18; }
   .hero-orb-2 { opacity: 0.14; }
-
-  .avatar-placeholder {
-    border-color: #1e293b;
-  }
 }
 </style>

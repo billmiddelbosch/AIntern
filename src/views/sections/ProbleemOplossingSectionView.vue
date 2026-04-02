@@ -4,9 +4,11 @@ import data from '@/../product/sections/problemen-oplossingen/data.json'
 import type { ProbleemOplossingPair } from '@/../product/sections/problemen-oplossingen/types'
 import { ProbleemOplossingSection } from '@/components/sections/problemen-oplossingen'
 
+defineProps<{ bg?: string }>()
+
 const pairs = ref(data.pairs as ProbleemOplossingPair[])
 </script>
 
 <template>
-  <ProbleemOplossingSection :pairs="pairs" />
+  <ProbleemOplossingSection :pairs="pairs" :bg="bg" />
 </template>

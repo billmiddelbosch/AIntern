@@ -21,6 +21,43 @@
     "problemLabel": "Challenge",
     "solutionLabel": "Our approach"
   },
+  "godfatherOffer": {
+    "sectionLabel": "The offer",
+    "heading": "How we work",
+    "intro": "We never take on more than 2 new clients per quarter — so we can focus entirely on your business. If you reach out now, you get:",
+    "step1": {
+      "title": "30 minutes free",
+      "description": "A no-obligation conversation where we analyse your biggest repetitive process. No sales pitch, just honest advice."
+    },
+    "step2": {
+      "title": "2-week pilot",
+      "description": "We build a working AI solution for your process. You see the results firsthand — before making any decision."
+    },
+    "step3": {
+      "title": "No-cure-no-pay",
+      "description": "You only pay when the time saving is demonstrable. No result, no invoice. No exceptions."
+    },
+    "scenariosHeading": "What you gain",
+    "scenarios": {
+      "kostenbesparing": {
+        "tag": "Cost saving",
+        "title": "Direct savings on labour costs",
+        "description": "Tasks currently done by staff or a VA are handled by the AI intern. Hours × hourly rate — every week."
+      },
+      "tijdswinst": {
+        "tag": "Time saving",
+        "title": "Hours freed up for work that actually matters",
+        "description": "Repetitive processes drop off the agenda. The reclaimed time goes toward clients, purchasing, and growth."
+      },
+      "omzet": {
+        "tag": "More revenue",
+        "title": "Products online that are currently invisible",
+        "description": "Every product page that isn't live is a sale you never see. The AI intern keeps your catalogue up to date."
+      }
+    },
+    "cta": "Book the free conversation",
+    "ctaSub": "Max. 2 clients per quarter — no commitment, no obligations"
+  },
   "resultatenCases": {
     "sectionLabel": "Results & Cases",
     "title": "Real results for real businesses",
@@ -102,6 +139,51 @@
       "ogImageAlt": "AIntern — Your AI Intern for SMEs"
     }
   },
+  "intakeModal": {
+    "title": "A little context first",
+    "progressStep": "Step {current} of {total}",
+    "progressBar": "Intake form progress",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Book the conversation",
+    "close": "Close",
+    "required": "This field is required",
+    "step1": {
+      "question": "How large is your company?",
+      "options": {
+        "xs": "1–5 employees",
+        "s": "6–20 employees",
+        "m": "21–50 employees",
+        "l": "More than 50 employees"
+      }
+    },
+    "step2": {
+      "question": "Which process costs your team the most time?",
+      "placeholder": "E.g. creating quotes, uploading products, writing reports…"
+    },
+    "step3": {
+      "question": "How long does this process take on average?",
+      "options": {
+        "xs": "Less than 15 minutes",
+        "s": "15–60 minutes",
+        "m": "1–4 hours",
+        "l": "More than 4 hours"
+      }
+    },
+    "step4": {
+      "question": "Have you previously tried to automate this?",
+      "options": {
+        "yes": "Yes",
+        "no": "No",
+        "partial": "Partially"
+      }
+    },
+    "step5": {
+      "question": "What would it mean if this process disappeared tomorrow?",
+      "placeholder": "Describe the impact for your business and your team…"
+    },
+    "gdprNotice": "Your answers are not stored and will only be used to prepare the conversation."
+  },
   "cookieConsent": {
     "message": "We use analytics to understand how visitors use this site. No personal data is stored.",
     "acceptLabel": "Accept",
@@ -128,8 +210,8 @@
   },
   "hero": {
     "eyebrow": "Your AI intern",
-    "headline": "Your own AI intern, working 24/7",
-    "subtext": "AIntern builds a dedicated AI intern for your business — automating your internal processes like an extra employee. AI where it works. Results you can measure.",
+    "headline": "Everyone senses AI can change things. We take the repetitive work that consumes your day off your hands.",
+    "subtext": "AIntern builds a custom AI intern for your business — configured specifically for your processes, not a generic template. You only pay when results are delivered.",
     "cta": "Free consultation",
     "ctaSecondary": "See how it works",
     "socialProof": "20+ SMEs already running their own AI intern",

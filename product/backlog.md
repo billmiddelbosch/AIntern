@@ -14,7 +14,7 @@
 | ~~L-09~~ | ~~**Cookie Consent Banner (GDPR)**~~ | S | ~~Consent banner required before loading analytics; stores preference in localStorage.~~ Geimplementeerd 2026-03-30. |
 | **L-14** | **Marketing Alignment — Website verbeteringen obv go-to-market strategie** | M | 5 verbeteringen gebaseerd op GTM-sessie 2026-04-01. Spec: `product/sections/marketing-alignment/spec.md`. Volgorde: (1) verwijder onjuiste social proof claim, (2) herstel pilot-case cijfers, (3) vervang hero headline door Big Idea, (4) voeg Godfather Offer sectie toe, (5) voeg intake-vragenlijst toe vóór book-a-call. Uitvoeren vóór eerste LinkedIn post en outreach. |
 | L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
-| L-11 | **Blog / Kennisbank stub** | M | Placeholder section or route for future knowledge-base articles; improves SEO. |
+| ~~L-11~~ | ~~**Blog / Kennisbank stub**~~ | M | ~~Placeholder section or route for future knowledge-base articles; improves SEO.~~ Geïmplementeerd 2026-04-02. |
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
 | L-13 | **Animations of Previous Assignments / Portfolio** | M | Animated showcase of past AI-intern work; visual portfolio to demonstrate capability. |
 
@@ -31,5 +31,5 @@
 
 | ID | Feature | Effort | Notes |
 |---|---|---|---|
-| I-03 | **Sitemap & robots.txt** | S | Static sitemap.xml and robots.txt for crawler discoverability; pairs with L-06 SEO work. |
+| ~~I-03~~ | ~~**Sitemap & robots.txt**~~ | S | ~~Static sitemap.xml and robots.txt for crawler discoverability; pairs with L-06 SEO work.~~ Geïmplementeerd 2026-04-02. |
 | I-04 | **Serverless Contact Form Backend** | M | Replace Formspree with a serverless function (e.g. Vercel/Netlify function) that sends email server-side. Destination email stored in a server-only env var — never exposed to the client bundle. Current Formspree setup is the temporary solution. |

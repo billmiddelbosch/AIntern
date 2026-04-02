@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t, locale } = useI18n()
-const { openBookingModal } = useBookingModal()
+const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
 
 const mobileMenuOpen = ref(false)
@@ -28,7 +28,7 @@ function scrollTo(anchor: string) {
 function handleCta() {
   mobileMenuOpen.value = false
   trackEvent('cta_click', { location: 'nav' })
-  openBookingModal()
+  openIntakeModal()
 }
 
 function toggleLocale() {

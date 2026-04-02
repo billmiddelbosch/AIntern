@@ -5,6 +5,9 @@ import { useI18n } from 'vue-i18n'
 import { useKennisbank } from '@/composables/useKennisbank'
 import BlogCard from './BlogCard.vue'
 import type { BlogPostSummary } from '@/types/kennisbank'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
+
+const props = withDefaults(defineProps<{ bg?: BgColor }>(), { bg: 'light' })
 
 const { t } = useI18n()
 const { loading, error, fetchIndex } = useKennisbank()
@@ -19,7 +22,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <section id="kennisbank" class="kb-teaser">
+  <section id="kennisbank" class="kb-teaser" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="kb-teaser__container">
 
       <!-- Section header -->
@@ -74,7 +77,6 @@ onMounted(async () => {
 <style scoped>
 .kb-teaser {
   padding: 6rem 1rem;
-  background: #f8fafc;
   position: relative;
   overflow: hidden;
 }
@@ -131,7 +133,7 @@ onMounted(async () => {
   font-family: var(--font-heading, 'Space Grotesk', sans-serif);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 700;
-  color: #0f172a;
+  color: #6366f1;
   letter-spacing: -0.02em;
   line-height: 1.2;
   max-width: 32rem;
