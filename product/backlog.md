@@ -12,6 +12,7 @@
 | ~~L-07~~ | ~~**Analytics Integration**~~ | S | ~~Google Analytics or Plausible integration; track page views and CTA clicks.~~ Geimplementeerd 2026-03-30. |
 | ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |
 | ~~L-09~~ | ~~**Cookie Consent Banner (GDPR)**~~ | S | ~~Consent banner required before loading analytics; stores preference in localStorage.~~ Geimplementeerd 2026-03-30. |
+| **L-14** | **Marketing Alignment — Website verbeteringen obv go-to-market strategie** | M | 5 verbeteringen gebaseerd op GTM-sessie 2026-04-01. Spec: `product/sections/marketing-alignment/spec.md`. Volgorde: (1) verwijder onjuiste social proof claim, (2) herstel pilot-case cijfers, (3) vervang hero headline door Big Idea, (4) voeg Godfather Offer sectie toe, (5) voeg intake-vragenlijst toe vóór book-a-call. Uitvoeren vóór eerste LinkedIn post en outreach. |
 | L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
 | L-11 | **Blog / Kennisbank stub** | M | Placeholder section or route for future knowledge-base articles; improves SEO. |
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
