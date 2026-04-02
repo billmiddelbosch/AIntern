@@ -4,9 +4,11 @@ import data from '@/../product/sections/no-cure-no-pay-faq/data.json'
 import type { FaqItem } from '@/../product/sections/no-cure-no-pay-faq/types'
 import { NoCureNoPayFaqSection } from '@/components/sections/no-cure-no-pay-faq'
 
+defineProps<{ bg?: string }>()
+
 const faqs = ref(data.faqs as FaqItem[])
 </script>
 
 <template>
-  <NoCureNoPayFaqSection :faqs="faqs" />
+  <NoCureNoPayFaqSection :faqs="faqs" :bg="bg" />
 </template>

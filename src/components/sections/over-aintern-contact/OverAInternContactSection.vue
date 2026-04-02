@@ -1,15 +1,18 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
+
+const props = withDefaults(defineProps<{ bg?: BgColor }>(), { bg: 'light' })
 
 const { t } = useI18n()
-const { openBookingModal } = useBookingModal()
+const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
 </script>
 
 <template>
-  <section id="over-aintern" class="oac-section">
+  <section id="over-aintern" class="oac-section" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="oac-container">
 
       <!-- Two-column body -->
@@ -47,7 +50,7 @@ const { trackEvent } = useAnalytics()
           <h3 class="oac-cta-heading">{{ t('overAIntern.contact.heading') }}</h3>
           <p class="oac-cta-subtext">{{ t('overAIntern.contact.subtext') }}</p>
 
-          <button class="oac-cta-button" @click="() => { trackEvent('cta_click', { location: 'over_aintern' }); openBookingModal() }">
+          <button class="oac-cta-button" @click="() => { trackEvent('cta_click', { location: 'over_aintern' }); openIntakeModal() }">
             {{ t('overAIntern.contact.cta') }}
           </button>
 
@@ -68,7 +71,6 @@ const { trackEvent } = useAnalytics()
 <style scoped>
 .oac-section {
   padding: 6rem 1rem;
-  background: #f8fafc;
   position: relative;
   overflow: hidden;
 }
