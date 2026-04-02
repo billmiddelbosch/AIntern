@@ -101,9 +101,9 @@ Lightspeed is de deur, niet het plafond.
    *"Iedereen voelt dat AI iets kan veranderen. Wij nemen het herhaalwerk
    dat uw dag opslokt uit handen."*
 
-4. **Maak de pilot-story je eerste content**
-   Wat was het proces, hoe zag het er voor uit, wat is het resultaat?
-   Vertaling naar: LinkedIn carrousel, website case study, funnel-hook.
+4. **Maak de pilot-story je eerste content** ✅
+   Zie `linkedin-carrousel-pilot.md` — 8 slides, goedgekeurd.
+   Gebruik ook als website case study en funnel-hook.
 
 5. **Zet een minimale funnel live**
    Één pagina: Big Idea + pilot-case + intake-vragenlijst (5 vragen) +
