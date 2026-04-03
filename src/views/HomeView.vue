@@ -21,7 +21,7 @@ import IntakeModal from '@/components/ui/IntakeModal.vue'
     <ResultatenCasesSectionView   bg="light" />
     <NoCureNoPayFaqSectionView    bg="dark" />
     <OverAInternContactSectionView bg="light" />
-    <KennisbankTeaserSection      bg="dark" />
+    <!-- <KennisbankTeaserSection      bg="dark" /> -->
     <IntakeModal />
     <BookingModal />
   </AppShell>
