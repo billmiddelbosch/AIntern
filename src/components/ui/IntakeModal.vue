@@ -3,17 +3,19 @@ import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useBookingModal } from '@/composables/useBookingModal'
+import { submitIntakeAnswers } from '@/composables/useIntakeForm'
 
 const { t } = useI18n()
 const { isOpen, closeIntakeModal } = useIntakeModal()
 const { openBookingModal } = useBookingModal()
 
-const TOTAL_STEPS = 5
+const TOTAL_STEPS = 6
 
 const currentStep = ref(1)
 
 // Form state — never persisted, cleared on close
 const answers = ref({
+  email: '' as string,
   companySize: '' as string,
   processDescription: '' as string,
   processDuration: '' as string,
@@ -30,17 +32,28 @@ const currentAnswer = computed(() => {
     case 3: return answers.value.processDuration
     case 4: return answers.value.triedBefore
     case 5: return answers.value.impact
+    case 6: return answers.value.email
     default: return ''
   }
 })
 
-const isCurrentStepValid = computed(() => currentAnswer.value.trim().length > 0)
+const isEmailValid = computed(() =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.value.email.trim()),
+)
+
+const isCurrentStepValid = computed(() => {
+  if (currentStep.value === 6) {
+    return isEmailValid.value
+  }
+  return currentAnswer.value.trim().length > 0
+})
 
 const progressPercent = computed(() => ((currentStep.value - 1) / TOTAL_STEPS) * 100)
 
 function resetForm() {
   currentStep.value = 1
   answers.value = {
+    email: '',
     companySize: '',
     processDescription: '',
     processDuration: '',
@@ -66,7 +79,17 @@ function goNext() {
   if (currentStep.value < TOTAL_STEPS) {
     currentStep.value++
   } else {
-    // Final step — close intake and open Calendly
+    // Final step — submit answers before resetting, then open Calendly
+    submitIntakeAnswers({
+      email: answers.value.email,
+      companySize: answers.value.companySize,
+      processDescription: answers.value.processDescription,
+      processDuration: answers.value.processDuration,
+      triedBefore: answers.value.triedBefore,
+      impact: answers.value.impact,
+    }).catch(() => {
+      // Fire-and-forget: don't block UX on submission failure
+    })
     handleClose()
     openBookingModal()
   }
@@ -220,6 +243,27 @@ const triedBeforeOptions = ['yes', 'no', 'partial'] as const
                 />
                 <p v-if="touched && !isCurrentStepValid" class="im-error" role="alert">
                   {{ t('intakeModal.required') }}
+                </p>
+              </div>
+            </Transition>
+
+            <!-- Step 6: Email -->
+            <Transition name="im-step" mode="out-in">
+              <div v-if="currentStep === 6" key="step6" class="im-step">
+                <label class="im-question" for="im-email">
+                  {{ t('intakeModal.step6.question') }}
+                </label>
+                <input
+                  id="im-email"
+                  v-model="answers.email"
+                  type="email"
+                  class="im-input"
+                  :placeholder="t('intakeModal.step6.placeholder')"
+                  :aria-required="true"
+                  autocomplete="email"
+                />
+                <p v-if="touched && !isCurrentStepValid" class="im-error" role="alert">
+                  {{ t('intakeModal.step6.invalid') }}
                 </p>
               </div>
             </Transition>
@@ -429,6 +473,31 @@ const triedBeforeOptions = ['yes', 'no', 'partial'] as const
 }
 
 .im-textarea:focus {
+  outline: none;
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
+/* Single-line input (email) */
+.im-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: rgba(99, 102, 241, 0.05);
+  border: 1.5px solid rgba(99, 102, 241, 0.2);
+  border-radius: 0.625rem;
+  color: #f1f5f9;
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+  box-sizing: border-box;
+}
+
+.im-input::placeholder {
+  color: #475569;
+}
+
+.im-input:focus {
   outline: none;
   border-color: #6366f1;
   background: rgba(99, 102, 241, 0.1);

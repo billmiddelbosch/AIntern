@@ -182,7 +182,12 @@
       "question": "What would it mean if this process disappeared tomorrow?",
       "placeholder": "Describe the impact for your business and your team…"
     },
-    "gdprNotice": "Your answers are not stored and will only be used to prepare the conversation."
+    "step6": {
+      "question": "Where can we send the meeting confirmation?",
+      "placeholder": "your@email.com",
+      "invalid": "Please enter a valid email address"
+    },
+    "gdprNotice": "Your answers and email address are treated confidentially and used solely to prepare the conversation."
   },
   "cookieConsent": {
     "message": "We use analytics to understand how visitors use this site. No personal data is stored.",
