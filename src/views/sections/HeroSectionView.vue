@@ -5,8 +5,9 @@ import type { MetricCard, AutomatedProcess } from '@/../product/sections/hero-va
 import { HeroSection } from '@/components/sections/hero-value-proposition'
 import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
+import type { BgColor } from '@/lib/brand'
 
-defineProps<{ bg?: string }>()
+defineProps<{ bg?: BgColor }>()
 
 const metricCards = ref(data.metricCards as MetricCard[])
 const automatedProcesses = ref(data.automatedProcesses as AutomatedProcess[])
