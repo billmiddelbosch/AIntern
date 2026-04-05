@@ -2,6 +2,7 @@ import * as cdk from 'aws-cdk-lib'
 import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
+import { Cors } from 'aws-cdk-lib/aws-apigateway'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import { Construct } from 'constructs'
 import * as path from 'path'
@@ -79,7 +80,7 @@ export class IntakeStack extends cdk.Stack {
       description: 'AIntern intake questionnaire and Calendly webhook API',
       deploy: false, // manual deployment so we can attach two stages
       defaultCorsPreflightOptions: {
-        allowOrigins: ['https://aintern.nl', 'https://www.aintern.nl', 'http://localhost:5173'],
+        allowOrigins: Cors.ALL_ORIGINS,
         allowMethods: ['POST', 'OPTIONS'],
         allowHeaders: ['Content-Type'],
       },
