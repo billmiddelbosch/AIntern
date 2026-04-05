@@ -12,7 +12,8 @@
     "lint": "eslint . --fix",
     "lint:check": "eslint .",
     "format": "prettier --write src/",
-    "type-check": "vue-tsc --noEmit"
+    "type-check": "vue-tsc --noEmit",
+    "question": "test.ts"
   },
   "dependencies": {
     "@unhead/vue": "^2.1.12",

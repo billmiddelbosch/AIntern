@@ -9,13 +9,12 @@ const { t } = useI18n()
 const { isOpen, closeIntakeModal } = useIntakeModal()
 const { openBookingModal } = useBookingModal()
 
-const TOTAL_STEPS = 6
+const TOTAL_STEPS = 5
 
 const currentStep = ref(1)
 
 // Form state — never persisted, cleared on close
 const answers = ref({
-  email: '' as string,
   companySize: '' as string,
   processDescription: '' as string,
   processDuration: '' as string,
@@ -32,28 +31,17 @@ const currentAnswer = computed(() => {
     case 3: return answers.value.processDuration
     case 4: return answers.value.triedBefore
     case 5: return answers.value.impact
-    case 6: return answers.value.email
     default: return ''
   }
 })
 
-const isEmailValid = computed(() =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(answers.value.email.trim()),
-)
-
-const isCurrentStepValid = computed(() => {
-  if (currentStep.value === 6) {
-    return isEmailValid.value
-  }
-  return currentAnswer.value.trim().length > 0
-})
+const isCurrentStepValid = computed(() => currentAnswer.value.trim().length > 0)
 
 const progressPercent = computed(() => ((currentStep.value - 1) / TOTAL_STEPS) * 100)
 
 function resetForm() {
   currentStep.value = 1
   answers.value = {
-    email: '',
     companySize: '',
     processDescription: '',
     processDuration: '',
@@ -81,7 +69,6 @@ function goNext() {
   } else {
     // Final step — submit answers before resetting, then open Calendly
     submitIntakeAnswers({
-      email: answers.value.email,
       companySize: answers.value.companySize,
       processDescription: answers.value.processDescription,
       processDuration: answers.value.processDuration,
@@ -105,7 +92,21 @@ function handleKeydown(e: KeyboardEvent) {
 }
 
 const companySizeOptions = ['xs', 's', 'm', 'l'] as const
+const companySizeValues: Record<string, string> = {
+  xs: '1-5',
+  s: '6-20',
+  m: '21-50',
+  l: '50+',
+}
+
 const processDurationOptions = ['xs', 's', 'm', 'l'] as const
+const processDurationValues: Record<string, string> = {
+  xs: '<15min',
+  s: '15-60min',
+  m: '1-4h',
+  l: '>4h',
+}
+
 const triedBeforeOptions = ['yes', 'no', 'partial'] as const
 </script>
 
@@ -153,8 +154,8 @@ const triedBeforeOptions = ['yes', 'no', 'partial'] as const
                     v-for="opt in companySizeOptions"
                     :key="opt"
                     class="im-option"
-                    :class="{ 'im-option--selected': answers.companySize === opt }"
-                    @click="answers.companySize = opt"
+                    :class="{ 'im-option--selected': answers.companySize === companySizeValues[opt] }"
+                    @click="answers.companySize = companySizeValues[opt]"
                   >
                     {{ t(`intakeModal.step1.options.${opt}`) }}
                   </button>
@@ -194,8 +195,8 @@ const triedBeforeOptions = ['yes', 'no', 'partial'] as const
                     v-for="opt in processDurationOptions"
                     :key="opt"
                     class="im-option"
-                    :class="{ 'im-option--selected': answers.processDuration === opt }"
-                    @click="answers.processDuration = opt"
+                    :class="{ 'im-option--selected': answers.processDuration === processDurationValues[opt] }"
+                    @click="answers.processDuration = processDurationValues[opt]"
                   >
                     {{ t(`intakeModal.step3.options.${opt}`) }}
                   </button>
@@ -247,26 +248,6 @@ const triedBeforeOptions = ['yes', 'no', 'partial'] as const
               </div>
             </Transition>
 
-            <!-- Step 6: Email -->
-            <Transition name="im-step" mode="out-in">
-              <div v-if="currentStep === 6" key="step6" class="im-step">
-                <label class="im-question" for="im-email">
-                  {{ t('intakeModal.step6.question') }}
-                </label>
-                <input
-                  id="im-email"
-                  v-model="answers.email"
-                  type="email"
-                  class="im-input"
-                  :placeholder="t('intakeModal.step6.placeholder')"
-                  :aria-required="true"
-                  autocomplete="email"
-                />
-                <p v-if="touched && !isCurrentStepValid" class="im-error" role="alert">
-                  {{ t('intakeModal.step6.invalid') }}
-                </p>
-              </div>
-            </Transition>
           </div>
 
           <!-- Navigation -->
