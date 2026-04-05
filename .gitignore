@@ -42,3 +42,6 @@ coverage/
 
 # Vite cache
 .vite/
+
+# CDK output (generated, not source)
+infra/cdk.out/
