@@ -99,6 +99,12 @@
       "email": "Stuur ons een e-mail"
     }
   },
+  "bookingModal": {
+    "ariaLabel": "Gratis kennismakingsgesprek inplannen",
+    "title": "Plan een gratis kennismakingsgesprek",
+    "sub": "Kies een moment dat jou uitkomt — geen verplichtingen.",
+    "close": "Sluiten"
+  },
   "contactModal": {
     "title": "Stel ons een vraag",
     "namePlaceholder": "Jouw naam",
@@ -182,12 +188,7 @@
       "question": "Wat zou het betekenen als dit proces morgen verdween?",
       "placeholder": "Beschrijf de impact voor uw bedrijf en uw team…"
     },
-    "step6": {
-      "question": "Waar mogen we de bevestiging naartoe sturen?",
-      "placeholder": "jouw@email.nl",
-      "invalid": "Voer een geldig e-mailadres in"
-    },
-    "gdprNotice": "Uw antwoorden en e-mailadres worden vertrouwelijk behandeld en uitsluitend gebruikt om het gesprek voor te bereiden."
+    "gdprNotice": "Uw antwoorden worden vertrouwelijk behandeld en uitsluitend gebruikt om het gesprek voor te bereiden."
   },
   "cookieConsent": {
     "message": "We gebruiken analytics om te begrijpen hoe bezoekers onze site gebruiken. Er worden geen persoonlijke gegevens opgeslagen.",

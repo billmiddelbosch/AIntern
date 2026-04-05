@@ -41,6 +41,46 @@
       "additionalMetadataFile": "AInternKennisbankStack.metadata.json",
       "displayName": "AInternKennisbankStack"
     },
+    "AInternIntakeStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "AInternIntakeStack.assets.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+      }
+    },
+    "AInternIntakeStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://344050431068/eu-west-2",
+      "properties": {
+        "templateFile": "AInternIntakeStack.template.json",
+        "terminationProtection": false,
+        "tags": {
+          "Feature": "intake",
+          "ManagedBy": "cdk",
+          "Project": "aintern"
+        },
+        "validateOnSynth": false,
+        "assumeRoleArn": "arn:${AWS::Partition}:iam::344050431068:role/cdk-hnb659fds-deploy-role-344050431068-eu-west-2",
+        "cloudFormationExecutionRoleArn": "arn:${AWS::Partition}:iam::344050431068:role/cdk-hnb659fds-cfn-exec-role-344050431068-eu-west-2",
+        "stackTemplateAssetObjectUrl": "s3://cdk-hnb659fds-assets-344050431068-eu-west-2/545dd96dfb4cb006d6a047bde9ed52746175c12f08b4d1a82ad3d16eb27b179f.json",
+        "requiresBootstrapStackVersion": 6,
+        "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version",
+        "additionalDependencies": [
+          "AInternIntakeStack.assets"
+        ],
+        "lookupRole": {
+          "arn": "arn:${AWS::Partition}:iam::344050431068:role/cdk-hnb659fds-lookup-role-344050431068-eu-west-2",
+          "requiresBootstrapStackVersion": 8,
+          "bootstrapStackVersionSsmParameter": "/cdk-bootstrap/hnb659fds/version"
+        }
+      },
+      "dependencies": [
+        "AInternIntakeStack.assets"
+      ],
+      "additionalMetadataFile": "AInternIntakeStack.metadata.json",
+      "displayName": "AInternIntakeStack"
+    },
     "Tree": {
       "type": "cdk:tree",
       "properties": {

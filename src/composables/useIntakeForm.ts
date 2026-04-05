@@ -1,7 +1,6 @@
 import axios from '@/lib/axios'
 
 export interface IntakeAnswers {
-  email: string
   companySize: string
   processDescription: string
   processDuration: string
@@ -16,7 +15,7 @@ export async function submitIntakeAnswers(answers: IntakeAnswers): Promise<void>
   await axios.post(
     endpoint,
     {
-      email: answers.email,
+      email: 'unknown@aintern.nl', // TODO I-05: replace with real email from intake or Calendly
       companySize: answers.companySize,
       processDescription: answers.processDescription,
       processDuration: answers.processDuration,

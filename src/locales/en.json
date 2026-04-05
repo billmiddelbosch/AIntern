@@ -99,6 +99,12 @@
       "email": "Send us an email"
     }
   },
+  "bookingModal": {
+    "ariaLabel": "Schedule a free introductory call",
+    "title": "Schedule a free introductory call",
+    "sub": "Pick a time that suits you — no commitment, no obligations.",
+    "close": "Close"
+  },
   "contactModal": {
     "title": "Ask us a question",
     "namePlaceholder": "Your name",
@@ -182,12 +188,7 @@
       "question": "What would it mean if this process disappeared tomorrow?",
       "placeholder": "Describe the impact for your business and your team…"
     },
-    "step6": {
-      "question": "Where can we send the meeting confirmation?",
-      "placeholder": "your@email.com",
-      "invalid": "Please enter a valid email address"
-    },
-    "gdprNotice": "Your answers and email address are treated confidentially and used solely to prepare the conversation."
+    "gdprNotice": "Your answers are treated confidentially and used solely to prepare the conversation."
   },
   "cookieConsent": {
     "message": "We use analytics to understand how visitors use this site. No personal data is stored.",
