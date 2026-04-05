@@ -14,6 +14,20 @@ Een concreet klantresultaat dat aantoont wat AI-inzet oplevert. Bevat de sector,
 ### FAQ
 Een vraag-antwoord paar dat bezwaren of onduidelijkheden wegneemt. Hoort bij een specifiek thema: no-cure-no-pay of AI voor het MKB in het algemeen.
 
+### IntakeSubmission
+Een ingestuurde intake-vragenlijst van een bezoeker. Opgeslagen in DynamoDB (`aintern-intake-submissions-{env}`).
+
+| Veld                 | Type   | Beschrijving                        |
+|----------------------|--------|-------------------------------------|
+| `submissionId`       | String | Partition key (UUID)                |
+| `email`              | String | E-mailadres van bezoeker (GSI PK)   |
+| `submittedAt`        | String | ISO-8601 timestamp (GSI sort key)   |
+| `companySize`        | String | xs / s / m / l                      |
+| `processDescription` | String | Vrije tekst                         |
+| `processDuration`    | String | xs / s / m / l                      |
+| `triedBefore`        | String | yes / no / partial                  |
+| `impact`             | String | Vrije tekst                         |
+
 ### ContactRequest
 De gegevens die een bezoeker achterlaat bij het aanvragen van een gratis kennismaking. Wordt verwerkt als lead voor opvolging door AIntern.
 
