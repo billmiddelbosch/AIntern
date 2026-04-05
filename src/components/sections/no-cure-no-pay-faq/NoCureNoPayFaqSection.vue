@@ -4,8 +4,9 @@ import { useI18n } from 'vue-i18n'
 import type { NoCureNoPayFaqSectionProps } from '@/../product/sections/no-cure-no-pay-faq/types'
 import NoCureNoPayProposition from './NoCureNoPayProposition.vue'
 import FaqAccordionItem from './FaqAccordionItem.vue'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
-defineProps<NoCureNoPayFaqSectionProps>()
+const props = withDefaults(defineProps<NoCureNoPayFaqSectionProps & { bg?: BgColor }>(), { bg: 'dark' })
 
 const { t } = useI18n()
 
@@ -17,7 +18,7 @@ function toggle(index: number) {
 </script>
 
 <template>
-  <section id="no-cure-no-pay" class="ncnp-section">
+  <section id="no-cure-no-pay" class="ncnp-section" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="ncnp-container">
 
       <!-- Section header -->
@@ -50,7 +51,6 @@ function toggle(index: number) {
 <style scoped>
 .ncnp-section {
   padding: 6rem 1rem;
-  background: #0f172a;
   position: relative;
   overflow: hidden;
 }

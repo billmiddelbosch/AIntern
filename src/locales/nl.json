@@ -3,6 +3,7 @@
     "about": "Over AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
+    "kennisbank": "Kennisbank",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
   },
@@ -19,6 +20,43 @@
     "title": "Herken jij dit?",
     "problemLabel": "Uitdaging",
     "solutionLabel": "Onze aanpak"
+  },
+  "godfatherOffer": {
+    "sectionLabel": "Het aanbod",
+    "heading": "Zo werken wij",
+    "intro": "Wij nemen nooit meer dan 2 nieuwe klanten per kwartaal aan — zodat we ons volledig kunnen richten op uw bedrijf. Als u nu contact opneemt, krijgt u:",
+    "step1": {
+      "title": "30 minuten gratis",
+      "description": "Een vrijblijvend gesprek waarin we uw grootste herhaalproces analyseren. Geen verkooppraatje, gewoon eerlijk advies."
+    },
+    "step2": {
+      "title": "2 weken pilot",
+      "description": "We bouwen een werkende AI-oplossing voor uw proces. U ziet het resultaat met eigen ogen — voordat u een beslissing neemt."
+    },
+    "step3": {
+      "title": "No-cure-no-pay",
+      "description": "Betaalt u pas als de tijdsbesparing aantoonbaar is. Geen resultaat, geen factuur. Geen uitzonderingen."
+    },
+    "scenariosHeading": "Wat het oplevert",
+    "scenarios": {
+      "kostenbesparing": {
+        "tag": "Kostenbesparing",
+        "title": "Directe besparing op arbeidskosten",
+        "description": "Taken die nu door medewerkers of een VA worden gedaan, voert de AI-stagiaire uit. Uren × uurtarief — elke week opnieuw."
+      },
+      "tijdswinst": {
+        "tag": "Tijdswinst",
+        "title": "Vrijgekomen uren voor werk dat ertoe doet",
+        "description": "Herhaalprocessen verdwijnen van de agenda. De vrijgekomen tijd gaat naar klanten, inkoop en groei."
+      },
+      "omzet": {
+        "tag": "Meer omzet",
+        "title": "Producten online die nu onzichtbaar zijn",
+        "description": "Elke productpagina die er niet staat, is een verkoop die u nooit ziet. De AI-stagiaire houdt uw catalogus actueel."
+      }
+    },
+    "cta": "Plan het gratis gesprek",
+    "ctaSub": "Max. 2 klanten per kwartaal — vrijblijvend, geen verplichtingen"
   },
   "resultatenCases": {
     "sectionLabel": "Resultaten & Cases",
@@ -61,6 +99,12 @@
       "email": "Stuur ons een e-mail"
     }
   },
+  "bookingModal": {
+    "ariaLabel": "Gratis kennismakingsgesprek inplannen",
+    "title": "Plan een gratis kennismakingsgesprek",
+    "sub": "Kies een moment dat jou uitkomt — geen verplichtingen.",
+    "close": "Sluiten"
+  },
   "contactModal": {
     "title": "Stel ons een vraag",
     "namePlaceholder": "Jouw naam",
@@ -101,16 +145,79 @@
       "ogImageAlt": "AIntern — Jouw AI-stagiaire voor het MKB"
     }
   },
+  "intakeModal": {
+    "title": "Eerst wat context",
+    "progressStep": "Stap {current} van {total}",
+    "progressBar": "Voortgang intakeformulier",
+    "next": "Volgende",
+    "back": "Terug",
+    "submit": "Plan het gesprek",
+    "close": "Sluiten",
+    "required": "Dit veld is verplicht",
+    "step1": {
+      "question": "Hoe groot is uw bedrijf?",
+      "options": {
+        "xs": "1–5 medewerkers",
+        "s": "6–20 medewerkers",
+        "m": "21–50 medewerkers",
+        "l": "Meer dan 50 medewerkers"
+      }
+    },
+    "step2": {
+      "question": "Welk proces kost uw team de meeste tijd?",
+      "placeholder": "Bijv. offerte opmaken, producten uploaden, rapportages schrijven…"
+    },
+    "step3": {
+      "question": "Hoe lang duurt dit proces gemiddeld?",
+      "options": {
+        "xs": "Minder dan 15 minuten",
+        "s": "15–60 minuten",
+        "m": "1–4 uur",
+        "l": "Meer dan 4 uur"
+      }
+    },
+    "step4": {
+      "question": "Heeft u eerder geprobeerd dit te automatiseren?",
+      "options": {
+        "yes": "Ja",
+        "no": "Nee",
+        "partial": "Gedeeltelijk"
+      }
+    },
+    "step5": {
+      "question": "Wat zou het betekenen als dit proces morgen verdween?",
+      "placeholder": "Beschrijf de impact voor uw bedrijf en uw team…"
+    },
+    "gdprNotice": "Uw antwoorden worden vertrouwelijk behandeld en uitsluitend gebruikt om het gesprek voor te bereiden."
+  },
   "cookieConsent": {
     "message": "We gebruiken analytics om te begrijpen hoe bezoekers onze site gebruiken. Er worden geen persoonlijke gegevens opgeslagen.",
     "acceptLabel": "Accepteren",
     "declineLabel": "Weigeren",
     "learnMore": "Privacybeleid"
   },
+  "kennisbank": {
+    "sectionLabel": "Kennisbank",
+    "teaserTitle": "Praktische AI-kennis voor het MKB",
+    "teaserSubtitle": "Tips, cases en inzichten — geschreven door AI, gecheckt door mensen, relevant voor jouw bedrijf.",
+    "overviewTitle": "Kennisbank",
+    "overviewSubtitle": "Alle artikelen over AI voor het MKB — praktisch, leesbaar, direct toepasbaar.",
+    "viewAll": "Bekijk alle artikelen",
+    "readMore": "Lees meer",
+    "backToKennisbank": "← Terug naar Kennisbank",
+    "allCategories": "Alle categorieën",
+    "categoryFilter": "Filter op categorie",
+    "loading": "Laden…",
+    "emptyState": "Er zijn nog geen artikelen gevonden. Kom later terug.",
+    "errorState": "Artikelen konden niet geladen worden. Probeer het later opnieuw.",
+    "articleNotFound": "Artikel niet gevonden. Het is mogelijk verwijderd of de link klopt niet.",
+    "metaTitle": "Kennisbank — Praktische AI-tips voor het MKB | AIntern",
+    "metaDescription": "De AIntern Kennisbank: praktische artikelen over AI voor het MKB. AI-automatisering, implementatietips en echte praktijkcases — geen technische kennis vereist."
+  },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
-    "headline": "Jouw eigen AI-stagiaire, altijd aan het werk",
-    "subtext": "AIntern bouwt een dedicated AI-stagiaire voor jouw bedrijf — die jouw interne processen automatiseert als een extra medewerker. AI waar het werkt. Resultaat dat je kunt meten.",
+    "headline": "Wij nemen het herhaalwerk van uw dag over",
+    "subtext": "AIntern bouwt een eigen AI-stagiaire voor uw bedrijf — specifiek ingericht op uw processen, niet op een standaard template. U betaalt pas als het resultaat er is.",
     "cta": "Gratis kennismaking",
     "ctaSecondary": "Bekijk hoe het werkt",
     "socialProof": "20+ MKB-bedrijven draaien al hun eigen AI-stagiaire",

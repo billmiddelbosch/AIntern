@@ -1,0 +1,16 @@
+{
+  "name": "aintern-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3",
+    "@aws-sdk/lib-dynamodb": "^3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8",
+    "typescript": "~5.7"
+  }
+}

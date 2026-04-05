@@ -7,7 +7,7 @@ ORGANISM
 OverAInternContactSection is een zelfstandige pagina-sectie die alle content inline rendert via i18n — geen child-molecules nodig. De sectie combineert een story/vision blok (links) met een prominente CTA-kaart (rechts) in één autonome, visueel complete eenheid. Geen store-afhankelijkheden.
 
 ## Overview
-De zesde en laatste sectie van de AIntern landingspagina. Vertelt het AIntern-verhaal, communiceert de visie en biedt de finale CTA om een gratis kennismakingsgesprek in te plannen. Draagt het `id="contact"` anchor waarop de NoCureNoPayFaq CTA-knop navigeert. Lichte achtergrond (slate-50) sluit het donker/licht ritme af na de donkere NoCureNoPayFaq-sectie.
+De zesde en laatste sectie van de AIntern landingspagina. Vertelt het AIntern-verhaal, communiceert de visie en biedt de finale CTA om een gratis kennismakingsgesprek in te plannen. Draagt `id="over-aintern"` op de `<section>` tag (voor navigatie naar de sectie als geheel) en `id="contact"` op de CTA-kaart `<div>` (voor directe anchor-navigatie naar het contactformulier). Lichte achtergrond (slate-50) sluit het donker/licht ritme af na de donkere NoCureNoPayFaq-sectie.
 
 ## Problem Being Solved
 Na de NoCureNoPayFaq-sectie weet de bezoeker wat AIntern doet en dat het risicovrij is. Wat ontbreekt is het menselijke verhaal achter het bedrijf en een duidelijke, lage drempel om contact te leggen. Deze sectie vult dat gat: wie zijn we, waarom doen we dit, en hoe neem je nu de volgende stap?
@@ -19,7 +19,8 @@ Na de NoCureNoPayFaq-sectie weet de bezoeker wat AIntern doet en dat het risicov
 - Als bezoeker wil ik de sectie in mijn eigen taal (NL/EN) lezen.
 
 ## Acceptance Criteria
-- [ ] Sectie heeft `id="contact"` anchor voor navigatie vanuit NoCureNoPayFaq CTA
+- [ ] `<section>` tag heeft `id="over-aintern"` voor anchor-navigatie naar de sectie als geheel
+- [ ] CTA-kaart `<div>` heeft `id="contact"` voor directe anchor-navigatie naar het contactgedeelte (vanuit NoCureNoPayFaq CTA)
 - [ ] Sectie toont een eyebrow-label + H2 titel
 - [ ] Linkerkolom: "Ons verhaal" subkop + twee paragrafen
 - [ ] Linkerkolom: "Onze visie" subkop + visiestatement in gestylede pull-quote (indigo linkerborder, italic)
@@ -130,8 +131,9 @@ Geen lokale state, geen Pinia store — puur presentationeel.
 - Dot-patroon identiek aan ResultatenCases: zelfde CSS `::before` patroon
 - CTA-knop linkt via `href="mailto:hello@aintern.nl"` voor de email link
 - De primaire CTA-knop kan ook linken naar een Calendly of booking URL (placeholder `#`)
-- Section id="contact" is vereist — NoCureNoPayFaq CTA navigeert hiernaartoe
+- `<section>` tag draagt `id="over-aintern"` — navigatie naar de sectie als geheel
+- CTA-kaart `<div>` draagt `id="contact"` — NoCureNoPayFaq CTA-knop navigeert hiernaartoe via `href="#contact"`
 - CSS BEM prefix: `oac-` voor alle classes
 
 ## Last Updated
-2026-03-25 — Implementation complete
+2026-03-31 — L-05 anchor fix: added `id="over-aintern"` to `<section>` and `id="contact"` to CTA-kaart `<div>`
