@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { useBookingModal } from '@/composables/useBookingModal'
 import CalendlyWidget from '@/components/ui/CalendlyWidget.vue'
 
+const { t } = useI18n()
 const { isOpen, closeBookingModal } = useBookingModal()
 
 const calendlyUrl = 'https://calendly.com/w-middelbosch/30min'
@@ -19,7 +21,7 @@ function handleBackdropClick(e: MouseEvent) {
         class="bm-backdrop"
         role="dialog"
         aria-modal="true"
-        aria-label="Gratis kennismakingsgesprek inplannen"
+        :aria-label="t('bookingModal.ariaLabel')"
         @click="handleBackdropClick"
         @keydown.esc="closeBookingModal"
       >
@@ -27,10 +29,10 @@ function handleBackdropClick(e: MouseEvent) {
           <!-- Header -->
           <div class="bm-header">
             <div class="bm-header-text">
-              <h2 class="bm-title">Plan een gratis kennismakingsgesprek</h2>
-              <p class="bm-sub">Kies een moment dat jou uitkomt — geen verplichtingen.</p>
+              <h2 class="bm-title">{{ t('bookingModal.title') }}</h2>
+              <p class="bm-sub">{{ t('bookingModal.sub') }}</p>
             </div>
-            <button class="bm-close" aria-label="Sluiten" @click="closeBookingModal">
+            <button class="bm-close" :aria-label="t('bookingModal.close')" @click="closeBookingModal">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
                 <path d="M2 2l14 14M16 2L2 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
               </svg>

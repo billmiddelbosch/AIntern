@@ -1,0 +1,27 @@
+import axios from 'axios'
+
+export interface IntakeAnswers {
+  companySize: string
+  processDescription: string
+  processDuration: string
+  triedBefore: string
+  impact: string
+}
+
+export async function submitIntakeAnswers(answers: IntakeAnswers): Promise<void> {
+  const endpoint = import.meta.env.VITE_INTAKE_ENDPOINT
+  if (!endpoint) return
+
+  await axios.post(
+    endpoint,
+    {
+      email: 'unknown@aintern.nl', // TODO I-05: replace with real email from intake or Calendly
+      companySize: answers.companySize,
+      processDescription: answers.processDescription,
+      processDuration: answers.processDuration,
+      triedBefore: answers.triedBefore,
+      impact: answers.impact,
+    },
+    { headers: { 'Content-Type': 'application/json' } },
+  )
+}
