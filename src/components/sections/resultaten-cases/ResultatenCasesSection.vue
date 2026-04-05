@@ -2,14 +2,15 @@
 import { useI18n } from 'vue-i18n'
 import type { ResultatenCasesSectionProps } from '@/../product/sections/resultaten-cases/types'
 import ResultaatCard from './ResultaatCard.vue'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
-defineProps<ResultatenCasesSectionProps>()
+const props = withDefaults(defineProps<ResultatenCasesSectionProps & { bg?: BgColor }>(), { bg: 'light' })
 
 const { t } = useI18n()
 </script>
 
 <template>
-  <section id="resultaten-cases" class="rc-section">
+  <section id="resultaten-cases" class="rc-section" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="rc-container">
 
       <!-- Section header -->
@@ -34,7 +35,6 @@ const { t } = useI18n()
 <style scoped>
 .rc-section {
   padding: 6rem 1rem;
-  background: #f8fafc;
   position: relative;
   overflow: hidden;
 }

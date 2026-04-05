@@ -2,14 +2,15 @@
 import { useI18n } from 'vue-i18n'
 import type { ProbleemOplossingSectionProps } from '@/../product/sections/problemen-oplossingen/types'
 import ProbleemOplossingPair from './ProbleemOplossingPair.vue'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
-defineProps<ProbleemOplossingSectionProps>()
+const props = withDefaults(defineProps<ProbleemOplossingSectionProps & { bg?: BgColor }>(), { bg: 'dark' })
 
 const { t } = useI18n()
 </script>
 
 <template>
-  <section id="problemen-oplossingen" class="pos-section">
+  <section id="problemen-oplossingen" class="pos-section" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="pos-container">
 
       <!-- Section header -->
@@ -35,7 +36,6 @@ const { t } = useI18n()
 <style scoped>
 .pos-section {
   padding: 6rem 1rem;
-  background: #0f172a;
   position: relative;
   overflow: hidden;
 }

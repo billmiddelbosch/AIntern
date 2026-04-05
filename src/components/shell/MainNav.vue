@@ -2,11 +2,11 @@
 import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t, locale } = useI18n()
-const { openBookingModal } = useBookingModal()
+const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
 
 const mobileMenuOpen = ref(false)
@@ -15,6 +15,8 @@ const navItems = [
   { labelKey: 'nav.about', anchor: '#over-aintern' },
   { labelKey: 'nav.nocurenopay', anchor: '#no-cure-no-pay' },
 ]
+
+const routeNavItems = [{ labelKey: 'nav.kennisbank', to: '/kennisbank' }]
 
 function scrollTo(anchor: string) {
   mobileMenuOpen.value = false
@@ -26,7 +28,7 @@ function scrollTo(anchor: string) {
 function handleCta() {
   mobileMenuOpen.value = false
   trackEvent('cta_click', { location: 'nav' })
-  openBookingModal()
+  openIntakeModal()
 }
 
 function toggleLocale() {
@@ -54,6 +56,14 @@ function toggleLocale() {
         >
           {{ t(item.labelKey) }}
         </button>
+        <RouterLink
+          v-for="item in routeNavItems"
+          :key="item.to"
+          :to="item.to"
+          class="text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
+        >
+          {{ t(item.labelKey) }}
+        </RouterLink>
       </nav>
 
       <!-- Right side: locale + CTA -->
@@ -101,11 +111,20 @@ function toggleLocale() {
       <button
         v-for="item in navItems"
         :key="item.anchor"
-        class="text-sm font-medium text-slate-700 hover:text-indigo-600 text-left py-2 border-b border-slate-50 last:border-0 transition-colors"
+        class="text-sm font-medium text-slate-700 hover:text-indigo-600 text-left py-2 border-b border-slate-50 transition-colors"
         @click="scrollTo(item.anchor)"
       >
         {{ t(item.labelKey) }}
       </button>
+      <RouterLink
+        v-for="item in routeNavItems"
+        :key="item.to"
+        :to="item.to"
+        class="text-sm font-medium text-slate-700 hover:text-indigo-600 text-left py-2 border-b border-slate-50 last:border-0 transition-colors"
+        @click="mobileMenuOpen = false"
+      >
+        {{ t(item.labelKey) }}
+      </RouterLink>
       <div class="flex items-center gap-3 pt-1">
         <button
           class="text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors uppercase tracking-wide"

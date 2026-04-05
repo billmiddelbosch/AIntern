@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
 import type { Step } from '@/../product/sections/hoe-werkt-het/types'
+import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
-defineProps<{ steps: Step[] }>()
+const props = withDefaults(defineProps<{ steps: Step[]; bg?: BgColor }>(), { bg: 'light' })
 
 const { t, locale } = useI18n()
 
@@ -24,7 +25,7 @@ const stepOffsets = ['step-offset-0', 'step-offset-1', 'step-offset-2']
 </script>
 
 <template>
-  <section id="hoe-werkt-het" class="hiw-section">
+  <section id="hoe-werkt-het" class="hiw-section" :style="{ background: BRAND_COLORS[props.bg] }">
     <div class="hiw-container">
 
       <!-- Section header -->
@@ -90,7 +91,6 @@ const stepOffsets = ['step-offset-0', 'step-offset-1', 'step-offset-2']
 <style scoped>
 .hiw-section {
   padding: 6rem 1rem;
-  background: #f8fafc;
   position: relative;
   overflow: hidden;
 }
@@ -149,7 +149,7 @@ const stepOffsets = ['step-offset-0', 'step-offset-1', 'step-offset-2']
   font-family: var(--font-heading, 'Space Grotesk', sans-serif);
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   font-weight: 700;
-  color: #0f172a;
+  color: #6366f1;
   letter-spacing: -0.02em;
   line-height: 1.2;
   max-width: 32rem;

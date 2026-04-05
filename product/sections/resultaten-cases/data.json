@@ -12,18 +12,18 @@
     {
       "id": "case-01",
       "order": 1,
-      "metric": "98",
+      "metric": "92",
       "metricUnit": "%",
       "tag": "tijdsbesparing",
       "icon": "clock",
       "nl": {
         "title": "Producten uploaden naar alle kanalen",
-        "description": "Een webshop automatiseerde het uploaden van producten naar alle online verkoopkanalen. Wat vroeger een uur kostte per batch, doet de AI nu in één minuut.",
+        "description": "Een webshop automatiseerde het uploaden van producten naar alle online verkoopkanalen. Wat vroeger 60 minuten kostte per batch, doet de AI nu in 5 minuten per product.",
         "metricLabel": "minder uploadtijd"
       },
       "en": {
         "title": "Uploading products across all channels",
-        "description": "A webshop automated uploading products to all online sales channels. What used to take an hour per batch now takes one minute with AI.",
+        "description": "A webshop automated uploading products to all online sales channels. What used to take 60 minutes per batch now takes 5 minutes per product with AI.",
         "metricLabel": "less upload time"
       }
     },
@@ -66,7 +66,7 @@
     {
       "id": "case-04",
       "order": 4,
-      "metric": "98",
+      "metric": "92",
       "metricUnit": "%",
       "tag": "kwaliteit",
       "icon": "check-circle",
