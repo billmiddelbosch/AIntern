@@ -1,11 +1,15 @@
 {
   "nav": {
+    "home": "Home",
     "about": "Over AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Kennisbank",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
+  },
+  "about": {
+    "title": "Over AIntern"
   },
   "footer": {
     "tagline": "Jouw AI-stagiaire voor het MKB — zonder risico, met gegarandeerd resultaat.",

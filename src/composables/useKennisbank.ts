@@ -1,12 +1,9 @@
 import { ref } from 'vue'
-import axios from 'axios'
+import { s3Client } from '@/lib/s3Client'
 import type { BlogPost, KennisbankIndex } from '@/types/kennisbank'
 
 // S3 bucket base URL — configured via VITE_KENNISBANK_BASE_URL env var
 const BASE_URL = import.meta.env.VITE_KENNISBANK_BASE_URL as string
-
-// Use a plain axios instance for S3 requests (no auth headers, no /api base URL)
-const s3Client = axios.create({ timeout: 10_000 })
 
 export function useKennisbank() {
   const loading = ref(false)

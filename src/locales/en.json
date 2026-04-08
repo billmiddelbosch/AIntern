@@ -1,11 +1,15 @@
 {
   "nav": {
+    "home": "Home",
     "about": "About AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Knowledge Base",
     "cta": "Free consultation",
     "menu": "Open menu"
+  },
+  "about": {
+    "title": "About AIntern"
   },
   "footer": {
     "tagline": "Your AI intern for SMEs — no risk, guaranteed results.",
