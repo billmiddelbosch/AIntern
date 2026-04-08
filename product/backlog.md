@@ -34,3 +34,13 @@
 | ~~I-03~~ | ~~**Sitemap & robots.txt**~~ | S | ~~Static sitemap.xml and robots.txt for crawler discoverability; pairs with L-06 SEO work.~~ Geïmplementeerd 2026-04-02. |
 | I-04 | **Serverless Contact Form Backend** | M | Replace Formspree with a serverless function (e.g. Vercel/Netlify function) that sends email server-side. Destination email stored in a server-only env var — never exposed to the client bundle. Current Formspree setup is the temporary solution. |
 | I-05 | **Collect real email address in intake flow** | S | Email was removed from the 5-step intake form but the Lambda still requires it (currently using a dummy value `test@aintern.nl`). Add email collection back — either as a step in the intake modal or derive it from the Calendly webhook after booking. Required for DynamoDB GSI lookup and meeting confirmation. |
+
+## Organisation (O)
+
+| ID | Feature | Effort | Notes |
+|---|---|---|---|
+| O-01 | **Weekly Auto-Report** | S | As the CEO, I want a weekly auto-generated internal report summarising pipeline health, active project statuses, and open blockers, so that I can run the Monday standup without manually collating updates. |
+| O-02 | **Lead Pipeline Board + CRM Sync** | M | As a sales lead, I want to view and update the status of all inbound leads from the website in a pipeline board, with leads auto-syncing from the website form, so that no prospect falls through the cracks and the team always works from a single source of truth. |
+| O-03 | **Client Onboarding Checklist** | S | As a delivery consultant, I want a standardised onboarding checklist automatically created for each new client, so that every engagement starts consistently and nothing is missed. |
+| O-04 | **Invoice from Milestone** | M | As the operations lead, I want to generate and send a client invoice directly from a completed project milestone, so that billing is prompt, traceable, and not dependent on manual reminders. |
+| O-05 | **Post-Delivery Retrospective** | S | As a delivery consultant, I want to complete a structured post-delivery retrospective template for each client project, so that automation patterns, pitfalls, and reusable components are captured in a shared knowledge base. |

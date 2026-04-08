@@ -1,12 +1,17 @@
 ---
 name: outreach
-description: "Process AIntern leads from a CSV file and send personalized LinkedIn connection requests. Reads leads from product/marketing/leads/, finds the right LinkedIn profile per company, asks for user approval, generates a Dutch outreach message, and logs results."
+description: "Run the AIntern LinkedIn outreach workflow. Processes leads from product/marketing/leads/, sends connection requests and icebreaker DMs via Bill's personal LinkedIn account. Always requires explicit approval before sending. Supports two modes: 'connections' (Step 1 — send connection requests to new leads) and 'dms' (Step 2 — send icebreaker DMs to accepted connections). Defaults to connections mode."
 ---
 
-Use the `lead-outreach` agent to process LinkedIn outreach for AIntern leads.
+Use the `linkedin-outreach` agent to run LinkedIn outreach for AIntern.
 
 $ARGUMENTS
 
-If a CSV file path is provided in the arguments, use that file. Otherwise, use the most recent `.csv` file in `product/marketing/leads/`.
+**Mode selection:**
+- `/outreach connections` — process new leads and send connection requests (Step 1)
+- `/outreach dms` — follow up with accepted connections and send icebreaker DMs (Step 2)
+- `/outreach` (no argument) — defaults to connections mode
 
-Start by reading the leads file, cross-referencing with `product/marketing/leads/outreach-log.csv` to determine which leads still need to be processed, and present a summary before proceeding.
+If a CSV file path is provided, use that file. Otherwise, use the most recent `.csv` in `product/marketing/leads/`.
+
+The agent will always show an approval screen before sending anything and enforces the 10 connections/day rate limit.
