@@ -1,1 +1,2 @@
-website,linkedin_url,linkedin_name,status,sent_at,message
+website,linkedin_url,linkedin_name,status,connection_sent_at,connection_message,dm_sent_at,dm_message
+tschuurtje.nl,https://www.linkedin.com/in/bram-hofman-b0376a87/,Bram Hofman,pending_connection,,,,
