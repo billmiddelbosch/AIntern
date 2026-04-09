@@ -49,8 +49,8 @@
 
 | ID | Feature | Effort | Notes |
 |---|---|---|---|
-| A-01 | **Admin route + layout scaffold** | S | Add `/admin` route (lazy-loaded `AdminView.vue`) with `AdminLayout.vue` (sidebar nav, header). Route guard blocks unauthenticated access. |
-| A-02 | **Auth guard + login flow** | M | `useAuthStore` (Pinia) with login/logout, JWT storage. Add `/admin/login` route; redirect unauthenticated users. |
+| ~~A-01~~ | ~~**Admin route + layout scaffold**~~ | S | ~~Add `/admin` route (lazy-loaded `AdminView.vue`) with `AdminLayout.vue` (sidebar nav, header). Route guard blocks unauthenticated access.~~ Geïmplementeerd 2026-04-09. |
+| ~~A-02~~ | ~~**Auth guard + login flow**~~ | M | ~~`useAuthStore` (Pinia) with login/logout, JWT storage. Add `/admin/login` route; redirect unauthenticated users.~~ Geïmplementeerd 2026-04-09. Inclusief backend: `AInternAdminStack` (API Gateway + Lambda + SSM), `/admin/register` first-run flow, esbuild voor alle Lambda handlers. |
 | A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. |
 | A-04 | **Kennisbank article list view** | S | `/admin/kennisbank` — paginated table of articles with status, slug, last-modified. Sortable columns. |
 | A-05 | **Article create/edit form** | M | Rich text editor (TipTap) + frontmatter fields (title, slug, tags, published). Save drafts, publish to S3. |
