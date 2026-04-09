@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import apiClient from '@/lib/axios'
+import adminApiClient from '@/lib/adminAxios'
 import type { AuthUser, LoginCredentials, LoginResponse } from '@/types/auth'
 
 const TOKEN_KEY = 'aintern_token'
@@ -17,7 +17,7 @@ export const useAuthStore = defineStore('auth', () => {
     isLoading.value = true
     error.value = null
     try {
-      const { data } = await apiClient.post<LoginResponse>('/admin/auth/login', credentials)
+      const { data } = await adminApiClient.post<LoginResponse>('/admin/login', credentials)
       token.value = data.token
       user.value = data.user
       if (typeof localStorage !== 'undefined') {

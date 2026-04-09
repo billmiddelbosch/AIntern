@@ -90,6 +90,13 @@ async function handleSubmit(): Promise<void> {
             {{ auth.isLoading ? t('admin.login.submitting') : t('admin.login.submit') }}
           </button>
         </form>
+
+        <!-- Register link -->
+        <p class="mt-6 text-center text-sm text-slate-500">
+          <RouterLink to="/admin/register" class="text-indigo-600 hover:text-indigo-700 font-medium">
+            {{ t('admin.login.registerLink') }}
+          </RouterLink>
+        </p>
       </div>
     </div>
   </div>

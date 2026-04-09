@@ -234,7 +234,24 @@
       "passwordLabel": "Password",
       "passwordPlaceholder": "••••••••",
       "submit": "Sign in",
-      "submitting": "Signing in…"
+      "submitting": "Signing in…",
+      "registerLink": "First time? Create account"
+    },
+    "register": {
+      "heading": "Create admin account",
+      "subheading": "First-time setup. Only one admin account can be created.",
+      "nameLabel": "Full name",
+      "namePlaceholder": "Bill",
+      "emailLabel": "Email address",
+      "passwordLabel": "Password",
+      "passwordMinHint": "Minimum 8 characters",
+      "confirmPasswordLabel": "Confirm password",
+      "submit": "Create account",
+      "submitting": "Creating account…",
+      "errorPasswordMismatch": "Passwords do not match",
+      "errorPasswordTooShort": "Password must be at least 8 characters",
+      "errorClosed": "An admin account already exists. Please log in.",
+      "loginLink": "Already have an account? Sign in"
     },
     "dashboard": {
       "pageTitle": "Dashboard",

@@ -35,6 +35,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'none' },
   },
   {
+    path: '/admin/register',
+    name: 'admin-register',
+    component: () => import('@/views/admin/AdminRegisterView.vue'),
+    meta: { layout: 'none' },
+  },
+  {
     path: '/admin',
     name: 'admin-dashboard',
     component: () => import('@/views/admin/AdminDashboardView.vue'),

@@ -234,7 +234,24 @@
       "passwordLabel": "Wachtwoord",
       "passwordPlaceholder": "••••••••",
       "submit": "Inloggen",
-      "submitting": "Bezig met inloggen…"
+      "submitting": "Bezig met inloggen…",
+      "registerLink": "Eerste keer? Account aanmaken"
+    },
+    "register": {
+      "heading": "Beheerdersaccount aanmaken",
+      "subheading": "Eenmalige installatie. Er kan slechts één beheerdersaccount worden aangemaakt.",
+      "nameLabel": "Volledige naam",
+      "namePlaceholder": "Bill",
+      "emailLabel": "E-mailadres",
+      "passwordLabel": "Wachtwoord",
+      "passwordMinHint": "Minimaal 8 tekens",
+      "confirmPasswordLabel": "Wachtwoord bevestigen",
+      "submit": "Account aanmaken",
+      "submitting": "Account aanmaken…",
+      "errorPasswordMismatch": "Wachtwoorden komen niet overeen",
+      "errorPasswordTooShort": "Wachtwoord moet minimaal 8 tekens bevatten",
+      "errorClosed": "Er bestaat al een beheerdersaccount. Meld je aan.",
+      "loginLink": "Al een account? Inloggen"
     },
     "dashboard": {
       "pageTitle": "Dashboard",
