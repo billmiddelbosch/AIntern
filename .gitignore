@@ -36,6 +36,7 @@ coverage/
 
 # Claude Code local settings (machine-specific permissions)
 .claude/settings.local.json
+.claude/commands/morning-briefing.md
 
 # TypeScript build info
 *.tsbuildinfo
