@@ -218,6 +218,31 @@
     "metaTitle": "Kennisbank — Praktische AI-tips voor het MKB | AIntern",
     "metaDescription": "De AIntern Kennisbank: praktische artikelen over AI voor het MKB. AI-automatisering, implementatietips en echte praktijkcases — geen technische kennis vereist."
   },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard"
+    },
+    "header": {
+      "defaultTitle": "Beheer",
+      "logout": "Uitloggen"
+    },
+    "login": {
+      "heading": "Inloggen bij AIntern",
+      "subheading": "Voer je gegevens in om toegang te krijgen tot het beheerpaneel.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jij{'@'}voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Inloggen",
+      "submitting": "Bezig met inloggen…"
+    },
+    "dashboard": {
+      "pageTitle": "Dashboard",
+      "heading": "Welkom terug",
+      "subheading": "Hier is wat er speelt in jouw AIntern-account.",
+      "placeholder": "Dashboardinhoud volgt binnenkort."
+    }
+  },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
     "headline": "Wij nemen het herhaalwerk van uw dag over",

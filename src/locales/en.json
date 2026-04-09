@@ -218,6 +218,31 @@
     "metaTitle": "Knowledge Base — Practical AI tips for SMEs | AIntern",
     "metaDescription": "The AIntern Knowledge Base: practical articles about AI for SMEs. AI automation, implementation tips, and real business cases — no technical knowledge required."
   },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard"
+    },
+    "header": {
+      "defaultTitle": "Admin",
+      "logout": "Sign out"
+    },
+    "login": {
+      "heading": "Sign in to AIntern",
+      "subheading": "Enter your credentials to access the admin panel.",
+      "emailLabel": "Email address",
+      "emailPlaceholder": "you{'@'}example.com",
+      "passwordLabel": "Password",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Sign in",
+      "submitting": "Signing in…"
+    },
+    "dashboard": {
+      "pageTitle": "Dashboard",
+      "heading": "Welcome back",
+      "subheading": "Here's what's happening with your AIntern account.",
+      "placeholder": "Dashboard content coming soon."
+    }
+  },
   "hero": {
     "eyebrow": "Your AI intern",
     "headline": "We take the repetitive work from your day",

@@ -1,0 +1,52 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import mascotNav from '@/assets/brand/mascot-nav.png'
+
+const { t } = useI18n()
+</script>
+
+<template>
+  <aside class="w-64 shrink-0 bg-white border-r border-slate-200 flex flex-col">
+    <!-- Logo area -->
+    <div class="h-16 flex items-center px-6 border-b border-slate-100">
+      <RouterLink to="/admin" class="flex items-center gap-2">
+        <img :src="mascotNav" alt="AIntern" class="h-8 w-auto" />
+        <span class="font-semibold text-slate-800 text-sm">AIntern</span>
+      </RouterLink>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="flex-1 px-3 py-4 flex flex-col gap-1">
+      <RouterLink
+        to="/admin"
+        :exact-active-class="'bg-indigo-50 text-indigo-600'"
+        class="rounded-lg"
+      >
+        <div
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+        >
+          <!-- squares-2x2 icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <rect x="3" y="3" width="7" height="7" rx="1" />
+            <rect x="14" y="3" width="7" height="7" rx="1" />
+            <rect x="3" y="14" width="7" height="7" rx="1" />
+            <rect x="14" y="14" width="7" height="7" rx="1" />
+          </svg>
+          <span>{{ t('admin.nav.dashboard') }}</span>
+        </div>
+      </RouterLink>
+    </nav>
+  </aside>
+</template>

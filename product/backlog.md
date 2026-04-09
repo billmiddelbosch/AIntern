@@ -44,3 +44,20 @@
 | O-03 | **Client Onboarding Checklist** | S | As a delivery consultant, I want a standardised onboarding checklist automatically created for each new client, so that every engagement starts consistently and nothing is missed. |
 | O-04 | **Invoice from Milestone** | M | As the operations lead, I want to generate and send a client invoice directly from a completed project milestone, so that billing is prompt, traceable, and not dependent on manual reminders. |
 | O-05 | **Post-Delivery Retrospective** | S | As a delivery consultant, I want to complete a structured post-delivery retrospective template for each client project, so that automation patterns, pitfalls, and reusable components are captured in a shared knowledge base. |
+
+## Admin Dashboard (A)
+
+| ID | Feature | Effort | Notes |
+|---|---|---|---|
+| A-01 | **Admin route + layout scaffold** | S | Add `/admin` route (lazy-loaded `AdminView.vue`) with `AdminLayout.vue` (sidebar nav, header). Route guard blocks unauthenticated access. |
+| A-02 | **Auth guard + login flow** | M | `useAuthStore` (Pinia) with login/logout, JWT storage. Add `/admin/login` route; redirect unauthenticated users. |
+| A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. |
+| A-04 | **Kennisbank article list view** | S | `/admin/kennisbank` — paginated table of articles with status, slug, last-modified. Sortable columns. |
+| A-05 | **Article create/edit form** | M | Rich text editor (TipTap) + frontmatter fields (title, slug, tags, published). Save drafts, publish to S3. |
+| A-06 | **Article delete + unpublish** | S | Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record. |
+| A-07 | **LinkedIn outreach dashboard** | M | Read outreach logs from `product/marketing/leads/`. Show connection status, DM sent/pending, conversion rate per DM variant. |
+| A-08 | **Lead management table** | M | Upload CSV, view lead pipeline, mark as contacted/converted. Integrates with existing outreach scripts. |
+| A-09 | **KPI dashboard** | M | Display Q2 OKR progress per C-level (CEO/CMO/CPO/CTO/COO). Charts via vue-chartjs. |
+| A-10 | **Morning briefing history** | S | List past briefing logs with links to source data. Read-only audit trail. |
+| A-11 | **Admin i18n strings** | S | Add `admin.*` keys to `en.json` / `nl.json`. All admin UI strings translated from day one. |
+| A-12 | **Admin unit + E2E tests** | M | Vitest specs for auth store, route guard, form validation. Playwright E2E for login → article create → publish flow. |

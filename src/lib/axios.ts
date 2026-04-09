@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { useAuthStore } from '@/stores/useAuthStore'
 
 const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL ?? '/api',
@@ -8,21 +9,25 @@ const apiClient = axios.create({
   },
 })
 
-// Request interceptor — attach auth token if present
+// Request interceptor — attach auth token from Pinia store if present
+// useAuthStore() is called inside the callback (not at module load time),
+// so Pinia is guaranteed to be initialised before this executes.
 apiClient.interceptors.request.use((config) => {
-  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('token') : null
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
+  const auth = useAuthStore()
+  if (auth.token) {
+    config.headers.Authorization = `Bearer ${auth.token}`
   }
   return config
 })
 
-// Response interceptor — surface error messages
+// Response interceptor — handle 401 and surface error messages
 apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
-    const message = error.response?.data?.message ?? error.message
-    return Promise.reject(new Error(message))
+    if (error.response?.status === 401) {
+      useAuthStore().logout()
+    }
+    return Promise.reject(new Error(error.response?.data?.message ?? error.message))
   },
 )
 

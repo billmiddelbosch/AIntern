@@ -26,5 +26,8 @@ Dedicated contactsectie onderaan de pagina met `id="contact"` anchor. Twee-kolom
 ### 8. Analytics Integration & Cookie Consent (feature/l07-analytics-integration — in progress 2026-03-28)
 GDPR-compliant analytics via Plausible; stub/no-op modus totdat de bezoeker toestemming geeft via een cookie consent banner. Trackt page views en CTA-klikken. Consent-voorkeur persistent opgeslagen in localStorage. Tweetalig NL/EN cookie banner.
 
+### 10. Admin Dashboard Shell (feature/a-01-admin-layout — in progress 2026-04-09)
+Beveiligd intern beheerpaneel achter `/admin`. Lazy-loaded `AdminView.vue` gewrapped in `AdminLayout.vue` met een vaste zijbalk (sidebar) en een header. Navigation-items zijn stubs voor A-04..A-12 features (Kennisbank, LinkedIn, KPIs, Morning Briefing, Leads). Route-guard koppelt aan een `useAuthStore`-interface-contract: zolang A-02 niet live is, blokkeert een localStorage-flag `admin_auth=true` de ongeauthenticeerde toegang; na A-02 wordt de flag vervangen door een echte JWT-check. Geen publieke footer of marketing-nav in het admin-gedeelte.
+
 ### 9. SEO & Meta Tags (feature/l06-seo-meta-tags — in progress 2026-03-28)
 Dynamische page title, meta description en Open Graph tags via een `useHead` composable die per route de juiste NL/EN-teksten injecteert in de `<head>`. Canonical URL afgeleid van `window.location.origin + route.path`. Structured data (JSON-LD Organization schema) als static script-tag in `index.html`. Zorgt voor correcte previews bij delen op sociale media en verbeterde vindbaarheid in zoekmachines. Geen externe dependency — puur DOM-manipulatie via Vue watchers. Tweetalig NL/EN.
