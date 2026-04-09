@@ -46,4 +46,10 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/AdminDashboardView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'admin.dashboard.pageTitle' },
   },
+  {
+    path: '/admin/kpi',
+    name: 'admin-kpi',
+    component: () => import('@/views/admin/AdminKpiView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.kpi.pageTitle' },
+  },
 ]

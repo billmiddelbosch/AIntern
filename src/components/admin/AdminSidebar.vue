@@ -47,6 +47,35 @@ const { t } = useI18n()
           <span>{{ t('admin.nav.dashboard') }}</span>
         </div>
       </RouterLink>
+
+      <RouterLink
+        to="/admin/kpi"
+        active-class="bg-indigo-50 text-indigo-600"
+        class="rounded-lg"
+      >
+        <div
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+        >
+          <!-- chart-bar icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <line x1="18" y1="20" x2="18" y2="10" />
+            <line x1="12" y1="20" x2="12" y2="4" />
+            <line x1="6" y1="20" x2="6" y2="14" />
+          </svg>
+          <span>{{ t('admin.nav.kpi') }}</span>
+        </div>
+      </RouterLink>
     </nav>
   </aside>
 </template>

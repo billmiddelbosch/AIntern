@@ -220,7 +220,8 @@
   },
   "admin": {
     "nav": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "kpi": "KPI Dashboard"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -258,6 +259,13 @@
       "heading": "Welcome back",
       "subheading": "Here's what's happening with your AIntern account.",
       "placeholder": "Dashboard content coming soon."
+    },
+    "kpi": {
+      "pageTitle": "KPI Dashboard",
+      "heading": "KPI Dashboard",
+      "subheading": "Q2 2026 OKR progress and weekly KPI targets per C-Level. Click values to update.",
+      "quarterlyTab": "Quarterly OKRs",
+      "weeklyTab": "Weekly KPIs"
     }
   },
   "hero": {

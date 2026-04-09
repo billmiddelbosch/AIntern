@@ -57,7 +57,8 @@
 | A-06 | **Article delete + unpublish** | S | Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record. |
 | A-07 | **LinkedIn outreach dashboard** | M | Read outreach logs from `product/marketing/leads/`. Show connection status, DM sent/pending, conversion rate per DM variant. |
 | A-08 | **Lead management table** | M | Upload CSV, view lead pipeline, mark as contacted/converted. Integrates with existing outreach scripts. |
-| A-09 | **KPI dashboard** | M | Display Q2 OKR progress per C-level (CEO/CMO/CPO/CTO/COO). Charts via vue-chartjs. |
+| ~~A-09~~ | ~~**KPI dashboard**~~ | M | ~~Display Q2 OKR progress per C-level (CEO/CMO/CPO/CTO/COO). Charts via vue-chartjs.~~ Geimplementeerd 2026-04-09. |
 | A-10 | **Morning briefing history** | S | List past briefing logs with links to source data. Read-only audit trail. |
 | A-11 | **Admin i18n strings** | S | Add `admin.*` keys to `en.json` / `nl.json`. All admin UI strings translated from day one. |
 | A-12 | **Admin unit + E2E tests** | M | Vitest specs for auth store, route guard, form validation. Playwright E2E for login → article create → publish flow. |
+| A-13 | **Data-driven KPI integrations — persist & surface actuals** | L | Replace manual localStorage actuals with live DB reads. Integrations: (1) outreach log → connections sent, DMs sent, inbound leads; (2) Kennisbank publish events → article count; (3) uptime/security checks → uptime %, check done/not done. Manual fallback retained for metrics without an integration (e.g. discovery calls, pipeline reviews). Depends on A-04, A-07, A-09. |

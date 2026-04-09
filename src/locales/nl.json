@@ -220,7 +220,8 @@
   },
   "admin": {
     "nav": {
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "kpi": "KPI Dashboard"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -258,6 +259,13 @@
       "heading": "Welkom terug",
       "subheading": "Hier is wat er speelt in jouw AIntern-account.",
       "placeholder": "Dashboardinhoud volgt binnenkort."
+    },
+    "kpi": {
+      "pageTitle": "KPI Dashboard",
+      "heading": "KPI Dashboard",
+      "subheading": "Q2 2026 OKR-voortgang en wekelijkse KPI-targets per C-level. Klik op waarden om bij te werken.",
+      "quarterlyTab": "Kwartaal OKRs",
+      "weeklyTab": "Wekelijkse KPIs"
     }
   },
   "hero": {
