@@ -26,6 +26,7 @@ export class KennisbankStack extends cdk.Stack {
           allowedOrigins: [
             'https://aintern.nl',
             'https://www.aintern.nl',
+            'https://test.aintern.nl',
             'http://localhost:5173',
           ],
           allowedMethods: [s3.HttpMethods.GET],
