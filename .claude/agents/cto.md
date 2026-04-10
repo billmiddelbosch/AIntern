@@ -71,6 +71,8 @@ When you complete a task, summarize:
 
 ## Tools, Skills and Agents
 
+You MUST use the **security-auditor** agent whenever you touch auth, API keys, credentials, LinkedIn tokens, or any composable in `src/lib/`. Run it before marking the task complete and include its report (or "CLEAN") in your summary to the CEO.
+
 You MUST use the vuejs-feature-builder and lambda-feature-builder agents to develop new features. Both agents are available for use. When you receive a task, determine which agent is best suited to implement it based on the technology involved (frontend vs backend) and the nature of the work. For example:
 - For a new UI feature, use the vuejs-feature-builder agent to create the necessary Vue components, Pinia stores, and i18n entries.
 - For a new API endpoint or backend logic, use the lambda-feature-builder agent to write the Lambda function code, CDK infrastructure, and any necessary AWS permissions.

@@ -24,5 +24,6 @@ AIntern configureert en implementeert AI specifiek voor jouw processen en werkwi
 - SEO & Meta Tags — dynamische page title, meta description, Open Graph tags en canonical URL per route; locale-bewuste meta via vue-i18n; structured data (JSON-LD Organization)
 - Analytics & Cookie Consent — GDPR-compliant analytics tracking via Plausible; consent-aware stub/no-op mode totdat de bezoeker toestemming geeft; CTA-click tracking en page-view tracking; persistent consent voorkeur opgeslagen in localStorage
 - Kennisbank / Blog — AI-gedreven blogplatform; artikelen gegenereerd door Claude/NotebookLM-agents, opgeslagen als JSON in AWS S3, gepubliceerd zonder code-deploy; homepage teaser + /kennisbank overzicht + /kennisbank/:slug detailpagina's; SEO-geoptimaliseerd per artikel
+- Admin Dashboard — beveiligd `/admin` gedeelte voor intern beheer; sidebar-navigatie met header; route-guard blokkeert ongeauthenticeerde toegang; stubb-architectuur klaar voor A-02 auth-store (JWT)
 - Tweetalig NL/EN
 - Toon: innovatief, professioneel en nuchter
