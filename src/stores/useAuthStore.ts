@@ -1,11 +1,13 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { useRouter } from 'vue-router'
 import adminApiClient from '@/lib/adminAxios'
 import type { AuthUser, LoginCredentials, LoginResponse } from '@/types/auth'
 
 const TOKEN_KEY = 'aintern_token'
 
 export const useAuthStore = defineStore('auth', () => {
+  const router = useRouter()
   const token = ref<string | null>(null)
   const user = ref<AuthUser | null>(null)
   const isLoading = ref(false)
@@ -31,15 +33,13 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  async function logout(): Promise<void> {
+  function logout(): void {
     token.value = null
     user.value = null
     error.value = null
     if (typeof localStorage !== 'undefined') {
       localStorage.removeItem(TOKEN_KEY)
     }
-    // Dynamically import router to avoid circular dependency
-    const { default: router } = await import('@/router')
     router.push({ name: 'admin-login' })
   }
 
