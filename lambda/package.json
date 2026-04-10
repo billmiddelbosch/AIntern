@@ -3,14 +3,23 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "tsc"
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth",
+    "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
+    "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
+    "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3",
-    "@aws-sdk/lib-dynamodb": "^3"
+    "@aws-sdk/client-ssm": "^3",
+    "@aws-sdk/lib-dynamodb": "^3",
+    "bcryptjs": "^2",
+    "jsonwebtoken": "^9"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8",
+    "@types/bcryptjs": "^2",
+    "@types/jsonwebtoken": "^9",
+    "esbuild": "^0.24",
     "typescript": "~5.7"
   }
 }

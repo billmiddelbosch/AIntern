@@ -34,3 +34,31 @@
 | ~~I-03~~ | ~~**Sitemap & robots.txt**~~ | S | ~~Static sitemap.xml and robots.txt for crawler discoverability; pairs with L-06 SEO work.~~ Geïmplementeerd 2026-04-02. |
 | I-04 | **Serverless Contact Form Backend** | M | Replace Formspree with a serverless function (e.g. Vercel/Netlify function) that sends email server-side. Destination email stored in a server-only env var — never exposed to the client bundle. Current Formspree setup is the temporary solution. |
 | I-05 | **Collect real email address in intake flow** | S | Email was removed from the 5-step intake form but the Lambda still requires it (currently using a dummy value `test@aintern.nl`). Add email collection back — either as a step in the intake modal or derive it from the Calendly webhook after booking. Required for DynamoDB GSI lookup and meeting confirmation. |
+
+## Organisation (O)
+
+| ID | Feature | Effort | Notes |
+|---|---|---|---|
+| O-01 | **Weekly Auto-Report** | S | As the CEO, I want a weekly auto-generated internal report summarising pipeline health, active project statuses, and open blockers, so that I can run the Monday standup without manually collating updates. |
+| O-02 | **Lead Pipeline Board + CRM Sync** | M | As a sales lead, I want to view and update the status of all inbound leads from the website in a pipeline board, with leads auto-syncing from the website form, so that no prospect falls through the cracks and the team always works from a single source of truth. |
+| O-03 | **Client Onboarding Checklist** | S | As a delivery consultant, I want a standardised onboarding checklist automatically created for each new client, so that every engagement starts consistently and nothing is missed. |
+| O-04 | **Invoice from Milestone** | M | As the operations lead, I want to generate and send a client invoice directly from a completed project milestone, so that billing is prompt, traceable, and not dependent on manual reminders. |
+| O-05 | **Post-Delivery Retrospective** | S | As a delivery consultant, I want to complete a structured post-delivery retrospective template for each client project, so that automation patterns, pitfalls, and reusable components are captured in a shared knowledge base. |
+
+## Admin Dashboard (A)
+
+| ID | Feature | Effort | Notes |
+|---|---|---|---|
+| ~~A-01~~ | ~~**Admin route + layout scaffold**~~ | S | ~~Add `/admin` route (lazy-loaded `AdminView.vue`) with `AdminLayout.vue` (sidebar nav, header). Route guard blocks unauthenticated access.~~ Geïmplementeerd 2026-04-09. |
+| ~~A-02~~ | ~~**Auth guard + login flow**~~ | M | ~~`useAuthStore` (Pinia) with login/logout, JWT storage. Add `/admin/login` route; redirect unauthenticated users.~~ Geïmplementeerd 2026-04-09. Inclusief backend: `AInternAdminStack` (API Gateway + Lambda + SSM), `/admin/register` first-run flow, esbuild voor alle Lambda handlers. |
+| A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. |
+| A-04 | **Kennisbank article list view** | S | `/admin/kennisbank` — paginated table of articles with status, slug, last-modified. Sortable columns. |
+| A-05 | **Article create/edit form** | M | Rich text editor (TipTap) + frontmatter fields (title, slug, tags, published). Save drafts, publish to S3. |
+| A-06 | **Article delete + unpublish** | S | Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record. |
+| A-07 | **LinkedIn outreach dashboard** | M | Read outreach logs from `product/marketing/leads/`. Show connection status, DM sent/pending, conversion rate per DM variant. |
+| A-08 | **Lead management table** | M | Upload CSV, view lead pipeline, mark as contacted/converted. Integrates with existing outreach scripts. |
+| ~~A-09~~ | ~~**KPI dashboard**~~ | M | ~~Display Q2 OKR progress per C-level (CEO/CMO/CPO/CTO/COO). Charts via vue-chartjs.~~ Geimplementeerd 2026-04-09. |
+| A-10 | **Morning briefing history** | S | List past briefing logs with links to source data. Read-only audit trail. |
+| A-11 | **Admin i18n strings** | S | Add `admin.*` keys to `en.json` / `nl.json`. All admin UI strings translated from day one. |
+| A-12 | **Admin unit + E2E tests** | M | Vitest specs for auth store, route guard, form validation. Playwright E2E for login → article create → publish flow. |
+| A-13 | **Data-driven KPI integrations — persist & surface actuals** | L | Replace manual localStorage actuals with live DB reads. Integrations: (1) outreach log → connections sent, DMs sent, inbound leads; (2) Kennisbank publish events → article count; (3) uptime/security checks → uptime %, check done/not done. Manual fallback retained for metrics without an integration (e.g. discovery calls, pipeline reviews). Depends on A-04, A-07, A-09. |

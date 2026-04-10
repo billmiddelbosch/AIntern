@@ -6,7 +6,6 @@ import ProbleemOplossingSectionView from '@/views/sections/ProbleemOplossingSect
 import GodfatherOfferSection from '@/components/sections/godfather-offer/GodfatherOfferSection.vue'
 import ResultatenCasesSectionView from '@/views/sections/ResultatenCasesSectionView.vue'
 import NoCureNoPayFaqSectionView from '@/views/sections/NoCureNoPayFaqSectionView.vue'
-import KennisbankTeaserSection from '@/components/sections/kennisbank/KennisbankTeaserSection.vue'
 import OverAInternContactSectionView from '@/views/sections/OverAInternContactSectionView.vue'
 import BookingModal from '@/components/ui/BookingModal.vue'
 import IntakeModal from '@/components/ui/IntakeModal.vue'

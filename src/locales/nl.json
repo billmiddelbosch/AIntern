@@ -1,11 +1,15 @@
 {
   "nav": {
+    "home": "Home",
     "about": "Over AIntern",
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Kennisbank",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
+  },
+  "about": {
+    "title": "Over AIntern"
   },
   "footer": {
     "tagline": "Jouw AI-stagiaire voor het MKB — zonder risico, met gegarandeerd resultaat.",
@@ -213,6 +217,56 @@
     "articleNotFound": "Artikel niet gevonden. Het is mogelijk verwijderd of de link klopt niet.",
     "metaTitle": "Kennisbank — Praktische AI-tips voor het MKB | AIntern",
     "metaDescription": "De AIntern Kennisbank: praktische artikelen over AI voor het MKB. AI-automatisering, implementatietips en echte praktijkcases — geen technische kennis vereist."
+  },
+  "admin": {
+    "nav": {
+      "dashboard": "Dashboard",
+      "kpi": "KPI Dashboard"
+    },
+    "header": {
+      "defaultTitle": "Beheer",
+      "logout": "Uitloggen"
+    },
+    "login": {
+      "heading": "Inloggen bij AIntern",
+      "subheading": "Voer je gegevens in om toegang te krijgen tot het beheerpaneel.",
+      "emailLabel": "E-mailadres",
+      "emailPlaceholder": "jij{'@'}voorbeeld.nl",
+      "passwordLabel": "Wachtwoord",
+      "passwordPlaceholder": "••••••••",
+      "submit": "Inloggen",
+      "submitting": "Bezig met inloggen…",
+      "registerLink": "Eerste keer? Account aanmaken"
+    },
+    "register": {
+      "heading": "Beheerdersaccount aanmaken",
+      "subheading": "Eenmalige installatie. Er kan slechts één beheerdersaccount worden aangemaakt.",
+      "nameLabel": "Volledige naam",
+      "namePlaceholder": "Bill",
+      "emailLabel": "E-mailadres",
+      "passwordLabel": "Wachtwoord",
+      "passwordMinHint": "Minimaal 8 tekens",
+      "confirmPasswordLabel": "Wachtwoord bevestigen",
+      "submit": "Account aanmaken",
+      "submitting": "Account aanmaken…",
+      "errorPasswordMismatch": "Wachtwoorden komen niet overeen",
+      "errorPasswordTooShort": "Wachtwoord moet minimaal 8 tekens bevatten",
+      "errorClosed": "Er bestaat al een beheerdersaccount. Meld je aan.",
+      "loginLink": "Al een account? Inloggen"
+    },
+    "dashboard": {
+      "pageTitle": "Dashboard",
+      "heading": "Welkom terug",
+      "subheading": "Hier is wat er speelt in jouw AIntern-account.",
+      "placeholder": "Dashboardinhoud volgt binnenkort."
+    },
+    "kpi": {
+      "pageTitle": "KPI Dashboard",
+      "heading": "KPI Dashboard",
+      "subheading": "Q2 2026 OKR-voortgang en wekelijkse KPI-targets per C-level. Klik op waarden om bij te werken.",
+      "quarterlyTab": "Kwartaal OKRs",
+      "weeklyTab": "Wekelijkse KPIs"
+    }
   },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
