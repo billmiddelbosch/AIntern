@@ -2,31 +2,28 @@
 _Last updated: 2026-04-11_
 
 ## Open Acties (toegewezen aan mij)
-- Outreach naar gekwalificeerde prospects (≥1 per week) — nog niet uitgevoerd deze week
-- Pipeline review (maandag) — controleer of O-02 gestart is
+- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (19 dagen)
 - OKR-voortgang reviewen (vrijdag)
 
 ## KPI Status (deze week)
-- LinkedIn posts: 0 (niet getrackt) / 3 — ⚠️
-- Nieuwe connecties: 3 / 20–25 — ❌ (Apify uitgeput)
-- Kennisbank artikelen: 0 / 2 — ❌
-- Security check: niet bevestigd — ⚠️
-- Lead pipeline updates: 0 / 2× — ❌
+- LinkedIn posts: 1 / 3 — ⚠️
+- Nieuwe connecties verstuurd: 6 / 20–25 — ❌ (3 DMs verstuurd op 2026-04-11; Apify nu beschikbaar voor nieuwe leads)
+- Kennisbank artikelen: 1 / 2 — ⚠️
+- Security check: in uitvoering (B-01 vandaag) — ⚠️
+- Lead pipeline bijgewerkt: 0 / 2 — ❌
 
 ## Actieve Blockers
-- Apify credits uitgeput ($0.07) — bijvullen vereist
-- L-14 deels uitgesteld — stap 3–5 (headline, Godfather Offer, intake) volgende week sprint
+- Geen technische blockers meer: Apify bijgevuld ✅, DMs verstuurd ✅
+- Operationele deadlines naderen: O-01, O-02, O-03 alle vóór 30 april/1 mei
 
-## Genomen Beslissingen (Human Board — 2026-04-11)
-- L-14 partieel deployen: stap 1–2 vandaag, stap 3–5 volgende week — BEVESTIGD
-- Kennisbank voorstellen beide afgewezen — geen publicatie
-- LinkedIn berichten herschreven als connectieverzoeken — GOEDGEKEURD
-- Skill verbeteringen 2 + 3 goedgekeurd; Verbetering 1 (LI_AT) afgewezen
-- SKILL.md bijgewerkt naar versie 0.2.1
+## Genomen Beslissingen (Human Board — 2026-04-11 definitief)
+- Apify credits BIJGEVULD ✅ — outreach pipeline gedeblokkeerd
+- LinkedIn DMs VERSTUURD ✅ — Bram, Jan, Bob (ROI-variant)
+- Morgan GOEDGEKEURD voor: (1) B-01 security check, (2) L-14 stap 1 & 2
+- SKILL.md v0.2.5 toegepast
 
 ## Lopende Context
-- Top 5 Daily Actions (11 april): zie vergaderverslag in Obsidian
-- OKR 1.1 (2 betalende klanten): pipeline heeft 0 inbound leads — urgentie neemt toe
-- KR 5.1–5.4 (/admin): deadline 22 april — 11 dagen resterend
-- O-02 (CRM) verloopt 30 april — Sam moet deze week starten
-
+- 3 leads in dm_sent status — reacties afwachten (Bram, Jan, Bob)
+- Morgan voert vandaag uit: B-01 → L-14 stap 1&2 op feature/board-2026-04-11
+- Volgende prioriteit na L-14: A-03 role-based access (admin sprint, deadline 22 april)
+- OKR 2.2: 6 connecties van 300 — versnelling nodig, Apify nu beschikbaar voor nieuwe enrichment

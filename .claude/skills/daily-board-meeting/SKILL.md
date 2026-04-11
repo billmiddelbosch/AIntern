@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.2.4
+version: 0.2.5
 ---
 
 # Daily Board Meeting
@@ -18,11 +18,11 @@ Load context before starting the discussion:
 
 **Step 0 — CTO creates the session feature branch (runs first, before anything else):**
 
-Morgan (CTO) opens a new Claude terminal and runs:
+Run directly in the main session (no separate terminal needed — this is a safe, non-destructive git operation):
+```bash
+git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/board-{YYYY-MM-DD}
 ```
-claude -p "Create a new git feature branch named feature/board-{YYYY-MM-DD} from the current main branch. Confirm the branch was created and checked out, then output a one-line summary: 'Branch feature/board-{YYYY-MM-DD} created and checked out.'"
-```
-The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), check it out instead of recreating it.
+The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it.
 
 1. Read OKRs from memory: `C:/Users/bmidd/.claude/projects/C--Users-bmidd-AIntern/memory/project_okrs_q2_2026.md`
 2. Read CMO memory index and pending items:
@@ -223,13 +223,19 @@ Check the KPI Pulse table from Phase 2 Round 3. If the Kennisbank articles KPI i
 **Skip condition 2 — Already posted today:**
 Check `.claude/cmo/memory_daily_context.md` for a Kennisbank article published on today's date. If one was already published today, **skip this phase entirely**. Mention: `_Phase 4 overgeslagen — Kennisbank artikel al gepubliceerd vandaag._`
 
+> **⚠️ Tracking gap warning:** `memory_daily_context.md` is only updated at the end of each meeting (Phase 6). If a post or article was published outside a meeting session (e.g., manually by Bill), the file may be stale. If the Human Board reports that content was already published and the memory shows zero, immediately update `memory_daily_context.md` to reflect the correct count before continuing.
+
 Only proceed with the steps below if **both** skip conditions are false.
 
 ### Steps
 
 1. Read the 3 most recent entries from the Obsidian vault (see `references/obsidian-vault.md` for vault location and structure)
 2. Identify 1–2 topic seeds relevant to the AIntern audience (Lightspeed webshop owners, MKB, AI automation)
+2b. **Rejected seed filter:** Before selecting seeds, check the "Genomen Beslissingen" section of `.claude/cmo/memory_daily_context.md`. Skip any Obsidian entry whose topic matches a Kennisbank proposal that was rejected in the same or previous session. Move to the next most recent entry instead.
+
 3. Load `marketing-super-team` skill — run a **Quick Audit** on each seed: is this the right angle for the target audience?
+
+> **⚠️ Plan mode risk:** Invoking `marketing-super-team` may trigger plan mode. If plan mode activates mid-meeting, immediately write a one-line note to the plan file at `C:\Users\bmidd\.claude\plans\<plan-id>.md` and call `ExitPlanMode` before continuing. Do not attempt to resume the meeting inside plan mode.
 4. Draft proposals internally — they will be presented at the **End-of-Meeting Approval Gate**. Use this format for the gate:
 
 ```
@@ -443,7 +449,7 @@ After receiving approval responses:
 - **Alles in het Nederlands** — vergadering, discussie, samenvatting, outreach en Kennisbank content zijn allemaal in het Nederlands
 - **Hard blocker exception** — if a phase encounters a fatal error (missing file, auth failure), surface it inline with a `[BLOCKER]` tag and continue with remaining phases; include it in the End-of-Meeting gate
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
-- **One terminal per action** — every agent action that mutates state (file writes, commits, S3 uploads, external API calls) runs in a dedicated `claude -p "..."` terminal; never inline in the main session
+- **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
 - **Sequential dispatch** — terminals are dispatched one at a time; the next terminal only starts after the previous Terminal Summary shows ✅
 - **CEO gate on each terminal** — Alex (CEO) verifies the branch name in every terminal prompt before dispatch and reads the Terminal Summary on return; a ❌ status halts further terminals until resolved
 - **Merge conflict prevention** — every terminal starts with `git pull origin feature/board-{YYYY-MM-DD} --rebase` before making changes
