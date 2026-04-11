@@ -335,7 +335,11 @@ async function integrateGA4(
     await writeActual(tableName, week, 'cpo.3', trafficDone)
     updated.push('cpo.3')
   } catch (err: unknown) {
-    errors.push(`ga4: ${(err as Error).message}`)
+    console.error('integrateGA4 error:', err)
+    const name = (err as { name?: string }).name ?? ''
+    const msg = (err as Error).message ?? ''
+    const detail = name && name !== msg ? `${name}: ${msg}` : msg || name || 'unknown'
+    errors.push(`ga4: ${detail}`)
   }
 
   return updated

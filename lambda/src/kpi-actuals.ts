@@ -51,7 +51,7 @@ async function getJwtSecret(alias: string): Promise<string> {
 
 async function getTableName(alias: string): Promise<string> {
   if (cachedTableName) return cachedTableName
-  const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}`
+  const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}/dynamodb/table-name`
   const result = await ssm.send(
     new GetParameterCommand({ Name: path, WithDecryption: false }),
   )

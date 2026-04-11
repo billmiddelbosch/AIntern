@@ -4,26 +4,26 @@ _Last updated: 2026-04-11_
 ## Open Acties (toegewezen aan mij)
 - Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (19 dagen)
 - OKR-voortgang reviewen (vrijdag)
+- Prospect outreach opstarten (0/1 deze week)
 
 ## KPI Status (deze week)
 - LinkedIn posts: 1 / 3 — ⚠️
-- Nieuwe connecties verstuurd: 6 / 20–25 — ❌ (3 DMs verstuurd op 2026-04-11; Apify nu beschikbaar voor nieuwe leads)
+- Nieuwe connecties verstuurd: 3 / 20–25 — ❌ (Apify beschikbaar voor nieuwe enrichment)
 - Kennisbank artikelen: 1 / 2 — ⚠️
-- Security check: in uitvoering (B-01 vandaag) — ⚠️
+- Security check: ✅ done (B-01, commit 6ba7260)
 - Lead pipeline bijgewerkt: 0 / 2 — ❌
 
 ## Actieve Blockers
-- Geen technische blockers meer: Apify bijgevuld ✅, DMs verstuurd ✅
+- Geen technische blockers
 - Operationele deadlines naderen: O-01, O-02, O-03 alle vóór 30 april/1 mei
 
-## Genomen Beslissingen (Human Board — 2026-04-11 definitief)
-- Apify credits BIJGEVULD ✅ — outreach pipeline gedeblokkeerd
-- LinkedIn DMs VERSTUURD ✅ — Bram, Jan, Bob (ROI-variant)
-- Morgan GOEDGEKEURD voor: (1) B-01 security check, (2) L-14 stap 1 & 2
-- SKILL.md v0.2.5 toegepast
+## Genomen Beslissingen (Human Board — 2026-04-11 sessie 3)
+- B-03 (Apify enrichment) geregistreerd als enige nieuwe backlog item
+- A-13 en A-14 officieel gesloten als DONE
+- Skill verbeteringen, branch push, en Kennisbank voorstel: AFGEWEZEN
+- Human Board doet altijd zelf commits en push — Claude doet dit nooit
 
 ## Lopende Context
-- 3 leads in dm_sent status — reacties afwachten (Bram, Jan, Bob)
-- Morgan voert vandaag uit: B-01 → L-14 stap 1&2 op feature/board-2026-04-11
-- Volgende prioriteit na L-14: A-03 role-based access (admin sprint, deadline 22 april)
-- OKR 2.2: 6 connecties van 300 — versnelling nodig, Apify nu beschikbaar voor nieuwe enrichment
+- A-13 en A-14 volledig geïmplementeerd (commits 999dd0f–e23f318) ✅
+- Volgende prioriteit: A-03 role-based access (/admin sprint, deadline 22 april)
+- OKR 2.2: 3/300 connecties — versnelling nodig via B-03 Apify enrichment
