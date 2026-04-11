@@ -1,13 +1,45 @@
 import * as cdk from 'aws-cdk-lib'
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import * as iam from 'aws-cdk-lib/aws-iam'
+import * as ssm from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 import * as path from 'path'
 
 export class AdminStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
+
+    // ── DynamoDB — single shared table (single-table design) ─────────────────
+    const adminTable = new dynamodb.Table(this, 'AdminTable', {
+      tableName: 'aintern-admin',
+      partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
+
+    adminTable.addGlobalSecondaryIndex({
+      indexName: 'AssigneeIndex',
+      partitionKey: { name: 'assignee', type: dynamodb.AttributeType.STRING },
+      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
+      projectionType: dynamodb.ProjectionType.ALL,
+    })
+
+    // Store table name in SSM so Lambdas can resolve it at runtime (no hardcoding)
+    // Both dev and prod aliases share the same physical table for the admin use case.
+    new ssm.StringParameter(this, 'DynamoDbTableNameDev', {
+      parameterName: '/aintern/dev/dynamodb/table-name',
+      stringValue: adminTable.tableName,
+      description: 'aintern-admin DynamoDB table name (dev)',
+    })
+
+    new ssm.StringParameter(this, 'DynamoDbTableNameProd', {
+      parameterName: '/aintern/prod/dynamodb/table-name',
+      stringValue: adminTable.tableName,
+      description: 'aintern-admin DynamoDB table name (prod)',
+    })
 
     // ── Lambda ───────────────────────────────────────────────────────────────
     const lambdaCode = lambda.Code.fromAsset(path.resolve(__dirname, '../../lambda/dist'))
@@ -44,9 +76,52 @@ export class AdminStack extends cdk.Stack {
       }),
     )
 
+    // ── kpi-actuals Lambda ────────────────────────────────────────────────────
+    const kpiActualsFn = new lambda.Function(this, 'KpiActualsFunction', {
+      functionName: 'aintern-kpi-actuals',
+      handler: 'kpi-actuals.handler',
+      description: 'GET + PUT KPI actuals for a given ISO week — reads/writes aintern-admin DynamoDB table',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    // SSM read: JWT secret + DynamoDB table name
+    kpiActualsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    // KMS decrypt for SecureString JWT secret
+    kpiActualsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // DynamoDB access: GetItem, PutItem, Query on aintern-admin table
+    adminTable.grantReadWriteData(kpiActualsFn)
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
+
+    const kpiActualsDevAlias = kpiActualsFn.addAlias('dev')
+    const kpiActualsProdAlias = kpiActualsFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -55,7 +130,7 @@ export class AdminStack extends cdk.Stack {
       deploy: false,
       defaultCorsPreflightOptions: {
         allowOrigins: ['https://aintern.nl', 'https://www.aintern.nl', 'http://localhost:5173'],
-        allowMethods: ['POST', 'OPTIONS'],
+        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization'],
       },
     })
@@ -72,6 +147,12 @@ export class AdminStack extends cdk.Stack {
     adminResource.addResource('login').addMethod('POST', aliasIntegration(adminAuthFn))
     adminResource.addResource('register').addMethod('POST', aliasIntegration(adminAuthFn))
 
+    // GET + PUT /admin/kpi/actuals
+    const kpiResource = adminResource.addResource('kpi')
+    const actualsResource = kpiResource.addResource('actuals')
+    actualsResource.addMethod('GET', aliasIntegration(kpiActualsFn))
+    actualsResource.addMethod('PUT', aliasIntegration(kpiActualsFn))
+
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
     const apigwPrincipal = new iam.ServicePrincipal('apigateway.amazonaws.com')
@@ -79,6 +160,8 @@ export class AdminStack extends cdk.Stack {
     for (const [alias, suffix] of [
       [adminAuthDevAlias, 'AdminAuthDevAlias'],
       [adminAuthProdAlias, 'AdminAuthProdAlias'],
+      [kpiActualsDevAlias, 'KpiActualsDevAlias'],
+      [kpiActualsProdAlias, 'KpiActualsProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,
@@ -138,6 +221,24 @@ export class AdminStack extends cdk.Stack {
       value: prodStage.urlForPath('/'),
       description: 'Prod admin API base URL — set as VITE_ADMIN_API_BASE_URL in .env.production',
       exportName: 'aintern-admin-api-base-url-prod',
+    })
+
+    new cdk.CfnOutput(this, 'KpiActualsUrlDev', {
+      value: devStage.urlForPath('/admin/kpi/actuals'),
+      description: 'Dev GET|PUT /admin/kpi/actuals endpoint',
+      exportName: 'aintern-kpi-actuals-url-dev',
+    })
+
+    new cdk.CfnOutput(this, 'KpiActualsUrlProd', {
+      value: prodStage.urlForPath('/admin/kpi/actuals'),
+      description: 'Prod GET|PUT /admin/kpi/actuals endpoint',
+      exportName: 'aintern-kpi-actuals-url-prod',
+    })
+
+    new cdk.CfnOutput(this, 'AdminDynamoDbTableName', {
+      value: adminTable.tableName,
+      description: 'aintern-admin DynamoDB table name',
+      exportName: 'aintern-admin-dynamodb-table-name',
     })
 
     // ── Tags ─────────────────────────────────────────────────────────────────
