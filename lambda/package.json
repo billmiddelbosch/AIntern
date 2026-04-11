@@ -3,10 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
-    "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*"
+    "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*",
+    "bundle:kpi-actuals": "esbuild src/kpi-actuals.ts --bundle --platform=node --target=node22 --outfile=dist/kpi-actuals.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3",
