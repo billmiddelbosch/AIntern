@@ -2,23 +2,27 @@
 _Last updated: 2026-04-11_
 
 ## Open Acties (toegewezen aan mij)
-- L-14 stap 1–2 uitvoeren: verwijder foutieve social proof claim + herstel pilot-case cijfers
-  - Type-check + security audit vereist voor go-live
-- Security check uitvoeren en documenteren (nog niet bevestigd deze week)
+- **B-01 Wekelijkse security check** — GOEDGEKEURD, uitvoeren vandaag (eerst)
+- **L-14 stap 1 & 2** — GOEDGEKEURD door Human Board; uitvoeren na B-01:
+  - Stap 1: verwijder foutieve social proof claim
+  - Stap 2: herstel pilot-case cijfers
+  - Type-check + security-reviewer vereist voor commit
 
 ## KPI Status (deze week)
-- Security check: niet bevestigd / 1× — ⚠️
-- /admin sprint (KR 5.1–5.4): deadline 22 april — A-03, A-04 liggen in queue
+- Security check: N / 1× — ❌ (uitvoeren vandaag via B-01)
+- /admin sprint (KR 5.1–5.4): deadline 22 april — A-03, A-04 in queue daarna
 
 ## Actieve Blockers
-- Apify credits: $0.07 — bijvullen vereist (https://console.apify.com/billing/subscription)
-- L-14 stap 3–5 uitgesteld naar volgende week sprint (headline, Godfather Offer, intake-form)
+- Geen — Apify credits bijgevuld op 2026-04-11 ✅
 
 ## Genomen Beslissingen (Human Board — 2026-04-11)
-- L-14 partieel deployen: stap 1–2 vandaag, stap 3–5 volgende week — BEVESTIGD
-- Skill verbeteringen 2 + 3 goedgekeurd; Verbetering 1 (LI_AT-check) afgewezen — geen LI_AT-referenties meer in SKILL.md
-- SKILL.md bijgewerkt naar versie 0.2.1
+- B-01 security check GOEDGEKEURD als backlog item + actie vandaag
+- L-14 stap 1 & 2 GOEDGEKEURD als vervolgactie na B-01
+- L-14 stap 3–5 (headline, Godfather Offer, intake) volgende sprint
+- SKILL.md bijgewerkt naar v0.2.5
 
 ## Lopende Context
-- Backlog focus: L-14 (urgent, vandaag stap 1–2), A-03 (role-based access), A-04 (Kennisbank article list view)
-- KR 5.1–5.4 (/admin live + OKR dashboard + MFA): deadline 22 april — 11 dagen resterend
+- Uitvoeringsvolgorde vandaag: (1) B-01 security check → (2) L-14 stap 1 & 2
+- Beide acties committen op branch feature/board-2026-04-11
+- Na L-14 stap 1 & 2: type-check + security-reviewer draaien voor merge
+- Daarna: A-03 role-based access prioriteit voor /admin sprint
