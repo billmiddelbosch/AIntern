@@ -18,6 +18,14 @@
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
 | L-13 | **Animations of Previous Assignments / Portfolio** | M | Animated showcase of past AI-intern work; visual portfolio to demonstrate capability. |
 
+## Bugs (BUG)
+
+| ID | Bug | Effort | Notes |
+|---|---|---|---|
+| BUG-01 | **Kennisbank navigatie — top en footer werken niet terug naar hoofdpagina** | S | Top- en footer-navigatielinks in de Kennisbank verwijzen niet correct terug naar de single-page app. Gebruiker zit vast in Kennisbank zonder terugweg. Onderzoek Vue Router link targets en of de Kennisbank route een aparte layout gebruikt die de globale nav overschrijft. |
+| BUG-02 | **Over AIntern — e-mailoptie werkt niet** | S | De contactoptie via e-mail in de Over AIntern sectie reageert niet. Controleer mailto-link, event handler, en of de knop correct is gekoppeld. |
+| BUG-03 | **Calendly vervangen door eigen boekingscomponent** | L | De huidige Calendly-widget vervangen door eigen implementatie met vergelijkbare functionaliteit (tijdslot selectie, bevestiging, integratie met bestaande intake-flow). Zie ook I-04 en I-05 voor gerelateerde serverless backend en e-mail collectie. |
+
 ## UX & Accessibility (U)
 
 | ID | Feature | Effort | Notes |
