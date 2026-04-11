@@ -97,7 +97,7 @@ These rules fire automatically based on the type of work being done. No need to 
 |---|---|
 | Working with an external library (Vue, Pinia, VueUse, Axios, vue-i18n, Vite) | Fetch live docs via **Context7** MCP before writing code — never rely on training-data API knowledge |
 | A `.vue` or `.ts` file is modified | Run `npm run type-check` before marking the task complete |
-| Auth, API keys, credentials, or `axios.ts` composables are touched | Invoke **security-auditor** agent before the task is closed |
+| Any `.vue`, `.ts`, or `.js` file under `src/` or `lambda/` is modified | Invoke **security-auditor** agent before the task is closed |
 | Any outreach, lead-send, LinkedIn message, or email action | Require **explicit user approval** before executing — never auto-send |
 
 ## Important Notes

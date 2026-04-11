@@ -1,0 +1,393 @@
+---
+name: daily-board-meeting
+description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
+version: 0.2.1
+---
+
+# Daily Board Meeting
+
+A structured daily session that runs the AIntern C-suite through seven phases: context loading, executive discussion, LinkedIn outreach proposals, Kennisbank content proposals, meeting summary, board memory update, and skill improvement.
+
+**Execution model:** Run all phases fully automatically without stopping. Collect every item that requires a human decision into a single **End-of-Meeting Approval Gate** presented at the very end. The only exception is a hard blocker (e.g., missing file, auth error) — surface it inline and continue with the remaining phases.
+
+---
+
+## Phase 1 — Context & Agenda (Opening)
+
+Load context before starting the discussion:
+
+1. Read OKRs from memory: `C:/Users/bmidd/.claude/projects/C--Users-bmidd-AIntern/memory/project_okrs_q2_2026.md`
+2. Read CMO memory index and pending items:
+   - `.claude/cmo/MEMORY.md`
+   - `.claude/cmo/memory_outreach_dm_pending.md` — check for accepted connections awaiting manual DMs
+3. Read CTO blockers explicitly:
+   - `.claude/cto/memory_apify_credits_low.md` — flag if credits < $1
+4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
+
+Then open the meeting in this format:
+
+```
+## AIntern Dagelijkse Boardvergadering — {datum}
+
+**Aanwezig:** Alex (CEO), Blake (CMO), Morgan (CTO), Sam (COO)
+**Voorzitter:** Alex (CEO)
+
+**Actieve blockers:**
+- [Lijst blockers uit CTO/CMO memory — bijv. "Apify credits uitgeput ($0.07)" of "3 DMs wachten op handmatig verzenden"]
+- Geen (als er geen blockers zijn)
+
+**Agenda van vandaag:**
+1. Directiebespreking — prioriteiten van de dag
+2. LinkedIn outreach voorstellen
+3. Kennisbank content voorstellen
+4. Vergaderverslag + e-mail
+5. Skill verbeterreview
+```
+
+---
+
+## Phase 2 — C-Suite Discussion (3-Round Debate)
+
+Run a structured 3-round discussion modeled on the marketing-super-team debate format. Each executive speaks in character using their real name, role, and domain expertise.
+
+**Personas:**
+- **Alex (CEO)** — strategy, cross-functional alignment, board priorities, OKRs
+- **Blake (CMO)** — lead generation, content, LinkedIn campaigns, Kennisbank, outreach ROI
+- **Morgan (CTO)** — product velocity, technical blockers, infra, backlog feasibility
+- **Sam (COO)** — operations, lead pipeline health, client onboarding readiness, weekly report status
+
+### Round 1 — Domain Priorities
+
+Each executive states their **top 2 priorities for today**, anchored to the current OKRs and backlog. Format:
+
+```
+**Alex (CEO):**
+1. [Priority] — [why it matters today]
+2. [Priority] — [why it matters today]
+
+**Blake (CMO):**
+1. [Priority] — [why it matters today]
+2. [Priority] — [why it matters today]
+
+**Morgan (CTO):**
+1. [Priority] — [why it matters today]
+2. [Priority] — [why it matters today]
+
+**Sam (COO):**
+1. [Priority] — [why it matters today]
+2. [Priority] — [why it matters today]
+```
+
+### Round 2 — Cross-Examination
+
+Each executive reacts to one priority from another exec. Surface dependencies, conflicts, and risks. Keep it direct. Example structure:
+
+```
+**Blake challenges Alex:** [disagreement or dependency]
+**Morgan challenges Blake:** [feasibility or sequencing concern]
+**Alex responds:** [resolution or decision]
+```
+
+### Round 3 — Synthesis
+
+**Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available:
+- **Connection count:** count `connection_sent` rows added this week in `product/marketing/leads/outreach-log.csv`
+- **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md` (if already updated) or CMO MEMORY.md
+- **LinkedIn post count:** check `.claude/cmo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
+
+```
+| Exec  | KPI                          | Target/week | Actual (est.) | Status       |
+|-------|------------------------------|-------------|---------------|--------------|
+| CMO   | LinkedIn posts               | 3           | [N]           | ✅ / ⚠️ / ❌ |
+| CMO   | New connection requests sent | 20–25       | [N]           | ✅ / ⚠️ / ❌ |
+| CMO   | Kennisbank articles          | 2           | [N]           | ✅ / ⚠️ / ❌ |
+| CTO   | Security check done          | 1           | [Y/N]         | ✅ / ❌       |
+| COO   | Lead pipeline updated        | 2×          | [N]           | ✅ / ⚠️ / ❌ |
+```
+
+**Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
+
+```
+| # | Action | Owner | Success Metric |
+|---|--------|-------|----------------|
+| 1 | ...    | CMO   | ...            |
+| 2 | ...    | CTO   | ...            |
+...
+```
+
+---
+
+## Phase 3 — LinkedIn Outreach Proposals
+
+Blake (CMO) leads this phase with support from the `marketing-super-team` and `social-content` skills.
+
+### Pre-flight Check
+
+Before drafting any messages, evaluate the outreach state using context already loaded in Phase 1:
+
+| Check | Bron | Resultaat |
+|-------|------|-----------|
+| Apify credits voldoende? | `memory_apify_credits_low.md` | OK / **Uitgeput (<$1)** |
+| Pending DMs (handmatig)? | `memory_outreach_dm_pending.md` | [N namen] |
+| CSV heeft LinkedIn URLs? | `references/outreach-format.md` | Ja / **Nee — enrichment nodig** |
+
+**Blocked-outreach beslisboom:**
+
+- Als Apify credits < $1 → skip nieuwe lead-enrichment; werk alleen met al verrijkte leads
+- Als er pending DMs zijn (uit `memory_outreach_dm_pending.md`) → prioritiseer deze boven nieuwe verzoeken; DMs worden handmatig verstuurd na approval
+- Als alles geblokkeerd → presenteer een actie-lijst en ga direct naar Phase 4:
+  ```
+  ### Outreach — GEBLOKKEERD
+  Actie vereist voor volgende run:
+  1. Apify credits bijvullen: https://console.apify.com/billing/subscription
+  2. Handmatig te versturen DMs: [lijst uit memory_outreach_dm_pending.md]
+  ```
+
+### Steps
+
+1. Read `product/marketing/leads/` — identify 3–5 uncontacted leads with LinkedIn URLs
+2. Load the `marketing-super-team` skill to evaluate the outreach angle for today's batch
+3. For each lead, draft a connection request message using the approved template (see `references/outreach-format.md`)
+4. Apply the `social-content` skill to check hook quality and adjust if needed
+5. Store the proposed messages internally — they will be presented at the **End-of-Meeting Approval Gate**. Do **not** pause here.
+6. **Do not send anything until the End-of-Meeting Approval Gate is reached.** After approval there, delegate to the `linkedin-outreach` agent with the approved message list.
+
+---
+
+## Phase 4 — Kennisbank Content Proposals
+
+Blake (CMO) leads this phase. Source inspiration from Bill's Obsidian vault, then use `marketing-super-team` to shape the angle.
+
+### Steps
+
+1. Read the 3 most recent entries from the Obsidian vault (see `references/obsidian-vault.md` for vault location and structure)
+2. Identify 1–2 topic seeds relevant to the AIntern audience (Lightspeed webshop owners, MKB, AI automation)
+3. Load `marketing-super-team` skill — run a **Quick Audit** on each seed: is this the right angle for the target audience?
+4. Draft proposals internally — they will be presented at the **End-of-Meeting Approval Gate**. Use this format for the gate:
+
+```
+### Kennisbank Content Proposals
+
+**Proposal 1:**
+- Title: [Dutch title]
+- Category: [valid category — see references/kennisbank-publishing.md]
+- Angle: [1 sentence — what pain it addresses]
+- Outline:
+  1. [Section 1]
+  2. [Section 2]
+  3. [Section 3]
+
+**Proposal 2:** ...
+```
+
+Do **not** pause here. Continue directly to Phase 5.
+
+5. For each approved proposal (after End-of-Meeting gate): write the full article (Dutch, HTML, 400–700 words), format as JSON, and publish to S3 following the steps in `references/kennisbank-publishing.md`.
+
+---
+
+## Phase 5 — Meeting Summary
+
+Compile a concise management summary covering all phases.
+
+### Summary format
+
+```markdown
+# AIntern Boardvergadering — {datum}
+
+## Aanwezig
+Alex (CEO), Blake (CMO), Morgan (CTO), Sam (COO)
+
+## Top 5 Dagelijkse Acties
+| # | Actie | Eigenaar | Succescriterium |
+|---|-------|----------|-----------------|
+...
+
+## LinkedIn Outreach
+- Leads voorgesteld: N
+- Status: [goedgekeurd / in behandeling / verstuurd]
+- Berichten: [lijst]
+
+## Kennisbank Content
+- Voorstellen: [titels]
+- Status: [goedgekeurd / gepubliceerd / in behandeling]
+
+## Open Punten & Blockers
+- [Lijst]
+
+## Volgende Vergadering
+{datum van morgen}
+```
+
+### Save to Obsidian
+
+Save the summary as `{YYYY-MM-DD} AIntern Boardvergadering.md` to:
+```
+C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/
+```
+
+Create the folder if it does not exist.
+
+### Email the summary
+
+Send the summary to `w.middelbosch@gmail.com` using **Zapier MCP** (`mcp__claude_ai_Zapier__gmail_send_email`) — this sends immediately. Subject: `AIntern Boardvergadering — {datum}`. Body: HTML. Fallback: `mcp__claude_ai_Gmail__gmail_create_draft` creates a draft only.
+
+---
+
+## Phase 6 — Board Memory Update (After Approval Gate)
+
+After receiving the Human Board's response at the End-of-Meeting Approval Gate, update each executive's memory directory. **This phase runs after the human's approval/rejection — not before.** Include the human's decisions (what was approved, rejected, or modified) in the relevant memory files.
+
+### Memory locations
+
+| Executive | Directory |
+|-----------|-----------|
+| Alex (CEO) | `.claude/ceo/` |
+| Blake (CMO) | `.claude/cmo/` |
+| Morgan (CTO) | `.claude/cto/` |
+| Sam (COO) | `.claude/coo/` |
+
+### What to write per executive
+
+For each executive, upsert the file `{dir}/memory_daily_context.md` using this structure:
+
+```markdown
+# [Name] — Daily Context
+_Last updated: {YYYY-MM-DD}_
+
+## Open Acties (toegewezen aan mij)
+- [Actie uit Top 5 Daily Actions die aan deze exec is toegewezen]
+
+## KPI Status (deze week)
+- [KPI]: [Actual] / [Target] — [status]
+
+## Actieve Blockers
+- [Blocker die relevant is voor deze exec — of "Geen"]
+
+## Genomen Beslissingen (vandaag)
+- [Beslissingen uit Round 2/3 die deze exec raken]
+
+## Lopende Context
+- [Andere relevante context — bijv. pending DMs, Kennisbank artikel in behandeling, backlog item in scope]
+```
+
+**Write rules:**
+- Always overwrite the full file — do not append
+- Only include information relevant to that executive's domain
+- CMO: include outreach batch status (approved/rejected/modified by Human Board), pending DMs, Kennisbank proposal status (approved/rejected)
+- CTO: include backlog items in scope, any tech blocker status changes
+- COO: include pipeline health status, onboarding checklist state
+- CEO: include the Top 5 Daily Actions list, any cross-functional decisions, and Human Board feedback
+- Always note which items were approved, rejected, or modified by the Human Board — this is the ground truth for the next meeting
+
+---
+
+## Phase 7 — Skill Improvement
+
+At the end of every meeting, review the session and propose improvements to this skill.
+
+### Steps
+
+1. Identify 2–3 specific friction points from today's meeting:
+   - Instructions that were unclear
+   - Steps that took longer than expected
+   - Information that was missing and had to be fetched ad hoc
+   - Outputs that didn't match the expected format
+
+2. Store improvement proposals for the **End-of-Meeting Approval Gate** in this format:
+
+```
+### Skill Verbetervoorstellen
+
+**Verbetering 1:** [wat te wijzigen]
+- Locatie: SKILL.md / references/[bestand]
+- Voorgestelde wijziging: [specifieke aanpassing]
+- Reden: [welke frictie het wegneemt]
+
+**Verbetering 2:** ...
+```
+
+Do **not** pause here. Present these at the End-of-Meeting Approval Gate.
+
+3. On approval: edit this `SKILL.md` or the relevant `references/` file directly. Increment the version number in frontmatter (patch bump: 0.1.0 → 0.1.1).
+
+---
+
+## End-of-Meeting Approval Gate
+
+After completing all seven phases automatically, present **one consolidated approval prompt** to the Human Board:
+
+```
+---
+## Einde Vergadering — Goedkeuring Vereist
+
+De vergadering is voltooid. Onderstaande items vereisen jouw beslissing:
+
+### A) LinkedIn Outreach
+[Herhaal alle voorgestelde berichten uit Phase 3]
+→ Antwoord "linkedin goedgekeurd" om te versturen, of geef feedback per lead.
+
+### B) Kennisbank Content
+[Herhaal alle voorgestelde artikelen uit Phase 4]
+→ Antwoord "kennisbank [1]" en/of "kennisbank [2]" om te publiceren.
+
+### C) Skill Verbeteringen
+[Herhaal verbetervoorstellen uit Phase 7]
+→ Antwoord "skill goedgekeurd" om de skill bij te werken, of "overslaan".
+
+### D) Samenvatting
+- Opgeslagen in Obsidian: ✅
+- E-mail verstuurd: ✅ / (Draft aangemaakt — stuur handmatig)
+- Board memory: wordt bijgewerkt ná jouw reactie hieronder
+
+Reageer met een of meerdere van de bovenstaande commando's, of "alles goedgekeurd" voor alles.
+---
+```
+
+After receiving approval responses:
+1. Execute the approved actions immediately (send LinkedIn messages, publish Kennisbank articles, update SKILL.md)
+2. **Then** run Phase 6 — update board memory files, incorporating the human's decisions (what was approved, rejected, and any modifications made)
+
+---
+
+## Execution Rules
+
+- **Run all phases automatically** — do not pause mid-meeting for approvals
+- **Single approval gate** — collect all human decisions and present them at the very end
+- **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
+- **Stay in character** — each executive speaks in their own voice throughout
+- **Cite OKRs** — anchor every priority to a Q2 OKR metric
+- **Alles in het Nederlands** — vergadering, discussie, samenvatting, outreach en Kennisbank content zijn allemaal in het Nederlands
+- **Hard blocker exception** — if a phase encounters a fatal error (missing file, auth failure), surface it inline with a `[BLOCKER]` tag and continue with remaining phases; include it in the End-of-Meeting gate
+
+---
+
+## Additional Resources
+
+### Reference Files
+
+- **`references/meeting-format.md`** — Detailed debate techniques, persona voice guides, and example exchanges
+- **`references/obsidian-vault.md`** — Vault location, folder structure, and how to extract topic seeds
+- **`references/kennisbank-publishing.md`** — Full S3 publish workflow, JSON schemas, valid categories, and AWS commands
+- **`references/outreach-format.md`** — Approved LinkedIn connection message templates and character-count rules
+
+### Zapier MCP Actions
+
+- **`mcp__claude_ai_Zapier__gmail_send_email`** — Send meeting summary email directly (no draft step)
+- **`mcp__claude_ai_Zapier__linkedin_create_company_update`** — Post to AIntern brand page (company_id pre-set); use after publishing new Kennisbank articles or key announcements
+- **`mcp__claude_ai_Zapier__linkedin_create_share_update`** — Post to Bill's personal LinkedIn feed (visibility: public)
+
+### External Skills
+
+- **`marketing-super-team`** — Used in Phase 2 (debate structure), Phase 3 (outreach angle), Phase 4 (content angle audit)
+- **`social-content`** — Used in Phase 3 to check hook quality
+- **`outreach`** — Used after Phase 3 approval to execute the LinkedIn sequence
+
+### Agents
+
+- **`linkedin-outreach`** — Handles the actual sending after Phase 3 approval
+- **`cmo`** (Blake) — Leads Phases 3 and 4
+- **`ceo`** (Alex) — Chairs Phases 1 and 2, synthesises Round 3
+- **`cto`** (Morgan) — Leads technical inputs in Phase 2
+- **`coo`** (Sam) — Ops priorities in Phase 2: pipeline health, onboarding checklist, weekly report status
