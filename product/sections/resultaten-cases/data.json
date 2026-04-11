@@ -18,12 +18,12 @@
       "icon": "clock",
       "nl": {
         "title": "Producten uploaden naar alle kanalen",
-        "description": "Een webshop automatiseerde het uploaden van producten naar alle online verkoopkanalen. Wat vroeger 60 minuten kostte per batch, doet de AI nu in 5 minuten per product.",
+        "description": "Een webshop automatiseerde het uploaden van producten naar alle online verkoopkanalen. Wat vroeger 60 minuten kostte per product, doet de AI nu in 5 minuten.",
         "metricLabel": "minder uploadtijd"
       },
       "en": {
         "title": "Uploading products across all channels",
-        "description": "A webshop automated uploading products to all online sales channels. What used to take 60 minutes per batch now takes 5 minutes per product with AI.",
+        "description": "A webshop automated uploading products to all online sales channels. What used to take 60 minutes per product now takes 5 minutes with AI.",
         "metricLabel": "less upload time"
       }
     },
