@@ -35,18 +35,6 @@ Run Apify enrichment (via `apify-lead-generation` skill) to add LinkedIn profile
 
 For the **pending DMs** (accepted connections awaiting icebreaker): check `.claude/cmo/memory_outreach_dm_pending.md` — these are tracked separately from the CSV and should always be prioritised over new cold requests.
 
-## LI_AT Token Refresh
-
-The `li_at` cookie authenticates the LinkedIn session. It expires periodically. When blocked:
-
-1. Open LinkedIn in your browser and log in
-2. Open DevTools (F12) → Application tab → Cookies → `https://www.linkedin.com`
-3. Find the cookie named `li_at` and copy its value
-4. Update the token in the `linkedin-outreach` agent configuration
-5. Test with a single DM before running a batch
-
-Signs of token expiry: outreach agent returns auth errors or 403 responses.
-
 ## Post-Approval Handoff
 
 After Human Board approval, pass the approved messages to the `linkedin-outreach` agent with:

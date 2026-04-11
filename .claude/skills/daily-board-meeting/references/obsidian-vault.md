@@ -52,7 +52,7 @@ C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/
 
 Create the folder if it does not exist. File naming convention:
 ```
-YYYY-MM-DD AIntern Board Meeting.md
+YYYY-MM-DD AIntern Boardvergadering.md
 ```
 
-Example: `2026-04-11 AIntern Board Meeting.md`
+Example: `2026-04-11 AIntern Boardvergadering.md`
