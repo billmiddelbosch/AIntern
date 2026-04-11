@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useKpiStore } from '@/stores/useKpiStore'
 
@@ -8,6 +8,12 @@ const store = useKpiStore()
 
 type Tab = 'quarterly' | 'weekly'
 const activeTab = ref<Tab>('quarterly')
+
+// Load actuals from API on mount
+onMounted(() => store.loadActuals())
+
+// Source indicator map
+const actualsSource = computed(() => store.actualsSource)
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -83,8 +89,8 @@ const overallOkrPct = computed(() => {
         <h2 class="text-2xl font-semibold text-slate-800">{{ t('admin.kpi.heading') }}</h2>
         <p class="mt-1 text-sm text-slate-500">{{ t('admin.kpi.subheading') }}</p>
       </div>
-      <!-- Overall progress pill -->
-      <div class="shrink-0 flex flex-col items-end gap-1">
+      <!-- Overall progress pill + Refresh button -->
+      <div class="shrink-0 flex flex-col items-end gap-2">
         <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">Q2 overall</span>
         <div class="flex items-center gap-2">
           <div class="w-32 h-2 rounded-full bg-slate-200 overflow-hidden">
@@ -96,6 +102,16 @@ const overallOkrPct = computed(() => {
           </div>
           <span class="text-sm font-semibold text-slate-700">{{ overallOkrPct }}%</span>
         </div>
+        <!-- Refresh button -->
+        <button
+          class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg
+                 bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
+          :disabled="store.isRefreshing"
+          @click="store.refreshActuals()"
+        >
+          <span v-if="store.isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
+          <span v-else>{{ t('admin.kpi.refreshButton') }}</span>
+        </button>
       </div>
     </div>
 
@@ -114,6 +130,16 @@ const overallOkrPct = computed(() => {
       >
         {{ tab === 'quarterly' ? t('admin.kpi.quarterlyTab') : t('admin.kpi.weeklyTab') }}
       </button>
+    </div>
+
+    <!-- Last refreshed timestamp -->
+    <div v-if="store.lastRefreshed" class="text-xs text-slate-400">
+      {{ t('admin.kpi.lastRefreshed', { time: store.lastRefreshed }) }}
+    </div>
+
+    <!-- Refresh errors -->
+    <div v-if="store.refreshErrors.length" class="text-xs text-red-500 space-y-0.5">
+      <p v-for="err in store.refreshErrors" :key="err">⚠ {{ err }}</p>
     </div>
 
     <!-- ── Quarterly OKRs ─────────────────────────────────────────────────── -->
@@ -137,6 +163,11 @@ const overallOkrPct = computed(() => {
           <div v-for="kr in obj.keyResults" :key="kr.id" class="space-y-1.5">
             <div class="flex items-center justify-between gap-2">
               <span class="text-xs text-slate-600 leading-tight flex-1">{{ kr.label }}</span>
+              <!-- Source badge -->
+              <span
+                v-if="actualsSource[kr.id]"
+                class="shrink-0 text-[10px] px-1 py-0.5 rounded bg-slate-100 text-slate-400"
+              >{{ actualsSource[kr.id] === 'automated' ? t('admin.kpi.sourceAuto') : t('admin.kpi.sourceManual') }}</span>
               <!-- Boolean toggle -->
               <template v-if="kr.type === 'boolean'">
                 <button

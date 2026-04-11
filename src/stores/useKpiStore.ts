@@ -1,9 +1,22 @@
 import { defineStore } from 'pinia'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
+import { useKpiApi } from '@/composables/useKpiApi'
 import type { OKRObjective, CLevel } from '@/types/kpi'
 
-// Q2 2026 OKR definitions — board approved 2026-04-09
+// ── ISO week helper ───────────────────────────────────────────────────────────
+
+function currentIsoWeek(): string {
+  const now = new Date()
+  const jan4 = new Date(now.getFullYear(), 0, 4)
+  const startOfWeek1 = new Date(jan4)
+  startOfWeek1.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1)
+  const weekNum = Math.floor((now.getTime() - startOfWeek1.getTime()) / (7 * 86400000)) + 1
+  return `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`
+}
+
+// ── Q2 2026 OKR definitions — board approved 2026-04-09 ──────────────────────
+
 const OBJECTIVES: OKRObjective[] = [
   {
     id: 'o1',
@@ -60,7 +73,8 @@ const OBJECTIVES: OKRObjective[] = [
   },
 ]
 
-// Weekly KPI targets per C-Level
+// ── Weekly KPI targets per C-Level ───────────────────────────────────────────
+
 const C_LEVELS: CLevel[] = [
   {
     role: 'CEO',
@@ -108,9 +122,23 @@ const C_LEVELS: CLevel[] = [
   },
 ]
 
+// ── Store ─────────────────────────────────────────────────────────────────────
+
 export const useKpiStore = defineStore('kpi', () => {
+  const { getActuals, putActual, refreshActuals: apiRefreshActuals } = useKpiApi()
+
+  // localStorage write-through cache — instant UI + offline fallback
   const okrActuals = useLocalStorage<Record<string, number>>('kpi:okr-actuals', {})
   const weeklyActuals = useLocalStorage<Record<string, number>>('kpi:weekly-actuals', {})
+
+  // API-sourced metadata
+  const actualsSource = ref<Record<string, 'manual' | 'automated' | 'error'>>({})
+  const isLoadingActuals = ref(false)
+  const isRefreshing = ref(false)
+  const lastRefreshed = ref<string | null>(null)
+  const refreshErrors = ref<string[]>([])
+
+  // ── Computed views ──────────────────────────────────────────────────────────
 
   const objectives = computed(() =>
     OBJECTIVES.map((obj) => ({
@@ -132,13 +160,112 @@ export const useKpiStore = defineStore('kpi', () => {
     })),
   )
 
-  function updateOkrActual(id: string, value: number) {
+  // ── Actions ─────────────────────────────────────────────────────────────────
+
+  /**
+   * Load actuals from API for the current ISO week and merge into localStorage cache.
+   * Silently falls back to existing localStorage values on API error.
+   */
+  async function loadActuals(): Promise<void> {
+    isLoadingActuals.value = true
+    try {
+      const response = await getActuals(currentIsoWeek())
+      const newOkr: Record<string, number> = { ...okrActuals.value }
+      const newWeekly: Record<string, number> = { ...weeklyActuals.value }
+      const newSource: Record<string, 'manual' | 'automated' | 'error'> = { ...actualsSource.value }
+
+      for (const [id, entry] of Object.entries(response.actuals)) {
+        // kr-prefixed ids → OKR actuals; everything else → weekly actuals
+        if (id.startsWith('kr')) {
+          newOkr[id] = entry.value
+        } else {
+          newWeekly[id] = entry.value
+        }
+        newSource[id] = entry.source
+      }
+
+      okrActuals.value = newOkr
+      weeklyActuals.value = newWeekly
+      actualsSource.value = newSource
+    } catch {
+      // Silently continue — localStorage values remain as fallback
+    } finally {
+      isLoadingActuals.value = false
+    }
+  }
+
+  /**
+   * Trigger POST /admin/kpi/refresh then reload actuals.
+   * Records the refresh timestamp and any server-side errors.
+   */
+  async function refreshActuals(): Promise<void> {
+    isRefreshing.value = true
+    refreshErrors.value = []
+    try {
+      const result = await apiRefreshActuals()
+      refreshErrors.value = result.errors
+      await loadActuals()
+      lastRefreshed.value = new Date().toLocaleTimeString()
+    } catch (err) {
+      refreshErrors.value = [err instanceof Error ? err.message : 'Unknown error']
+    } finally {
+      isRefreshing.value = false
+    }
+  }
+
+  /**
+   * Optimistically update an OKR actual locally, then persist to API.
+   * Reverts on API failure.
+   */
+  async function updateOkrActual(id: string, value: number): Promise<void> {
+    const previous = okrActuals.value[id]
     okrActuals.value = { ...okrActuals.value, [id]: value }
+    try {
+      await putActual(currentIsoWeek(), id, value)
+    } catch {
+      // Revert to previous value
+      const reverted = { ...okrActuals.value }
+      if (previous === undefined) {
+        delete reverted[id]
+      } else {
+        reverted[id] = previous
+      }
+      okrActuals.value = reverted
+    }
   }
 
-  function updateWeeklyActual(id: string, value: number) {
+  /**
+   * Optimistically update a weekly KPI actual locally, then persist to API.
+   * Reverts on API failure.
+   */
+  async function updateWeeklyActual(id: string, value: number): Promise<void> {
+    const previous = weeklyActuals.value[id]
     weeklyActuals.value = { ...weeklyActuals.value, [id]: value }
+    try {
+      await putActual(currentIsoWeek(), id, value)
+    } catch {
+      // Revert to previous value
+      const reverted = { ...weeklyActuals.value }
+      if (previous === undefined) {
+        delete reverted[id]
+      } else {
+        reverted[id] = previous
+      }
+      weeklyActuals.value = reverted
+    }
   }
 
-  return { objectives, cLevels, updateOkrActual, updateWeeklyActual }
+  return {
+    objectives,
+    cLevels,
+    actualsSource,
+    isLoadingActuals,
+    isRefreshing,
+    lastRefreshed,
+    refreshErrors,
+    loadActuals,
+    refreshActuals,
+    updateOkrActual,
+    updateWeeklyActual,
+  }
 })

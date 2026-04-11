@@ -265,7 +265,12 @@
       "heading": "KPI Dashboard",
       "subheading": "Q2 2026 OKR progress and weekly KPI targets per C-Level. Click values to update.",
       "quarterlyTab": "Quarterly OKRs",
-      "weeklyTab": "Weekly KPIs"
+      "weeklyTab": "Weekly KPIs",
+      "refreshButton": "Refresh actuals",
+      "refreshing": "Refreshing…",
+      "lastRefreshed": "Last refreshed: {time}",
+      "sourceAuto": "auto",
+      "sourceManual": "manual"
     }
   },
   "hero": {
