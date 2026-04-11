@@ -197,11 +197,14 @@ export class AdminStack extends cdk.Stack {
       }),
     )
 
-    // S3: GetObject on outreach CSV + ListBucket on aintern-kennisbank
+    // S3: GetObject on outreach CSV + backlog.md + ListBucket on aintern-kennisbank
     kpiIntegrationsFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject'],
-        resources: ['arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv'],
+        resources: [
+          'arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv',
+          'arn:aws:s3:::aintern-kennisbank/admin-assets/backlog.md',
+        ],
       }),
     )
 

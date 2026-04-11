@@ -78,6 +78,24 @@ async function requireAuth(
 }
 
 /**
+ * Return all seven YYYY-MM-DD date strings for the given ISO week (Mon → Sun).
+ * Uses local-time operations so dates match the backlog markdown format.
+ */
+function isoWeekToDateStrings(week: string): string[] {
+  const { start } = isoWeekToDateRange(week)
+  const dates: string[] = []
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(start)
+    d.setDate(start.getDate() + i)
+    const y = d.getFullYear()
+    const m = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    dates.push(`${y}-${m}-${day}`)
+  }
+  return dates
+}
+
+/**
  * Compute the current ISO week string, e.g. "2026-W15".
  */
 function currentIsoWeek(): string {
@@ -345,6 +363,69 @@ async function integrateGA4(
   return updated
 }
 
+// ── Integration 4: product/backlog.md → cpo.2 ────────────────────────────────
+
+/**
+ * Count backlog table rows that contain a YYYY-MM-DD date falling in the given
+ * ISO week. Each such row represents a backlog item shipped or actively worked
+ * on that week (Geïmplementeerd, board-meeting, In progress markers).
+ */
+function countBacklogItemsInWeek(markdown: string, weekDateSet: Set<string>): number {
+  let count = 0
+  for (const line of markdown.split('\n')) {
+    const trimmed = line.trim()
+    // Only table data rows — skip headings, separators, and blank lines
+    if (!trimmed.startsWith('|')) continue
+    if (/^\|\s*(ID|~~ID)/.test(trimmed)) continue // header row
+    if (/^\|[-\s|]+$/.test(trimmed)) continue // separator row (|---|---|...)
+
+    const dateMatches = trimmed.match(/\b\d{4}-\d{2}-\d{2}\b/g) ?? []
+    if (dateMatches.some((d) => weekDateSet.has(d))) {
+      count++
+    }
+  }
+  return count
+}
+
+async function integrateBacklog(
+  week: string,
+  tableName: string,
+  errors: string[],
+): Promise<string[]> {
+  const updated: string[] = []
+  const bucket = 'aintern-kennisbank'
+  const key = 'admin-assets/backlog.md'
+
+  let markdown: string
+  try {
+    const resp = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }))
+    markdown = await resp.Body!.transformToString('utf-8')
+  } catch (err: unknown) {
+    const code = (err as { name?: string }).name
+    if (code === 'NoSuchKey' || code === 'NoSuchBucket') {
+      errors.push(
+        `backlog: s3://${bucket}/${key} not found — run \`npm run sync:backlog\` to upload`,
+      )
+      try {
+        await writeActual(tableName, week, 'cpo.2', 0)
+        updated.push('cpo.2')
+      } catch {
+        // ignore write errors for zero fallback
+      }
+      return updated
+    }
+    throw err
+  }
+
+  const weekDateSet = new Set(isoWeekToDateStrings(week))
+  const count = countBacklogItemsInWeek(markdown, weekDateSet)
+
+  await writeActual(tableName, week, 'cpo.2', count)
+  updated.push('cpo.2')
+
+  return updated
+}
+
 // ── Request body parsing ─────────────────────────────────────────────────────
 
 interface RefreshBody {
@@ -410,8 +491,8 @@ export async function handler(
   const errors: string[] = []
   const updated: string[] = []
 
-  // Run all three integrations; failures are caught internally and appended to errors[]
-  const [outreachUpdated, kennisbankUpdated, ga4Updated] = await Promise.all([
+  // Run all four integrations; failures are caught internally and appended to errors[]
+  const [outreachUpdated, kennisbankUpdated, ga4Updated, backlogUpdated] = await Promise.all([
     integrateOutreach(week, tableName, errors).catch((err: unknown) => {
       errors.push(`outreach: unexpected error — ${(err as Error).message}`)
       return []
@@ -424,9 +505,13 @@ export async function handler(
       errors.push(`ga4: unexpected error — ${(err as Error).message}`)
       return []
     }),
+    integrateBacklog(week, tableName, errors).catch((err: unknown) => {
+      errors.push(`backlog: unexpected error — ${(err as Error).message}`)
+      return []
+    }),
   ])
 
-  updated.push(...outreachUpdated, ...kennisbankUpdated, ...ga4Updated)
+  updated.push(...outreachUpdated, ...kennisbankUpdated, ...ga4Updated, ...backlogUpdated)
 
   if (errors.length > 0) {
     console.warn('kpi-integrations: partial errors during refresh:', errors)

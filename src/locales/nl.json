@@ -270,7 +270,11 @@
       "refreshing": "Actualiseren…",
       "lastRefreshed": "Laatst bijgewerkt: {time}",
       "sourceAuto": "auto",
-      "sourceManual": "handmatig"
+      "sourceManual": "handmatig",
+      "ocrButton": "Scan afbeelding",
+      "ocrScanning": "Scannen…",
+      "ocrNoResult": "Geen getal gevonden in afbeelding",
+      "ocrError": "OCR mislukt: {msg}"
     }
   },
   "hero": {

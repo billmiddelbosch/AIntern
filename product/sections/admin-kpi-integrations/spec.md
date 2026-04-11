@@ -30,6 +30,7 @@ source. Metrics without an automated source remain manually editable in the dash
 | `kr3.4` | Monthly unique visitors | GA4 Data API — `activeUsers` last 30 days | On-demand |
 | `cto.1` | Security check done | `.claude/cto/memory_security_check_{YYYY-MM-DD}.md` — check if file exists for current week | On-demand |
 | `kr3.6` | Security checks completed (quarterly) | Count `.claude/cto/memory_security_check_*.md` files in Q2 date range | On-demand |
+| `cpo.2` | Backlog item shipped or in progress | `product/backlog.md` — count table rows containing a YYYY-MM-DD date in the current ISO week. Upload to S3 first via `npm run sync:backlog`. | On-demand |
 
 ### Manual (user edits in dashboard — no integration)
 
@@ -45,6 +46,8 @@ source. Metrics without an automated source remain manually editable in the dash
 | `coo.1–4` | All COO weekly KPIs | No automated source |
 | `kr4.1–4.3` | COO OKR milestones | Boolean — user toggles in dashboard |
 | `kr5.1–5.4` | Governance milestones | Boolean — user toggles in dashboard |
+
+> **Note:** `cpo.2` was originally listed as manual. It is now automated via Integration 4 (backlog.md → S3).
 
 ---
 

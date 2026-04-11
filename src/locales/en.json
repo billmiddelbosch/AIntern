@@ -270,7 +270,11 @@
       "refreshing": "Refreshing…",
       "lastRefreshed": "Last refreshed: {time}",
       "sourceAuto": "auto",
-      "sourceManual": "manual"
+      "sourceManual": "manual",
+      "ocrButton": "Scan image",
+      "ocrScanning": "Scanning…",
+      "ocrNoResult": "No number found in image",
+      "ocrError": "OCR failed: {msg}"
     }
   },
   "hero": {
