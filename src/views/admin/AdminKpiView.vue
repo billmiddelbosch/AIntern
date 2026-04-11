@@ -1,13 +1,27 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useKpiStore } from '@/stores/useKpiStore'
+import { useOcr } from '@/composables/useOcr'
 
 const { t } = useI18n()
 const store = useKpiStore()
+const { isRecognizing, ocrError, recognizeNumber } = useOcr()
 
 type Tab = 'quarterly' | 'weekly'
 const activeTab = ref<Tab>('quarterly')
+
+// Load actuals from API on mount
+onMounted(() => store.loadActuals())
+
+// Source indicator map
+const actualsSource = computed(() => store.actualsSource)
+
+// Track which metric is currently being OCR-scanned
+const scanningId = ref<string | null>(null)
+
+// Notification for OCR result
+const ocrNotice = ref<{ id: string; message: string } | null>(null)
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -48,6 +62,44 @@ function onWeeklyInput(id: string, event: Event) {
   if (!isNaN(v) && v >= 0) store.updateWeeklyActual(id, v)
 }
 
+// ── OCR ──────────────────────────────────────────────────────────────────────
+
+function triggerOcr(id: string) {
+  const input = document.getElementById(`ocr-input-${id}`) as HTMLInputElement | null
+  input?.click()
+}
+
+async function onOcrFile(
+  id: string,
+  event: Event,
+  updateFn: (id: string, value: number) => Promise<void>,
+) {
+  const file = (event.target as HTMLInputElement).files?.[0]
+  if (!file) return
+
+  scanningId.value = id
+  ocrNotice.value = null
+
+  const value = await recognizeNumber(file)
+
+  // Reset file input so the same file can be re-selected
+  ;(event.target as HTMLInputElement).value = ''
+
+  if (value === null) {
+    ocrNotice.value = {
+      id,
+      message: ocrError.value
+        ? t('admin.kpi.ocrError', { msg: ocrError.value })
+        : t('admin.kpi.ocrNoResult'),
+    }
+  } else {
+    await updateFn(id, value)
+    ocrNotice.value = null
+  }
+
+  scanningId.value = null
+}
+
 // ── owner badge colours ───────────────────────────────────────────────────────
 
 const ownerBadge: Record<string, string> = {
@@ -83,8 +135,8 @@ const overallOkrPct = computed(() => {
         <h2 class="text-2xl font-semibold text-slate-800">{{ t('admin.kpi.heading') }}</h2>
         <p class="mt-1 text-sm text-slate-500">{{ t('admin.kpi.subheading') }}</p>
       </div>
-      <!-- Overall progress pill -->
-      <div class="shrink-0 flex flex-col items-end gap-1">
+      <!-- Overall progress pill + Refresh button -->
+      <div class="shrink-0 flex flex-col items-end gap-2">
         <span class="text-xs font-medium text-slate-400 uppercase tracking-wide">Q2 overall</span>
         <div class="flex items-center gap-2">
           <div class="w-32 h-2 rounded-full bg-slate-200 overflow-hidden">
@@ -96,6 +148,16 @@ const overallOkrPct = computed(() => {
           </div>
           <span class="text-sm font-semibold text-slate-700">{{ overallOkrPct }}%</span>
         </div>
+        <!-- Refresh button -->
+        <button
+          class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg
+                 bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
+          :disabled="store.isRefreshing"
+          @click="store.refreshActuals()"
+        >
+          <span v-if="store.isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
+          <span v-else>{{ t('admin.kpi.refreshButton') }}</span>
+        </button>
       </div>
     </div>
 
@@ -116,6 +178,16 @@ const overallOkrPct = computed(() => {
       </button>
     </div>
 
+    <!-- Last refreshed timestamp -->
+    <div v-if="store.lastRefreshed" class="text-xs text-slate-400">
+      {{ t('admin.kpi.lastRefreshed', { time: store.lastRefreshed }) }}
+    </div>
+
+    <!-- Refresh errors -->
+    <div v-if="store.refreshErrors.length" class="text-xs text-red-500 space-y-0.5">
+      <p v-for="err in store.refreshErrors" :key="err">⚠ {{ err }}</p>
+    </div>
+
     <!-- ── Quarterly OKRs ─────────────────────────────────────────────────── -->
     <div v-if="activeTab === 'quarterly'" class="grid grid-cols-1 lg:grid-cols-2 gap-4">
       <div
@@ -133,23 +205,31 @@ const overallOkrPct = computed(() => {
         </div>
 
         <!-- Key Results -->
-        <div class="space-y-3">
+        <div class="space-y-4">
           <div v-for="kr in obj.keyResults" :key="kr.id" class="space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs text-slate-600 leading-tight flex-1">{{ kr.label }}</span>
-              <!-- Boolean toggle -->
-              <template v-if="kr.type === 'boolean'">
-                <button
-                  class="shrink-0 text-xs font-medium px-2 py-0.5 rounded-full ring-1 transition-colors"
-                  :class="badgeClass[statusColor(kr.currentValue, kr.targetValue, kr.type)]"
-                  @click="store.updateOkrActual(kr.id, kr.currentValue >= 1 ? 0 : 1)"
-                >
-                  {{ kr.currentValue >= 1 ? 'Done' : 'Open' }}
-                </button>
-              </template>
-              <!-- Numeric input -->
-              <template v-else>
-                <div class="shrink-0 flex items-center gap-1">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <span class="text-xs text-slate-700 leading-tight font-medium">{{ kr.label }}</span>
+                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">{{ kr.description }}</p>
+              </div>
+              <div class="shrink-0 flex items-center gap-1.5 mt-0.5">
+                <!-- Source badge -->
+                <span
+                  v-if="actualsSource[kr.id]"
+                  class="text-[10px] px-1 py-0.5 rounded bg-slate-100 text-slate-400"
+                >{{ actualsSource[kr.id] === 'automated' ? t('admin.kpi.sourceAuto') : t('admin.kpi.sourceManual') }}</span>
+                <!-- Boolean toggle -->
+                <template v-if="kr.type === 'boolean'">
+                  <button
+                    class="text-xs font-medium px-2 py-0.5 rounded-full ring-1 transition-colors"
+                    :class="badgeClass[statusColor(kr.currentValue, kr.targetValue, kr.type)]"
+                    @click="store.updateOkrActual(kr.id, kr.currentValue >= 1 ? 0 : 1)"
+                  >
+                    {{ kr.currentValue >= 1 ? 'Done' : 'Open' }}
+                  </button>
+                </template>
+                <!-- Numeric input + OCR -->
+                <template v-else>
                   <input
                     type="number"
                     min="0"
@@ -160,9 +240,34 @@ const overallOkrPct = computed(() => {
                   />
                   <span class="text-xs text-slate-400">/ {{ kr.targetValue }}</span>
                   <span v-if="kr.unit" class="text-xs text-slate-400">{{ kr.unit }}</span>
-                </div>
-              </template>
+                  <!-- OCR scan button -->
+                  <button
+                    class="flex items-center justify-center w-6 h-6 rounded-md text-slate-400
+                           hover:text-indigo-600 hover:bg-indigo-50 transition-colors disabled:opacity-40"
+                    :disabled="scanningId === kr.id || isRecognizing"
+                    :title="t('admin.kpi.ocrButton')"
+                    @click="triggerOcr(kr.id)"
+                  >
+                    <span v-if="scanningId === kr.id" class="text-[10px] animate-pulse">…</span>
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                      <path d="M2 4a2 2 0 0 1 2-2h2a1 1 0 0 1 0 2H4v2a1 1 0 0 1-2 0V4ZM16 2a2 2 0 0 1 2 2v2a1 1 0 0 1-2 0V4h-2a1 1 0 0 1 0-2h2ZM4 14a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2H4a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1ZM17 15a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2h-2a1 1 0 0 1 0-2h2v-2a1 1 0 0 1 1-1ZM7 8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8Zm2 1v2h2V9H9Z"/>
+                    </svg>
+                  </button>
+                  <!-- Hidden file input for OCR -->
+                  <input
+                    :id="`ocr-input-${kr.id}`"
+                    type="file"
+                    accept="image/*"
+                    class="hidden"
+                    @change="onOcrFile(kr.id, $event, store.updateOkrActual)"
+                  />
+                </template>
+              </div>
             </div>
+            <!-- OCR notice for this metric -->
+            <p v-if="ocrNotice?.id === kr.id" class="text-[10px] text-amber-600">
+              {{ ocrNotice.message }}
+            </p>
             <!-- Progress bar (numeric only) -->
             <div v-if="kr.type === 'numeric'" class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
               <div
@@ -193,11 +298,14 @@ const overallOkrPct = computed(() => {
         </div>
 
         <!-- KPIs -->
-        <div class="space-y-3">
+        <div class="space-y-4">
           <div v-for="kpi in cl.kpis" :key="kpi.id" class="space-y-1.5">
-            <div class="flex items-center justify-between gap-2">
-              <span class="text-xs text-slate-600 leading-tight flex-1">{{ kpi.label }}</span>
-              <div class="shrink-0 flex items-center gap-1">
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex-1 min-w-0">
+                <span class="text-xs text-slate-700 leading-tight font-medium">{{ kpi.label }}</span>
+                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">{{ kpi.description }}</p>
+              </div>
+              <div class="shrink-0 flex items-center gap-1 mt-0.5">
                 <input
                   type="number"
                   min="0"
@@ -207,8 +315,33 @@ const overallOkrPct = computed(() => {
                   @change="onWeeklyInput(kpi.id, $event)"
                 />
                 <span class="text-xs text-slate-400">/ {{ kpi.targetPerWeek }}</span>
+                <!-- OCR scan button -->
+                <button
+                  class="flex items-center justify-center w-6 h-6 rounded-md text-slate-400
+                         hover:text-indigo-600 hover:bg-indigo-50 transition-colors disabled:opacity-40"
+                  :disabled="scanningId === kpi.id || isRecognizing"
+                  :title="t('admin.kpi.ocrButton')"
+                  @click="triggerOcr(kpi.id)"
+                >
+                  <span v-if="scanningId === kpi.id" class="text-[10px] animate-pulse">…</span>
+                  <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3.5 h-3.5">
+                    <path d="M2 4a2 2 0 0 1 2-2h2a1 1 0 0 1 0 2H4v2a1 1 0 0 1-2 0V4ZM16 2a2 2 0 0 1 2 2v2a1 1 0 0 1-2 0V4h-2a1 1 0 0 1 0-2h2ZM4 14a1 1 0 0 1 1 1v2h2a1 1 0 0 1 0 2H4a2 2 0 0 1-2-2v-2a1 1 0 0 1 1-1ZM17 15a1 1 0 0 1 1 1v2a2 2 0 0 1-2 2h-2a1 1 0 0 1 0-2h2v-2a1 1 0 0 1 1-1ZM7 8a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H8a1 1 0 0 1-1-1V8Zm2 1v2h2V9H9Z"/>
+                  </svg>
+                </button>
+                <!-- Hidden file input for OCR -->
+                <input
+                  :id="`ocr-input-${kpi.id}`"
+                  type="file"
+                  accept="image/*"
+                  class="hidden"
+                  @change="onOcrFile(kpi.id, $event, store.updateWeeklyActual)"
+                />
               </div>
             </div>
+            <!-- OCR notice for this metric -->
+            <p v-if="ocrNotice?.id === kpi.id" class="text-[10px] text-amber-600">
+              {{ ocrNotice.message }}
+            </p>
             <div class="w-full h-1.5 rounded-full bg-slate-100 overflow-hidden">
               <div
                 class="h-full rounded-full transition-all duration-500"
