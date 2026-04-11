@@ -116,12 +116,55 @@ export class AdminStack extends cdk.Stack {
     // DynamoDB access: GetItem, PutItem, Query on aintern-admin table
     adminTable.grantReadWriteData(kpiActualsFn)
 
+    // ── meeting-actions Lambda ────────────────────────────────────────────────
+    const meetingActionsFn = new lambda.Function(this, 'MeetingActionsFunction', {
+      functionName: 'aintern-meeting-actions',
+      handler: 'meeting-actions.handler',
+      description: 'CRUD endpoints for meeting action items — reads/writes aintern-admin DynamoDB table',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    // SSM read: JWT secret + DynamoDB table name
+    meetingActionsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    // KMS decrypt for SecureString JWT secret
+    meetingActionsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // DynamoDB access: GetItem, PutItem, Query, UpdateItem on aintern-admin table
+    adminTable.grantReadWriteData(meetingActionsFn)
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
 
     const kpiActualsDevAlias = kpiActualsFn.addAlias('dev')
     const kpiActualsProdAlias = kpiActualsFn.addAlias('prod')
+
+    const meetingActionsDevAlias = meetingActionsFn.addAlias('dev')
+    const meetingActionsProdAlias = meetingActionsFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -153,6 +196,21 @@ export class AdminStack extends cdk.Stack {
     actualsResource.addMethod('GET', aliasIntegration(kpiActualsFn))
     actualsResource.addMethod('PUT', aliasIntegration(kpiActualsFn))
 
+    // GET /admin/meetings + GET /admin/meetings/{date}
+    // POST /admin/meetings/{date}/items
+    // PATCH /admin/meetings/{date}/items/{id}
+    const meetingsResource = adminResource.addResource('meetings')
+    meetingsResource.addMethod('GET', aliasIntegration(meetingActionsFn))
+
+    const meetingByDateResource = meetingsResource.addResource('{date}')
+    meetingByDateResource.addMethod('GET', aliasIntegration(meetingActionsFn))
+
+    const meetingItemsResource = meetingByDateResource.addResource('items')
+    meetingItemsResource.addMethod('POST', aliasIntegration(meetingActionsFn))
+
+    const meetingItemByIdResource = meetingItemsResource.addResource('{id}')
+    meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
+
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
     const apigwPrincipal = new iam.ServicePrincipal('apigateway.amazonaws.com')
@@ -162,6 +220,8 @@ export class AdminStack extends cdk.Stack {
       [adminAuthProdAlias, 'AdminAuthProdAlias'],
       [kpiActualsDevAlias, 'KpiActualsDevAlias'],
       [kpiActualsProdAlias, 'KpiActualsProdAlias'],
+      [meetingActionsDevAlias, 'MeetingActionsDevAlias'],
+      [meetingActionsProdAlias, 'MeetingActionsProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,
@@ -233,6 +293,18 @@ export class AdminStack extends cdk.Stack {
       value: prodStage.urlForPath('/admin/kpi/actuals'),
       description: 'Prod GET|PUT /admin/kpi/actuals endpoint',
       exportName: 'aintern-kpi-actuals-url-prod',
+    })
+
+    new cdk.CfnOutput(this, 'MeetingsUrlDev', {
+      value: devStage.urlForPath('/admin/meetings'),
+      description: 'Dev GET /admin/meetings endpoint',
+      exportName: 'aintern-meetings-url-dev',
+    })
+
+    new cdk.CfnOutput(this, 'MeetingsUrlProd', {
+      value: prodStage.urlForPath('/admin/meetings'),
+      description: 'Prod GET /admin/meetings endpoint',
+      exportName: 'aintern-meetings-url-prod',
     })
 
     new cdk.CfnOutput(this, 'AdminDynamoDbTableName', {
