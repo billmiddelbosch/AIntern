@@ -156,6 +156,65 @@ export class AdminStack extends cdk.Stack {
     // DynamoDB access: GetItem, PutItem, Query, UpdateItem on aintern-admin table
     adminTable.grantReadWriteData(meetingActionsFn)
 
+    // ── kpi-integrations Lambda ───────────────────────────────────────────────
+    const kpiIntegrationsFn = new lambda.Function(this, 'KpiIntegrationsFunction', {
+      functionName: 'aintern-kpi-integrations',
+      handler: 'kpi-integrations.handler',
+      description: 'POST /admin/kpi/refresh — pulls automated KPI actuals from S3, outreach CSV, and GA4',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(30),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+        GA4_SA_SSM_PATH: '/aintern/{alias}/ga4/service-account-json',
+        GA4_PROPERTY_SSM_PATH: '/aintern/{alias}/ga4/property-id',
+      },
+    })
+
+    // SSM read: JWT secret + DynamoDB table name + GA4 credentials
+    kpiIntegrationsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/ga4/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/ga4/*`,
+        ],
+      }),
+    )
+
+    // KMS decrypt for SecureString parameters (JWT secret + GA4 service account JSON)
+    kpiIntegrationsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // S3: GetObject on outreach CSV + ListBucket on aintern-kennisbank
+    kpiIntegrationsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: ['arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv'],
+      }),
+    )
+
+    kpiIntegrationsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:ListBucket'],
+        resources: ['arn:aws:s3:::aintern-kennisbank'],
+      }),
+    )
+
+    // DynamoDB access: read/write on aintern-admin table
+    adminTable.grantReadWriteData(kpiIntegrationsFn)
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -165,6 +224,9 @@ export class AdminStack extends cdk.Stack {
 
     const meetingActionsDevAlias = meetingActionsFn.addAlias('dev')
     const meetingActionsProdAlias = meetingActionsFn.addAlias('prod')
+
+    const kpiIntegrationsDevAlias = kpiIntegrationsFn.addAlias('dev')
+    const kpiIntegrationsProdAlias = kpiIntegrationsFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -191,10 +253,14 @@ export class AdminStack extends cdk.Stack {
     adminResource.addResource('register').addMethod('POST', aliasIntegration(adminAuthFn))
 
     // GET + PUT /admin/kpi/actuals
+    // POST /admin/kpi/refresh
     const kpiResource = adminResource.addResource('kpi')
     const actualsResource = kpiResource.addResource('actuals')
     actualsResource.addMethod('GET', aliasIntegration(kpiActualsFn))
     actualsResource.addMethod('PUT', aliasIntegration(kpiActualsFn))
+
+    const refreshResource = kpiResource.addResource('refresh')
+    refreshResource.addMethod('POST', aliasIntegration(kpiIntegrationsFn))
 
     // GET /admin/meetings + GET /admin/meetings/{date}
     // POST /admin/meetings/{date}/items
@@ -222,6 +288,8 @@ export class AdminStack extends cdk.Stack {
       [kpiActualsProdAlias, 'KpiActualsProdAlias'],
       [meetingActionsDevAlias, 'MeetingActionsDevAlias'],
       [meetingActionsProdAlias, 'MeetingActionsProdAlias'],
+      [kpiIntegrationsDevAlias, 'KpiIntegrationsDevAlias'],
+      [kpiIntegrationsProdAlias, 'KpiIntegrationsProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,
@@ -311,6 +379,18 @@ export class AdminStack extends cdk.Stack {
       value: adminTable.tableName,
       description: 'aintern-admin DynamoDB table name',
       exportName: 'aintern-admin-dynamodb-table-name',
+    })
+
+    new cdk.CfnOutput(this, 'KpiRefreshUrlDev', {
+      value: devStage.urlForPath('/admin/kpi/refresh'),
+      description: 'Dev POST /admin/kpi/refresh endpoint',
+      exportName: 'aintern-kpi-refresh-url-dev',
+    })
+
+    new cdk.CfnOutput(this, 'KpiRefreshUrlProd', {
+      value: prodStage.urlForPath('/admin/kpi/refresh'),
+      description: 'Prod POST /admin/kpi/refresh endpoint',
+      exportName: 'aintern-kpi-refresh-url-prod',
     })
 
     // ── Tags ─────────────────────────────────────────────────────────────────
