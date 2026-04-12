@@ -100,7 +100,7 @@ function triggerOcr(id: string) {
 async function onOcrFile(
   id: string,
   event: Event,
-  updateFn: (id: string, value: number) => Promise<void>,
+  updateFn: (id: string, value: number) => void | Promise<void>,
 ) {
   const file = (event.target as HTMLInputElement).files?.[0]
   if (!file) return
