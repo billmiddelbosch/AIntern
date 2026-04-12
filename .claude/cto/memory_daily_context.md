@@ -1,28 +1,27 @@
 # Morgan — Daily Context
-_Last updated: 2026-04-11_
+_Last updated: 2026-04-12_
 
 ## Open Acties (toegewezen aan mij)
-- **B-01 Wekelijkse security check** — GOEDGEKEURD, uitvoeren vandaag (eerst)
-- **L-14 stap 1 & 2** — GOEDGEKEURD door Human Board; uitvoeren na B-01:
-  - Stap 1: verwijder foutieve social proof claim
-  - Stap 2: herstel pilot-case cijfers
+- **B-05 A-03 Role-based access** — vandaag implementeren op feature/board-2026-04-12
+  - Extend useAuthStore met `role: 'admin' | 'editor'`
+  - Conditonele nav-items op basis van role
   - Type-check + security-reviewer vereist voor commit
 
 ## KPI Status (deze week)
-- Security check: N / 1× — ❌ (uitvoeren vandaag via B-01)
-- /admin sprint (KR 5.1–5.4): deadline 22 april — A-03, A-04 in queue daarna
+- Security check: ✅ (gedaan 2026-04-11 — PASS WITH WARNINGS)
+- /admin sprint (KR 5.1–5.4): deadline 22 april (T-10 dagen) — A-03 vandaag, A-04+ volgende sprint
 
 ## Actieve Blockers
-- Geen — Apify credits bijgevuld op 2026-04-11 ✅
+- Geen
 
-## Genomen Beslissingen (Human Board — 2026-04-11)
-- B-01 security check GOEDGEKEURD als backlog item + actie vandaag
-- L-14 stap 1 & 2 GOEDGEKEURD als vervolgactie na B-01
-- L-14 stap 3–5 (headline, Godfather Offer, intake) volgende sprint
-- SKILL.md bijgewerkt naar v0.2.5
+## Genomen Beslissingen (board 2026-04-12)
+- A-03 role-based access is prioriteit 1 voor CTO vandaag (/admin deadline T-10)
+- L-14 stap 3 (hero headline) verschuift naar volgende sprint — /admin heeft hogere urgentie
+- B-01 security check afgerond ✅ (2026-04-11, commit 6ba7260)
+- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md) zijn automatisch.
 
 ## Lopende Context
-- Uitvoeringsvolgorde vandaag: (1) B-01 security check → (2) L-14 stap 1 & 2
-- Beide acties committen op branch feature/board-2026-04-11
-- Na L-14 stap 1 & 2: type-check + security-reviewer draaien voor merge
-- Daarna: A-03 role-based access prioriteit voor /admin sprint
+- Branch feature/board-2026-04-12 actief
+- A-03 backlog item: role guard + conditonele nav-items, type-check pass
+- Na A-03: volgende /admin items zijn A-04 (Kennisbank article list) en A-05 (article form)
+- L-14 stap 1 & 2 gedaan op 2026-04-11 (commits op feature/board-2026-04-11)

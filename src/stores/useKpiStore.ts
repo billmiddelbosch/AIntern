@@ -3,7 +3,7 @@ import { computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import type { OKRObjective, CLevel } from '@/types/kpi'
 
-// Q2 2026 OKR definitions — board approved 2026-04-09
+// Q2 2026 OKR definitions — board approved 2026-04-09, revised 2026-04-12
 const OBJECTIVES: OKRObjective[] = [
   {
     id: 'o1',
@@ -28,13 +28,12 @@ const OBJECTIVES: OKRObjective[] = [
   {
     id: 'o3',
     ownerLabel: 'CPO / CTO',
-    title: 'Website funnel converts & is stable',
+    title: 'Website is organically found & converts',
     keyResults: [
-      { id: 'kr3.2', label: 'Intake questionnaire live & A/B tested (due 1 May)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr3.3', label: 'Kennisbank published articles', targetValue: 10, unit: 'articles', type: 'numeric' },
-      { id: 'kr3.4', label: 'Monthly unique visitors AIntern.nl', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
-      { id: 'kr3.5', label: 'Website uptime', targetValue: 99.5, unit: '%', type: 'numeric' },
-      { id: 'kr3.6', label: 'Weekly security checks completed (out of 13)', targetValue: 13, unit: 'weeks', type: 'numeric' },
+      { id: 'kr3.1', label: 'Monthly unique visitors AIntern.nl', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
+      { id: 'kr3.2', label: 'Google top-10 ranking for target keywords', targetValue: 5, unit: 'keywords', type: 'numeric' },
+      { id: 'kr3.3', label: 'AIntern.nl cited/found by LLM tools (Perplexity, ChatGPT, Claude)', targetValue: 2, unit: 'tools', type: 'numeric' },
+      { id: 'kr3.4', label: 'Kennisbank published articles', targetValue: 20, unit: 'articles', type: 'numeric' },
     ],
   },
   {
@@ -42,9 +41,9 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'COO',
     title: 'Operational foundation scalable',
     keyResults: [
-      { id: 'kr4.1', label: 'Lead pipeline CRM (O-02) operational (due 30 Apr)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client (due 1 May)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.3', label: 'Weekly auto-report (O-01) active (due 30 Apr)', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.1', label: 'Lead pipeline CRM active and maintained weekly', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.3', label: 'Weekly auto-report active and sent', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
   {
@@ -52,10 +51,7 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CEO / CTO',
     title: 'Board visibility & governance',
     keyResults: [
-      { id: 'kr5.1', label: '/admin live, board-only auth-protected (due 22 Apr)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.2', label: 'Organisation overview: active AIntern agents + hierarchy (due 22 Apr)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.3', label: 'OKR status dashboard live at /admin (due 22 Apr)', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.4', label: '/admin secured with MFA or SSO (at launch)', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr5.1', label: 'Board has real-time insight into OKR progress', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
 ]
@@ -77,23 +73,23 @@ const C_LEVELS: CLevel[] = [
       { id: 'cmo.1', label: 'LinkedIn posts published', targetPerWeek: 3, unit: 'posts' },
       { id: 'cmo.2', label: 'New connections sent (Lightspeed segment)', targetPerWeek: 20, unit: 'connections' },
       { id: 'cmo.3', label: 'Inbound leads generated', targetPerWeek: 1, unit: 'leads' },
-      { id: 'cmo.4', label: 'Morning briefings completed', targetPerWeek: 5, unit: 'days' },
+      { id: 'cmo.4', label: 'LinkedIn → website referral traffic monitored', targetPerWeek: 1, unit: 'check' },
     ],
   },
   {
     role: 'CPO',
     kpis: [
-      { id: 'cpo.1', label: 'Kennisbank article published', targetPerWeek: 1, unit: 'article' },
+      { id: 'cpo.1', label: 'Kennisbank articles published', targetPerWeek: 2, unit: 'articles' },
       { id: 'cpo.2', label: 'Backlog item shipped or in progress', targetPerWeek: 1, unit: 'item' },
-      { id: 'cpo.3', label: 'Website traffic report reviewed', targetPerWeek: 1, unit: 'review' },
-      { id: 'cpo.4', label: 'Uptime check', targetPerWeek: 1, unit: 'check' },
+      { id: 'cpo.3', label: 'SEO ranking check (keyword positions)', targetPerWeek: 1, unit: 'check' },
+      { id: 'cpo.4', label: 'Website traffic report reviewed', targetPerWeek: 1, unit: 'review' },
     ],
   },
   {
     role: 'CTO',
     kpis: [
       { id: 'cto.1', label: 'Security check performed & documented', targetPerWeek: 1, unit: 'check' },
-      { id: 'cto.2', label: 'Uptime monitored (≥ 99.5%)', targetPerWeek: 1, unit: 'check' },
+      { id: 'cto.2', label: 'LLM citation check (Perplexity / ChatGPT / Claude)', targetPerWeek: 1, unit: 'check (biweekly)' },
       { id: 'cto.3', label: 'Infrastructure issues escalated (same day)', targetPerWeek: 1, unit: 'check' },
     ],
   },

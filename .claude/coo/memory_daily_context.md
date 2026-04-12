@@ -1,26 +1,26 @@
 # Sam — Daily Context
-_Last updated: 2026-04-11_
+_Last updated: 2026-04-12_
 
 ## Open Acties (toegewezen aan mij)
-- Lead pipeline structureren: leads uit CSV + outreach-log.csv samenvoegen — basis voor O-02
-- O-02 (Lead Pipeline CRM) starten — deadline 30 april (19 dagen)
-- O-01 (Weekly Auto-Report) activeren — deadline 30 april (19 dagen)
-- O-03 (Client Onboarding Checklist) starten — deadline 1 mei (20 dagen)
+- B-06: Lead pipeline bijwerken — Bram, Jan, Bob status op dm_sent documenteren (vandaag)
+- O-02 (Lead Pipeline CRM) starten — deadline 30 april (T-18 dagen)
+- O-01 (Weekly Auto-Report) activeren — deadline 30 april (T-18 dagen)
+- O-03 (Client Onboarding Checklist) starten — deadline 1 mei (T-19 dagen)
 
 ## KPI Status (deze week)
-- Lead pipeline bijgewerkt: 0 / 2× — ❌
-- Open blockers geïdentificeerd: ✅ (Apify, tracking bug memory)
+- Lead pipeline bijgewerkt: ~1 / 2× — ⚠️ (B-06 sluit 2/2)
+- Open blockers geïdentificeerd: ✅ doorlopend
 - Onboarding checklist voortgang: niet bewaakt — ⚠️
 
 ## Actieve Blockers
-- O-02 nog niet gestart — 19 dagen tot deadline (30 april)
-- O-01 nog niet actief — 19 dagen tot deadline (30 april)
-- O-03 nog niet gestart — 20 dagen tot deadline (1 mei)
+- O-02, O-01, O-03 nog niet gestart — deadlines naderen (18–19 dagen)
 
-## Genomen Beslissingen (Human Board — 2026-04-11 sessie 2)
-- Lead pipeline actie AFGEWEZEN als Top 5 voor vandaag
-- Alle COO-deadlines blijven ongewijzigd — urgentie neemt toe
+## Genomen Beslissingen (board 2026-04-12)
+- B-06 pipeline update is Top 5 actie voor vandaag
+- COO-deadlines blijven ongewijzigd — urgentie neemt toe
+- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md) zijn automatisch.
 
 ## Lopende Context
-- Huidige leads: tschuurtje.nl, zaderij.nl, wocashop.nl (connection_sent), collegepoint.nl (pending — geen LinkedIn URL)
-- KPI tracking bug ontdekt: memory_daily_context.md wordt niet bijgewerkt bij publicaties buiten vergadering — Sam moet handmatig bijhouden tot automatisering klaar is
+- Huidige leads: tschuurtje.nl, zaderij.nl, wocashop.nl (dm_sent), collegepoint.nl (pending_connection — Apify enrichment batch)
+- 3 leads wachten op reactie (Bram, Jan, Bob) — bij reactie: status dm_responded + discovery call inplannen
+- Pipeline-update vandaag: bevestig dm_sent status in pipelinebestand
