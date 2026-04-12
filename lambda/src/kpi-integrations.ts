@@ -273,7 +273,7 @@ async function integrateOutreach(
   return updated
 }
 
-// ── Integration 2: Kennisbank S3 → cpo.1, kr3.3 ─────────────────────────────
+// ── Integration 2: Kennisbank S3 → cpo.1, kr3.4 ─────────────────────────────
 
 async function integrateKennisbank(
   week: string,
@@ -293,10 +293,12 @@ async function integrateKennisbank(
       const resp = await s3.send(
         new ListObjectsV2Command({
           Bucket: bucket,
+          Prefix: 'posts/',
           ContinuationToken: continuationToken,
         }),
       )
       for (const obj of resp.Contents ?? []) {
+        if (!obj.Key?.endsWith('.json')) continue
         totalCount++
         const lastModified = obj.LastModified
         if (lastModified && lastModified >= start && lastModified <= end) {
