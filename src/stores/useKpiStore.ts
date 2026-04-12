@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import type { OKRObjective, CLevel } from '@/types/kpi'
+import adminAxios from '@/lib/adminAxios'
 
 // Q2 2026 OKR definitions — board approved 2026-04-09, revised 2026-04-12
 const OBJECTIVES: OKRObjective[] = [
@@ -10,9 +11,9 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CEO / Sales',
     title: 'Win first paying clients',
     keyResults: [
-      { id: 'kr1.1', label: 'Signed contracts via Godfather Offer', targetValue: 2, unit: 'clients', type: 'numeric' },
-      { id: 'kr1.2', label: 'Qualified discovery calls booked', targetValue: 6, unit: 'calls', type: 'numeric' },
-      { id: 'kr1.3', label: 'Pilot cases documented as case studies', targetValue: 2, unit: 'case studies', type: 'numeric' },
+      { id: 'kr1.1', label: 'Signed contracts via Godfather Offer', description: 'Clients who signed a paid contract through our Godfather Offer. Each signed deal counts as 1.', targetValue: 2, unit: 'clients', type: 'numeric' },
+      { id: 'kr1.2', label: 'Qualified discovery calls booked', description: 'Calls with prospects who match our ICP (Lightspeed segment, 6–50 employees). Informal chats do not count.', targetValue: 6, unit: 'calls', type: 'numeric' },
+      { id: 'kr1.3', label: 'Pilot cases documented as case studies', description: 'Written case studies published on the website or shared with prospects. Must include measurable results.', targetValue: 2, unit: 'case studies', type: 'numeric' },
     ],
   },
   {
@@ -20,9 +21,9 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CMO',
     title: 'Activate LinkedIn as primary acquisition channel',
     keyResults: [
-      { id: 'kr2.1', label: 'Weeks posting 3×/wk (no gaps > 3 days)', targetValue: 13, unit: 'weeks', type: 'numeric' },
-      { id: 'kr2.2', label: 'New connections in Lightspeed-beachhead segment', targetValue: 300, unit: 'connections', type: 'numeric' },
-      { id: 'kr2.3', label: 'Inbound leads via LinkedIn DM or website', targetValue: 10, unit: 'leads', type: 'numeric' },
+      { id: 'kr2.1', label: 'Weeks posting 3×/wk (no gaps > 3 days)', description: 'Consecutive weeks with ≥3 LinkedIn posts and no gap exceeding 3 days between posts. Tracked from Q2 start.', targetValue: 13, unit: 'weeks', type: 'numeric' },
+      { id: 'kr2.2', label: 'New connections in Lightspeed-beachhead segment', description: 'Accepted LinkedIn connection requests from retail/wholesale decision-makers (owners, directors) since 1 Apr 2026. Auto-synced from outreach-log.csv.', targetValue: 300, unit: 'connections', type: 'numeric' },
+      { id: 'kr2.3', label: 'Inbound leads via LinkedIn DM or website', description: 'Prospects who initiated contact via LinkedIn DM reply or submitted the website intake form. Counts only first contact.', targetValue: 10, unit: 'leads', type: 'numeric' },
     ],
   },
   {
@@ -61,10 +62,10 @@ const C_LEVELS: CLevel[] = [
   {
     role: 'CEO',
     kpis: [
-      { id: 'ceo.1', label: 'Outreach to qualified prospects', targetPerWeek: 1, unit: 'outreach' },
-      { id: 'ceo.2', label: 'Discovery call held or scheduled', targetPerWeek: 1, unit: 'call (biweekly)' },
-      { id: 'ceo.3', label: 'Pipeline review (Monday)', targetPerWeek: 1, unit: 'review' },
-      { id: 'ceo.4', label: 'OKR progress reviewed (Friday)', targetPerWeek: 1, unit: 'review' },
+      { id: 'ceo.1', label: 'Outreach to qualified prospects', description: 'Personalised outreach message sent to a new qualified prospect this week (LinkedIn DM or email). Must be ICP-fit.', targetPerWeek: 1, unit: 'outreach' },
+      { id: 'ceo.2', label: 'Discovery call held or scheduled', description: 'A 30-min discovery call completed or confirmed in calendar this week. Biweekly cadence: counts every other week.', targetPerWeek: 1, unit: 'call (biweekly)' },
+      { id: 'ceo.3', label: 'Pipeline review (Monday)', description: 'Monday pipeline review completed: all leads reviewed, next steps updated in CRM. Logged in the weekly board report.', targetPerWeek: 1, unit: 'review' },
+      { id: 'ceo.4', label: 'OKR progress reviewed (Friday)', description: 'Friday OKR check-in completed: actuals updated, blockers flagged, next-week priorities set.', targetPerWeek: 1, unit: 'review' },
     ],
   },
   {
@@ -96,10 +97,10 @@ const C_LEVELS: CLevel[] = [
   {
     role: 'COO',
     kpis: [
-      { id: 'coo.1', label: 'Weekly report generated & sent (Monday)', targetPerWeek: 1, unit: 'report' },
-      { id: 'coo.2', label: 'Lead pipeline updated', targetPerWeek: 2, unit: 'updates' },
-      { id: 'coo.3', label: 'Open blockers identified & escalated', targetPerWeek: 1, unit: 'review' },
-      { id: 'coo.4', label: 'Onboarding checklist progress monitored', targetPerWeek: 1, unit: 'review' },
+      { id: 'coo.1', label: 'Weekly report generated & sent (Monday)', description: 'The automated Monday board report (O-01) ran successfully and was delivered to the board by 09:00. Enter 1 if sent, 0 if missed or manual.', targetPerWeek: 1, unit: 'report' },
+      { id: 'coo.2', label: 'Lead pipeline updated', description: 'CRM pipeline updated at least twice this week: all leads have current status, last-contact date, and next action. Target: 2 updates.', targetPerWeek: 2, unit: 'updates' },
+      { id: 'coo.3', label: 'Open blockers identified & escalated', description: 'Weekly blocker review conducted: open issues listed, owners assigned, escalated to CEO if unresolved >2 days. Enter 1 if review done.', targetPerWeek: 1, unit: 'review' },
+      { id: 'coo.4', label: 'Onboarding checklist progress monitored', description: 'Client onboarding checklist reviewed for completeness and readiness. Enter 1 once the checklist is done and verified; 0 if still in progress.', targetPerWeek: 1, unit: 'review' },
     ],
   },
 ]
@@ -136,5 +137,31 @@ export const useKpiStore = defineStore('kpi', () => {
     weeklyActuals.value = { ...weeklyActuals.value, [id]: value }
   }
 
-  return { objectives, cLevels, updateOkrActual, updateWeeklyActual }
+  /**
+   * Fetch actuals from DynamoDB via GET /admin/kpi/actuals and hydrate both maps.
+   * OKR key results (kr*) go into okrActuals; weekly KPI ids go into weeklyActuals.
+   */
+  async function loadActuals(week?: string): Promise<void> {
+    const params = week ? { week } : {}
+    const { data } = await adminAxios.get<{
+      week: string
+      actuals: Record<string, { value: number; source: string }>
+    }>('/admin/kpi/actuals', { params })
+
+    const newOkr: Record<string, number> = { ...okrActuals.value }
+    const newWeekly: Record<string, number> = { ...weeklyActuals.value }
+
+    for (const [id, item] of Object.entries(data.actuals)) {
+      if (id.startsWith('kr')) {
+        newOkr[id] = item.value
+      } else {
+        newWeekly[id] = item.value
+      }
+    }
+
+    okrActuals.value = newOkr
+    weeklyActuals.value = newWeekly
+  }
+
+  return { objectives, cLevels, updateOkrActual, updateWeeklyActual, loadActuals }
 })

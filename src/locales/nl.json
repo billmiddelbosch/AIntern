@@ -265,7 +265,16 @@
       "heading": "KPI Dashboard",
       "subheading": "Q2 2026 OKR-voortgang en wekelijkse KPI-targets per C-level. Klik op waarden om bij te werken.",
       "quarterlyTab": "Kwartaal OKRs",
-      "weeklyTab": "Wekelijkse KPIs"
+      "weeklyTab": "Wekelijkse KPIs",
+      "refreshButton": "Actualiseer",
+      "refreshing": "Actualiseren…",
+      "lastRefreshed": "Laatst bijgewerkt: {time}",
+      "sourceAuto": "auto",
+      "sourceManual": "handmatig",
+      "ocrButton": "Scan afbeelding",
+      "ocrScanning": "Scannen…",
+      "ocrNoResult": "Geen getal gevonden in afbeelding",
+      "ocrError": "OCR mislukt: {msg}"
     }
   },
   "hero": {
