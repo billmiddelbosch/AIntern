@@ -48,7 +48,11 @@
 | ID | Feature | Effort | Owner | Status | Source | Success Metric |
 |---|---|---|---|---|---|---|
 | ~~B-01~~ | ~~**Wekelijkse security check uitvoeren en documenteren**~~ | S | CTO | ✅ done | board-meeting-2026-04-11 | Commit 6ba7260 — PASS WITH WARNINGS, 3 high findings gedocumenteerd in .claude/cto/memory_security_check_2026-04-11.md |
-| B-03 | **Apify lead-enrichment: LinkedIn URLs toevoegen aan CSV** | S | CMO | todo | board-meeting-2026-04-11 (sessie 3) | ≥ 10 leads met LinkedIn URL in outreach-log; outreach pipeline gedeblokkeerd |
+| B-02 | **Lead-CSV verrijken via Apify (LinkedIn URLs voor ≥5 resterende Lightspeed-leads)** | S | CMO | ❌ geblokkeerd | board-meeting-2026-04-12 | BLOCKER: Apify credits uitgeput ($0.07) — bijvullen via console.apify.com/billing |
+| ~~B-03~~ | ~~**Kennisbank artikel publiceren: MKB AI-implementatiekloof (S3, Dutch, 400–700 woorden)**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: s3://aintern-kennisbank/posts/mkb-ai-implementatie-kloof-weten-doen.json |
+| ~~B-04~~ | ~~**1 LinkedIn post publiceren over AI voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: urn:li:share:7449037918192648192 — AIntern company page |
+| ~~B-05~~ | ~~**A-03 Role-based access implementeren (role: admin of editor in auth store)**~~ | S | CTO | ❌ gecancelled | board-meeting-2026-04-12 | Gecancelled 2026-04-12 op verzoek Human Board |
+| ~~B-06~~ | ~~**Lead pipeline bijwerken: Bram, Jan, Bob op dm_sent status gedocumenteerd**~~ | S | COO | ✅ done | board-meeting-2026-04-12 | Al gedaan: outreach-log.csv had dm_sent voor Bram/Jan/Bob al correct sinds 2026-04-11 |
 
 ## Organisation (O)
 

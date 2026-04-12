@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useKpiStore } from '@/stores/useKpiStore'
 import { useOcr } from '@/composables/useOcr'
+import adminAxios from '@/lib/adminAxios'
 
 const { t } = useI18n()
 const store = useKpiStore()
@@ -11,17 +12,44 @@ const { isRecognizing, ocrError, recognizeNumber } = useOcr()
 type Tab = 'quarterly' | 'weekly'
 const activeTab = ref<Tab>('quarterly')
 
-// Load actuals from API on mount
-onMounted(() => store.loadActuals())
+// ── Load + Refresh actuals ────────────────────────────────────────────────────
+const isRefreshing = ref(false)
+const lastRefreshed = ref<string | null>(null)
+const refreshErrors = ref<string[]>([])
 
-// Source indicator map
-const actualsSource = computed(() => store.actualsSource)
+onMounted(async () => {
+  try {
+    await store.loadActuals()
+  } catch {
+    // silently ignore — stale localStorage values remain visible
+  }
+})
+
+async function refreshActuals() {
+  isRefreshing.value = true
+  refreshErrors.value = []
+  try {
+    const { data } = await adminAxios.post<{ errors?: string[] }>('/admin/kpi/refresh')
+    lastRefreshed.value = new Date().toLocaleTimeString()
+    if (data.errors?.length) refreshErrors.value = data.errors
+    await store.loadActuals()
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : String(err)
+    refreshErrors.value = [msg]
+  } finally {
+    isRefreshing.value = false
+  }
+}
+
+// Source indicator map (stub — will be populated once e23f318 API layer is ported)
+const actualsSource = ref<Record<string, string>>({})
 
 // Track which metric is currently being OCR-scanned
 const scanningId = ref<string | null>(null)
 
 // Notification for OCR result
 const ocrNotice = ref<{ id: string; message: string } | null>(null)
+
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 
@@ -152,13 +180,23 @@ const overallOkrPct = computed(() => {
         <button
           class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg
                  bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
-          :disabled="store.isRefreshing"
-          @click="store.refreshActuals()"
+          :disabled="isRefreshing"
+          @click="refreshActuals()"
         >
-          <span v-if="store.isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
+          <span v-if="isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
           <span v-else>{{ t('admin.kpi.refreshButton') }}</span>
         </button>
       </div>
+    </div>
+
+    <!-- Last refreshed timestamp -->
+    <div v-if="lastRefreshed" class="text-xs text-slate-400">
+      {{ t('admin.kpi.lastRefreshed', { time: lastRefreshed }) }}
+    </div>
+
+    <!-- Refresh errors -->
+    <div v-if="refreshErrors.length" class="text-xs text-red-500 space-y-0.5">
+      <p v-for="err in refreshErrors" :key="err">⚠ {{ err }}</p>
     </div>
 
     <!-- Tabs -->
@@ -210,7 +248,6 @@ const overallOkrPct = computed(() => {
             <div class="flex items-start justify-between gap-2">
               <div class="flex-1 min-w-0">
                 <span class="text-xs text-slate-700 leading-tight font-medium">{{ kr.label }}</span>
-                <p class="text-[11px] text-slate-400 leading-snug mt-0.5">{{ kr.description }}</p>
               </div>
               <div class="shrink-0 flex items-center gap-1.5 mt-0.5">
                 <!-- Source badge -->

@@ -1,26 +1,26 @@
 # Sam — Daily Context
-_Last updated: 2026-04-11_
+_Last updated: 2026-04-12_
 
 ## Open Acties (toegewezen aan mij)
-- O-02 Lead Pipeline Board plannen en starten (deadline 30 april — 19 dagen)
-- O-01 (Weekly Auto-Report) activeren — deadline 30 april (19 dagen)
-- O-03 (Client Onboarding Checklist) starten — deadline 1 mei (20 dagen)
-- Lead pipeline handmatig bijwerken: 0/2 deze week
+- B-06: Lead pipeline bijwerken — Bram, Jan, Bob status op dm_sent documenteren (vandaag)
+- O-02 (Lead Pipeline CRM) starten — deadline 30 april (T-18 dagen)
+- O-01 (Weekly Auto-Report) activeren — deadline 30 april (T-18 dagen)
+- O-03 (Client Onboarding Checklist) starten — deadline 1 mei (T-19 dagen)
 
 ## KPI Status (deze week)
-- Lead pipeline bijgewerkt: 0 / 2 — ❌
-- Open blockers geïdentificeerd: ✅
+- Lead pipeline bijgewerkt: ~1 / 2× — ⚠️ (B-06 sluit 2/2)
+- Open blockers geïdentificeerd: ✅ doorlopend
 - Onboarding checklist voortgang: niet bewaakt — ⚠️
 
 ## Actieve Blockers
-- O-02 nog niet gestart — urgentie neemt toe
-- O-01 en O-03 ook nog niet gestart
+- O-02, O-01, O-03 nog niet gestart — deadlines naderen (18–19 dagen)
 
-## Genomen Beslissingen (Human Board — 2026-04-11 sessie 3)
-- Geen COO-specifieke besluiten genomen in sessie 3
-- Human Board doet altijd zelf commits en push van feature branch
+## Genomen Beslissingen (board 2026-04-12)
+- B-06 pipeline update is Top 5 actie voor vandaag
+- COO-deadlines blijven ongewijzigd — urgentie neemt toe
+- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md) zijn automatisch.
 
 ## Lopende Context
-- 3 leads in dm_sent status (Bram, Jan, Bob) — pipeline bijwerken zodra reacties binnenkomen
-- Huidige leads: tschuurtje.nl (dm_sent), zaderij.nl (dm_sent), wocashop.nl (dm_sent), collegepoint.nl (pending — geen LinkedIn URL)
-- O-01 weekrapport + O-02 pipeline board zijn prioriteit komende week
+- Huidige leads: tschuurtje.nl, zaderij.nl, wocashop.nl (dm_sent), collegepoint.nl (pending_connection — Apify enrichment batch)
+- 3 leads wachten op reactie (Bram, Jan, Bob) — bij reactie: status dm_responded + discovery call inplannen
+- Pipeline-update vandaag: bevestig dm_sent status in pipelinebestand

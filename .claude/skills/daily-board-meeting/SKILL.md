@@ -1,14 +1,14 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.2.6
+version: 0.2.7
 ---
 
 # Daily Board Meeting
 
 A structured daily session that runs the AIntern C-suite through seven phases: context loading, executive discussion, LinkedIn outreach proposals, Kennisbank content proposals, meeting summary, board memory update, and skill improvement.
 
-**Execution model:** Run all phases fully automatically without stopping. Collect every item that requires a human decision into a single **End-of-Meeting Approval Gate** presented at the very end. The only exception is a hard blocker (e.g., missing file, auth error) — surface it inline and continue with the remaining phases.
+**Execution model:** Run all phases fully automatically without stopping. **Internal actions execute immediately** (backlog updates, board memory files, SKILL.md, Obsidian meeting minutes, summary email to Bill) — no approval needed. **Everything that becomes externally visible always requires explicit Human Board approval** before execution: Kennisbank articles, LinkedIn brand posts, LinkedIn personal posts, LinkedIn connection requests, LinkedIn DMs, and any external emails to prospects. Present a single End-of-Meeting Approval Gate for all external items. Hard blockers (missing file, auth error) are surfaced inline and the remaining phases continue.
 
 ---
 
@@ -158,7 +158,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 
 **Step C — Backlog Registration (runs immediately after the Top 5 table is finalized, before any phase begins):**
 
-Alex (CEO) instructs the `backlog-manager` skill to log every Top 5 action as a backlog item. Each item is registered with:
+Alex (CEO) registers every Top 5 action directly in `product/backlog.md` (Edit tool). The `backlog-manager` is an **agent**, not a skill — calling it via `Skill()` fails. Instead, append rows to the Board Meeting Actions (B) table directly. Each item is registered with:
 - **Title:** [action from the table]
 - **Owner:** [assigned exec]
 - **Status:** `todo`
@@ -207,6 +207,8 @@ Before drafting any messages, evaluate the outreach state using context already 
 ### Steps
 
 1. Read `product/marketing/leads/` — identify 3–5 uncontacted leads with LinkedIn URLs
+   - **If no LinkedIn URLs available:** Skip to the Apify-enrichment branch below — do not attempt drafting connection messages
+   - **Apify-enrichment branch:** Propose running `apify-lead-generation` skill on the remaining CSV leads to obtain LinkedIn URLs + names. Present this as the Phase 3 action in the Approval Gate (Section B). Skip steps 2–5 and go directly to the gate.
 2. Load the `marketing-super-team` skill to evaluate the outreach angle for today's batch
 3. For each lead, draft a connection request message using the approved template (see `references/outreach-format.md`)
 4. Apply the `social-content` skill to check hook quality and adjust if needed
@@ -237,7 +239,8 @@ Only proceed with the steps below if **both** skip conditions are false.
 
 1. Read the 3 most recent entries from the Obsidian vault (see `references/obsidian-vault.md` for vault location and structure)
 2. Identify 1–2 topic seeds relevant to the AIntern audience (Lightspeed webshop owners, MKB, AI automation)
-2b. **Rejected seed filter:** Before selecting seeds, check the "Genomen Beslissingen" section of `.claude/cmo/memory_daily_context.md`. Skip any Obsidian entry whose topic matches a Kennisbank proposal that was rejected in the same or previous session. Move to the next most recent entry instead.
+2b. **Rejected seed filter:** Before selecting seeds, check the "Genomen Beslissingen" section of `.claude/cmo/memory_daily_context.md`. Look for lines containing `AFGEWEZEN` with the **exact filename** of the Obsidian entry (e.g. `"2026-04-10 Claude als verborgen superkracht.md — AFGEWEZEN"`). Skip any entry whose filename appears in that list. Move to the next most recent entry instead.
+   - **When writing rejected decisions to memory:** Always include the exact Obsidian filename, not a generic description (e.g. write `"2026-04-10 Claude als verborgen superkracht voor ontwikkelaars.md — AFGEWEZEN"` not `"Kennisbank voorstel 1 AFGEWEZEN"`)
 
 3. Load `marketing-super-team` skill — run a **Quick Audit** on each seed: is this the right angle for the target audience?
 
@@ -388,59 +391,59 @@ At the end of every meeting, review the session and propose improvements to this
 
 Do **not** pause here. Present these at the End-of-Meeting Approval Gate.
 
-3. On approval: edit this `SKILL.md` or the relevant `references/` file directly. Increment the version number in frontmatter (patch bump: 0.1.0 → 0.1.1).
+3. On approval: edit this `SKILL.md` or the relevant `references/` file directly as the **last post-approval action** — after LinkedIn outreach, Kennisbank publish, and LinkedIn posts. This ensures any Human Board feedback during the gate is incorporated before the skill is updated. Increment the version number in frontmatter (patch bump: 0.1.0 → 0.1.1).
 
 ---
 
 ## End-of-Meeting Approval Gate
 
-After completing all seven phases automatically, present **one consolidated approval prompt** to the Human Board:
+After completing all seven phases automatically, present **one consolidated approval prompt** to the Human Board. Use a **numbered list** — each item is max 2 sentences so the Human Board can scan and respond quickly.
+
+**Gate format:**
 
 ```
 ---
 ## Einde Vergadering — Goedkeuring Vereist
 
-De vergadering is voltooid. Onderstaande items vereisen jouw beslissing:
+Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles goedgekeurd" voor alles.
 
-### A) Backlog — User Stories voor deze vergadering
-[Lijst van alle backlog items geregistreerd in Phase 2 Step C, met hun huidige status]
+**Extern zichtbaar (vereist goedkeuring):**
 
-| # | User Story | Eigenaar | Status |
-|---|-----------|----------|--------|
-| 1 | [actie]   | [exec]   | todo / in-progress / done |
-...
+1. **LinkedIn Outreach — [Lead naam]**
+   [Bericht tekst in één zin. Variant: ROI/Nieuwsgierigheid/Resultaat.]
 
-→ Antwoord "backlog goedgekeurd" om uitgevoerde items als `done` te markeren, of geef per item feedback.
+2. **LinkedIn Outreach — [Lead naam]**
+   [Bericht tekst in één zin. Variant: ROI/Nieuwsgierigheid/Resultaat.]
 
-### B) LinkedIn Outreach
-[Herhaal alle voorgestelde berichten uit Phase 3]
-→ Antwoord "linkedin goedgekeurd" om te versturen, of geef feedback per lead.
+3. **Kennisbank artikel — "[Titel]"**
+   [Categorie + één zin over de angle.]
 
-### C) Kennisbank Content
-[Herhaal alle voorgestelde artikelen uit Phase 4]
-→ Antwoord "kennisbank [1]" en/of "kennisbank [2]" om te publiceren.
+4. **LinkedIn post**
+   [Eerste zin van de post + hashtags in één regel.]
 
-### D) Skill Verbeteringen
-[Herhaal verbetervoorstellen uit Phase 7]
-→ Antwoord "skill goedgekeurd" om de skill bij te werken, of "overslaan".
+5. **Skill verbetering — [korte naam]**
+   [Wat er wijzigt en waarom, in één zin.]
 
-### E) Branch Commits
-[Lijst van alle commits op feature/board-{YYYY-MM-DD} — output van `git log feature/board-{YYYY-MM-DD} --oneline`]
-→ Na goedkeuring: branch blijft open voor handmatige review + merge via PR.
+6. **Skill verbetering — [korte naam]**
+   [Wat er wijzigt en waarom, in één zin.]
 
-### F) Samenvatting
-- Opgeslagen in Obsidian: ✅
-- E-mail verstuurd: ✅ / (Draft aangemaakt — stuur handmatig)
-- Board memory: wordt bijgewerkt ná jouw reactie hieronder
-
-Reageer met een of meerdere van de bovenstaande commando's, of "alles goedgekeurd" voor alles.
+**Automatisch uitgevoerd (ter info):**
+- Backlog bijgewerkt: [N items]
+- Board memory bijgewerkt: CEO / CMO / CTO / COO
+- Vergaderverslag opgeslagen in Obsidian ✅
+- E-mail verstuurd naar w.middelbosch@gmail.com ✅
+- Branch commits: [git log --oneline output]
 ---
 ```
 
-After receiving approval responses:
-1. **Backlog update (first):** For every approved item, the `backlog-manager` skill updates the backlog — set status to `done` for completed actions, `in-progress` for started-but-unfinished, and add a note with today's date and the Terminal Summary commit message. For rejected items, set status back to `todo`. The backlog manager confirms each change before writing (per its own rules).
-2. Execute the remaining approved actions (send LinkedIn messages, publish Kennisbank articles, update SKILL.md)
-3. **Then** run Phase 6 — update board memory files, incorporating the human's decisions (what was approved, rejected, and any modifications made)
+**Uitvoervolgorde na goedkeuring:**
+1. Voer goedgekeurde LinkedIn outreach uit (connection requests / DMs)
+2. Publiceer goedgekeurde Kennisbank artikelen naar S3
+3. Publiceer goedgekeurde LinkedIn posts via Zapier MCP
+4. Pas goedgekeurde skill-verbeteringen toe als **laatste** stap — zodat eventuele feedback uit de gate is meegenomen in de wijzigingen
+5. Voer Phase 6 uit — update board memory met de beslissingen van de Human Board
+
+**Afgewezen of overgeslagen items:** zet backlog-status terug naar `todo` en log de reden in CMO/CEO memory.
 
 ---
 

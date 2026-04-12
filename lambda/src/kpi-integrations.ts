@@ -17,7 +17,10 @@ let cachedTableName: string | null = null
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function resolveAlias(context: Context): string {
-  return context.invokedFunctionArn.split(':').pop() ?? 'dev'
+  const arn = context.invokedFunctionArn
+  const alias = arn.split(':').pop() ?? 'dev'
+  console.log('[kpi-integrations] resolveAlias | arn=%s alias=%s', arn, alias)
+  return alias
 }
 
 function corsOrigin(alias: string): string {
@@ -41,26 +44,36 @@ function respond(
 }
 
 async function getJwtSecret(alias: string): Promise<string> {
-  if (cachedJwtSecret) return cachedJwtSecret
+  if (cachedJwtSecret) {
+    console.log('[kpi-integrations] getJwtSecret | using cached secret for alias=%s', alias)
+    return cachedJwtSecret
+  }
   const path = `${process.env.JWT_SECRET_SSM_PREFIX}/${alias}`
+  console.log('[kpi-integrations] getJwtSecret | fetching SSM path=%s', path)
   const result = await ssm.send(
     new GetParameterCommand({ Name: path, WithDecryption: true }),
   )
   const secret = result.Parameter?.Value
   if (!secret) throw new Error(`JWT secret not found at ${path}`)
   cachedJwtSecret = secret
+  console.log('[kpi-integrations] getJwtSecret | fetched OK')
   return secret
 }
 
 async function getTableName(alias: string): Promise<string> {
-  if (cachedTableName) return cachedTableName
+  if (cachedTableName) {
+    console.log('[kpi-integrations] getTableName | using cached tableName=%s', cachedTableName)
+    return cachedTableName
+  }
   const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}/dynamodb/table-name`
+  console.log('[kpi-integrations] getTableName | fetching SSM path=%s', path)
   const result = await ssm.send(
     new GetParameterCommand({ Name: path, WithDecryption: false }),
   )
   const name = result.Parameter?.Value
   if (!name) throw new Error(`DynamoDB table name not found at ${path}`)
   cachedTableName = name
+  console.log('[kpi-integrations] getTableName | resolved tableName=%s', name)
   return name
 }
 
@@ -69,12 +82,24 @@ async function requireAuth(
   alias: string,
 ): Promise<void> {
   const authHeader = event.headers['Authorization'] ?? event.headers['authorization'] ?? ''
+  console.log(
+    '[kpi-integrations] requireAuth | header present=%s scheme=%s',
+    !!authHeader,
+    authHeader.split(' ')[0] || '(none)',
+  )
   const [scheme, token] = authHeader.split(' ')
   if (scheme !== 'Bearer' || !token) {
+    console.warn('[kpi-integrations] requireAuth | missing or malformed Bearer token')
     throw Object.assign(new Error('Unauthorized'), { statusCode: 401 })
   }
   const secret = await getJwtSecret(alias)
-  jwt.verify(token, secret, { algorithms: ['HS256'] })
+  try {
+    jwt.verify(token, secret, { algorithms: ['HS256'] })
+    console.log('[kpi-integrations] requireAuth | JWT verified OK')
+  } catch (err: unknown) {
+    console.warn('[kpi-integrations] requireAuth | JWT verification failed: %s', (err as Error).message)
+    throw Object.assign(new Error('Unauthorized'), { statusCode: 401 })
+  }
 }
 
 /**
@@ -248,7 +273,7 @@ async function integrateOutreach(
   return updated
 }
 
-// ── Integration 2: Kennisbank S3 → cpo.1, kr3.3 ─────────────────────────────
+// ── Integration 2: Kennisbank S3 → cpo.1, kr3.4 ─────────────────────────────
 
 async function integrateKennisbank(
   week: string,
@@ -268,10 +293,12 @@ async function integrateKennisbank(
       const resp = await s3.send(
         new ListObjectsV2Command({
           Bucket: bucket,
+          Prefix: 'posts/',
           ContinuationToken: continuationToken,
         }),
       )
       for (const obj of resp.Contents ?? []) {
+        if (!obj.Key?.endsWith('.json')) continue
         totalCount++
         const lastModified = obj.LastModified
         if (lastModified && lastModified >= start && lastModified <= end) {
@@ -282,8 +309,8 @@ async function integrateKennisbank(
     } while (continuationToken)
 
     await writeActual(tableName, week, 'cpo.1', weekCount)
-    await writeActual(tableName, week, 'kr3.3', totalCount)
-    updated.push('cpo.1', 'kr3.3')
+    await writeActual(tableName, week, 'kr3.4', totalCount)
+    updated.push('cpo.1', 'kr3.4')
   } catch (err: unknown) {
     errors.push(`kennisbank-s3: ${(err as Error).message}`)
   }
@@ -332,7 +359,7 @@ async function integrateGA4(
       credentials: JSON.parse(serviceAccountJson) as Record<string, string>,
     })
 
-    // kr3.4 — monthly unique visitors (last 30 days)
+    // kr3.1 — monthly unique visitors (last 30 days)
     const [monthlyResponse] = await client.runReport({
       property: `properties/${propertyId}`,
       dateRanges: [{ startDate: '30daysAgo', endDate: 'today' }],
@@ -345,19 +372,15 @@ async function integrateGA4(
       if (!isNaN(val)) monthlyUsers += val
     }
 
-    await writeActual(tableName, week, 'kr3.4', monthlyUsers)
-    updated.push('kr3.4')
+    await writeActual(tableName, week, 'kr3.1', monthlyUsers)
+    updated.push('kr3.1')
 
-    // cpo.3 — traffic check done (1 if GA4 returned > 0 rows this week, else 0)
+    // cpo.4 — website traffic report reviewed (1 if GA4 returned > 0 rows, else 0)
     const trafficDone = (monthlyResponse.rows ?? []).length > 0 ? 1 : 0
-    await writeActual(tableName, week, 'cpo.3', trafficDone)
-    updated.push('cpo.3')
+    await writeActual(tableName, week, 'cpo.4', trafficDone)
+    updated.push('cpo.4')
   } catch (err: unknown) {
-    console.error('integrateGA4 error:', err)
-    const name = (err as { name?: string }).name ?? ''
-    const msg = (err as Error).message ?? ''
-    const detail = name && name !== msg ? `${name}: ${msg}` : msg || name || 'unknown'
-    errors.push(`ga4: ${detail}`)
+    errors.push(`ga4: ${(err as Error).message}`)
   }
 
   return updated
@@ -459,62 +482,89 @@ export async function handler(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
+  console.log(
+    '[kpi-integrations] handler | requestId=%s method=%s path=%s',
+    context.awsRequestId,
+    event.httpMethod,
+    event.path,
+  )
+
   const alias = resolveAlias(context)
 
   try {
     await requireAuth(event, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 401
+    console.warn('[kpi-integrations] auth failed | status=%d message=%s', code, (err as Error).message)
     return respond(code, { error: (err as Error).message }, alias)
   }
 
   if (event.httpMethod !== 'POST') {
+    console.warn('[kpi-integrations] method not allowed | method=%s', event.httpMethod)
     return respond(405, { error: 'Method not allowed' }, alias)
   }
 
   let week: string
   try {
     ;({ week } = parseRefreshBody(event.body))
+    console.log('[kpi-integrations] parsed body | week=%s', week)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 400
+    console.warn('[kpi-integrations] bad request | %s', (err as Error).message)
     return respond(code, { error: (err as Error).message }, alias)
   }
 
   let tableName: string
   try {
     tableName = await getTableName(alias)
+    console.log('[kpi-integrations] resolved tableName=%s', tableName)
   } catch (err: unknown) {
-    console.error('kpi-integrations: failed to resolve table name:', err)
+    console.error('[kpi-integrations] getTableName failed | alias=%s error=%s', alias, (err as Error).message, err)
     return respond(500, { error: 'Internal server error' }, alias)
   }
 
   const errors: string[] = []
   const updated: string[] = []
 
+  console.log('[kpi-integrations] starting 4 integrations | week=%s table=%s', week, tableName)
+
   // Run all four integrations; failures are caught internally and appended to errors[]
   const [outreachUpdated, kennisbankUpdated, ga4Updated, backlogUpdated] = await Promise.all([
     integrateOutreach(week, tableName, errors).catch((err: unknown) => {
-      errors.push(`outreach: unexpected error — ${(err as Error).message}`)
+      const msg = `outreach: unexpected error — ${(err as Error).message}`
+      console.error('[kpi-integrations] %s', msg, err)
+      errors.push(msg)
       return []
     }),
     integrateKennisbank(week, tableName, errors).catch((err: unknown) => {
-      errors.push(`kennisbank: unexpected error — ${(err as Error).message}`)
+      const msg = `kennisbank: unexpected error — ${(err as Error).message}`
+      console.error('[kpi-integrations] %s', msg, err)
+      errors.push(msg)
       return []
     }),
     integrateGA4(week, alias, tableName, errors).catch((err: unknown) => {
-      errors.push(`ga4: unexpected error — ${(err as Error).message}`)
+      const msg = `ga4: unexpected error — ${(err as Error).message}`
+      console.error('[kpi-integrations] %s', msg, err)
+      errors.push(msg)
       return []
     }),
     integrateBacklog(week, tableName, errors).catch((err: unknown) => {
-      errors.push(`backlog: unexpected error — ${(err as Error).message}`)
+      const msg = `backlog: unexpected error — ${(err as Error).message}`
+      console.error('[kpi-integrations] %s', msg, err)
+      errors.push(msg)
       return []
     }),
   ])
 
   updated.push(...outreachUpdated, ...kennisbankUpdated, ...ga4Updated, ...backlogUpdated)
 
+  console.log(
+    '[kpi-integrations] done | updated=%s errors=%d',
+    updated.join(',') || '(none)',
+    errors.length,
+  )
   if (errors.length > 0) {
-    console.warn('kpi-integrations: partial errors during refresh:', errors)
+    console.warn('[kpi-integrations] partial errors | %s', JSON.stringify(errors))
   }
 
   return respond(200, { week, updated, errors }, alias)

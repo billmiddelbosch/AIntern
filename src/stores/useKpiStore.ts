@@ -3,20 +3,9 @@ import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { useKpiApi } from '@/composables/useKpiApi'
 import type { OKRObjective, CLevel } from '@/types/kpi'
+import adminAxios from '@/lib/adminAxios'
 
-// ── ISO week helper ───────────────────────────────────────────────────────────
-
-function currentIsoWeek(): string {
-  const now = new Date()
-  const jan4 = new Date(now.getFullYear(), 0, 4)
-  const startOfWeek1 = new Date(jan4)
-  startOfWeek1.setDate(jan4.getDate() - (jan4.getDay() || 7) + 1)
-  const weekNum = Math.floor((now.getTime() - startOfWeek1.getTime()) / (7 * 86400000)) + 1
-  return `${now.getFullYear()}-W${String(weekNum).padStart(2, '0')}`
-}
-
-// ── Q2 2026 OKR definitions — board approved 2026-04-09 ──────────────────────
-
+// Q2 2026 OKR definitions — board approved 2026-04-09, revised 2026-04-12
 const OBJECTIVES: OKRObjective[] = [
   {
     id: 'o1',
@@ -41,13 +30,12 @@ const OBJECTIVES: OKRObjective[] = [
   {
     id: 'o3',
     ownerLabel: 'CPO / CTO',
-    title: 'Website funnel converts & is stable',
+    title: 'Website is organically found & converts',
     keyResults: [
-      { id: 'kr3.2', label: 'Intake questionnaire live & A/B tested (due 1 May)', description: 'The 5-step intake form is deployed on aintern.nl and at least one A/B variant is running. Mark done when both conditions are live.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr3.3', label: 'Kennisbank published articles', description: 'Total articles published in the S3 Kennisbank bucket (aintern-kennisbank). Auto-synced via Refresh. Does not count drafts.', targetValue: 10, unit: 'articles', type: 'numeric' },
-      { id: 'kr3.4', label: 'Monthly unique visitors AIntern.nl', description: 'Google Analytics 4 activeUsers metric over the last 30 days. Auto-synced via Refresh. Must have GA4 tracking active.', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
-      { id: 'kr3.5', label: 'Website uptime', description: 'Percentage of time aintern.nl responded with HTTP 2xx over the quarter. Measured weekly by CTO; manual entry.', targetValue: 99.5, unit: '%', type: 'numeric' },
-      { id: 'kr3.6', label: 'Weekly security checks completed (out of 13)', description: 'Number of weeks where a security check was documented per the CTO checklist. Target is all 13 weeks of Q2.', targetValue: 13, unit: 'weeks', type: 'numeric' },
+      { id: 'kr3.1', label: 'Monthly unique visitors AIntern.nl', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
+      { id: 'kr3.2', label: 'Google top-10 ranking for target keywords', targetValue: 5, unit: 'keywords', type: 'numeric' },
+      { id: 'kr3.3', label: 'AIntern.nl cited/found by LLM tools (Perplexity, ChatGPT, Claude)', targetValue: 2, unit: 'tools', type: 'numeric' },
+      { id: 'kr3.4', label: 'Kennisbank published articles', targetValue: 20, unit: 'articles', type: 'numeric' },
     ],
   },
   {
@@ -55,9 +43,9 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'COO',
     title: 'Operational foundation scalable',
     keyResults: [
-      { id: 'kr4.1', label: 'Lead pipeline CRM (O-02) operational (due 30 Apr)', description: 'CRM system (Notion or equivalent) is live with all prospects tracked: status, last contact, next step. Mark done when actively used.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client (due 1 May)', description: 'A documented step-by-step onboarding checklist exists and has been dry-run internally. Must be ready before signing the first client.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.3', label: 'Weekly auto-report (O-01) active (due 30 Apr)', description: 'The Monday automated board report (O-01) runs without manual trigger and is delivered to the board. Mark done when first automated send is confirmed.', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.1', label: 'Lead pipeline CRM active and maintained weekly', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.3', label: 'Weekly auto-report active and sent', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
   {
@@ -65,10 +53,7 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CEO / CTO',
     title: 'Board visibility & governance',
     keyResults: [
-      { id: 'kr5.1', label: '/admin live, board-only auth-protected (due 22 Apr)', description: 'The /admin panel is deployed and requires login to access. Unauthenticated requests are redirected to /admin/login.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.2', label: 'Organisation overview: active AIntern agents + hierarchy (due 22 Apr)', description: 'A page in /admin lists all active AIntern agents (CEO, CMO, CPO, CTO, COO) with their roles and reporting structure.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.3', label: 'OKR status dashboard live at /admin (due 22 Apr)', description: 'This KPI Dashboard page is deployed, loads real actuals from DynamoDB, and is accessible to the board. You are here.', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr5.4', label: '/admin secured with MFA or SSO (at launch)', description: 'At least one second authentication factor (TOTP MFA or Google/Microsoft SSO) is required to access /admin. Due before first client is onboarded.', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr5.1', label: 'Board has real-time insight into OKR progress', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
 ]
@@ -88,27 +73,27 @@ const C_LEVELS: CLevel[] = [
   {
     role: 'CMO',
     kpis: [
-      { id: 'cmo.1', label: 'LinkedIn posts published', description: 'Original posts published on the AIntern LinkedIn page this week. Reposts/shares do not count. Target: 3 per week (Mon/Wed/Fri).', targetPerWeek: 3, unit: 'posts' },
-      { id: 'cmo.2', label: 'New connections sent (Lightspeed segment)', description: 'LinkedIn connection requests sent to Lightspeed-segment prospects this week. Auto-synced from outreach-log.csv via Refresh.', targetPerWeek: 20, unit: 'connections' },
-      { id: 'cmo.3', label: 'Inbound leads generated', description: 'Prospects who replied to a DM, commented on a post seeking help, or submitted the intake form this week. One per person per week.', targetPerWeek: 1, unit: 'leads' },
-      { id: 'cmo.4', label: 'Morning briefings completed', description: 'AIntern daily morning briefing agent ran and was reviewed by CMO. Target is every working day (Mon–Fri).', targetPerWeek: 5, unit: 'days' },
+      { id: 'cmo.1', label: 'LinkedIn posts published', targetPerWeek: 3, unit: 'posts' },
+      { id: 'cmo.2', label: 'New connections sent (Lightspeed segment)', targetPerWeek: 20, unit: 'connections' },
+      { id: 'cmo.3', label: 'Inbound leads generated', targetPerWeek: 1, unit: 'leads' },
+      { id: 'cmo.4', label: 'LinkedIn → website referral traffic monitored', targetPerWeek: 1, unit: 'check' },
     ],
   },
   {
     role: 'CPO',
     kpis: [
-      { id: 'cpo.1', label: 'Kennisbank article published', description: 'One new article published to the S3 Kennisbank this week. Auto-synced via Refresh. Does not count edits to existing articles.', targetPerWeek: 1, unit: 'article' },
-      { id: 'cpo.2', label: 'Backlog item shipped or in progress', description: 'At least one backlog item moved to "done" or actively in development this week. Tracked in the product backlog.', targetPerWeek: 1, unit: 'item' },
-      { id: 'cpo.3', label: 'Website traffic report reviewed', description: 'GA4 traffic report reviewed and findings shared with the board. Binary: 0 = not done, 1 = reviewed. Auto-synced via Refresh.', targetPerWeek: 1, unit: 'review' },
-      { id: 'cpo.4', label: 'Uptime check', description: 'Manual or automated uptime check performed and result logged. Includes response-time test and broken-link scan.', targetPerWeek: 1, unit: 'check' },
+      { id: 'cpo.1', label: 'Kennisbank articles published', targetPerWeek: 2, unit: 'articles' },
+      { id: 'cpo.2', label: 'Backlog item shipped or in progress', targetPerWeek: 1, unit: 'item' },
+      { id: 'cpo.3', label: 'SEO ranking check (keyword positions)', targetPerWeek: 1, unit: 'check' },
+      { id: 'cpo.4', label: 'Website traffic report reviewed', targetPerWeek: 1, unit: 'review' },
     ],
   },
   {
     role: 'CTO',
     kpis: [
-      { id: 'cto.1', label: 'Security check performed & documented', description: 'Weekly security checklist completed and written up: dependency audit, access review, env vars. Documented in Notion or equivalent.', targetPerWeek: 1, unit: 'check' },
-      { id: 'cto.2', label: 'Uptime monitored (≥ 99.5%)', description: 'Uptime check confirmed: aintern.nl returned HTTP 2xx on all probes this week. Enter 1 if target met, 0 if outage occurred.', targetPerWeek: 1, unit: 'check' },
-      { id: 'cto.3', label: 'Infrastructure issues escalated (same day)', description: 'Any infra incident (Lambda error spike, deploy failure, DB timeout) was escalated to CEO same day. Enter incidents escalated; enter 1 if none occurred and monitoring was active.', targetPerWeek: 1, unit: 'check' },
+      { id: 'cto.1', label: 'Security check performed & documented', targetPerWeek: 1, unit: 'check' },
+      { id: 'cto.2', label: 'LLM citation check (Perplexity / ChatGPT / Claude)', targetPerWeek: 1, unit: 'check (biweekly)' },
+      { id: 'cto.3', label: 'Infrastructure issues escalated (same day)', targetPerWeek: 1, unit: 'check' },
     ],
   },
   {
@@ -241,31 +226,33 @@ export const useKpiStore = defineStore('kpi', () => {
   async function updateWeeklyActual(id: string, value: number): Promise<void> {
     const previous = weeklyActuals.value[id]
     weeklyActuals.value = { ...weeklyActuals.value, [id]: value }
-    try {
-      await putActual(currentIsoWeek(), id, value)
-    } catch {
-      // Revert to previous value
-      const reverted = { ...weeklyActuals.value }
-      if (previous === undefined) {
-        delete reverted[id]
-      } else {
-        reverted[id] = previous
-      }
-      weeklyActuals.value = reverted
-    }
   }
 
-  return {
-    objectives,
-    cLevels,
-    actualsSource,
-    isLoadingActuals,
-    isRefreshing,
-    lastRefreshed,
-    refreshErrors,
-    loadActuals,
-    refreshActuals,
-    updateOkrActual,
-    updateWeeklyActual,
+  /**
+   * Fetch actuals from DynamoDB via GET /admin/kpi/actuals and hydrate both maps.
+   * OKR key results (kr*) go into okrActuals; weekly KPI ids go into weeklyActuals.
+   */
+  async function loadActuals(week?: string): Promise<void> {
+    const params = week ? { week } : {}
+    const { data } = await adminAxios.get<{
+      week: string
+      actuals: Record<string, { value: number; source: string }>
+    }>('/admin/kpi/actuals', { params })
+
+    const newOkr: Record<string, number> = { ...okrActuals.value }
+    const newWeekly: Record<string, number> = { ...weeklyActuals.value }
+
+    for (const [id, item] of Object.entries(data.actuals)) {
+      if (id.startsWith('kr')) {
+        newOkr[id] = item.value
+      } else {
+        newWeekly[id] = item.value
+      }
+    }
+
+    okrActuals.value = newOkr
+    weeklyActuals.value = newWeekly
   }
+
+  return { objectives, cLevels, updateOkrActual, updateWeeklyActual, loadActuals }
 })
