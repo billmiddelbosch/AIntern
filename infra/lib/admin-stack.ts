@@ -3,7 +3,6 @@ import * as dynamodb from 'aws-cdk-lib/aws-dynamodb'
 import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import * as iam from 'aws-cdk-lib/aws-iam'
-import * as ssm from 'aws-cdk-lib/aws-ssm'
 import { Construct } from 'constructs'
 import * as path from 'path'
 
@@ -11,35 +10,21 @@ export class AdminStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props)
 
-    // ── DynamoDB — single shared table (single-table design) ─────────────────
-    const adminTable = new dynamodb.Table(this, 'AdminTable', {
+    // ── DynamoDB — import existing table (created via staging deploy) ────────
+    // Table was already provisioned; importing avoids "already exists" on redeploy.
+    // GSI AssigneeIndex is already present on the physical table.
+    const adminTable = dynamodb.Table.fromTableAttributes(this, 'AdminTable', {
       tableName: 'aintern-admin',
-      partitionKey: { name: 'pk', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
-      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      grantIndexPermissions: true,
     })
 
-    adminTable.addGlobalSecondaryIndex({
-      indexName: 'AssigneeIndex',
-      partitionKey: { name: 'assignee', type: dynamodb.AttributeType.STRING },
-      sortKey: { name: 'sk', type: dynamodb.AttributeType.STRING },
-      projectionType: dynamodb.ProjectionType.ALL,
-    })
-
-    // Store table name in SSM so Lambdas can resolve it at runtime (no hardcoding)
-    // Both dev and prod aliases share the same physical table for the admin use case.
-    new ssm.StringParameter(this, 'DynamoDbTableNameDev', {
-      parameterName: '/aintern/dev/dynamodb/table-name',
-      stringValue: adminTable.tableName,
-      description: 'aintern-admin DynamoDB table name (dev)',
-    })
-
-    new ssm.StringParameter(this, 'DynamoDbTableNameProd', {
-      parameterName: '/aintern/prod/dynamodb/table-name',
-      stringValue: adminTable.tableName,
-      description: 'aintern-admin DynamoDB table name (prod)',
-    })
+    // SSM parameters /aintern/{dev|prod}/dynamodb/table-name already exist in SSM
+    // (pre-provisioned by the staging deploy). Not managed here to avoid CloudFormation
+    // "already exists" conflicts. Create manually if deploying to a fresh environment:
+    //   aws ssm put-parameter --name /aintern/dev/dynamodb/table-name \
+    //     --value aintern-admin --type String --region eu-west-2
+    //   aws ssm put-parameter --name /aintern/prod/dynamodb/table-name \
+    //     --value aintern-admin --type String --region eu-west-2
 
     // ── Lambda ───────────────────────────────────────────────────────────────
     const lambdaCode = lambda.Code.fromAsset(path.resolve(__dirname, '../../lambda/dist'))

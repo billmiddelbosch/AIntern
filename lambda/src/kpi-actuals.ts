@@ -14,7 +14,10 @@ let cachedTableName: string | null = null
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function resolveAlias(context: Context): string {
-  return context.invokedFunctionArn.split(':').pop() ?? 'dev'
+  const arn = context.invokedFunctionArn
+  const alias = arn.split(':').pop() ?? 'dev'
+  console.log('[kpi-actuals] resolveAlias | arn=%s alias=%s', arn, alias)
+  return alias
 }
 
 function corsOrigin(alias: string): string {
@@ -38,26 +41,36 @@ function respond(
 }
 
 async function getJwtSecret(alias: string): Promise<string> {
-  if (cachedJwtSecret) return cachedJwtSecret
+  if (cachedJwtSecret) {
+    console.log('[kpi-actuals] getJwtSecret | using cached secret for alias=%s', alias)
+    return cachedJwtSecret
+  }
   const path = `${process.env.JWT_SECRET_SSM_PREFIX}/${alias}`
+  console.log('[kpi-actuals] getJwtSecret | fetching from SSM path=%s', path)
   const result = await ssm.send(
     new GetParameterCommand({ Name: path, WithDecryption: true }),
   )
   const secret = result.Parameter?.Value
   if (!secret) throw new Error(`JWT secret not found at ${path}`)
   cachedJwtSecret = secret
+  console.log('[kpi-actuals] getJwtSecret | fetched OK')
   return secret
 }
 
 async function getTableName(alias: string): Promise<string> {
-  if (cachedTableName) return cachedTableName
-  const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}`
+  if (cachedTableName) {
+    console.log('[kpi-actuals] getTableName | using cached tableName=%s', cachedTableName)
+    return cachedTableName
+  }
+  const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}/dynamodb/table-name`
+  console.log('[kpi-actuals] getTableName | fetching from SSM path=%s', path)
   const result = await ssm.send(
     new GetParameterCommand({ Name: path, WithDecryption: false }),
   )
   const name = result.Parameter?.Value
   if (!name) throw new Error(`DynamoDB table name not found at ${path}`)
   cachedTableName = name
+  console.log('[kpi-actuals] getTableName | resolved tableName=%s', name)
   return name
 }
 
@@ -69,13 +82,24 @@ async function requireAuth(
   alias: string,
 ): Promise<void> {
   const authHeader = event.headers['Authorization'] ?? event.headers['authorization'] ?? ''
+  console.log(
+    '[kpi-actuals] requireAuth | Authorization header present=%s scheme=%s',
+    !!authHeader,
+    authHeader.split(' ')[0] || '(none)',
+  )
   const [scheme, token] = authHeader.split(' ')
   if (scheme !== 'Bearer' || !token) {
+    console.warn('[kpi-actuals] requireAuth | missing or malformed Bearer token')
     throw Object.assign(new Error('Unauthorized'), { statusCode: 401 })
   }
   const secret = await getJwtSecret(alias)
-  // jwt.verify throws on invalid/expired tokens
-  jwt.verify(token, secret, { algorithms: ['HS256'] })
+  try {
+    jwt.verify(token, secret, { algorithms: ['HS256'] })
+    console.log('[kpi-actuals] requireAuth | JWT verified OK')
+  } catch (err: unknown) {
+    console.warn('[kpi-actuals] requireAuth | JWT verification failed: %s', (err as Error).message)
+    throw Object.assign(new Error('Unauthorized'), { statusCode: 401 })
+  }
 }
 
 /**
@@ -104,8 +128,11 @@ async function handleGet(
   alias: string,
 ): Promise<APIGatewayProxyResult> {
   const week = event.queryStringParameters?.['week'] ?? currentIsoWeek()
+  console.log('[kpi-actuals] GET | week=%s', week)
+
   const tableName = await getTableName(alias)
 
+  console.log('[kpi-actuals] GET | querying DynamoDB table=%s pk=METRIC#%s', tableName, week)
   const result = await ddb.send(
     new QueryCommand({
       TableName: tableName,
@@ -113,6 +140,7 @@ async function handleGet(
       ExpressionAttributeValues: { ':pk': `METRIC#${week}` },
     }),
   )
+  console.log('[kpi-actuals] GET | DynamoDB returned %d item(s)', result.Items?.length ?? 0)
 
   const actuals: Record<string, ActualItem> = {}
   for (const item of result.Items ?? []) {
@@ -123,6 +151,7 @@ async function handleGet(
     }
   }
 
+  console.log('[kpi-actuals] GET | responding 200 with %d metrics', Object.keys(actuals).length)
   return respond(200, { week, actuals }, alias)
 }
 
@@ -133,6 +162,7 @@ interface PutBody {
 }
 
 function parsePutBody(raw: string | null): PutBody {
+  console.log('[kpi-actuals] parsePutBody | raw body length=%d', raw?.length ?? 0)
   let parsed: unknown
   try {
     parsed = JSON.parse(raw ?? '{}')
@@ -156,11 +186,13 @@ function parsePutBody(raw: string | null): PutBody {
     )
   }
 
-  return {
+  const body = {
     week: (parsed as Record<string, unknown>)['week'] as string,
     metricId: (parsed as Record<string, unknown>)['metricId'] as string,
     value: (parsed as Record<string, unknown>)['value'] as number,
   }
+  console.log('[kpi-actuals] parsePutBody | week=%s metricId=%s value=%d', body.week, body.metricId, body.value)
+  return body
 }
 
 async function handlePut(
@@ -169,6 +201,11 @@ async function handlePut(
 ): Promise<APIGatewayProxyResult> {
   const { week, metricId, value } = parsePutBody(event.body)
   const tableName = await getTableName(alias)
+
+  console.log(
+    '[kpi-actuals] PUT | writing to table=%s pk=METRIC#%s sk=%s value=%d source=manual',
+    tableName, week, metricId, value,
+  )
 
   await ddb.send(
     new PutCommand({
@@ -188,6 +225,7 @@ async function handlePut(
     }),
   )
 
+  console.log('[kpi-actuals] PUT | DynamoDB write OK — responding 204')
   return respond(204, null, alias)
 }
 
@@ -197,12 +235,21 @@ export async function handler(
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> {
+  console.log(
+    '[kpi-actuals] handler | requestId=%s method=%s path=%s qs=%s',
+    context.awsRequestId,
+    event.httpMethod,
+    event.path,
+    JSON.stringify(event.queryStringParameters ?? {}),
+  )
+
   const alias = resolveAlias(context)
 
   try {
     await requireAuth(event, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 401
+    console.warn('[kpi-actuals] auth failed | status=%d message=%s', code, (err as Error).message)
     return respond(code, { error: (err as Error).message }, alias)
   }
 
@@ -214,18 +261,21 @@ export async function handler(
     if (method === 'PUT') {
       return await handlePut(event, alias)
     }
+    console.warn('[kpi-actuals] method not allowed | method=%s', method)
     return respond(405, { error: 'Method not allowed' }, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode
     if (code === 400) {
+      console.warn('[kpi-actuals] bad request | %s', (err as Error).message)
       return respond(400, { error: (err as Error).message }, alias)
     }
     // DynamoDB ConditionalCheckFailedException — PUT blocked because row is automated
     const awsCode = (err as { name?: string }).name
     if (awsCode === 'ConditionalCheckFailedException') {
+      console.warn('[kpi-actuals] ConditionalCheckFailed | PUT blocked — row is automated')
       return respond(409, { error: 'Cannot overwrite an automated actual with a manual value' }, alias)
     }
-    console.error('kpi-actuals error:', err)
+    console.error('[kpi-actuals] unhandled error | %s', (err as Error).message, err)
     return respond(500, { error: 'Internal server error' }, alias)
   }
 }

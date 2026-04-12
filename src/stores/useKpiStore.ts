@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { computed } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import type { OKRObjective, CLevel } from '@/types/kpi'
+import adminAxios from '@/lib/adminAxios'
 
 // Q2 2026 OKR definitions — board approved 2026-04-09, revised 2026-04-12
 const OBJECTIVES: OKRObjective[] = [
@@ -136,5 +137,31 @@ export const useKpiStore = defineStore('kpi', () => {
     weeklyActuals.value = { ...weeklyActuals.value, [id]: value }
   }
 
-  return { objectives, cLevels, updateOkrActual, updateWeeklyActual }
+  /**
+   * Fetch actuals from DynamoDB via GET /admin/kpi/actuals and hydrate both maps.
+   * OKR key results (kr*) go into okrActuals; weekly KPI ids go into weeklyActuals.
+   */
+  async function loadActuals(week?: string): Promise<void> {
+    const params = week ? { week } : {}
+    const { data } = await adminAxios.get<{
+      week: string
+      actuals: Record<string, { value: number; source: string }>
+    }>('/admin/kpi/actuals', { params })
+
+    const newOkr: Record<string, number> = { ...okrActuals.value }
+    const newWeekly: Record<string, number> = { ...weeklyActuals.value }
+
+    for (const [id, item] of Object.entries(data.actuals)) {
+      if (id.startsWith('kr')) {
+        newOkr[id] = item.value
+      } else {
+        newWeekly[id] = item.value
+      }
+    }
+
+    okrActuals.value = newOkr
+    weeklyActuals.value = newWeekly
+  }
+
+  return { objectives, cLevels, updateOkrActual, updateWeeklyActual, loadActuals }
 })
