@@ -3,8 +3,6 @@ import { computed, ref } from 'vue'
 import { useLocalStorage } from '@vueuse/core'
 import { useKpiApi } from '@/composables/useKpiApi'
 import type { OKRObjective, CLevel } from '@/types/kpi'
-import adminAxios from '@/lib/adminAxios'
-
 // Q2 2026 OKR definitions — board approved 2026-04-09, revised 2026-04-12
 const OBJECTIVES: OKRObjective[] = [
   {
@@ -106,6 +104,17 @@ const C_LEVELS: CLevel[] = [
     ],
   },
 ]
+
+/** Returns the current ISO week string, e.g. "2026-W15" */
+function currentIsoWeek(): string {
+  const d = new Date()
+  const day = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
+  const dayOfWeek = day.getUTCDay() || 7
+  day.setUTCDate(day.getUTCDate() + 4 - dayOfWeek)
+  const yearStart = new Date(Date.UTC(day.getUTCFullYear(), 0, 1))
+  const weekNo = Math.ceil((((day.getTime() - yearStart.getTime()) / 86400000) + 1) / 7)
+  return `${day.getUTCFullYear()}-W${String(weekNo).padStart(2, '0')}`
+}
 
 // ── Store ─────────────────────────────────────────────────────────────────────
 
@@ -228,31 +237,17 @@ export const useKpiStore = defineStore('kpi', () => {
     weeklyActuals.value = { ...weeklyActuals.value, [id]: value }
   }
 
-  /**
-   * Fetch actuals from DynamoDB via GET /admin/kpi/actuals and hydrate both maps.
-   * OKR key results (kr*) go into okrActuals; weekly KPI ids go into weeklyActuals.
-   */
-  async function loadActuals(week?: string): Promise<void> {
-    const params = week ? { week } : {}
-    const { data } = await adminAxios.get<{
-      week: string
-      actuals: Record<string, { value: number; source: string }>
-    }>('/admin/kpi/actuals', { params })
-
-    const newOkr: Record<string, number> = { ...okrActuals.value }
-    const newWeekly: Record<string, number> = { ...weeklyActuals.value }
-
-    for (const [id, item] of Object.entries(data.actuals)) {
-      if (id.startsWith('kr')) {
-        newOkr[id] = item.value
-      } else {
-        newWeekly[id] = item.value
-      }
-    }
-
-    okrActuals.value = newOkr
-    weeklyActuals.value = newWeekly
+  return {
+    objectives,
+    cLevels,
+    updateOkrActual,
+    updateWeeklyActual,
+    loadActuals,
+    refreshActuals,
+    isRefreshing,
+    isLoadingActuals,
+    lastRefreshed,
+    refreshErrors,
+    actualsSource,
   }
-
-  return { objectives, cLevels, updateOkrActual, updateWeeklyActual, loadActuals }
 })

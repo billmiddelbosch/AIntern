@@ -3,8 +3,6 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useKpiStore } from '@/stores/useKpiStore'
 import { useOcr } from '@/composables/useOcr'
-import adminAxios from '@/lib/adminAxios'
-
 const { t } = useI18n()
 const store = useKpiStore()
 const { isRecognizing, ocrError, recognizeNumber } = useOcr()
@@ -13,9 +11,6 @@ type Tab = 'quarterly' | 'weekly'
 const activeTab = ref<Tab>('quarterly')
 
 // ── Load + Refresh actuals ────────────────────────────────────────────────────
-const isRefreshing = ref(false)
-const lastRefreshed = ref<string | null>(null)
-const refreshErrors = ref<string[]>([])
 
 onMounted(async () => {
   try {
@@ -24,25 +19,6 @@ onMounted(async () => {
     // silently ignore — stale localStorage values remain visible
   }
 })
-
-async function refreshActuals() {
-  isRefreshing.value = true
-  refreshErrors.value = []
-  try {
-    const { data } = await adminAxios.post<{ errors?: string[] }>('/admin/kpi/refresh')
-    lastRefreshed.value = new Date().toLocaleTimeString()
-    if (data.errors?.length) refreshErrors.value = data.errors
-    await store.loadActuals()
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err)
-    refreshErrors.value = [msg]
-  } finally {
-    isRefreshing.value = false
-  }
-}
-
-// Source indicator map (stub — will be populated once e23f318 API layer is ported)
-const actualsSource = ref<Record<string, string>>({})
 
 // Track which metric is currently being OCR-scanned
 const scanningId = ref<string | null>(null)
@@ -180,23 +156,13 @@ const overallOkrPct = computed(() => {
         <button
           class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg
                  bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
-          :disabled="isRefreshing"
-          @click="refreshActuals()"
+          :disabled="store.isRefreshing"
+          @click="store.refreshActuals()"
         >
-          <span v-if="isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
+          <span v-if="store.isRefreshing">{{ t('admin.kpi.refreshing') }}</span>
           <span v-else>{{ t('admin.kpi.refreshButton') }}</span>
         </button>
       </div>
-    </div>
-
-    <!-- Last refreshed timestamp -->
-    <div v-if="lastRefreshed" class="text-xs text-slate-400">
-      {{ t('admin.kpi.lastRefreshed', { time: lastRefreshed }) }}
-    </div>
-
-    <!-- Refresh errors -->
-    <div v-if="refreshErrors.length" class="text-xs text-red-500 space-y-0.5">
-      <p v-for="err in refreshErrors" :key="err">⚠ {{ err }}</p>
     </div>
 
     <!-- Tabs -->
@@ -252,9 +218,9 @@ const overallOkrPct = computed(() => {
               <div class="shrink-0 flex items-center gap-1.5 mt-0.5">
                 <!-- Source badge -->
                 <span
-                  v-if="actualsSource[kr.id]"
+                  v-if="store.actualsSource[kr.id]"
                   class="text-[10px] px-1 py-0.5 rounded bg-slate-100 text-slate-400"
-                >{{ actualsSource[kr.id] === 'automated' ? t('admin.kpi.sourceAuto') : t('admin.kpi.sourceManual') }}</span>
+                >{{ store.actualsSource[kr.id] === 'automated' ? t('admin.kpi.sourceAuto') : t('admin.kpi.sourceManual') }}</span>
                 <!-- Boolean toggle -->
                 <template v-if="kr.type === 'boolean'">
                   <button
