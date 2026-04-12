@@ -1,13 +1,13 @@
 ---
-name: Apify credits — bijgevuld 2026-04-11
-description: Apify account balance bijgevuld door Bill op 2026-04-11 — outreach pipeline gedeblokkeerd
+name: Apify credits — uitgeput 2026-04-12
+description: Apify balance opnieuw uitgeput ($0.07) na bijvulling op 2026-04-11 — outreach enrichment geblokkeerd
 type: project
 ---
 
-Apify credits zijn bijgevuld op 2026-04-11. De account was leeg ($0.07) vanaf 2026-04-10.
+Apify credits zijn opnieuw uitgeput op 2026-04-12. Vorige bijvulling was 2026-04-11.
 
-**Status:** ✅ Credits beschikbaar — outreach pipeline gedeblokkeerd.
+**Status:** ❌ Credits bijna op ($0.066) — enrichment geblokkeerd.
 
-**Volgende stap:** Bij de volgende morning briefing kan `apify~google-search-scraper` weer draaien voor lead-enrichment. Controleer het saldo voor elke run via de Apify console.
+**Volgende stap:** Bijvullen via https://console.apify.com/billing/subscription — minimaal $5 aanbevolen om meerdere enrichment-runs te kunnen uitvoeren.
 
-**How to apply:** Geen credit-blocker meer actief. Als het saldo opnieuw onder $0.50 zakt, direct escaleren naar CEO en dit bestand bijwerken.
+**How to apply:** Bij elke board meeting controleren voor outreach-fase. Als saldo < $0.50, direct escaleren naar CEO en dit bestand bijwerken. Overweeg maandelijks vaste bijvulling in te stellen.

@@ -1,28 +1,34 @@
 # Blake — Daily Context
-_Last updated: 2026-04-11_
+_Last updated: 2026-04-12_
 
 ## Open Acties (toegewezen aan mij)
-- LinkedIn posts: 2 nog nodig deze week (1 van 3 gepubliceerd)
-- Kennisbank: 1 artikel nog nodig deze week (1 van 2 gepubliceerd)
-- Pending DMs handmatig versturen na LinkedIn-check door Bill (Bram, Jan, Bob)
+- B-02: Lead-CSV verrijken via Apify — GEBLOKKEERD (credits uitgeput, $0.07)
+- LinkedIn posts: nog 1 nodig deze week (2 van 3 gepubliceerd)
 
 ## KPI Status (deze week)
-- LinkedIn posts: 1 / 3 — ⚠️ (gecorrigeerd — post bleek vandaag al gepubliceerd)
-- Nieuwe connecties: 3 / 20–25 — ❌ (Apify geblokkeerd)
-- Kennisbank artikelen: 1 / 2 — ⚠️ (gecorrigeerd — artikel bleek vandaag al gepubliceerd)
+- LinkedIn posts: 2 / 3 — ⚠️ (post gepubliceerd 2026-04-12: urn:li:share:7449037918192648192)
+- Nieuwe connecties: 3 / 20–25 — ❌ (Apify geblokkeerd — credits uitgeput)
+- Kennisbank artikelen: 2 / 2 — ✅ (artikel gepubliceerd 2026-04-12: mkb-ai-implementatie-kloof-weten-doen)
 
 ## Actieve Blockers
-- Apify credits uitgeput ($0.07) — nieuwe lead-enrichment niet mogelijk
-- 3 pending DMs (Bram, Jan, Bob) — wachten op LinkedIn-check door Bill
+- Apify credits uitgeput ($0.07) — bijvullen vereist voor lead-enrichment
+  Actie: https://console.apify.com/billing/subscription
 
-## Genomen Beslissingen (Human Board — 2026-04-11 sessie 2)
-- LinkedIn post voorstel AFGEWEZEN — post was al gepubliceerd buiten vergadering
-- Kennisbank voorstel AFGEWEZEN — artikel was al gepubliceerd buiten vergadering
-- LinkedIn outreach OVERGESLAGEN
-- Kennisbank voorstellen 1 & 2 AFGEWEZEN (opnieuw) — deze seeds overslaan bij volgende vergadering
-- Skill verbeteringen GOEDGEKEURD → SKILL.md v0.2.5
+## Goedkeuringsregel (permanent)
+- Alles wat extern zichtbaar wordt (Kennisbank artikelen, LinkedIn posts, connection requests, DMs) vereist altijd Human Board goedkeuring vóór uitvoering.
+- Interne acties (backlog, memory, SKILL.md) zijn automatisch.
+
+## Genomen Beslissingen (board 2026-04-12 — goedgekeurd door Human Board)
+- Kennisbank artikel GEPUBLICEERD: "Van weten naar doen: hoe MKB-ondernemers AI in 4 stappen succesvol implementeren" — mkb-ai-implementatie-kloof-weten-doen
+- LinkedIn post GEPUBLICEERD: AIntern company page (2/3 posts KPI)
+- Apify enrichment GEBLOKKEERD — credits op
+- Afgewezen seeds (overslaan bij volgende vergadering):
+  - "2026-04-10 Claude als verborgen superkracht voor ontwikkelaars.md — AFGEWEZEN"
+  - "2026-04-10 Claude als people pleaser.md — AFGEWEZEN"
+  - "2026-04-10 AI Agent Beveiliging De 12 Controles.md — AFGEWEZEN"
+  - "2026-04-09 AI implementatie voor het MKB de kloof tussen weten en doen.md — GEBRUIKT (gepubliceerd 2026-04-12)"
 
 ## Lopende Context
-- Tracking bug: memory_daily_context.md toonde 0 posts/artikelen terwijl er al 1 van elk gepubliceerd was — bug gedocumenteerd in SKILL.md v0.2.5
-- Pending connectieverzoek berichten (goedgekeurd): zie memory_outreach_dm_pending.md
-- Nieuwe Kennisbank seeds nodig bij volgende vergadering — huidige seeds afgewezen of al gebruikt
+- 3 leads dm_sent (Bram, Jan, Bob) — wachten op reacties
+- collegepoint.nl + 5 andere leads wachten op Apify-enrichment voor LinkedIn URLs
+- Na bijvulling Apify: direct 6 leads verrijken en ROI-variant connectieverzoeken sturen
