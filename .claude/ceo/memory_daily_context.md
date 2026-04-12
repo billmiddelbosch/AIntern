@@ -5,6 +5,7 @@ _Last updated: 2026-04-12_
 - Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-18 dagen)
 - OKR-voortgang reviewen (vrijdag)
 - Bewaken /admin deadline 22 april (T-10 dagen) — A-03 CTO-taak vandaag
+- Prospect outreach opstarten (0/1 deze week)
 
 ## KPI Status (deze week)
 - LinkedIn posts: 1 / 3 — ⚠️ (artikel + post gepland na vergadering)

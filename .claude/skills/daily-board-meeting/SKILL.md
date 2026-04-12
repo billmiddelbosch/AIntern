@@ -129,15 +129,21 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 - **Connection count:** count `connection_sent` rows added this week in `product/marketing/leads/outreach-log.csv`
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md` (if already updated) or CMO MEMORY.md
 - **LinkedIn post count:** check `.claude/cmo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
+- **CEO prospect outreach / discovery calls:** check `.claude/ceo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
+- **Website traffic / uptime (CPO):** check `.claude/cto/memory_daily_context.md` for uptime and `.claude/cmo/memory_daily_context.md` for traffic — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
 
 ```
-| Exec  | KPI                          | Target/week | Actual (est.) | Status       |
-|-------|------------------------------|-------------|---------------|--------------|
-| CMO   | LinkedIn posts               | 3           | [N]           | ✅ / ⚠️ / ❌ |
-| CMO   | New connection requests sent | 20–25       | [N]           | ✅ / ⚠️ / ❌ |
-| CMO   | Kennisbank articles          | 2           | [N]           | ✅ / ⚠️ / ❌ |
-| CTO   | Security check done          | 1           | [Y/N]         | ✅ / ❌       |
-| COO   | Lead pipeline updated        | 2×          | [N]           | ✅ / ⚠️ / ❌ |
+| Exec    | KPI                             | Target/week | Actual (est.) | Status       |
+|---------|---------------------------------|-------------|---------------|--------------|
+| CEO     | Prospect outreach verstuurd     | ≥ 1         | [N]           | ✅ / ❌       |
+| CEO     | Discovery call gevoerd/gepland  | ≥ 0,5       | [N]           | ✅ / ❌       |
+| CMO     | LinkedIn posts                  | 3           | [N]           | ✅ / ⚠️ / ❌ |
+| CMO     | New connection requests sent    | 20–25       | [N]           | ✅ / ⚠️ / ❌ |
+| CMO     | Kennisbank articles             | 2           | [N]           | ✅ / ⚠️ / ❌ |
+| CPO/CTO | Website traffic check gedaan    | 1×          | [Y/N]         | ✅ / ❌       |
+| CPO/CTO | Uptime check gedaan             | 1×          | [Y/N]         | ✅ / ❌       |
+| CTO     | Security check done             | 1           | [Y/N]         | ✅ / ❌       |
+| COO     | Lead pipeline updated           | 2×          | [N]           | ✅ / ⚠️ / ❌ |
 ```
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
