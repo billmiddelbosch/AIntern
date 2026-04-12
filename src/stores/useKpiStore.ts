@@ -32,10 +32,10 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CPO / CTO',
     title: 'Website is organically found & converts',
     keyResults: [
-      { id: 'kr3.1', label: 'Monthly unique visitors AIntern.nl', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
-      { id: 'kr3.2', label: 'Google top-10 ranking for target keywords', targetValue: 5, unit: 'keywords', type: 'numeric' },
-      { id: 'kr3.3', label: 'AIntern.nl cited/found by LLM tools (Perplexity, ChatGPT, Claude)', targetValue: 2, unit: 'tools', type: 'numeric' },
-      { id: 'kr3.4', label: 'Kennisbank published articles', targetValue: 20, unit: 'articles', type: 'numeric' },
+      { id: 'kr3.1', label: 'Monthly unique visitors AIntern.nl', description: 'Unique monthly visitors to AIntern.nl as reported by analytics. Measured at end of each month.', targetValue: 500, unit: 'visitors/mo', type: 'numeric' },
+      { id: 'kr3.2', label: 'Google top-10 ranking for target keywords', description: 'Number of target keywords for which AIntern.nl appears in the Google top-10 search results. Verified via Google Search Console.', targetValue: 5, unit: 'keywords', type: 'numeric' },
+      { id: 'kr3.3', label: 'AIntern.nl cited/found by LLM tools (Perplexity, ChatGPT, Claude)', description: 'Number of distinct LLM tools (Perplexity, ChatGPT, Claude) that surface AIntern.nl when asked relevant questions. Verified biweekly by CTO.', targetValue: 2, unit: 'tools', type: 'numeric' },
+      { id: 'kr3.4', label: 'Kennisbank published articles', description: 'Total number of articles published to the AIntern Kennisbank (knowledge base) since Q2 start. Synced from S3.', targetValue: 20, unit: 'articles', type: 'numeric' },
     ],
   },
   {
@@ -43,9 +43,9 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'COO',
     title: 'Operational foundation scalable',
     keyResults: [
-      { id: 'kr4.1', label: 'Lead pipeline CRM active and maintained weekly', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client', targetValue: 1, unit: '', type: 'boolean' },
-      { id: 'kr4.3', label: 'Weekly auto-report active and sent', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.1', label: 'Lead pipeline CRM active and maintained weekly', description: 'CRM pipeline is actively used and updated at least once per week. Enter 1 when confirmed operational, 0 if lapsed.', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.2', label: 'Client onboarding checklist ready before first client', description: 'A complete client onboarding checklist has been created and verified before the first paying client starts. Enter 1 when done.', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr4.3', label: 'Weekly auto-report active and sent', description: 'The automated weekly board report (O-01) is active and being delivered every Monday by 09:00. Enter 1 when confirmed.', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
   {
@@ -53,7 +53,7 @@ const OBJECTIVES: OKRObjective[] = [
     ownerLabel: 'CEO / CTO',
     title: 'Board visibility & governance',
     keyResults: [
-      { id: 'kr5.1', label: 'Board has real-time insight into OKR progress', targetValue: 1, unit: '', type: 'boolean' },
+      { id: 'kr5.1', label: 'Board has real-time insight into OKR progress', description: 'The AIntern board dashboard is live and displays current OKR actuals for all board members. Enter 1 when the dashboard is operational.', targetValue: 1, unit: '', type: 'boolean' },
     ],
   },
 ]
@@ -73,27 +73,27 @@ const C_LEVELS: CLevel[] = [
   {
     role: 'CMO',
     kpis: [
-      { id: 'cmo.1', label: 'LinkedIn posts published', targetPerWeek: 3, unit: 'posts' },
-      { id: 'cmo.2', label: 'New connections sent (Lightspeed segment)', targetPerWeek: 20, unit: 'connections' },
-      { id: 'cmo.3', label: 'Inbound leads generated', targetPerWeek: 1, unit: 'leads' },
-      { id: 'cmo.4', label: 'LinkedIn → website referral traffic monitored', targetPerWeek: 1, unit: 'check' },
+      { id: 'cmo.1', label: 'LinkedIn posts published', description: 'Number of LinkedIn posts published this week. Target is ≥3 posts with no gap exceeding 3 days between posts.', targetPerWeek: 3, unit: 'posts' },
+      { id: 'cmo.2', label: 'New connections sent (Lightspeed segment)', description: 'LinkedIn connection requests sent to Lightspeed-segment prospects (retail/wholesale decision-makers) this week. Uses the approved Godfather Offer template.', targetPerWeek: 20, unit: 'connections' },
+      { id: 'cmo.3', label: 'Inbound leads generated', description: 'Prospects who initiated first contact this week via LinkedIn DM reply or website intake form. Must be new (first contact counts only).', targetPerWeek: 1, unit: 'leads' },
+      { id: 'cmo.4', label: 'LinkedIn → website referral traffic monitored', description: 'LinkedIn-to-website referral traffic checked in analytics this week and documented in the board report. Enter 1 if done, 0 if skipped.', targetPerWeek: 1, unit: 'check' },
     ],
   },
   {
     role: 'CPO',
     kpis: [
-      { id: 'cpo.1', label: 'Kennisbank articles published', targetPerWeek: 2, unit: 'articles' },
-      { id: 'cpo.2', label: 'Backlog item shipped or in progress', targetPerWeek: 1, unit: 'item' },
-      { id: 'cpo.3', label: 'SEO ranking check (keyword positions)', targetPerWeek: 1, unit: 'check' },
-      { id: 'cpo.4', label: 'Website traffic report reviewed', targetPerWeek: 1, unit: 'review' },
+      { id: 'cpo.1', label: 'Kennisbank articles published', description: 'Number of Kennisbank articles published to S3 this week. Target is ≥2 per week to reach 20 total by end of Q2.', targetPerWeek: 2, unit: 'articles' },
+      { id: 'cpo.2', label: 'Backlog item shipped or in progress', description: 'At least one product backlog item shipped (deployed) or moved to in-progress this week. Enter the count of items.', targetPerWeek: 1, unit: 'item' },
+      { id: 'cpo.3', label: 'SEO ranking check (keyword positions)', description: 'Google Search Console keyword position check performed and documented this week. Enter 1 if done, 0 if skipped.', targetPerWeek: 1, unit: 'check' },
+      { id: 'cpo.4', label: 'Website traffic report reviewed', description: 'Weekly website analytics report reviewed (unique visitors, traffic sources, bounce rate). Enter 1 if reviewed and shared with board.', targetPerWeek: 1, unit: 'review' },
     ],
   },
   {
     role: 'CTO',
     kpis: [
-      { id: 'cto.1', label: 'Security check performed & documented', targetPerWeek: 1, unit: 'check' },
-      { id: 'cto.2', label: 'LLM citation check (Perplexity / ChatGPT / Claude)', targetPerWeek: 1, unit: 'check (biweekly)' },
-      { id: 'cto.3', label: 'Infrastructure issues escalated (same day)', targetPerWeek: 1, unit: 'check' },
+      { id: 'cto.1', label: 'Security check performed & documented', description: 'Weekly security audit completed: dependency vulnerabilities checked, API keys rotated if needed, findings documented. Enter 1 if done.', targetPerWeek: 1, unit: 'check' },
+      { id: 'cto.2', label: 'LLM citation check (Perplexity / ChatGPT / Claude)', description: 'Biweekly check: query Perplexity, ChatGPT, and Claude to verify AIntern.nl is being surfaced. Document results. Enter 1 if performed this week.', targetPerWeek: 1, unit: 'check (biweekly)' },
+      { id: 'cto.3', label: 'Infrastructure issues escalated (same day)', description: 'Any infrastructure issue (downtime, build failure, API error) identified and escalated to relevant owner on the same day. Enter 1 if all issues were handled same-day; 0 if any slipped.', targetPerWeek: 1, unit: 'check' },
     ],
   },
   {
