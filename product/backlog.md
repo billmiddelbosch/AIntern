@@ -12,11 +12,19 @@
 | ~~L-07~~ | ~~**Analytics Integration**~~ | S | ~~Google Analytics or Plausible integration; track page views and CTA clicks.~~ Geimplementeerd 2026-03-30. |
 | ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |
 | ~~L-09~~ | ~~**Cookie Consent Banner (GDPR)**~~ | S | ~~Consent banner required before loading analytics; stores preference in localStorage.~~ Geimplementeerd 2026-03-30. |
-| **L-14** | **Marketing Alignment — Website verbeteringen obv go-to-market strategie** | M | 5 verbeteringen gebaseerd op GTM-sessie 2026-04-01. Spec: `product/sections/marketing-alignment/spec.md`. Volgorde: (1) verwijder onjuiste social proof claim, (2) herstel pilot-case cijfers, (3) vervang hero headline door Big Idea, (4) voeg Godfather Offer sectie toe, (5) voeg intake-vragenlijst toe vóór book-a-call. Uitvoeren vóór eerste LinkedIn post en outreach. |
+| **L-14** | **Marketing Alignment — Website verbeteringen obv go-to-market strategie** | M | 5 verbeteringen gebaseerd op GTM-sessie 2026-04-01. Spec: `product/sections/marketing-alignment/spec.md`. ~~Stap 1: verwijder onjuiste social proof claim~~ ✅ de4ef63. ~~Stap 2: herstel pilot-case cijfers~~ ✅ de4ef63. Stap 3–5 volgende sprint: (3) vervang hero headline door Big Idea, (4) voeg Godfather Offer sectie toe, (5) voeg intake-vragenlijst toe vóór book-a-call. |
 | L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
 | ~~L-11~~ | ~~**Blog / Kennisbank stub**~~ | M | ~~Placeholder section or route for future knowledge-base articles; improves SEO.~~ Geïmplementeerd 2026-04-02. |
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
 | L-13 | **Animations of Previous Assignments / Portfolio** | M | Animated showcase of past AI-intern work; visual portfolio to demonstrate capability. |
+
+## Bugs (BUG)
+
+| ID | Bug | Effort | Notes |
+|---|---|---|---|
+| BUG-01 | **Kennisbank navigatie — top en footer werken niet terug naar hoofdpagina** | S | Top- en footer-navigatielinks in de Kennisbank verwijzen niet correct terug naar de single-page app. Gebruiker zit vast in Kennisbank zonder terugweg. Onderzoek Vue Router link targets en of de Kennisbank route een aparte layout gebruikt die de globale nav overschrijft. |
+| BUG-02 | **Over AIntern — e-mailoptie werkt niet** | S | De contactoptie via e-mail in de Over AIntern sectie reageert niet. Controleer mailto-link, event handler, en of de knop correct is gekoppeld. |
+| BUG-03 | **Calendly vervangen door eigen boekingscomponent** | L | De huidige Calendly-widget vervangen door eigen implementatie met vergelijkbare functionaliteit (tijdslot selectie, bevestiging, integratie met bestaande intake-flow). Zie ook I-04 en I-05 voor gerelateerde serverless backend en e-mail collectie. |
 
 ## UX & Accessibility (U)
 
@@ -34,6 +42,17 @@
 | ~~I-03~~ | ~~**Sitemap & robots.txt**~~ | S | ~~Static sitemap.xml and robots.txt for crawler discoverability; pairs with L-06 SEO work.~~ Geïmplementeerd 2026-04-02. |
 | I-04 | **Serverless Contact Form Backend** | M | Replace Formspree with a serverless function (e.g. Vercel/Netlify function) that sends email server-side. Destination email stored in a server-only env var — never exposed to the client bundle. Current Formspree setup is the temporary solution. |
 | I-05 | **Collect real email address in intake flow** | S | Email was removed from the 5-step intake form but the Lambda still requires it (currently using a dummy value `test@aintern.nl`). Add email collection back — either as a step in the intake modal or derive it from the Calendly webhook after booking. Required for DynamoDB GSI lookup and meeting confirmation. |
+
+## Board Meeting Actions (B)
+
+| ID | Feature | Effort | Owner | Status | Source | Success Metric |
+|---|---|---|---|---|---|---|
+| ~~B-01~~ | ~~**Wekelijkse security check uitvoeren en documenteren**~~ | S | CTO | ✅ done | board-meeting-2026-04-11 | Commit 6ba7260 — PASS WITH WARNINGS, 3 high findings gedocumenteerd in .claude/cto/memory_security_check_2026-04-11.md |
+| B-02 | **Lead-CSV verrijken via Apify (LinkedIn URLs voor ≥5 resterende Lightspeed-leads)** | S | CMO | ❌ geblokkeerd | board-meeting-2026-04-12 | BLOCKER: Apify credits uitgeput ($0.07) — bijvullen via console.apify.com/billing |
+| ~~B-03~~ | ~~**Kennisbank artikel publiceren: MKB AI-implementatiekloof (S3, Dutch, 400–700 woorden)**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: s3://aintern-kennisbank/posts/mkb-ai-implementatie-kloof-weten-doen.json |
+| ~~B-04~~ | ~~**1 LinkedIn post publiceren over AI voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: urn:li:share:7449037918192648192 — AIntern company page |
+| ~~B-05~~ | ~~**A-03 Role-based access implementeren (role: admin of editor in auth store)**~~ | S | CTO | ❌ gecancelled | board-meeting-2026-04-12 | Gecancelled 2026-04-12 op verzoek Human Board |
+| ~~B-06~~ | ~~**Lead pipeline bijwerken: Bram, Jan, Bob op dm_sent status gedocumenteerd**~~ | S | COO | ✅ done | board-meeting-2026-04-12 | Al gedaan: outreach-log.csv had dm_sent voor Bram/Jan/Bob al correct sinds 2026-04-11 |
 
 ## Organisation (O)
 
@@ -61,6 +80,8 @@
 | A-10 | **Morning briefing history** | S | List past briefing logs with links to source data. Read-only audit trail. |
 | A-11 | **Admin i18n strings** | S | Add `admin.*` keys to `en.json` / `nl.json`. All admin UI strings translated from day one. |
 | A-12 | **Admin unit + E2E tests** | M | Vitest specs for auth store, route guard, form validation. Playwright E2E for login → article create → publish flow. |
-| A-13 | **Data-driven KPI integrations — persist & surface actuals** | L | Replace manual localStorage actuals with live DB reads. Integrations: (1) outreach log → connections sent, DMs sent, inbound leads; (2) Kennisbank publish events → article count; (3) uptime/security checks → uptime %, check done/not done. Manual fallback retained for metrics without an integration (e.g. discovery calls, pipeline reviews). Depends on A-04, A-07, A-09, A-14. |
-| A-14 | **DynamoDB backend — KPI actuals + meeting action items** | L | Provision a DynamoDB table (or extend the existing `AInternAdminStack`) to persist KPI actuals and meeting action items. Schema: KPI actuals keyed by `weekISO + metricId`; action items keyed by `meetingDate + itemId` with fields: `assignee`, `description`, `dueDate`, `status` (open/done), `obsidianFile` (filename relative to the `AIntern Meeting Minutes` folder in the Obsidian vault at `OneDrive/Documents/Obsidian Vault/Bill`). Lambda CRUD endpoints behind the existing API Gateway. Required by A-13 and A-15. |
+| ~~A-13~~ | ~~**Data-driven KPI integrations — persist & surface actuals**~~ | L | ~~Replace manual localStorage actuals with live DB reads. Integrations: (1) outreach log → connections sent, DMs sent, inbound leads; (2) Kennisbank publish events → article count; (3) uptime/security checks → uptime %, check done/not done. Manual fallback retained for metrics without an integration (e.g. discovery calls, pipeline reviews). Depends on A-04, A-07, A-09, A-14.~~ Geïmplementeerd 2026-04-11. Commits: 999dd0f, 418b91d, 519f663, e23f318. |
+| ~~A-14~~ | ~~**DynamoDB backend — KPI actuals + meeting action items**~~ | L | ~~Provision a DynamoDB table (or extend the existing `AInternAdminStack`) to persist KPI actuals and meeting action items. Schema: KPI actuals keyed by `weekISO + metricId`; action items keyed by `meetingDate + itemId` with fields: `assignee`, `description`, `dueDate`, `status` (open/done), `obsidianFile` (filename relative to the `AIntern Meeting Minutes` folder in the Obsidian vault at `OneDrive/Documents/Obsidian Vault/Bill`). Lambda CRUD endpoints behind the existing API Gateway. Required by A-13 and A-15.~~ Geïmplementeerd 2026-04-11. Commits: 999dd0f, 418b91d. |
 | A-15 | **Admin meeting action items view** | M | `/admin/meetings` — list and manage action items from C-level meetings. Reads/writes via A-14 Lambda endpoints. Table columns: date, assignee, description, due date, status (open/done), link to Obsidian meeting minutes file. Meeting minutes (.md files) live in the `AIntern Meeting Minutes` folder inside the Obsidian vault (`OneDrive/Documents/Obsidian Vault/Bill`); the `obsidianFile` field on each action item stores the filename relative to that folder (e.g. `2026-04-10-clevel-meeting.md`). Inline status toggle; filter by assignee and status. Depends on A-14. |
+| A-16 | **Organisatie-overzicht: actieve AIntern-agents + hiërarchie** | S | `/admin/organisation` — overzicht van alle actieve AIntern-agents (CEO, CMO, CTO, COO en subagents), hun rollen, verantwoordelijkheden en onderlinge hiërarchie. Statische pagina in eerste versie; later koppeling aan live agent-status. OKR 5.2 — deadline: 22 april 2026. |
+| A-17 | **MFA / SSO beveiliging voor /admin** | M | Beveilig het /admin dashboard met een tweede authenticatiefactor (TOTP-based MFA of SSO via Google/Microsoft). Uitbreiden van A-02 auth store en de bestaande Lambda backend. OKR 5.4 — vereist bij launch van /admin. |

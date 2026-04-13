@@ -1,24 +1,27 @@
 # Morgan — Daily Context
-_Last updated: 2026-04-11_
+_Last updated: 2026-04-12_
 
 ## Open Acties (toegewezen aan mij)
-- L-14 stap 1–2 uitvoeren: verwijder foutieve social proof claim + herstel pilot-case cijfers
-  - Type-check + security audit vereist voor go-live
-- Security check uitvoeren en documenteren (nog niet bevestigd deze week)
+- **B-05 A-03 Role-based access** — vandaag implementeren op feature/board-2026-04-12
+  - Extend useAuthStore met `role: 'admin' | 'editor'`
+  - Conditonele nav-items op basis van role
+  - Type-check + security-reviewer vereist voor commit
 
 ## KPI Status (deze week)
-- Security check: niet bevestigd / 1× — ⚠️
-- /admin sprint (KR 5.1–5.4): deadline 22 april — A-03, A-04 liggen in queue
+- Security check: ✅ (gedaan 2026-04-11 — PASS WITH WARNINGS)
+- /admin sprint (KR 5.1–5.4): deadline 22 april (T-10 dagen) — A-03 vandaag, A-04+ volgende sprint
 
 ## Actieve Blockers
-- Apify credits: $0.07 — bijvullen vereist (https://console.apify.com/billing/subscription)
-- L-14 stap 3–5 uitgesteld naar volgende week sprint (headline, Godfather Offer, intake-form)
+- Geen
 
-## Genomen Beslissingen (Human Board — 2026-04-11)
-- L-14 partieel deployen: stap 1–2 vandaag, stap 3–5 volgende week — BEVESTIGD
-- Skill verbeteringen 2 + 3 goedgekeurd; Verbetering 1 (LI_AT-check) afgewezen — geen LI_AT-referenties meer in SKILL.md
-- SKILL.md bijgewerkt naar versie 0.2.1
+## Genomen Beslissingen (board 2026-04-12)
+- A-03 role-based access is prioriteit 1 voor CTO vandaag (/admin deadline T-10)
+- L-14 stap 3 (hero headline) verschuift naar volgende sprint — /admin heeft hogere urgentie
+- B-01 security check afgerond ✅ (2026-04-11, commit 6ba7260)
+- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md) zijn automatisch.
 
 ## Lopende Context
-- Backlog focus: L-14 (urgent, vandaag stap 1–2), A-03 (role-based access), A-04 (Kennisbank article list view)
-- KR 5.1–5.4 (/admin live + OKR dashboard + MFA): deadline 22 april — 11 dagen resterend
+- Branch feature/board-2026-04-12 actief
+- A-03 backlog item: role guard + conditonele nav-items, type-check pass
+- Na A-03: volgende /admin items zijn A-04 (Kennisbank article list) en A-05 (article form)
+- L-14 stap 1 & 2 gedaan op 2026-04-11 (commits op feature/board-2026-04-11)

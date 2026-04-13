@@ -13,6 +13,7 @@
     "lint:check": "eslint .",
     "format": "prettier --write src/",
     "type-check": "vue-tsc --noEmit",
+    "sync:backlog": "aws s3 cp product/backlog.md s3://aintern-kennisbank/admin-assets/backlog.md",
     "question": "test.ts"
   },
   "dependencies": {
@@ -20,6 +21,7 @@
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
     "pinia": "^2.3.1",
+    "tesseract.js": "^7.0.0",
     "vite-ssg": "^28.3.0",
     "vue": "^3.5.13",
     "vue-i18n": "^11.1.0",

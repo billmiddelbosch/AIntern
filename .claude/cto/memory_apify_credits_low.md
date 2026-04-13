@@ -1,15 +1,13 @@
 ---
-name: Apify credits nearly depleted
-description: Apify account balance at ~$0.07 as of 2026-04-10 — insufficient to run Google Search scraper or other paid actors
+name: Apify credits — uitgeput 2026-04-12
+description: Apify balance opnieuw uitgeput ($0.07) na bijvulling op 2026-04-11 — outreach enrichment geblokkeerd
 type: project
 ---
 
-As of 2026-04-10, the Apify account balance is approximately $0.07. This is below the minimum required to run paid actors such as `apify~google-search-scraper`. The `curious_coder~linkedin-profile-scraper` also fails, though that is due to the expired LI_AT cookie rather than credits.
+Apify credits zijn opnieuw uitgeput op 2026-04-12. Vorige bijvulling was 2026-04-11.
 
-**Impact:** Step 5 (new lead decision-maker lookup via Google Search) cannot run until credits are topped up.
+**Status:** ❌ Credits bijna op ($0.066) — enrichment geblokkeerd.
 
-**Action required:** Top-up at https://console.apify.com/billing/subscription
+**Volgende stap:** Bijvullen via https://console.apify.com/billing/subscription — minimaal $5 aanbevolen om meerdere enrichment-runs te kunnen uitvoeren.
 
-**Why:** The morning briefing outreach pipeline depends on Apify for both LinkedIn profile scraping and Google search. Without credits, the entire outreach automation is blocked.
-
-**How to apply:** At the start of each morning briefing run, check for Apify credit errors. If a `not-enough-usage-to-run-paid-actor` error appears, immediately add it to the "Blocked / Action Required" section of the briefing email and skip dependent steps.
+**How to apply:** Bij elke board meeting controleren voor outreach-fase. Als saldo < $0.50, direct escaleren naar CEO en dit bestand bijwerken. Overweeg maandelijks vaste bijvulling in te stellen.
