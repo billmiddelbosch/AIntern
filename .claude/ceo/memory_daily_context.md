@@ -1,30 +1,31 @@
 # Alex — Daily Context
-_Last updated: 2026-04-12_
+_Last updated: 2026-04-13_
 
 ## Open Acties (toegewezen aan mij)
-- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-18 dagen)
+- B-07: Apify credits bijvullen (≥ $5) — https://console.apify.com/billing/subscription
+- B-10: 1 Lightspeed-prospect contacteren via LinkedIn (0/1 deze week)
+- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-17 dagen)
 - OKR-voortgang reviewen (vrijdag)
-- Bewaken /admin deadline 22 april (T-10 dagen) — A-03 CTO-taak vandaag
-- Prospect outreach opstarten (0/1 deze week)
+- /admin deadline 22 april bewaken (T-9 dagen) — A-04 is CTO-prioriteit vandaag
 
 ## KPI Status (deze week)
-- LinkedIn posts: 1 / 3 — ⚠️ (artikel + post gepland na vergadering)
-- Nieuwe connecties verstuurd: 3 / 20–25 — ❌ (Apify enrichment vandaag, herstel morgen)
-- Kennisbank artikelen: 1 / 2 — ⚠️ (artikel gepland na vergadering)
-- Security check: ✅ (gedaan 2026-04-11)
-- Lead pipeline bijgewerkt: ~1 / 2 — ⚠️
+- Prospect outreach verstuurd: 0 / ≥1 — ❌
+- Discovery call gevoerd/gepland: 0 / ≥0,5 — ❌
+- LinkedIn posts: 3 / 3 — ✅ (post gepubliceerd 2026-04-13: urn:li:share:7449412671705219072)
+- Nieuwe connecties: 3 / 20–25 — ❌ (Apify geblokkeerd)
+- Kennisbank artikelen: 2 / 2 — ✅
 
 ## Actieve Blockers
-- Geen kritieke blockers
+- Apify credits uitgeput ($0.066) — B-07 CEO-actie: bijvullen via console.apify.com/billing
 
-## Genomen Beslissingen (board 2026-04-12)
-- Top 5 acties: B-02 (Apify enrichment), B-03 (Kennisbank), B-04 (LinkedIn post), B-05 (A-03), B-06 (pipeline)
-- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md, Obsidian) zijn automatisch.
-- SKILL.md bijgewerkt naar v0.2.6
+## Genomen Beslissingen (board 2026-04-13 — goedgekeurd door Human Board)
+- B-08 LinkedIn post GEPUBLICEERD: "De nieuwste programmeertaal is gewoon Nederlands" — urn:li:share:7449412671705219072 (3/3 posts ✅)
+- Post item 1 (eerste voorstel) AFGEWEZEN — te specifiek op Lightspeed case; herzien naar generiek MKB-perspectief
+- Skill-verbeteringen 2, 3, 4 goedgekeurd en toegepast
+- Top 5 acties geregistreerd: B-07 t/m B-11
 
 ## Lopende Context
-- Backlog items B-02 t/m B-06 aangemaakt (source: board-meeting-2026-04-12)
-- Vergaderverslag opgeslagen in Obsidian, e-mail verstuurd naar w.middelbosch@gmail.com
-- Branch: feature/board-2026-04-12 actief
-- 3 leads in dm_sent status — reacties afwachten (Bram, Jan, Bob)
-- OKR 2.2: 3 connecties van 300 — Apify enrichment vandaag kritieke stap
+- Branch: feature/board-2026-04-13 actief (geen commits — Bill commit zelf)
+- OKR 2.2: 3/300 connecties — kritiek achter; Apify bijvullen is meest urgente actie
+- A-04 (Kennisbank article list in /admin) is CTO-taak vandaag; /admin deadline T-9 dagen
+- O-01 scope (COO) vandaag starten — deadline 30 april
