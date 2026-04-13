@@ -52,4 +52,10 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/AdminKpiView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'admin.kpi.pageTitle' },
   },
+  {
+    path: '/admin/kennisbank',
+    name: 'admin-kennisbank',
+    component: () => import('@/views/admin/KennisbankListView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.kennisbank.pageTitle' },
+  },
 ]

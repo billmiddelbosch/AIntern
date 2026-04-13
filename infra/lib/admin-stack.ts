@@ -204,6 +204,52 @@ export class AdminStack extends cdk.Stack {
     // DynamoDB access: read/write on aintern-admin table
     adminTable.grantReadWriteData(kpiIntegrationsFn)
 
+    // ── kennisbank-admin Lambda ───────────────────────────────────────────────
+    const kennisbankAdminFn = new lambda.Function(this, 'KennisbankAdminFunction', {
+      functionName: 'aintern-kennisbank-admin',
+      handler: 'kennisbank-admin.handler',
+      description: 'GET /admin/kennisbank — lists Kennisbank articles from S3 with status and last-modified',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:ListBucket'],
+        resources: ['arn:aws:s3:::aintern-kennisbank'],
+      }),
+    )
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: ['arn:aws:s3:::aintern-kennisbank/index.json'],
+      }),
+    )
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -216,6 +262,9 @@ export class AdminStack extends cdk.Stack {
 
     const kpiIntegrationsDevAlias = kpiIntegrationsFn.addAlias('dev')
     const kpiIntegrationsProdAlias = kpiIntegrationsFn.addAlias('prod')
+
+    const kennisbankAdminDevAlias = kennisbankAdminFn.addAlias('dev')
+    const kennisbankAdminProdAlias = kennisbankAdminFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -266,6 +315,9 @@ export class AdminStack extends cdk.Stack {
     const meetingItemByIdResource = meetingItemsResource.addResource('{id}')
     meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
 
+    // GET /admin/kennisbank
+    adminResource.addResource('kennisbank').addMethod('GET', aliasIntegration(kennisbankAdminFn))
+
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
     const apigwPrincipal = new iam.ServicePrincipal('apigateway.amazonaws.com')
@@ -279,6 +331,8 @@ export class AdminStack extends cdk.Stack {
       [meetingActionsProdAlias, 'MeetingActionsProdAlias'],
       [kpiIntegrationsDevAlias, 'KpiIntegrationsDevAlias'],
       [kpiIntegrationsProdAlias, 'KpiIntegrationsProdAlias'],
+      [kennisbankAdminDevAlias, 'KennisbankAdminDevAlias'],
+      [kennisbankAdminProdAlias, 'KennisbankAdminProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,

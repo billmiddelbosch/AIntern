@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.2.7
+version: 0.2.8
 ---
 
 # Daily Board Meeting
@@ -21,8 +21,9 @@ Load context before starting the discussion:
 Run directly in the main session (no separate terminal needed — this is a safe, non-destructive git operation):
 ```bash
 git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/board-{YYYY-MM-DD}
+git branch --show-current
 ```
-The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it.
+The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
 
 1. Read OKRs from memory: `C:/Users/bmidd/.claude/projects/C--Users-bmidd-AIntern/memory/project_okrs_q2_2026.md`
 2. Read CMO memory index and pending items:
@@ -60,10 +61,11 @@ Every action performed by any C-suite agent (CEO, CMO, CTO, COO) that writes fil
 
 ### How to open an agent terminal
 
-Use the `claude` CLI with a self-contained prompt:
+Use the `claude` CLI with a self-contained prompt — **always run visibly (foreground), never as a background process**:
 ```
-claude -p "<agent task here>"
+claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 ```
+The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt. Running foreground (no `run_in_background`) lets Bill see the output live and intervene if needed.
 
 The prompt passed to each terminal **must**:
 1. Start with: `"You are working on branch feature/board-{YYYY-MM-DD}. Verify you are on this branch (git status) before making any changes. If not, run: git checkout feature/board-{YYYY-MM-DD}."`
@@ -74,7 +76,7 @@ The prompt passed to each terminal **must**:
 
 Alex (CEO) is responsible for branch integrity and backlog governance throughout the meeting:
 
-- **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal
+- **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal. State this check explicitly in the meeting output so Bill can verify before the terminal starts.
 - **After each terminal completes:** read the Terminal Summary and verify Status is ✅. If ❌, surface a `[BLOCKER]` inline and hold subsequent terminals until resolved
 - **Before the End-of-Meeting Approval Gate:** run a final check — `git log feature/board-{YYYY-MM-DD} --oneline` — and include the full commit list in the gate summary under "Branch Commits"
 - **Merge conflict prevention:** each terminal must pull the latest branch state (`git pull origin feature/board-{YYYY-MM-DD} --rebase`) at the start before making changes. Terminals are dispatched **sequentially**, not in parallel, to avoid write conflicts
@@ -128,7 +130,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 **Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available:
 - **Connection count:** count `connection_sent` rows added this week in `product/marketing/leads/outreach-log.csv`
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md` (if already updated) or CMO MEMORY.md
-- **LinkedIn post count:** check `.claude/cmo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
+- **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback
 - **CEO prospect outreach / discovery calls:** check `.claude/ceo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
 - **Website traffic / uptime (CPO):** check `.claude/cto/memory_daily_context.md` for uptime and `.claude/cmo/memory_daily_context.md` for traffic — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
 
@@ -237,9 +239,9 @@ Only proceed with the steps below if **both** skip conditions are false.
 
 ### Steps
 
-1. Read the 3 most recent entries from the Obsidian vault (see `references/obsidian-vault.md` for vault location and structure)
+1. Read up to the **10 most recent entries** from the Obsidian vault (see `references/obsidian-vault.md` for vault location and structure). If all 10 are AFGEWEZEN or GEBRUIKT, skip Phase 4 entirely and mention: `_Phase 4 overgeslagen — geen ongebruikte Obsidian seeds beschikbaar in de laatste 10 entries._`
 2. Identify 1–2 topic seeds relevant to the AIntern audience (Lightspeed webshop owners, MKB, AI automation)
-2b. **Rejected seed filter:** Before selecting seeds, check the "Genomen Beslissingen" section of `.claude/cmo/memory_daily_context.md`. Look for lines containing `AFGEWEZEN` with the **exact filename** of the Obsidian entry (e.g. `"2026-04-10 Claude als verborgen superkracht.md — AFGEWEZEN"`). Skip any entry whose filename appears in that list. Move to the next most recent entry instead.
+2b. **Rejected seed filter:** Before selecting seeds, check the "Genomen Beslissingen" section of `.claude/cmo/memory_daily_context.md`. Look for lines containing `AFGEWEZEN` or `GEBRUIKT` with the **exact filename** of the Obsidian entry (e.g. `"2026-04-10 Claude als verborgen superkracht.md — AFGEWEZEN"`). Skip any entry whose filename appears in that list. Move to the next most recent entry instead.
    - **When writing rejected decisions to memory:** Always include the exact Obsidian filename, not a generic description (e.g. write `"2026-04-10 Claude als verborgen superkracht voor ontwikkelaars.md — AFGEWEZEN"` not `"Kennisbank voorstel 1 AFGEWEZEN"`)
 
 3. Load `marketing-super-team` skill — run a **Quick Audit** on each seed: is this the right angle for the target audience?

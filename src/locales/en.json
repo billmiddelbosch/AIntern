@@ -221,7 +221,8 @@
   "admin": {
     "nav": {
       "dashboard": "Dashboard",
-      "kpi": "KPI Dashboard"
+      "kpi": "KPI Dashboard",
+      "kennisbank": "Kennisbank"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -275,6 +276,31 @@
       "ocrScanning": "Scanning…",
       "ocrNoResult": "No number found in image",
       "ocrError": "OCR failed: {msg}"
+    },
+    "kennisbank": {
+      "pageTitle": "Kennisbank Admin",
+      "heading": "Kennisbank Articles",
+      "subheading": "Overview of all Kennisbank articles in S3.",
+      "refresh": "Refresh",
+      "loading": "Loading articles…",
+      "error": "Could not load articles. Please try again.",
+      "empty": "No articles found.",
+      "columns": {
+        "title": "Title",
+        "slug": "Slug",
+        "status": "Status",
+        "lastModified": "Last Modified"
+      },
+      "status": {
+        "published": "Published",
+        "draft": "Draft"
+      },
+      "pagination": {
+        "page": "Page",
+        "of": "of",
+        "prev": "Previous",
+        "next": "Next"
+      }
     }
   },
   "hero": {

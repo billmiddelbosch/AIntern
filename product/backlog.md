@@ -53,6 +53,11 @@
 | ~~B-04~~ | ~~**1 LinkedIn post publiceren over AI voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: urn:li:share:7449037918192648192 — AIntern company page |
 | ~~B-05~~ | ~~**A-03 Role-based access implementeren (role: admin of editor in auth store)**~~ | S | CTO | ❌ gecancelled | board-meeting-2026-04-12 | Gecancelled 2026-04-12 op verzoek Human Board |
 | ~~B-06~~ | ~~**Lead pipeline bijwerken: Bram, Jan, Bob op dm_sent status gedocumenteerd**~~ | S | COO | ✅ done | board-meeting-2026-04-12 | Al gedaan: outreach-log.csv had dm_sent voor Bram/Jan/Bob al correct sinds 2026-04-11 |
+| B-07 | **Apify credits bijvullen (≥ $5)** | S | CEO | todo | board-meeting-2026-04-13 | Saldo > $1, B-02 deblokkeerd |
+| B-08 | **3e LinkedIn post publiceren (AIntern company page)** | S | CMO | todo | board-meeting-2026-04-13 | Post live, 3/3 weekdoel behaald |
+| ~~B-09~~ | ~~**A-04 implementeren: Kennisbank article list in /admin**~~ | M | CTO | ✅ done | board-meeting-2026-04-13 | `/admin/kennisbank` route live, sortable paginated table, type-check pass — 9 files, feature/board-2026-04-13 |
+| B-10 | **CEO prospect outreach — 1 Lightspeed-prospect contacteren via LinkedIn** | S | CEO | todo | board-meeting-2026-04-13 | ≥1 prospect gecontacteerd, gelogd in pipeline |
+| ~~B-11~~ | ~~**O-01 scope definiëren + eerste draft weekrapport-structuur**~~ | S | COO | ✅ done | board-meeting-2026-04-13 | product/sections/weekly-report/spec.md + template.md aangemaakt — feature/board-2026-04-13 |
 
 ## Organisation (O)
 
