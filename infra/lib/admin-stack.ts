@@ -223,7 +223,7 @@ export class AdminStack extends cdk.Stack {
       description: 'AIntern admin authentication API (login + first-run register)',
       deploy: false,
       defaultCorsPreflightOptions: {
-        allowOrigins: ['https://aintern.nl', 'https://www.aintern.nl', 'http://localhost:5173'],
+        allowOrigins: ['https://aintern.nl', 'https://www.aintern.nl', 'https://test.aintern.nl', 'http://localhost:5173'],
         allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization'],
       },
