@@ -20,18 +20,24 @@ function resolveAlias(context: Context): string {
   return alias
 }
 
-function corsOrigin(alias: string): string {
-  return alias === 'prod' ? 'https://aintern.nl' : 'http://localhost:5173'
+function corsOrigin(alias: string, requestOrigin?: string): string {
+  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'dev') {
+    if (requestOrigin === 'http://localhost:5173') return requestOrigin
+    return 'https://test.aintern.nl'
+  }
+  return 'http://localhost:5173'
 }
 
 function respond(
   statusCode: number,
   body: unknown,
   alias: string,
+  requestOrigin?: string,
 ): APIGatewayProxyResult {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': corsOrigin(alias),
+    'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   }
   if (statusCode === 204) {
@@ -127,6 +133,7 @@ async function handleGet(
   event: APIGatewayProxyEvent,
   alias: string,
 ): Promise<APIGatewayProxyResult> {
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   const week = event.queryStringParameters?.['week'] ?? currentIsoWeek()
   console.log('[kpi-actuals] GET | week=%s', week)
 
@@ -152,7 +159,7 @@ async function handleGet(
   }
 
   console.log('[kpi-actuals] GET | responding 200 with %d metrics', Object.keys(actuals).length)
-  return respond(200, { week, actuals }, alias)
+  return respond(200, { week, actuals }, alias, requestOrigin)
 }
 
 interface PutBody {
@@ -199,6 +206,7 @@ async function handlePut(
   event: APIGatewayProxyEvent,
   alias: string,
 ): Promise<APIGatewayProxyResult> {
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   const { week, metricId, value } = parsePutBody(event.body)
   const tableName = await getTableName(alias)
 
@@ -226,7 +234,7 @@ async function handlePut(
   )
 
   console.log('[kpi-actuals] PUT | DynamoDB write OK — responding 204')
-  return respond(204, null, alias)
+  return respond(204, null, alias, requestOrigin)
 }
 
 // ── Main handler ──────────────────────────────────────────────────────────────
@@ -244,13 +252,14 @@ export async function handler(
   )
 
   const alias = resolveAlias(context)
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
 
   try {
     await requireAuth(event, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 401
     console.warn('[kpi-actuals] auth failed | status=%d message=%s', code, (err as Error).message)
-    return respond(code, { error: (err as Error).message }, alias)
+    return respond(code, { error: (err as Error).message }, alias, requestOrigin)
   }
 
   try {
@@ -262,20 +271,20 @@ export async function handler(
       return await handlePut(event, alias)
     }
     console.warn('[kpi-actuals] method not allowed | method=%s', method)
-    return respond(405, { error: 'Method not allowed' }, alias)
+    return respond(405, { error: 'Method not allowed' }, alias, requestOrigin)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode
     if (code === 400) {
       console.warn('[kpi-actuals] bad request | %s', (err as Error).message)
-      return respond(400, { error: (err as Error).message }, alias)
+      return respond(400, { error: (err as Error).message }, alias, requestOrigin)
     }
     // DynamoDB ConditionalCheckFailedException — PUT blocked because row is automated
     const awsCode = (err as { name?: string }).name
     if (awsCode === 'ConditionalCheckFailedException') {
       console.warn('[kpi-actuals] ConditionalCheckFailed | PUT blocked — row is automated')
-      return respond(409, { error: 'Cannot overwrite an automated actual with a manual value' }, alias)
+      return respond(409, { error: 'Cannot overwrite an automated actual with a manual value' }, alias, requestOrigin)
     }
     console.error('[kpi-actuals] unhandled error | %s', (err as Error).message, err)
-    return respond(500, { error: 'Internal server error' }, alias)
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }

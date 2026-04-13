@@ -23,18 +23,24 @@ function resolveAlias(context: Context): string {
   return alias
 }
 
-function corsOrigin(alias: string): string {
-  return alias === 'prod' ? 'https://aintern.nl' : 'http://localhost:5173'
+function corsOrigin(alias: string, requestOrigin?: string): string {
+  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'dev') {
+    if (requestOrigin === 'http://localhost:5173') return requestOrigin
+    return 'https://test.aintern.nl'
+  }
+  return 'http://localhost:5173'
 }
 
 function respond(
   statusCode: number,
   body: unknown,
   alias: string,
+  requestOrigin?: string,
 ): APIGatewayProxyResult {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': corsOrigin(alias),
+    'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   }
   if (statusCode === 204) {
@@ -490,18 +496,19 @@ export async function handler(
   )
 
   const alias = resolveAlias(context)
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
 
   try {
     await requireAuth(event, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 401
     console.warn('[kpi-integrations] auth failed | status=%d message=%s', code, (err as Error).message)
-    return respond(code, { error: (err as Error).message }, alias)
+    return respond(code, { error: (err as Error).message }, alias, requestOrigin)
   }
 
   if (event.httpMethod !== 'POST') {
     console.warn('[kpi-integrations] method not allowed | method=%s', event.httpMethod)
-    return respond(405, { error: 'Method not allowed' }, alias)
+    return respond(405, { error: 'Method not allowed' }, alias, requestOrigin)
   }
 
   let week: string
@@ -511,7 +518,7 @@ export async function handler(
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 400
     console.warn('[kpi-integrations] bad request | %s', (err as Error).message)
-    return respond(code, { error: (err as Error).message }, alias)
+    return respond(code, { error: (err as Error).message }, alias, requestOrigin)
   }
 
   let tableName: string
@@ -520,7 +527,7 @@ export async function handler(
     console.log('[kpi-integrations] resolved tableName=%s', tableName)
   } catch (err: unknown) {
     console.error('[kpi-integrations] getTableName failed | alias=%s error=%s', alias, (err as Error).message, err)
-    return respond(500, { error: 'Internal server error' }, alias)
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 
   const errors: string[] = []
@@ -567,5 +574,5 @@ export async function handler(
     console.warn('[kpi-integrations] partial errors | %s', JSON.stringify(errors))
   }
 
-  return respond(200, { week, updated, errors }, alias)
+  return respond(200, { week, updated, errors }, alias, requestOrigin)
 }

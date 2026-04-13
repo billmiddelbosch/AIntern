@@ -18,20 +18,26 @@ function emailToSsmKey(email: string): string {
   return email.replace('@', '_at_').replace(/[^A-Za-z0-9.\-_]/g, '_')
 }
 
-function corsOrigin(alias: string): string {
-  return alias === 'prod' ? 'https://aintern.nl' : 'http://localhost:5173'
+function corsOrigin(alias: string, requestOrigin?: string): string {
+  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'dev') {
+    if (requestOrigin === 'http://localhost:5173') return requestOrigin
+    return 'https://test.aintern.nl'
+  }
+  return 'http://localhost:5173'
 }
 
 function respond(
   statusCode: number,
   body: unknown,
   alias: string,
+  requestOrigin?: string,
 ): APIGatewayProxyResult {
   return {
     statusCode,
     headers: {
       'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': corsOrigin(alias),
+      'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
     body: JSON.stringify(body),
@@ -67,10 +73,11 @@ async function getPasswordHash(email: string): Promise<string | null> {
 async function handleLogin(
   body: Record<string, unknown>,
   alias: string,
+  requestOrigin?: string,
 ): Promise<APIGatewayProxyResult> {
   const { email, password } = body
   if (typeof email !== 'string' || typeof password !== 'string' || !email || !password) {
-    return respond(400, { error: 'email and password are required' }, alias)
+    return respond(400, { error: 'email and password are required' }, alias, requestOrigin)
   }
 
   const [hash, secret] = await Promise.all([
@@ -79,12 +86,12 @@ async function handleLogin(
   ])
 
   if (!hash) {
-    return respond(401, { error: 'Invalid credentials' }, alias)
+    return respond(401, { error: 'Invalid credentials' }, alias, requestOrigin)
   }
 
   const valid = await bcrypt.compare(password, hash)
   if (!valid) {
-    return respond(401, { error: 'Invalid credentials' }, alias)
+    return respond(401, { error: 'Invalid credentials' }, alias, requestOrigin)
   }
 
   const user = { id: email, name: email, email, role: 'admin' as const }
@@ -94,12 +101,13 @@ async function handleLogin(
     { algorithm: 'HS256', expiresIn: '8h' },
   )
 
-  return respond(200, { token, user }, alias)
+  return respond(200, { token, user }, alias, requestOrigin)
 }
 
 async function handleRegister(
   body: Record<string, unknown>,
   alias: string,
+  requestOrigin?: string,
 ): Promise<APIGatewayProxyResult> {
   const { email, password, name } = body
   if (
@@ -108,17 +116,17 @@ async function handleRegister(
     typeof name !== 'string' ||
     !email || !password || !name
   ) {
-    return respond(400, { error: 'email, password and name are required' }, alias)
+    return respond(400, { error: 'email, password and name are required' }, alias, requestOrigin)
   }
 
   if (password.length < 8) {
-    return respond(400, { error: 'Password must be at least 8 characters' }, alias)
+    return respond(400, { error: 'Password must be at least 8 characters' }, alias, requestOrigin)
   }
 
   // First-run check: if a hash already exists for this email, registration is closed
   const existing = await getPasswordHash(email)
   if (existing !== null) {
-    return respond(403, { error: 'Registration is closed' }, alias)
+    return respond(403, { error: 'Registration is closed' }, alias, requestOrigin)
   }
 
   const hash = await bcrypt.hash(password, 12)
@@ -133,7 +141,7 @@ async function handleRegister(
     }),
   )
 
-  return respond(201, { success: true }, alias)
+  return respond(201, { success: true }, alias, requestOrigin)
 }
 
 export async function handler(
@@ -141,24 +149,25 @@ export async function handler(
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   const alias = resolveAlias(context)
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
 
   let body: Record<string, unknown>
   try {
     body = JSON.parse(event.body ?? '{}')
   } catch {
-    return respond(400, { error: 'Invalid JSON body' }, alias)
+    return respond(400, { error: 'Invalid JSON body' }, alias, requestOrigin)
   }
 
   try {
     if (event.resource === '/admin/login') {
-      return await handleLogin(body, alias)
+      return await handleLogin(body, alias, requestOrigin)
     }
     if (event.resource === '/admin/register') {
-      return await handleRegister(body, alias)
+      return await handleRegister(body, alias, requestOrigin)
     }
-    return respond(404, { error: 'Not found' }, alias)
+    return respond(404, { error: 'Not found' }, alias, requestOrigin)
   } catch (err) {
     console.error('admin-auth error:', err)
-    return respond(500, { error: 'Internal server error' }, alias)
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }
