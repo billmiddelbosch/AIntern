@@ -18,8 +18,13 @@ function emailToSsmKey(email: string): string {
   return email.replace('@', '_at_').replace(/[^A-Za-z0-9.\-_]/g, '_')
 }
 
+const PROD_ORIGINS = new Set(['https://aintern.nl', 'https://www.aintern.nl'])
+
 function corsOrigin(alias: string, requestOrigin?: string): string {
-  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'prod') {
+    if (requestOrigin && PROD_ORIGINS.has(requestOrigin)) return requestOrigin
+    return 'https://aintern.nl'
+  }
   if (alias === 'dev') {
     if (requestOrigin === 'http://localhost:5173') return requestOrigin
     return 'https://test.aintern.nl'

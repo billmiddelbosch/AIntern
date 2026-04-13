@@ -107,8 +107,13 @@ These rules fire automatically based on the type of work being done. No need to 
 Every Lambda handler that returns HTTP responses **must** use this exact `corsOrigin` + `respond` pattern. Do not deviate.
 
 ```typescript
+const PROD_ORIGINS = new Set(['https://aintern.nl', 'https://www.aintern.nl'])
+
 function corsOrigin(alias: string, requestOrigin?: string): string {
-  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'prod') {
+    if (requestOrigin && PROD_ORIGINS.has(requestOrigin)) return requestOrigin
+    return 'https://aintern.nl'
+  }
   if (alias === 'dev') {
     if (requestOrigin === 'http://localhost:5173') return requestOrigin
     return 'https://test.aintern.nl'
@@ -139,7 +144,7 @@ function respond(
 - Pass `requestOrigin` as the 4th argument to every `respond()` call site
 - Sub-handlers without `event` access must receive `requestOrigin?: string` as a parameter
 
-**Why:** The `dev` Lambda alias serves both `https://test.aintern.nl` and `http://localhost:5173`. Returning a fixed origin for `dev` blocks whichever caller doesn't match. The handler must echo the validated request origin.
+**Why:** Both `dev` and `prod` serve multiple origins (`www.aintern.nl` + `aintern.nl` for prod; `test.aintern.nl` + `localhost:5173` for dev). Returning a hardcoded single origin blocks the other caller. The handler must echo the validated request origin.
 
 **CEO review gate:** The CEO must verify this mapping whenever a new Lambda handler is created, a new environment/domain is added, or `corsOrigin` is modified. The API Gateway CDK preflight list (`infra/lib/admin-stack.ts` → `allowOrigins`) must also include all allowed origins.
 
