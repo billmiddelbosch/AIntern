@@ -100,6 +100,49 @@ These rules fire automatically based on the type of work being done. No need to 
 | Any `.vue`, `.ts`, or `.js` file under `src/` or `lambda/` is modified | Invoke **security-auditor** agent before the task is closed |
 | Any outreach, lead-send, LinkedIn message, or email action | Require **explicit user approval** before executing — never auto-send |
 
+## Lambda Conventions
+
+### CORS Origin — mandatory pattern for every Lambda handler
+
+Every Lambda handler that returns HTTP responses **must** use this exact `corsOrigin` + `respond` pattern. Do not deviate.
+
+```typescript
+function corsOrigin(alias: string, requestOrigin?: string): string {
+  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'dev') {
+    if (requestOrigin === 'http://localhost:5173') return requestOrigin
+    return 'https://test.aintern.nl'
+  }
+  return 'http://localhost:5173'
+}
+
+function respond(
+  statusCode: number,
+  body: unknown,
+  alias: string,
+  requestOrigin?: string,
+): APIGatewayProxyResult {
+  return {
+    statusCode,
+    headers: {
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    },
+    body: JSON.stringify(body),
+  }
+}
+```
+
+- Extract the alias from the function ARN: `context.invokedFunctionArn.split(':').pop() ?? 'dev'`
+- Extract the request origin at the top of every handler: `const requestOrigin = event.headers['origin'] ?? event.headers['Origin']`
+- Pass `requestOrigin` as the 4th argument to every `respond()` call site
+- Sub-handlers without `event` access must receive `requestOrigin?: string` as a parameter
+
+**Why:** The `dev` Lambda alias serves both `https://test.aintern.nl` and `http://localhost:5173`. Returning a fixed origin for `dev` blocks whichever caller doesn't match. The handler must echo the validated request origin.
+
+**CEO review gate:** The CEO must verify this mapping whenever a new Lambda handler is created, a new environment/domain is added, or `corsOrigin` is modified. The API Gateway CDK preflight list (`infra/lib/admin-stack.ts` → `allowOrigins`) must also include all allowed origins.
+
 ## Important Notes
 - Tailwind CSS v4: do **not** create a `tailwind.config.ts` — all config is done via CSS theme variables if needed
 - ESLint uses flat config (`eslint.config.ts`, ESLint 9+) — no `.eslintrc` files

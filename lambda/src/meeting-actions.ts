@@ -24,18 +24,24 @@ function resolveAlias(context: Context): string {
   return context.invokedFunctionArn.split(':').pop() ?? 'dev'
 }
 
-function corsOrigin(alias: string): string {
-  return alias === 'prod' ? 'https://aintern.nl' : 'http://localhost:5173'
+function corsOrigin(alias: string, requestOrigin?: string): string {
+  if (alias === 'prod') return 'https://aintern.nl'
+  if (alias === 'dev') {
+    if (requestOrigin === 'http://localhost:5173') return requestOrigin
+    return 'https://test.aintern.nl'
+  }
+  return 'http://localhost:5173'
 }
 
 function respond(
   statusCode: number,
   body: unknown,
   alias: string,
+  requestOrigin?: string,
 ): APIGatewayProxyResult {
   const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': corsOrigin(alias),
+    'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   }
   return { statusCode, headers, body: statusCode === 204 ? '' : JSON.stringify(body) }
@@ -125,6 +131,7 @@ function toResponseItem(raw: DdbActionItem, meetingDate: string): ActionItem {
  */
 async function handleListMeetings(
   alias: string,
+  requestOrigin?: string,
 ): Promise<APIGatewayProxyResult> {
   const tableName = await getTableName(alias)
 
@@ -144,7 +151,7 @@ async function handleListMeetings(
   }
 
   const dates = Array.from(dateSet).sort((a, b) => b.localeCompare(a))
-  return respond(200, { dates }, alias)
+  return respond(200, { dates }, alias, requestOrigin)
 }
 
 /**
@@ -154,9 +161,10 @@ async function handleListMeetings(
 async function handleGetMeeting(
   date: string,
   alias: string,
+  requestOrigin?: string,
 ): Promise<APIGatewayProxyResult> {
   if (!isValidDate(date)) {
-    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias)
+    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias, requestOrigin)
   }
 
   const tableName = await getTableName(alias)
@@ -176,7 +184,7 @@ async function handleGetMeeting(
     toResponseItem(raw as DdbActionItem, date),
   )
 
-  return respond(200, items, alias)
+  return respond(200, items, alias, requestOrigin)
 }
 
 interface PostItemBody {
@@ -232,8 +240,9 @@ async function handleCreateItem(
   event: APIGatewayProxyEvent,
   alias: string,
 ): Promise<APIGatewayProxyResult> {
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   if (!isValidDate(date)) {
-    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias)
+    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias, requestOrigin)
   }
 
   const body = parsePostBody(event.body, date)
@@ -256,7 +265,7 @@ async function handleCreateItem(
     }),
   )
 
-  return respond(201, toResponseItem(item, date), alias)
+  return respond(201, toResponseItem(item, date), alias, requestOrigin)
 }
 
 type PatchableFields = Partial<Pick<ActionItem, 'assignee' | 'description' | 'dueDate' | 'status' | 'obsidianFile'>>
@@ -311,8 +320,9 @@ async function handleUpdateItem(
   event: APIGatewayProxyEvent,
   alias: string,
 ): Promise<APIGatewayProxyResult> {
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   if (!isValidDate(date)) {
-    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias)
+    return respond(400, { error: 'Invalid date format — expected YYYY-MM-DD' }, alias, requestOrigin)
   }
 
   const patch = parsePatchBody(event.body)
@@ -326,7 +336,7 @@ async function handleUpdateItem(
     new GetCommand({ TableName: tableName, Key: { pk, sk } }),
   )
   if (!existing.Item) {
-    return respond(404, { error: `Action item ${id} not found for meeting ${date}` }, alias)
+    return respond(404, { error: `Action item ${id} not found for meeting ${date}` }, alias, requestOrigin)
   }
 
   // Build UpdateExpression dynamically from the patch fields
@@ -362,7 +372,7 @@ async function handleUpdateItem(
     }),
   )
 
-  return respond(200, toResponseItem(result.Attributes as DdbActionItem, date), alias)
+  return respond(200, toResponseItem(result.Attributes as DdbActionItem, date), alias, requestOrigin)
 }
 
 // ── Main handler ──────────────────────────────────────────────────────────────
@@ -372,12 +382,13 @@ export async function handler(
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   const alias = resolveAlias(context)
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
 
   try {
     await requireAuth(event, alias)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode ?? 401
-    return respond(code, { error: (err as Error).message }, alias)
+    return respond(code, { error: (err as Error).message }, alias, requestOrigin)
   }
 
   try {
@@ -386,13 +397,13 @@ export async function handler(
 
     // GET /admin/meetings — list all meeting dates
     if (method === 'GET' && resource === '/admin/meetings') {
-      return await handleListMeetings(alias)
+      return await handleListMeetings(alias, requestOrigin)
     }
 
     // GET /admin/meetings/{date} — list items for a date
     if (method === 'GET' && resource === '/admin/meetings/{date}') {
       const date = event.pathParameters?.['date'] ?? ''
-      return await handleGetMeeting(date, alias)
+      return await handleGetMeeting(date, alias, requestOrigin)
     }
 
     // POST /admin/meetings/{date}/items — create an action item
@@ -408,13 +419,13 @@ export async function handler(
       return await handleUpdateItem(date, id, event, alias)
     }
 
-    return respond(405, { error: 'Method not allowed' }, alias)
+    return respond(405, { error: 'Method not allowed' }, alias, requestOrigin)
   } catch (err: unknown) {
     const code = (err as { statusCode?: number }).statusCode
     if (code === 400) {
-      return respond(400, { error: (err as Error).message }, alias)
+      return respond(400, { error: (err as Error).message }, alias, requestOrigin)
     }
     console.error('meeting-actions error:', err)
-    return respond(500, { error: 'Internal server error' }, alias)
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }
