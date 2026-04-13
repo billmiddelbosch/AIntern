@@ -61,10 +61,11 @@ Every action performed by any C-suite agent (CEO, CMO, CTO, COO) that writes fil
 
 ### How to open an agent terminal
 
-Use the `claude` CLI with a self-contained prompt:
+Use the `claude` CLI with a self-contained prompt — **always run visibly (foreground), never as a background process**:
 ```
-claude -p "<agent task here>"
+claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 ```
+The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt. Running foreground (no `run_in_background`) lets Bill see the output live and intervene if needed.
 
 The prompt passed to each terminal **must**:
 1. Start with: `"You are working on branch feature/board-{YYYY-MM-DD}. Verify you are on this branch (git status) before making any changes. If not, run: git checkout feature/board-{YYYY-MM-DD}."`
@@ -75,7 +76,7 @@ The prompt passed to each terminal **must**:
 
 Alex (CEO) is responsible for branch integrity and backlog governance throughout the meeting:
 
-- **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal
+- **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal. State this check explicitly in the meeting output so Bill can verify before the terminal starts.
 - **After each terminal completes:** read the Terminal Summary and verify Status is ✅. If ❌, surface a `[BLOCKER]` inline and hold subsequent terminals until resolved
 - **Before the End-of-Meeting Approval Gate:** run a final check — `git log feature/board-{YYYY-MM-DD} --oneline` — and include the full commit list in the gate summary under "Branch Commits"
 - **Merge conflict prevention:** each terminal must pull the latest branch state (`git pull origin feature/board-{YYYY-MM-DD} --rebase`) at the start before making changes. Terminals are dispatched **sequentially**, not in parallel, to avoid write conflicts

@@ -221,7 +221,8 @@
   "admin": {
     "nav": {
       "dashboard": "Dashboard",
-      "kpi": "KPI Dashboard"
+      "kpi": "KPI Dashboard",
+      "kennisbank": "Kennisbank"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -275,6 +276,31 @@
       "ocrScanning": "Scannen…",
       "ocrNoResult": "Geen getal gevonden in afbeelding",
       "ocrError": "OCR mislukt: {msg}"
+    },
+    "kennisbank": {
+      "pageTitle": "Kennisbank Beheer",
+      "heading": "Kennisbank Artikelen",
+      "subheading": "Overzicht van alle Kennisbank-artikelen in S3.",
+      "refresh": "Vernieuwen",
+      "loading": "Artikelen laden…",
+      "error": "Artikelen konden niet worden geladen. Probeer opnieuw.",
+      "empty": "Geen artikelen gevonden.",
+      "columns": {
+        "title": "Titel",
+        "slug": "Slug",
+        "status": "Status",
+        "lastModified": "Laatst gewijzigd"
+      },
+      "status": {
+        "published": "Gepubliceerd",
+        "draft": "Concept"
+      },
+      "pagination": {
+        "page": "Pagina",
+        "of": "van",
+        "prev": "Vorige",
+        "next": "Volgende"
+      }
     }
   },
   "hero": {
