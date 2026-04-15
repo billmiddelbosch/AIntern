@@ -10,6 +10,22 @@ export default defineConfig({
         tailwindcss(),
     ],
     ssgOptions: {
+        async includedRoutes(paths) {
+            // Strip dynamic route patterns (e.g. /kennisbank/:slug) — replace with concrete slugs from S3
+            const staticPaths = paths.filter((p) => !p.includes(':'));
+            let articleRoutes = [];
+            try {
+                const res = await fetch('https://aintern-kennisbank.s3.eu-west-2.amazonaws.com/index.json');
+                const data = (await res.json());
+                articleRoutes = data.posts
+                    .filter((post) => /^[a-z0-9-]+$/.test(post.slug))
+                    .map((post) => `/kennisbank/${post.slug}`);
+            }
+            catch {
+                // S3 unreachable — build continues without article routes
+            }
+            return [...staticPaths, ...articleRoutes];
+        },
         onFinished() {
             generateSitemap({ hostname: 'https://aintern.nl' });
         },
