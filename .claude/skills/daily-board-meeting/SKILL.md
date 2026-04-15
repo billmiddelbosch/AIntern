@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.2.8
+version: 0.2.9
 ---
 
 # Daily Board Meeting
@@ -128,8 +128,8 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 ### Round 3 — Synthesis
 
 **Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available:
-- **Connection count:** count `connection_sent` rows added this week in `product/marketing/leads/outreach-log.csv`
-- **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md` (if already updated) or CMO MEMORY.md
+- **Connection count:** count rows in `product/marketing/leads/outreach-log.csv` where `connection_sent_at` falls within the current ISO week (Monday of current week ≤ date ≤ today). Do **not** use the cumulative count from memory — filter by date to avoid carrying over last week's connections.
+- **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md`. When the count is ≥ 1, verify each article's publish date against the current ISO week start (Monday). Only count articles published on or after Monday of the current ISO week. If the memory shows 2/2 but one article was published on a Sunday (previous week), the actual count for the current week is 1/2 — note this discrepancy.
 - **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback
 - **CEO prospect outreach / discovery calls:** check `.claude/ceo/memory_daily_context.md` — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
 - **Website traffic / uptime (CPO):** check `.claude/cto/memory_daily_context.md` for uptime and `.claude/cmo/memory_daily_context.md` for traffic — if not tracked, use `0 (niet getrackt — handmatige check vereist)` as fallback
@@ -204,6 +204,19 @@ Before drafting any messages, evaluate the outreach state using context already 
   Actie vereist voor volgende run:
   1. Apify credits bijvullen: https://console.apify.com/billing/subscription
   2. Handmatig te versturen DMs: [lijst uit memory_outreach_dm_pending.md]
+  ```
+
+  **Handmatige LinkedIn URL fallback (voor de Human Board):**
+  Als Apify geblokkeerd blijft en er leads in de CSV staan zonder LinkedIn URL, presenteer dan de volgende instructies zodat Bill de URLs handmatig kan ophalen:
+  ```
+  ### Handmatige LinkedIn URL ophalen
+  Voor de volgende leads ontbreekt een LinkedIn URL. Zoek deze handmatig op:
+
+  | Website | Bedrijfsnaam | Actie |
+  |---------|-------------|-------|
+  | [website] | [naam] | Zoek op LinkedIn: site:linkedin.com/in "[bedrijfsnaam]" of open LinkedIn en zoek op naam + bedrijf |
+
+  Voeg de gevonden URL toe als `linkedin_url` in `product/marketing/leads/outreach-log.csv` en meld dit in het gesprek zodat outreach direct kan starten.
   ```
 
 ### Steps
@@ -363,6 +376,7 @@ _Last updated: {YYYY-MM-DD}_
 - COO: include pipeline health status, onboarding checklist state
 - CEO: include the Top 5 Daily Actions list, any cross-functional decisions, and Human Board feedback
 - Always note which items were approved, rejected, or modified by the Human Board — this is the ground truth for the next meeting
+- **Stale backlog sync:** After updating executive memory, scan all open B-items in `product/backlog.md` and compare against executive memory. If any B-item has status `todo` in the backlog but is marked as done/cancelled in executive memory, correct it immediately. The backlog is the single source of truth — memory should never be ahead of it for more than one meeting.
 
 ---
 
