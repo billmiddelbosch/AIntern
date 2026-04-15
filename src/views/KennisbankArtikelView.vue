@@ -49,6 +49,39 @@ useUnhead({
     },
   ],
   link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+  script: computed(() => {
+    if (!post.value) return []
+    const articleUrl = `${SITE_URL}/kennisbank/${post.value.slug}`
+    const articleSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.value.title,
+      description: post.value.metaDescription,
+      url: articleUrl,
+      datePublished: post.value.publishedAt,
+      author: { '@type': 'Organization', name: 'AIntern', url: SITE_URL },
+      publisher: {
+        '@type': 'Organization',
+        name: 'AIntern',
+        url: SITE_URL,
+        logo: { '@type': 'ImageObject', url: `${SITE_URL}/favicon.ico` },
+      },
+      image: `${SITE_URL}/og-image.png`,
+    }
+    const breadcrumbSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: SITE_URL },
+        { '@type': 'ListItem', position: 2, name: 'Kennisbank', item: `${SITE_URL}/kennisbank` },
+        { '@type': 'ListItem', position: 3, name: post.value.title, item: articleUrl },
+      ],
+    }
+    return [
+      { type: 'application/ld+json', innerHTML: JSON.stringify(articleSchema) },
+      { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbSchema) },
+    ]
+  }),
 })
 
 async function load(slug: string) {
