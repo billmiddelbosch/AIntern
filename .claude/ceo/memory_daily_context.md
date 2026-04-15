@@ -1,30 +1,31 @@
 # Alex — Daily Context
-_Last updated: 2026-04-12_
+_Last updated: 2026-04-15_
 
 ## Open Acties (toegewezen aan mij)
-- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-18 dagen)
-- OKR-voortgang reviewen (vrijdag)
-- Bewaken /admin deadline 22 april (T-10 dagen) — A-03 CTO-taak vandaag
-- Prospect outreach opstarten (0/1 deze week)
+- B-07: Apify credits bijvullen (≥ $5) — https://console.apify.com/billing/subscription — **handmatig na vergadering**
+- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig na vergadering**
+- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-15 dagen)
+- OKR-voortgang reviewen (vrijdag 17 april)
 
-## KPI Status (deze week)
-- LinkedIn posts: 1 / 3 — ⚠️ (artikel + post gepland na vergadering)
-- Nieuwe connecties verstuurd: 3 / 20–25 — ❌ (Apify enrichment vandaag, herstel morgen)
-- Kennisbank artikelen: 1 / 2 — ⚠️ (artikel gepland na vergadering)
-- Security check: ✅ (gedaan 2026-04-11)
-- Lead pipeline bijgewerkt: ~1 / 2 — ⚠️
+## KPI Status (week 16, 13–19 april)
+- Prospect outreach verstuurd: 0 / ≥1 — ❌
+- Discovery call gevoerd/gepland: 0 / ≥0,5 — ❌
+- LinkedIn posts: 3 / 3 — ✅ (post gepubliceerd 2026-04-13)
+- Nieuwe connecties (week 16): 0 / 20–25 — ❌ (Apify geblokkeerd)
+- Kennisbank artikelen (week 16): 2 / 2 — ✅ (week 15: 1, week 16: 2 — incl. 2026-04-15)
 
 ## Actieve Blockers
-- Geen kritieke blockers
+- Apify credits uitgeput ($0.066) — CEO-actie B-07: bijvullen vandaag
 
-## Genomen Beslissingen (board 2026-04-12)
-- Top 5 acties: B-02 (Apify enrichment), B-03 (Kennisbank), B-04 (LinkedIn post), B-05 (A-03), B-06 (pipeline)
-- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md, Obsidian) zijn automatisch.
-- SKILL.md bijgewerkt naar v0.2.6
+## Genomen Beslissingen (board 2026-04-15 — goedgekeurd door Human Board)
+- B-12 (A-16 /admin/organisation) GEDAAN — commit 5c6e12a, feature/board-2026-04-15
+- B-14 (L-14 stap 3 hero headline Big Idea) GEDAAN — commit dac5cd6, feature/board-2026-04-15
+- B-13 (Kennisbank artikel "AI procesautomatisering") GEPUBLICEERD — s3://aintern-kennisbank/posts/ai-procesautomatisering-bereikbaar-voor-mkb.json
+- Skill-verbeteringen 1–4 GOEDGEKEURD en toegepast (SKILL.md v0.2.9)
+- Apify manual fallback toegevoegd aan skill: handmatige LinkedIn URL instructies voor Human Board wanneer Apify geblokkeerd
 
 ## Lopende Context
-- Backlog items B-02 t/m B-06 aangemaakt (source: board-meeting-2026-04-12)
-- Vergaderverslag opgeslagen in Obsidian, e-mail verstuurd naar w.middelbosch@gmail.com
-- Branch: feature/board-2026-04-12 actief
-- 3 leads in dm_sent status — reacties afwachten (Bram, Jan, Bob)
-- OKR 2.2: 3 connecties van 300 — Apify enrichment vandaag kritieke stap
+- Branch feature/board-2026-04-15 heeft 2 commits — wacht op Bill voor PR + merge
+- OKR 2.2: 3/300 connecties — kritiek achter; B-07 (Apify bijvullen) is meest urgente handmatige actie vandaag
+- A-16 deadline (22 april) ✅ afgehandeld vandaag — T-7 is nu T-7, maar implementatie is klaar
+- Collegepoint.nl wacht op Apify enrichment voor LinkedIn URL

@@ -1,27 +1,25 @@
 # Morgan — Daily Context
-_Last updated: 2026-04-12_
+_Last updated: 2026-04-15_
 
 ## Open Acties (toegewezen aan mij)
-- **B-05 A-03 Role-based access** — vandaag implementeren op feature/board-2026-04-12
-  - Extend useAuthStore met `role: 'admin' | 'editor'`
-  - Conditonele nav-items op basis van role
-  - Type-check + security-reviewer vereist voor commit
+- Volgende /admin prioriteit: A-05 (article create/edit form) of A-15 (meeting action items view)
+- O-01 implementatie afstemmen met COO — Lambda endpoint plannen voor vergadering 16 april
+- LLM-citatie check uitvoeren (staat op schema — 1× per 2 weken)
 
-## KPI Status (deze week)
+## KPI Status (week 16, 13–19 april)
 - Security check: ✅ (gedaan 2026-04-11 — PASS WITH WARNINGS)
-- /admin sprint (KR 5.1–5.4): deadline 22 april (T-10 dagen) — A-03 vandaag, A-04+ volgende sprint
+- /admin sprint: A-16 vandaag afgerond ✅; volgende: A-05 of A-15
 
 ## Actieve Blockers
 - Geen
 
-## Genomen Beslissingen (board 2026-04-12)
-- A-03 role-based access is prioriteit 1 voor CTO vandaag (/admin deadline T-10)
-- L-14 stap 3 (hero headline) verschuift naar volgende sprint — /admin heeft hogere urgentie
-- B-01 security check afgerond ✅ (2026-04-11, commit 6ba7260)
-- Approval gate: alles wat extern zichtbaar wordt (Kennisbank, LinkedIn posts, outreach) vereist altijd Human Board goedkeuring. Interne acties (backlog, memory, SKILL.md) zijn automatisch.
+## Genomen Beslissingen (board 2026-04-15 — goedgekeurd door Human Board)
+- B-12 (A-16): `/admin/organisation` pagina GEDAAN — commit 5c6e12a, feature/board-2026-04-15
+- B-14 (L-14 stap 3): Hero headline Big Idea GEDAAN — commit dac5cd6, feature/board-2026-04-15
+- Skill-verbeteringen 1–4 goedgekeurd en toegepast (SKILL.md v0.2.9)
 
 ## Lopende Context
-- Branch feature/board-2026-04-12 actief
-- A-03 backlog item: role guard + conditonele nav-items, type-check pass
-- Na A-03: volgende /admin items zijn A-04 (Kennisbank article list) en A-05 (article form)
-- L-14 stap 1 & 2 gedaan op 2026-04-11 (commits op feature/board-2026-04-11)
+- Branch: feature/board-2026-04-15 — 2 commits klaar, wacht op Bill voor PR + merge
+- L-14 resterende stappen: stap 4 (Godfather Offer sectie) en stap 5 (intake-vragenlijst) — volgende sprint
+- Na merge: volgende admin-prioriteit A-05 (article form) of A-15 (meeting action items view)
+- /admin deadline 22 april — A-16 is de laatste geplande deadline-item; overige /admin items hebben geen harde deadline
