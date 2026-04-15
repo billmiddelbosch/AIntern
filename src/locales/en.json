@@ -222,7 +222,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
-      "kennisbank": "Kennisbank"
+      "kennisbank": "Kennisbank",
+      "organisation": "Organisation"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -276,6 +277,9 @@
       "ocrScanning": "Scanning…",
       "ocrNoResult": "No number found in image",
       "ocrError": "OCR failed: {msg}"
+    },
+    "organisation": {
+      "pageTitle": "Organisation"
     },
     "kennisbank": {
       "pageTitle": "Kennisbank Admin",

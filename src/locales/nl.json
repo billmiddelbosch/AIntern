@@ -222,7 +222,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
-      "kennisbank": "Kennisbank"
+      "kennisbank": "Kennisbank",
+      "organisation": "Organisatie"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -276,6 +277,9 @@
       "ocrScanning": "Scannen…",
       "ocrNoResult": "Geen getal gevonden in afbeelding",
       "ocrError": "OCR mislukt: {msg}"
+    },
+    "organisation": {
+      "pageTitle": "Organisatie"
     },
     "kennisbank": {
       "pageTitle": "Kennisbank Beheer",
