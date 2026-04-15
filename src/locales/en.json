@@ -222,7 +222,8 @@
     "nav": {
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
-      "kennisbank": "Kennisbank"
+      "kennisbank": "Kennisbank",
+      "organisation": "Organisation"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -277,6 +278,9 @@
       "ocrNoResult": "No number found in image",
       "ocrError": "OCR failed: {msg}"
     },
+    "organisation": {
+      "pageTitle": "Organisation"
+    },
     "kennisbank": {
       "pageTitle": "Kennisbank Admin",
       "heading": "Kennisbank Articles",
@@ -305,8 +309,8 @@
   },
   "hero": {
     "eyebrow": "Your AI intern",
-    "headline": "We take the repetitive work from your day",
-    "subtext": "AIntern builds a custom AI intern for your business — configured specifically for your processes, not a generic template. You only pay when results are delivered.",
+    "headline": "Everyone feels that AI can change something. We take the repetitive work that consumes your day off your hands.",
+    "subtext": "AIntern builds a dedicated AI intern for your business — specifically configured for your processes, not a standard template. You only pay when you see results.",
     "cta": "Free consultation",
     "ctaSecondary": "See how it works",
     "socialProof": "20+ SMEs already running their own AI intern",

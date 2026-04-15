@@ -35,7 +35,7 @@ Orchestrate LinkedIn outreach for AIntern leads. Process leads from a CSV file, 
 
 Read the CSV file. Parse each row (fields: `website`, `email`, `telefoon`, `instagram`, `facebook`).
 
-Cross-reference with `outreach-log.csv` — skip leads where `website` already appears with `status` = `sent` or `skipped`.
+Cross-reference with `outreach-log.csv` — skip leads where `website` already appears with `status` = `sent`, `skipped`, or `not_found`.
 
 Present a summary: "X leads to process, Y already done."
 
@@ -127,5 +127,5 @@ After each lead, ask: "Continue to the next lead? (y/n)"
 - Exit code 2: Ask user to run `linkedin setup`
 - Exit code 6 (rate limited): Stop processing. Log current lead as `pending`. Notify user to try again later.
 - `limitExceeded` in response: Same as rate limited.
-- Company not found on LinkedIn: Try person search. If still nothing, offer to skip.
+- Company not found on LinkedIn: Try person search. If still nothing, automatically log `status=not_found` to `outreach-log.csv` (with empty `linkedin_url` and `linkedin_name`) and move to the next lead — do not ask the user. This prevents the lead from being retried on the next run.
 - Multiple companies with same name: Show top 3 results and ask user to pick.
