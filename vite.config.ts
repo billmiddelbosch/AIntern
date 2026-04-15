@@ -13,8 +13,8 @@ export default defineConfig({
   ],
   ssgOptions: {
     async includedRoutes(paths) {
-      // Strip dynamic route patterns (e.g. /kennisbank/:slug) — replace with concrete slugs from S3
-      const staticPaths = paths.filter((p) => !p.includes(':'))
+      // Strip dynamic route patterns and admin routes from the sitemap
+      const staticPaths = paths.filter((p) => !p.includes(':') && !p.startsWith('/admin'))
       let articleRoutes: string[] = []
       try {
         const res = await fetch('https://aintern-kennisbank.s3.eu-west-2.amazonaws.com/index.json')
