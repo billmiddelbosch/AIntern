@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.2.9
+version: 0.3.0
 ---
 
 # Daily Board Meeting
@@ -61,23 +61,31 @@ Every action performed by any C-suite agent (CEO, CMO, CTO, COO) that writes fil
 
 ### How to open an agent terminal
 
-Use the `claude` CLI with a self-contained prompt — **always run visibly (foreground), never as a background process**:
-```
+Use the `claude` CLI via **Bash** — this makes the terminal visible in the Claude Code console so the Human Board can see it live:
+```bash
 claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 ```
-The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt. Running foreground (no `run_in_background`) lets Bill see the output live and intervene if needed.
+The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt.
+
+> ⛔ **NEVER use the Agent tool for terminal actions.** The Agent tool runs in a hidden sub-context that is invisible to the Human Board. Only `Bash` + `claude -p` produces a visible console terminal.
 
 The prompt passed to each terminal **must**:
 1. Start with: `"You are working on branch feature/board-{YYYY-MM-DD}. Verify you are on this branch (git status) before making any changes. If not, run: git checkout feature/board-{YYYY-MM-DD}."`
 2. Describe the specific action to take
-3. End with: `"When done, commit all changes to branch feature/board-{YYYY-MM-DD} with a descriptive commit message, then output a terminal summary in this format:\n\n**Terminal Summary — [Agent] [Action]**\n- Branch: feature/board-{YYYY-MM-DD}\n- Files changed: [list]\n- Commit: [message]\n- Status: ✅ Done / ❌ Failed ([reason])"`
+3. End with: `"When all changes are written:\n1. Run git diff --stat\n2. Output the full Terminal Summary verbatim:\n\n**Terminal Summary — [Agent] [Action]**\n- Branch: feature/board-{YYYY-MM-DD}\n- Files changed: [list with one-line description per file]\n- Proposed commit message: [message]\n- Diff: [git diff --stat output]\n- Status: ✅ Ready to commit / ❌ Failed ([reason])\n\n3. Ask: **Goedkeuring voor commit? (ja / nee / feedback)**\n4. Wait for the Human Board to respond before committing.\n5. On 'ja': run git add -A && git commit -m '[proposed message]', then output: ✅ Committed.\n6. On 'nee' or feedback: do NOT commit. Output the feedback and close with: ⛔ Commit afgewezen — geen commit gedaan."`
+
+### Human Board approval before every commit
+
+The approval gate runs **inside the terminal** — the terminal itself outputs the summary and waits for the Human Board's response before committing. The main session (CEO) does **not** repeat or re-ask this — the CEO only verifies it happened correctly (see CEO branch oversight below).
+
+> ⛔ **Never commit from inside a terminal without explicit Human Board approval within that terminal.** The terminal must show the full Terminal Summary and receive a "ja" before running git commit.
 
 ### CEO branch oversight
 
 Alex (CEO) is responsible for branch integrity and backlog governance throughout the meeting:
 
 - **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal. State this check explicitly in the meeting output so Bill can verify before the terminal starts.
-- **After each terminal completes:** read the Terminal Summary and verify Status is ✅. If ❌, surface a `[BLOCKER]` inline and hold subsequent terminals until resolved
+- **After each terminal completes:** verify in the terminal output that (1) the full Terminal Summary was shown verbatim and (2) the Human Board was asked for approval and responded "ja" before the commit ran. If either step was skipped, surface a `[BLOCKER]` — the commit is invalid, must be reverted, and the terminal must re-run with the correct approval flow. If ❌ status, hold all subsequent terminals until resolved.
 - **Before the End-of-Meeting Approval Gate:** run a final check — `git log feature/board-{YYYY-MM-DD} --oneline` — and include the full commit list in the gate summary under "Branch Commits"
 - **Merge conflict prevention:** each terminal must pull the latest branch state (`git pull origin feature/board-{YYYY-MM-DD} --rebase`) at the start before making changes. Terminals are dispatched **sequentially**, not in parallel, to avoid write conflicts
 
@@ -474,6 +482,9 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Alles in het Nederlands** — vergadering, discussie, samenvatting, outreach en Kennisbank content zijn allemaal in het Nederlands
 - **Hard blocker exception** — if a phase encounters a fatal error (missing file, auth failure), surface it inline with a `[BLOCKER]` tag and continue with remaining phases; include it in the End-of-Meeting gate
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
+- **Terminals must be visible** — always open terminals via `Bash` + `claude -p "..."`. Never use the Agent tool for terminal actions — it runs in a hidden context invisible to the Human Board
+- **Human approval before every commit** — terminals write files and output a Terminal Summary but do NOT commit. The main session quotes the summary in full, asks "Goedkeuring voor commit?", and only commits via `git commit` after explicit Human Board approval
+- **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
 - **Sequential dispatch** — terminals are dispatched one at a time; the next terminal only starts after the previous Terminal Summary shows ✅
 - **CEO gate on each terminal** — Alex (CEO) verifies the branch name in every terminal prompt before dispatch and reads the Terminal Summary on return; a ❌ status halts further terminals until resolved
