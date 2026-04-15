@@ -43,6 +43,19 @@
 | I-04 | **Serverless Contact Form Backend** | M | Replace Formspree with a serverless function (e.g. Vercel/Netlify function) that sends email server-side. Destination email stored in a server-only env var — never exposed to the client bundle. Current Formspree setup is the temporary solution. |
 | I-05 | **Collect real email address in intake flow** | S | Email was removed from the 5-step intake form but the Lambda still requires it (currently using a dummy value `test@aintern.nl`). Add email collection back — either as a step in the intake modal or derive it from the Calendly webhook after booking. Required for DynamoDB GSI lookup and meeting confirmation. |
 
+## SEO (S)
+
+| ID | Feature | Effort | Prio | Notes |
+|---|---|---|---|---|
+| S-01 | **Dynamische sitemap.xml generatie** | S | P1 | robots.txt verwijst naar sitemap.xml maar het bestand bestaat niet. Genereer bij build-tijd een sitemap die `/`, `/kennisbank`, en alle Kennisbank-artikelroutes bevat via een Vite-plugin of build-script dat de S3 index ophaalt. Pairs with I-03. |
+| S-02 | **OG / Twitter Card meta-tags homepage** | S | P1 | `index.html` mist `og:image`, `og:url`, `twitter:card`, `twitter:title`, `twitter:description`. Voeg toe via `@unhead/vue` in een globale `useHead()` composable — inclusief verwijzing naar de bestaande `public/og-image.png`. Alle social shares winnen direct beeld + context. |
+| S-03 | **Article + BreadcrumbList schema.org op Kennisbank-artikelpagina's** | S | P1 | `KennisbankArtikelView.vue` heeft geen structured data. Voeg `@type: Article` (headline, author, datePublished, image, url) en `@type: BreadcrumbList` toe via `useUnhead`. Google News eligibility en rich results vereisen dit. |
+| S-04 | **FAQ schema.org op NoCureNoPayFaq sectie** | S | P2 | Voeg `@type: FAQPage` structured data toe aan de NoCureNoPayFaq sectie. FAQ-items als `Question`/`Answer` pairs in JSON-LD. Maakt rich snippets mogelijk op high-intent zoektermen als "no-cure-no-pay AI MKB". |
+| S-05 | **Pre-rendering SPA voor SEO (vite-plugin-prerender)** | M | P1 | De Vue SPA rendert client-side — Google-crawlers zien een blanco `<div id="app">`. Installeer `vite-plugin-prerender` en pre-render bij build: `/`, `/kennisbank`, en alle actieve artikelroutes (ophalen uit S3 index). Structurele fix voor alle SEO-investeringen. |
+| S-06 | **Interne linking: Kennisbank-artikelen → Homepage CTA + breadcrumbs** | S | P2 | Elke Kennisbank-artikelpagina moet (1) een breadcrumb tonen (Home → Kennisbank → Artikel), (2) een CTA-blok bevatten dat teruglinkt naar de homepage intake-flow. Verhoogt dwell time, crawldiepte en conversie vanuit organisch traffic. |
+| S-07 | **Image alt-tekst audit + correcties** | S | P2 | Audit alle `<img>` tags in `src/` op ontbrekende of lege `alt`-attributen. Herstel alle gevallen. Prioriteit op hero-afbeelding, Kennisbank og-image, en illustraties in sectieviews. Accessibility + image search indexering. |
+| S-08 | **SEO keyword-analyse + optimalisatiefundament** | M | P1 | Voer een volledige keyword-analyse uit voor aintern.nl vóór verdere SEO-implementaties. Stappen: (1) Identificeer primaire zoektermen (bijv. "AI stagiaire MKB", "AI automatisering MKB", "no-cure-no-pay AI") en long-tail varianten; (2) Analyseer zoekvolume + concurrentie via Google Search Console, Ubersuggest of SEMrush; (3) Map keywords op bestaande pagina's en secties (homepage, Kennisbank, FAQ); (4) Identificeer keyword gaps — onderwerpen waar we niet voor ranken maar wel waarde kunnen leveren; (5) Documenteer aanbevelingen in `product/seo/keyword-strategy.md` als input voor S-01 t/m S-07, Kennisbank-contentplanning, en toekomstige copywriting. Blokkeer geen P1-items — kan parallel lopen. |
+
 ## Board Meeting Actions (B)
 
 | ID | Feature | Effort | Owner | Status | Source | Success Metric |
