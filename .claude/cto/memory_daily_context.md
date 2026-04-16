@@ -7,7 +7,7 @@ _Last updated: 2026-04-16_
 - JWT/service-account voor A-14 KPI API inregelen — weekrapport kan dan live actuals ophalen (Blocker 3)
 
 ## KPI Status (week 16, 13–19 april)
-- Security check: ⚠️ gedaan 2026-04-11 (week 15) — nieuwe check nog niet gedaan in week 16
+- Security check: ✅ gedaan 2026-04-16 (week 16) — zie memory_security_check_2026-04-16.md
 - /admin sprint: B-15 (O-01 skill) ✅ + B-16 (GodfatherOffer) ✅ — beide reeds geïmplementeerd vóór vergadering
 - GodfatherOfferSection.vue: live in HomeView.vue, responsive, i18n OK, type-check pass ✅
 
