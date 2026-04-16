@@ -1,5 +1,5 @@
 # Blake — Daily Context
-_Last updated: 2026-04-15_
+_Last updated: 2026-04-16_
 
 ## Open Acties (toegewezen aan mij)
 - B-02: Lead-CSV verrijken via Apify — GEBLOKKEERD (credits uitgeput $0.066); deblokkering na CEO-actie B-07
@@ -16,9 +16,12 @@ _Last updated: 2026-04-15_
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt (Kennisbank artikelen, LinkedIn posts, connection requests, DMs) vereist altijd Human Board goedkeuring vóór uitvoering.
 
-## Genomen Beslissingen (board 2026-04-15 — goedgekeurd door Human Board)
-- B-13 Kennisbank artikel GEPUBLICEERD: "AI maakt procesautomatisering bereikbaar voor elk MKB-bedrijf" — s3://aintern-kennisbank/posts/ai-procesautomatisering-bereikbaar-voor-mkb.json
+## Genomen Beslissingen (board 2026-04-16 — goedgekeurd door Human Board)
 - Outreach GEBLOKKEERD — Apify credits uitgeput; collegepoint.nl wacht op enrichment
+- Kennisbank phase OVERGESLAGEN — weekdoel 2/2 ✅ al behaald
+- LinkedIn posts phase OVERGESLAGEN — 3/3 ✅ al behaald
+- Skill-verbeteringen 2–5 GOEDGEKEURD en toegepast (SKILL.md v0.3.1)
+- CMO MEMORY.md index bijgewerkt: pending DM-entry gecorrigeerd naar "afgehandeld 2026-04-11"
 - Afgewezen seeds (overslaan bij volgende vergadering):
   - "2026-04-10 Claude als verborgen superkracht voor ontwikkelaars.md — AFGEWEZEN"
   - "2026-04-10 Claude als people pleaser.md — AFGEWEZEN"
@@ -31,4 +34,4 @@ _Last updated: 2026-04-15_
 - 3 leads dm_sent (Bram, Jan, Bob) — wachten op reacties
 - Collegepoint.nl wacht op Apify-enrichment voor LinkedIn URL
 - Na bijvulling Apify: direct leads verrijken en ROI-variant connectieverzoeken sturen
-- Volgende Kennisbank seed: "2026-04-08 AI-winnaars worden bepaald door governance.md" — beschikbaar
+- Volgende Kennisbank seed: "2026-04-08 AI-winnaars worden bepaald door governance.md" — beschikbaar voor week 17

@@ -74,6 +74,15 @@
 | ~~B-13~~ | ~~**Kennisbank artikel: "AI procesautomatisering bereikbaar voor iedere organisatie"**~~ | S | CMO | ✅ done | board-meeting-2026-04-15 | Gepubliceerd 2026-04-15: s3://aintern-kennisbank/posts/ai-procesautomatisering-bereikbaar-voor-mkb.json |
 | ~~B-14~~ | ~~**L-14 stap 3: Hero headline Big Idea vervangen (nl.json + en.json)**~~ | S | CTO | ✅ done | board-meeting-2026-04-15 | `hero.headline` + `hero.subtext` bijgewerkt per spec, type-check pass — feature/board-2026-04-15 |
 | ~~B-11~~ | ~~**O-01 scope definiëren + eerste draft weekrapport-structuur**~~ | S | COO | ✅ done | board-meeting-2026-04-13 | product/sections/weekly-report/spec.md + template.md aangemaakt — feature/board-2026-04-13 |
+| ~~B-15~~ | ~~**O-01 weekly-report skill implementeren**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | `.claude/skills/weekly-report.md` aangemaakt; `weekrapport-2026-W16.md` gegenereerd in Obsidian vault, alle 6 secties gevuld — feature/board-2026-04-16 |
+| ~~B-16~~ | ~~**L-14 stap 4: GodfatherOfferSection.vue implementeren**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | GodfatherOfferSection.vue live in HomeView.vue, responsive, i18n in nl.json + en.json, type-check pass — feature/board-2026-04-16 |
+| ~~B-17~~ | ~~**Pipeline 2e update week 16 bijwerken**~~ | S | COO | ✅ done | board-meeting-2026-04-16 | outreach-log.csv correct: 3 leads op dm_sent, collegepoint op not_found |
+| ~~B-18~~ | ~~**S-08 SEO keyword-analyse + keyword-strategy.md documenteren**~~ | M | CTO | ✅ done | board-meeting-2026-04-16 | `product/seo/keyword-strategy.md` aangemaakt — commit 8380130 |
+| ~~B-19~~ | ~~**Wekelijkse security check week 16 uitvoeren en documenteren**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | Security rapport gedocumenteerd in `.claude/cto/` — commit 59b7980 |
+| ~~B-20~~ | ~~**S-01 Dynamische sitemap.xml generatie toevoegen**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | Al geïmplementeerd via `vite-ssg-sitemap` in `vite.config.ts` + `includedRoutes` — commit 7c0eeac |
+| ~~B-21~~ | ~~**Lambda CORS fix: calendly-webhook.ts + intake.ts naar corsOrigin() patroon**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | Beide handlers gebruiken corsOrigin() + respond() conform CLAUDE.md — commit 7b47c1b |
+| ~~B-22~~ | ~~**npm audit fix: vite HIGH + axios/follow-redirects/unhead MODERATE**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | `package.json` override `@unhead/dom >= 2.1.13`; `npm audit` → 0 vulnerabilities |
+| ~~B-23~~ | ~~**v-html XSS review in KennisbankArtikelView.vue**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | DOMPurify geïnstalleerd; `sanitizedContent` computed; `eslint-disable` verwijderd — `KennisbankArtikelView.vue` |
 
 ## Organisation (O)
 
