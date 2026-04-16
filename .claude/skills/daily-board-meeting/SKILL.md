@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.1
+version: 0.3.2
 ---
 
 # Daily Board Meeting
@@ -48,11 +48,57 @@ Then open the meeting in this format:
 - Geen (als er geen blockers zijn)
 
 **Agenda van vandaag:**
-1. Directiebespreking — prioriteiten van de dag
-2. LinkedIn outreach voorstellen
-3. Kennisbank content voorstellen
-4. Vergaderverslag + e-mail
-5. Skill verbeterreview
+1. Human Board check-in — backlog feedback
+2. Directiebespreking — prioriteiten van de dag
+3. LinkedIn outreach voorstellen
+4. Kennisbank content voorstellen
+5. Vergaderverslag + e-mail
+6. Skill verbeterreview
+```
+
+---
+
+## Human Board Check-in — Backlog Feedback
+
+**This is the only deliberate pause before Phase 2.** Present the top backlog items and wait for the Human Board's response before continuing.
+
+### What to show
+
+Display the first non-completed item per backlog section (Landing Page, Admin, Organisation) — the same items loaded in Phase 1 Step 4. Use this format:
+
+```
+---
+### Backlog — Human Board Check-in
+
+Hieronder de top backlog items voor vandaag. Geef feedback vóór we beginnen:
+- prioriteit aanpassen
+- een item overslaan
+- een nieuw item toevoegen
+- opmerkingen over een specifiek item
+
+| Sectie | # | Titel | Status | Spec |
+|--------|---|-------|--------|------|
+| Landing Page | B-xx | [titel] | todo | [link als aanwezig] |
+| Admin        | B-xx | [titel] | todo | [link als aanwezig] |
+| Organisation | B-xx | [titel] | todo | [link als aanwezig] |
+
+Typ je feedback of "geen feedback" om direct door te gaan.
+---
+```
+
+### What to do with the response
+
+- **"geen feedback"** — proceed directly to Phase 2 with the backlog as-is
+- **Priority shift** (e.g. "doe B-12 eerst") — reorder in Phase 2 Round 1; Morgan (CTO) opens Round 1 by acknowledging the shift and anchoring it to the relevant OKR
+- **Skip item** — note it in Phase 2 and exclude it from the Top 5 Daily Actions
+- **New item** — Alex (CEO) notes it for Phase 2 Round 3 Step C (Backlog Registration); do not write to the backlog yet
+- **Other feedback** — Blake (CMO) or Morgan (CTO) address it in the relevant Round
+
+Store the Human Board's response as `[HB_FEEDBACK]` — reference it explicitly at the start of Phase 2 Round 1:
+```
+**Alex (CEO) — Opening Round 1:**
+Human Board feedback ontvangen: [HB_FEEDBACK samenvatting]
+Dit nemen we mee als leidraad voor de prioriteiten van vandaag.
 ```
 
 ---
@@ -475,7 +521,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 
 ## Execution Rules
 
-- **Run all phases automatically** — do not pause mid-meeting for approvals
+- **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
