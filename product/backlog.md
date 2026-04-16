@@ -77,6 +77,9 @@
 | ~~B-15~~ | ~~**O-01 weekly-report skill implementeren**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | `.claude/skills/weekly-report.md` aangemaakt; `weekrapport-2026-W16.md` gegenereerd in Obsidian vault, alle 6 secties gevuld — feature/board-2026-04-16 |
 | ~~B-16~~ | ~~**L-14 stap 4: GodfatherOfferSection.vue implementeren**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | GodfatherOfferSection.vue live in HomeView.vue, responsive, i18n in nl.json + en.json, type-check pass — feature/board-2026-04-16 |
 | B-17 | **Pipeline 2e update week 16 bijwerken** | S | COO | todo | board-meeting-2026-04-16 | outreach-log.csv correct bijgewerkt; pipeline KPI 2/2 ✅ |
+| B-18 | **S-08 SEO keyword-analyse + keyword-strategy.md documenteren** | M | CTO | todo | board-meeting-2026-04-16 | `product/seo/keyword-strategy.md` aangemaakt met ≥10 primaire zoektermen, zoekvolume-schatting, keyword-gap analyse, mapping op bestaande pagina's |
+| B-19 | **Wekelijkse security check week 16 uitvoeren en documenteren** | S | CTO | todo | board-meeting-2026-04-16 | Security rapport gedocumenteerd in `.claude/cto/`; bevindingen geëscaleerd naar CEO |
+| B-20 | **S-01 Dynamische sitemap.xml generatie toevoegen** | S | CTO | todo | board-meeting-2026-04-16 | `sitemap.xml` gegenereerd bij `npm run build`, alle Kennisbank-artikelroutes + `/` + `/kennisbank` aanwezig, robots.txt verwijzing klopt |
 
 ## Organisation (O)
 
