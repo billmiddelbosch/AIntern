@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.2
+version: 0.3.3
 ---
 
 # Daily Board Meeting
@@ -24,6 +24,20 @@ git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/b
 git branch --show-current
 ```
 The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
+
+**Step 0.1 — CTO runs project health check:**
+
+```bash
+sheal check
+```
+Surface any warnings inline as `[HEALTH]` tags before continuing. A clean check proceeds silently. If `sheal` is not installed, skip and note it as a blocker.
+
+**Step 0.2 — CTO loads weekly activity digest:**
+
+```bash
+sheal digest --since "7 days"
+```
+Use the digest output as context for Phase 2 (which areas got the most work, what was skipped, recurring patterns). Paste a 3-bullet summary into the agenda under a new `**Weekoverzicht:**` line before the blockers block.
 
 1. Read OKRs from memory: `C:/Users/bmidd/.claude/projects/C--Users-bmidd-AIntern/memory/project_okrs_q2_2026.md`
 2. Read CMO memory index and pending items:
@@ -183,7 +197,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 
 ### Round 3 — Synthesis
 
-**Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available:
+**Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available. Also run `sheal cost` — paste the per-project token spend line for AIntern into the table as the last row:
 - **Connection count:** count rows in `product/marketing/leads/outreach-log.csv` where `connection_sent_at` falls within the current ISO week (Monday of current week ≤ date ≤ today). Do **not** use the cumulative count from memory — filter by date to avoid carrying over last week's connections.
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md`. When the count is ≥ 1, verify each article's publish date against the current ISO week start (Monday). Only count articles published on or after Monday of the current ISO week. If the memory shows 2/2 but one article was published on a Sunday (previous week), the actual count for the current week is 1/2 — note this discrepancy.
 - **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback
@@ -202,6 +216,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 | CPO/CTO | Uptime check gedaan             | 1×          | [Y/N]         | ✅ / ❌       |
 | CTO     | Security check done             | 1           | [Y/N]         | ✅ (in current ISO week) / ⚠️ (done last week — show date) / ❌ (not done) |
 | COO     | Lead pipeline updated           | 2×          | [N]           | ✅ / ⚠️ / ❌ |
+| CTO     | Token spend (sheal cost)        | monitor     | [€/sessions]  | ✅ / ⚠️ (spike) |
 ```
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
@@ -424,6 +439,12 @@ _Last updated: {YYYY-MM-DD}_
 - [Andere relevante context — bijv. pending DMs, Kennisbank artikel in behandeling, backlog item in scope]
 ```
 
+**Learnings:** After writing all memory files, extract 1–2 non-obvious learnings from today's meeting (decisions made, blockers surfaced, patterns noticed) and persist them:
+```bash
+sheal learn add "[learning text]" --tags=board-meeting,{YYYY-MM-DD}
+```
+Run one `sheal learn add` call per learning. Skip if no new learnings surfaced.
+
 **Write rules:**
 - Always overwrite the full file — do not append
 - Only include information relevant to that executive's domain
@@ -441,6 +462,12 @@ _Last updated: {YYYY-MM-DD}_
 At the end of every meeting, review the session and propose improvements to this skill.
 
 ### Steps
+
+0. Run a session retrospective to surface friction points automatically:
+   ```bash
+   sheal retro
+   ```
+   Use the retro output as direct input for step 1 below — friction points in the retro map to improvement proposals.
 
 1. Identify 2–3 specific friction points from today's meeting:
    - Instructions that were unclear
@@ -544,6 +571,21 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 ---
 
 ## Additional Resources
+
+### Sheal CLI Utilities
+
+Available throughout all phases when context is needed from past sessions:
+
+| Command | When to use |
+|---------|-------------|
+| `sheal check` | Phase 1 Step 0.1 — project health pre-flight |
+| `sheal digest --since "7 days"` | Phase 1 Step 0.2 — weekly activity context |
+| `sheal cost` | Phase 2 Round 3 Step A — token spend KPI row |
+| `sheal ask "<question>" --agent claude` | Any phase — query past sessions for decisions/context (e.g. `sheal ask "why did we drop Apify?"`) |
+| `sheal learn add "<learning>" --tags=board-meeting,{date}` | Phase 6 — persist non-obvious learnings after approval gate |
+| `sheal retro` | Phase 7 Step 0 — feed session friction points into improvement proposals |
+
+If `sheal` is not installed, skip and note as `[HEALTH: sheal not found]` in Phase 1.
 
 ### Reference Files
 
