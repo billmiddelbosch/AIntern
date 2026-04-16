@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.0
+version: 0.3.1
 ---
 
 # Daily Board Meeting
@@ -29,9 +29,11 @@ The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO)
 2. Read CMO memory index and pending items:
    - `.claude/cmo/MEMORY.md`
    - `.claude/cmo/memory_outreach_dm_pending.md` — check for accepted connections awaiting manual DMs
+   - **Index freshness check:** Compare the CMO MEMORY.md index entry for `memory_outreach_dm_pending.md` against the actual file contents. If the index says "pending" but the file says "afgehandeld", update the MEMORY.md index immediately before opening the meeting. Stale index entries cause false blocker reports in Phase 3.
 3. Read CTO blockers explicitly:
    - `.claude/cto/memory_apify_credits_low.md` — flag if credits < $1
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
+5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
 Then open the meeting in this format:
 
@@ -152,7 +154,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 | CMO     | Kennisbank articles             | 2           | [N]           | ✅ / ⚠️ / ❌ |
 | CPO/CTO | Website traffic check gedaan    | 1×          | [Y/N]         | ✅ / ❌       |
 | CPO/CTO | Uptime check gedaan             | 1×          | [Y/N]         | ✅ / ❌       |
-| CTO     | Security check done             | 1           | [Y/N]         | ✅ / ❌       |
+| CTO     | Security check done             | 1           | [Y/N]         | ✅ (in current ISO week) / ⚠️ (done last week — show date) / ❌ (not done) |
 | COO     | Lead pipeline updated           | 2×          | [N]           | ✅ / ⚠️ / ❌ |
 ```
 
@@ -483,6 +485,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Hard blocker exception** — if a phase encounters a fatal error (missing file, auth failure), surface it inline with a `[BLOCKER]` tag and continue with remaining phases; include it in the End-of-Meeting gate
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
 - **Terminals must be visible** — always open terminals via `Bash` + `claude -p "..."`. Never use the Agent tool for terminal actions — it runs in a hidden context invisible to the Human Board
+- **Windows terminal prompt encoding** — `claude -p "..."` fails on Windows/Git Bash when the prompt exceeds ~1000 characters due to quote-escaping. Fix: write the prompt to a temp file first, then dispatch via `claude -p "$(cat /tmp/board-task-{n}.txt)" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"`. If the terminal output file is ≤30 lines and contains only bash errors (no Claude output), this encoding failure is the cause — fall back to implementing the task inline in the main session and note it as a blocker in the approval gate.
 - **Human approval before every commit** — terminals write files and output a Terminal Summary but do NOT commit. The main session quotes the summary in full, asks "Goedkeuring voor commit?", and only commits via `git commit` after explicit Human Board approval
 - **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
