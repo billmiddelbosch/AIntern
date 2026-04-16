@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
 import type { Plugin } from 'vite'
+import type {} from 'vite-ssg'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { generateSitemapXml, getSlugsFromS3 } from './scripts/generate-sitemap'
@@ -24,8 +25,8 @@ export default defineConfig({
     sitemapPlugin(),
   ],
   ssgOptions: {
-    async includedRoutes(paths) {
-      const staticPaths = paths.filter((p) => !p.includes(':') && !p.startsWith('/admin'))
+    async includedRoutes(paths: string[]) {
+      const staticPaths = paths.filter((p: string) => !p.includes(':') && !p.startsWith('/admin'))
       let articleRoutes: string[] = []
       try {
         const slugs = await getSlugsFromS3()
