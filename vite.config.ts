@@ -1,34 +1,39 @@
 import { fileURLToPath, URL } from 'node:url'
 
 import { defineConfig } from 'vite'
+import type { Plugin } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
-import generateSitemap from 'vite-ssg-sitemap'
-import 'vite-ssg'
+import { generateSitemapXml, getSlugsFromS3 } from './scripts/generate-sitemap'
+
+function sitemapPlugin(): Plugin {
+  return {
+    name: 'generate-sitemap',
+    apply: 'build',
+    async buildStart() {
+      const publicDir = fileURLToPath(new URL('./public', import.meta.url))
+      await generateSitemapXml(publicDir)
+    },
+  }
+}
 
 export default defineConfig({
   plugins: [
     vue(),
     tailwindcss(),
+    sitemapPlugin(),
   ],
   ssgOptions: {
     async includedRoutes(paths) {
-      // Strip dynamic route patterns and admin routes from the sitemap
       const staticPaths = paths.filter((p) => !p.includes(':') && !p.startsWith('/admin'))
       let articleRoutes: string[] = []
       try {
-        const res = await fetch('https://aintern-kennisbank.s3.eu-west-2.amazonaws.com/index.json')
-        const data = (await res.json()) as { posts: Array<{ slug: string }> }
-        articleRoutes = data.posts
-          .filter((post) => /^[a-z0-9-]+$/.test(post.slug))
-          .map((post) => `/kennisbank/${post.slug}`)
+        const slugs = await getSlugsFromS3()
+        articleRoutes = slugs.map((slug) => `/kennisbank/${slug}`)
       } catch {
         // S3 unreachable — build continues without article routes
       }
       return [...staticPaths, ...articleRoutes]
-    },
-    onFinished() {
-      generateSitemap({ hostname: 'https://aintern.nl' })
     },
   },
   resolve: {
