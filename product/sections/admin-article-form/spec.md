@@ -317,17 +317,22 @@ Editing a published article and saving (without re-publishing) updates the S3 po
 
 ## Decisions Log (CEO — 2026-04-17)
 
-1. **Sitemap storage** → Lambda writes directly to S3; AWS Amplify serves `sitemap.xml`. Amplify rewrite/redirect config must be verified during implementation.
+1. **Sitemap storage** → Lambda writes `sitemap.xml` to `s3://aintern-kennisbank/sitemap.xml`. Amplify custom rule redirects `/sitemap.xml` → `https://aintern-kennisbank.s3.eu-west-2.amazonaws.com/sitemap.xml` (301). This is the same pattern as the CityCast Amplify app (appId: `d24lauvefdy1yg`). **Amplify app for AIntern: `d3jac06fdga6zb` (eu-west-1).**
 2. **Draft persistence** → S3-only (no DynamoDB). Draft = file in `posts/` absent from `index.json`.
 3. **Slug collision** → Frontend live-check (UX) + backend 409 on `PUT` (safety net).
 4. **Tag taxonomy** → Controlled vocabulary based on `product/seo/keyword-strategy.md` (9 tags defined above). No free-form input.
 5. **Article deletion** → In scope. `DELETE /admin/kennisbank/:slug` endpoint required; confirmation modal in edit form; sitemap regenerated after delete.
 6. **SEO in-form indicators** → In scope (meta description length, title length, keyword presence check, excerpt present). Traffic/Search Console data → separate item S-09.
 
-## Open Questions (remaining — implementation team)
+## Infrastructure Checklist (implementation team)
 
-- Verify Amplify rewrite rules for `sitemap.xml` before Lambda write path is finalised.
-- Confirm Lambda IAM role has `s3:PutObject` on the sitemap destination path.
+- [ ] Add Amplify custom rule to app `d3jac06fdga6zb`:
+  ```json
+  { "source": "/sitemap.xml", "target": "https://aintern-kennisbank.s3.eu-west-2.amazonaws.com/sitemap.xml", "status": "301" }
+  ```
+  Insert **before** the SPA fallback rule. Use AWS CLI: `aws amplify update-app --app-id d3jac06fdga6zb --region eu-west-1 --custom-rules [...]`
+- [ ] Ensure `s3://aintern-kennisbank/sitemap.xml` is public-read (same ACL as `posts/*.json`)
+- [ ] Confirm Lambda IAM role (`AInternAdminStack`) has `s3:PutObject` on `aintern-kennisbank/sitemap.xml`
 
 ---
 
