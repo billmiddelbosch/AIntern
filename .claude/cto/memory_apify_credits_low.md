@@ -1,13 +1,13 @@
 ---
-name: Apify credits — uitgeput 2026-04-12
-description: Apify balance opnieuw uitgeput ($0.07) na bijvulling op 2026-04-11 — outreach enrichment geblokkeerd
+name: Apify credits — FREE plan $5/maand
+description: Apify FREE plan geeft $5 maandelijkse credits die maandelijks resetten. Stale "uitgeput" melding gecorrigeerd 2026-04-17.
 type: project
 ---
 
-Apify credits zijn opnieuw uitgeput op 2026-04-12. Vorige bijvulling was 2026-04-11.
+Apify account: w.middelbosch (FREE plan)
+- Maandelijkse credits: **$5 USD** (reset elke maand automatisch)
+- Proxy beschikbaar: BUYPROXIES94952 (5 USA proxies beschikbaar)
 
-**Status:** ❌ Credits bijna op ($0.066) — enrichment geblokkeerd.
+**Status 2026-04-17:** ✅ Budget beschikbaar — eerdere "uitgeput" melding was stale. FREE plan reset maandelijks; er waren geen extra credits nodig.
 
-**Volgende stap:** Bijvullen via https://console.apify.com/billing/subscription — minimaal $5 aanbevolen om meerdere enrichment-runs te kunnen uitvoeren.
-
-**How to apply:** Bij elke board meeting controleren voor outreach-fase. Als saldo < $0.50, direct escaleren naar CEO en dit bestand bijwerken. Overweeg maandelijks vaste bijvulling in te stellen.
+**How to apply:** Controleer bij elke board meeting via API of via `apify info`. Het budget is maandelijks $5 — alleen blokkeren als de maandelijkse spend boven $5 uitkomt. Gebruik de APIFY_TOKEN uit .env voor de check.
