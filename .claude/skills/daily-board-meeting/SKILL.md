@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.3
+version: 0.3.4
 ---
 
 # Daily Board Meeting
@@ -31,6 +31,13 @@ The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO)
 sheal check
 ```
 Surface any warnings inline as `[HEALTH]` tags before continuing. A clean check proceeds silently. If `sheal` is not installed, skip and note it as a blocker.
+
+**Sitemap vs S3 check (runs as part of Step 0.1):** Compare the number of Kennisbank articles in S3 against entries in `public/sitemap.xml`. Run:
+```bash
+aws s3 ls s3://aintern-kennisbank/posts/ | grep -c '\.json$'
+grep -c '<loc>.*kennisbank/' public/sitemap.xml
+```
+If the S3 count exceeds the sitemap count, surface immediately as `[HEALTH] Sitemap verouderd — N artikelen in S3, M in sitemap. Run: npm run sitemap:generate`. Skip if AWS credentials are not available in the current session (note as `[HEALTH: sitemap check overgeslagen — geen AWS credentials]`).
 
 **Step 0.2 — CTO loads weekly activity digest:**
 
