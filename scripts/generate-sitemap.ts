@@ -71,6 +71,9 @@ export async function generateSitemapXml(outDir: string): Promise<void> {
 }
 
 // CLI-entrypoint: tsx scripts/generate-sitemap.ts
+// Run this after every Kennisbank article publish to keep public/sitemap.xml in sync with S3.
+// Also called automatically at build-time by the sitemapPlugin() in vite.config.ts.
+// npm script: npm run sitemap:generate
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const publicDir = resolve(process.cwd(), 'public')
   generateSitemapXml(publicDir).catch((err) => {
