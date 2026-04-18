@@ -93,7 +93,7 @@
 | ~~B-29~~ | ~~**A-18 implementeren — alle sub-agents + emoji-iconen in AdminOrganisationView.vue**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | 37 agents (4 C-level + 33 sub-agents), emoji icons, chip-lijst, kaarten per parent — commit 42a2f37 |
 | ~~B-30~~ | ~~**Kennisbank artikel publiceren — AI-governance voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-18 | Gepubliceerd 2026-04-18: s3://aintern-kennisbank/posts/waarom-ai-tools-niet-landen-bij-webshops.json |
 | B-31 | **Apify lead enrichment — nieuwe Lightspeed-leads ophalen (≥5 URLs)** | S | CMO | todo | board-meeting-2026-04-18 | ≥5 nieuwe leads in outreach-log.csv met LinkedIn URL; enrichment-run gelogd |
-| B-32 | **L-10 spec schrijven — Social Proof / Testimonials Section** | S | CTO | todo | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt + CEO-goedkeuring |
+| ~~B-32~~ | ~~**L-10 spec schrijven — Social Proof / Testimonials Section**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt — feature/board-2026-04-18 |
 
 ## Organisation (O)
 
