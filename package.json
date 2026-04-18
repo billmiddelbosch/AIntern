@@ -18,6 +18,9 @@
     "question": "test.ts"
   },
   "dependencies": {
+    "@tiptap/extension-link": "^3.22.3",
+    "@tiptap/starter-kit": "^3.22.3",
+    "@tiptap/vue-3": "^3.22.3",
     "@unhead/vue": "^2.1.12",
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",

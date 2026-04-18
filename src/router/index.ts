@@ -59,6 +59,18 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'admin', requiresAuth: true, title: 'admin.kennisbank.pageTitle' },
   },
   {
+    path: '/admin/kennisbank/new',
+    name: 'admin-kennisbank-new',
+    component: () => import('@/views/admin/KennisbankArticleFormView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.articleForm.titleCreate' },
+  },
+  {
+    path: '/admin/kennisbank/:slug/edit',
+    name: 'admin-kennisbank-edit',
+    component: () => import('@/views/admin/KennisbankArticleFormView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.articleForm.titleEdit' },
+  },
+  {
     path: '/admin/organisation',
     name: 'admin-organisation',
     component: () => import('@/views/admin/AdminOrganisationView.vue'),
