@@ -70,10 +70,10 @@ export async function generateSitemapXml(outDir: string): Promise<void> {
   console.log(`[sitemap] Geschreven naar ${dest} (${routes.length} routes)`)
 }
 
-// CLI-entrypoint: tsx scripts/generate-sitemap.ts
-// Run this after every Kennisbank article publish to keep public/sitemap.xml in sync with S3.
-// Also called automatically at build-time by the sitemapPlugin() in vite.config.ts.
-// npm script: npm run sitemap:generate
+// Writes public/sitemap.xml for inclusion in the Amplify build artifact.
+// Called automatically at build-time by sitemapPlugin() in vite.config.ts.
+// For live publishes, the kennisbank-admin Lambda regenerates s3://aintern-kennisbank/sitemap.xml directly (A-05).
+// npm run sitemap:generate — manual rebuild during development or after a failed Lambda write.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const publicDir = resolve(process.cwd(), 'public')
   generateSitemapXml(publicDir).catch((err) => {

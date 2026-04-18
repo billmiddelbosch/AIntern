@@ -60,7 +60,10 @@ export async function generateSitemapXml(outDir) {
     writeFileSync(dest, buildXml(routes), 'utf-8');
     console.log(`[sitemap] Geschreven naar ${dest} (${routes.length} routes)`);
 }
-// CLI-entrypoint: tsx scripts/generate-sitemap.ts
+// Writes public/sitemap.xml for inclusion in the Amplify build artifact.
+// Called automatically at build-time by sitemapPlugin() in vite.config.ts.
+// For live publishes, the kennisbank-admin Lambda regenerates s3://aintern-kennisbank/sitemap.xml directly (A-05).
+// npm run sitemap:generate — manual rebuild during development or after a failed Lambda write.
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
     const publicDir = resolve(process.cwd(), 'public');
     generateSitemapXml(publicDir).catch((err) => {
