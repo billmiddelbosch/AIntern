@@ -24,7 +24,7 @@ watch(
   () => props.modelValue,
   (val) => {
     if (editor.value && editor.value.getHTML() !== val) {
-      editor.value.commands.setContent(val, false)
+      editor.value.commands.setContent(val, { emitUpdate: false })
     }
   },
 )
@@ -32,6 +32,12 @@ watch(
 onBeforeUnmount(() => {
   editor.value?.destroy()
 })
+
+function setLink() {
+  const url = window.prompt('URL')
+  if (url) editor.value?.chain().focus().setLink({ href: url }).run()
+  else editor.value?.chain().focus().unsetLink().run()
+}
 </script>
 
 <template>
@@ -91,11 +97,7 @@ onBeforeUnmount(() => {
         type="button"
         class="px-2 py-1 text-xs rounded hover:bg-slate-200 transition-colors"
         :class="{ 'bg-slate-200': editor.isActive('link') }"
-        @click="() => {
-          const url = window.prompt('URL')
-          if (url) editor.chain().focus().setLink({ href: url }).run()
-          else editor.chain().focus().unsetLink().run()
-        }"
+        @click="setLink"
       >Link</button>
     </div>
     <EditorContent
