@@ -1,14 +1,9 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient, QueryCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb'
+import { respond } from './utils/cors'
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}))
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json',
-}
 
 // Resolve table name from the invoked alias (last segment of the function ARN).
 // dev alias → TABLE_NAME_DEV, prod alias → TABLE_NAME_PROD
@@ -23,11 +18,13 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
+  const alias = context.invokedFunctionArn.split(':').pop() ?? 'dev'
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   const TABLE_NAME = resolveTableName(context)
 
   try {
     if (!event.body) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Missing request body' }) }
+      return respond(400, { error: 'Missing request body' }, alias, requestOrigin)
     }
 
     const payload = JSON.parse(event.body)
@@ -37,7 +34,7 @@ export const handler = async (
     const scheduledEvent = payload?.payload?.scheduled_event
 
     if (!invitee?.email || !scheduledEvent?.start_time) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Invalid Calendly payload' }) }
+      return respond(400, { error: 'Invalid Calendly payload' }, alias, requestOrigin)
     }
 
     const email: string = invitee.email
@@ -58,7 +55,7 @@ export const handler = async (
 
     if (!submission) {
       console.warn(`No intake submission found for email: ${email}`)
-      return { statusCode: 200, headers: corsHeaders, body: JSON.stringify({ message: 'No matching submission found' }) }
+      return respond(200, { message: 'No matching submission found' }, alias, requestOrigin)
     }
 
     await client.send(new UpdateCommand({
@@ -72,13 +69,9 @@ export const handler = async (
       },
     }))
 
-    return {
-      statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify({ submissionId: submission.submissionId, meetingTime }),
-    }
+    return respond(200, { submissionId: submission.submissionId, meetingTime }, alias, requestOrigin)
   } catch (err) {
     console.error('calendly-webhook error', err)
-    return { statusCode: 500, headers: corsHeaders, body: JSON.stringify({ error: 'Internal server error' }) }
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }

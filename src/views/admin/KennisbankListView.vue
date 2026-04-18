@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useKennisbankAdmin } from '@/composables/useKennisbankAdmin'
 import type { KennisbankArticle } from '@/composables/useKennisbankAdmin'
 
 const { t } = useI18n()
+const router = useRouter()
 const { loading, error, articles, fetchArticles } = useKennisbankAdmin()
 
 // Sorting
@@ -70,14 +72,22 @@ onMounted(fetchArticles)
         <h2 class="text-2xl font-semibold text-slate-800">{{ t('admin.kennisbank.heading') }}</h2>
         <p class="mt-1 text-sm text-slate-500">{{ t('admin.kennisbank.subheading') }}</p>
       </div>
-      <button
-        class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
-        :disabled="loading"
-        @click="fetchArticles"
-      >
-        <span v-if="loading">{{ t('admin.kennisbank.loading') }}</span>
-        <span v-else>{{ t('admin.kennisbank.refresh') }}</span>
-      </button>
+      <div class="flex items-center gap-2">
+        <RouterLink
+          to="/admin/kennisbank/new"
+          class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors"
+        >
+          + {{ t('admin.kennisbank.newArticle') }}
+        </RouterLink>
+        <button
+          class="shrink-0 flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-600 transition-colors disabled:opacity-50"
+          :disabled="loading"
+          @click="fetchArticles"
+        >
+          <span v-if="loading">{{ t('admin.kennisbank.loading') }}</span>
+          <span v-else>{{ t('admin.kennisbank.refresh') }}</span>
+        </button>
+      </div>
     </div>
 
     <div v-if="error" class="rounded-xl bg-red-50 border border-red-200 px-4 py-3 text-sm text-red-600">
@@ -119,7 +129,8 @@ onMounted(fetchArticles)
           <tr
             v-for="article in pagedArticles"
             :key="article.slug"
-            class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors"
+            class="border-b border-slate-100 last:border-0 hover:bg-slate-50 transition-colors cursor-pointer"
+            @click="router.push({ name: 'admin-kennisbank-edit', params: { slug: article.slug } })"
           >
             <td class="px-4 py-3 font-medium text-slate-800 max-w-xs truncate">{{ article.title }}</td>
             <td class="px-4 py-3 text-slate-500 font-mono text-xs max-w-[12rem] truncate">{{ article.slug }}</td>

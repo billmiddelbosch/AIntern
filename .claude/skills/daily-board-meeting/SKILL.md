@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.0
+version: 0.3.5
 ---
 
 # Daily Board Meeting
@@ -25,13 +25,40 @@ git branch --show-current
 ```
 The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
 
+**Step 0.1 — CTO runs project health check:**
+
+```bash
+sheal check
+```
+Surface any warnings inline as `[HEALTH]` tags before continuing. A clean check proceeds silently. If `sheal` is not installed, skip and note it as a blocker.
+
+**Sitemap vs S3 check (runs as part of Step 0.1):** Compare the number of Kennisbank articles in S3 against entries in `public/sitemap.xml`. Run:
+```bash
+aws s3 ls s3://aintern-kennisbank/posts/ | grep -c '\.json$'
+grep -c '<loc>.*kennisbank/' public/sitemap.xml
+```
+If the S3 count exceeds the sitemap count, surface immediately as `[HEALTH] Sitemap verouderd — N artikelen in S3, M in sitemap. Run: npm run sitemap:generate`. Skip if AWS credentials are not available in the current session (note as `[HEALTH: sitemap check overgeslagen — geen AWS credentials]`).
+
+**Step 0.2 — CTO loads weekly activity digest:**
+
+```bash
+sheal digest --since "7 days"
+```
+Use the digest output as context for Phase 2 (which areas got the most work, what was skipped, recurring patterns). Paste a 3-bullet summary into the agenda under a new `**Weekoverzicht:**` line before the blockers block.
+
 1. Read OKRs from memory: `C:/Users/bmidd/.claude/projects/C--Users-bmidd-AIntern/memory/project_okrs_q2_2026.md`
 2. Read CMO memory index and pending items:
    - `.claude/cmo/MEMORY.md`
    - `.claude/cmo/memory_outreach_dm_pending.md` — check for accepted connections awaiting manual DMs
+   - **Index freshness check:** Compare the CMO MEMORY.md index entry for `memory_outreach_dm_pending.md` against the actual file contents. If the index says "pending" but the file says "afgehandeld", update the MEMORY.md index immediately before opening the meeting. Stale index entries cause false blocker reports in Phase 3.
 3. Read CTO blockers explicitly:
    - `.claude/cto/memory_apify_credits_low.md` — flag if credits < $1
+   - **Apify blocker cross-check:** Immediately after reading `memory_apify_credits_low.md`, compare its status against CMO `memory_daily_context.md` Actieve Blockers. If the Apify memory shows ✅ available but CMO daily context still lists "Apify uitgeput" or "Apify geblokkeerd": (1) remove that blocker line from CMO `memory_daily_context.md` directly via Edit tool, (2) mark B-07 in `product/backlog.md` as `✅ done` with note "Apify FREE plan reset maandelijks — geen handmatige actie nodig". This prevents false blocker reports in the agenda.
+
+3.5. **Kennisbank week count verificatie (voer uit vóór de check-in):** Bereken de ISO week start = datum van vandaag minus (weekdag-index, maandag=0). Lees `.claude/cmo/memory_daily_context.md` voor Kennisbank-publicaties. Filter op `publishedAt >= [maandag ISO week start]`. Tel alleen publicaties die op of ná de maandag vallen. Rapporteer het gecorrigeerde aantal als `kennisbank_week_count` — gebruik dit getal (niet de CMO memory-waarde) voor de KPI Pulse in Phase 2 Round 3 en voor de Phase 4 skip condition 1. Meld de discrepantie als de gecorrigeerde telling lager is dan de memory-waarde.
+
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
+5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
 Then open the meeting in this format:
 
@@ -46,11 +73,57 @@ Then open the meeting in this format:
 - Geen (als er geen blockers zijn)
 
 **Agenda van vandaag:**
-1. Directiebespreking — prioriteiten van de dag
-2. LinkedIn outreach voorstellen
-3. Kennisbank content voorstellen
-4. Vergaderverslag + e-mail
-5. Skill verbeterreview
+1. Human Board check-in — backlog feedback
+2. Directiebespreking — prioriteiten van de dag
+3. LinkedIn outreach voorstellen
+4. Kennisbank content voorstellen
+5. Vergaderverslag + e-mail
+6. Skill verbeterreview
+```
+
+---
+
+## Human Board Check-in — Backlog Feedback
+
+**This is the only deliberate pause before Phase 2.** Present the top backlog items and wait for the Human Board's response before continuing.
+
+### What to show
+
+Display the first non-completed item per backlog section (Landing Page, Admin, Organisation) — the same items loaded in Phase 1 Step 4. Use this format:
+
+```
+---
+### Backlog — Human Board Check-in
+
+Hieronder de top backlog items voor vandaag. Geef feedback vóór we beginnen:
+- prioriteit aanpassen
+- een item overslaan
+- een nieuw item toevoegen
+- opmerkingen over een specifiek item
+
+| Sectie | # | Titel | Status | Spec |
+|--------|---|-------|--------|------|
+| Landing Page | B-xx | [titel] | todo | [link als aanwezig] |
+| Admin        | B-xx | [titel] | todo | [link als aanwezig] |
+| Organisation | B-xx | [titel] | todo | [link als aanwezig] |
+
+Typ je feedback of "geen feedback" om direct door te gaan.
+---
+```
+
+### What to do with the response
+
+- **"geen feedback"** — proceed directly to Phase 2 with the backlog as-is
+- **Priority shift** (e.g. "doe B-12 eerst") — reorder in Phase 2 Round 1; Morgan (CTO) opens Round 1 by acknowledging the shift and anchoring it to the relevant OKR
+- **Skip item** — note it in Phase 2 and exclude it from the Top 5 Daily Actions
+- **New item** — Alex (CEO) notes it for Phase 2 Round 3 Step C (Backlog Registration); do not write to the backlog yet
+- **Other feedback** — Blake (CMO) or Morgan (CTO) address it in the relevant Round
+
+Store the Human Board's response as `[HB_FEEDBACK]` — reference it explicitly at the start of Phase 2 Round 1:
+```
+**Alex (CEO) — Opening Round 1:**
+Human Board feedback ontvangen: [HB_FEEDBACK samenvatting]
+Dit nemen we mee als leidraad voor de prioriteiten van vandaag.
 ```
 
 ---
@@ -135,7 +208,7 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 
 ### Round 3 — Synthesis
 
-**Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available:
+**Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available. Also run `sheal cost` — paste the per-project token spend line for AIntern into the table as the last row:
 - **Connection count:** count rows in `product/marketing/leads/outreach-log.csv` where `connection_sent_at` falls within the current ISO week (Monday of current week ≤ date ≤ today). Do **not** use the cumulative count from memory — filter by date to avoid carrying over last week's connections.
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md`. When the count is ≥ 1, verify each article's publish date against the current ISO week start (Monday). Only count articles published on or after Monday of the current ISO week. If the memory shows 2/2 but one article was published on a Sunday (previous week), the actual count for the current week is 1/2 — note this discrepancy.
 - **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback
@@ -152,8 +225,9 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 | CMO     | Kennisbank articles             | 2           | [N]           | ✅ / ⚠️ / ❌ |
 | CPO/CTO | Website traffic check gedaan    | 1×          | [Y/N]         | ✅ / ❌       |
 | CPO/CTO | Uptime check gedaan             | 1×          | [Y/N]         | ✅ / ❌       |
-| CTO     | Security check done             | 1           | [Y/N]         | ✅ / ❌       |
+| CTO     | Security check done             | 1           | [Y/N]         | ✅ (in current ISO week) / ⚠️ (done last week — show date) / ❌ (not done) |
 | COO     | Lead pipeline updated           | 2×          | [N]           | ✅ / ⚠️ / ❌ |
+| CTO     | Token spend (sheal cost)        | monitor     | [€/sessions]  | ✅ / ⚠️ (spike) |
 ```
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
@@ -376,6 +450,12 @@ _Last updated: {YYYY-MM-DD}_
 - [Andere relevante context — bijv. pending DMs, Kennisbank artikel in behandeling, backlog item in scope]
 ```
 
+**Learnings:** After writing all memory files, extract 1–2 non-obvious learnings from today's meeting (decisions made, blockers surfaced, patterns noticed) and persist them:
+```bash
+sheal learn add "[learning text]" --tags=board-meeting,{YYYY-MM-DD}
+```
+Run one `sheal learn add` call per learning. Skip if no new learnings surfaced.
+
 **Write rules:**
 - Always overwrite the full file — do not append
 - Only include information relevant to that executive's domain
@@ -393,6 +473,12 @@ _Last updated: {YYYY-MM-DD}_
 At the end of every meeting, review the session and propose improvements to this skill.
 
 ### Steps
+
+0. Run a session retrospective to surface friction points automatically:
+   ```bash
+   sheal retro
+   ```
+   Use the retro output as direct input for step 1 below — friction points in the retro map to improvement proposals.
 
 1. Identify 2–3 specific friction points from today's meeting:
    - Instructions that were unclear
@@ -473,7 +559,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 
 ## Execution Rules
 
-- **Run all phases automatically** — do not pause mid-meeting for approvals
+- **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
@@ -483,6 +569,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Hard blocker exception** — if a phase encounters a fatal error (missing file, auth failure), surface it inline with a `[BLOCKER]` tag and continue with remaining phases; include it in the End-of-Meeting gate
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
 - **Terminals must be visible** — always open terminals via `Bash` + `claude -p "..."`. Never use the Agent tool for terminal actions — it runs in a hidden context invisible to the Human Board
+- **Windows terminal prompt encoding** — `claude -p "..."` fails on Windows/Git Bash when the prompt exceeds ~1000 characters due to quote-escaping. Fix: write the prompt to a temp file first, then dispatch via `claude -p "$(cat /tmp/board-task-{n}.txt)" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"`. If the terminal output file is ≤30 lines and contains only bash errors (no Claude output), this encoding failure is the cause — fall back to implementing the task inline in the main session and note it as a blocker in the approval gate.
 - **Human approval before every commit** — terminals write files and output a Terminal Summary but do NOT commit. The main session quotes the summary in full, asks "Goedkeuring voor commit?", and only commits via `git commit` after explicit Human Board approval
 - **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
@@ -495,6 +582,21 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 ---
 
 ## Additional Resources
+
+### Sheal CLI Utilities
+
+Available throughout all phases when context is needed from past sessions:
+
+| Command | When to use |
+|---------|-------------|
+| `sheal check` | Phase 1 Step 0.1 — project health pre-flight |
+| `sheal digest --since "7 days"` | Phase 1 Step 0.2 — weekly activity context |
+| `sheal cost` | Phase 2 Round 3 Step A — token spend KPI row |
+| `sheal ask "<question>" --agent claude` | Any phase — query past sessions for decisions/context (e.g. `sheal ask "why did we drop Apify?"`) |
+| `sheal learn add "<learning>" --tags=board-meeting,{date}` | Phase 6 — persist non-obvious learnings after approval gate |
+| `sheal retro` | Phase 7 Step 0 — feed session friction points into improvement proposals |
+
+If `sheal` is not installed, skip and note as `[HEALTH: sheal not found]` in Phase 1.
 
 ### Reference Files
 

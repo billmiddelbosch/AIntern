@@ -289,6 +289,7 @@
       "loading": "Loading articles…",
       "error": "Could not load articles. Please try again.",
       "empty": "No articles found.",
+      "newArticle": "New article",
       "columns": {
         "title": "Title",
         "slug": "Slug",
@@ -304,6 +305,54 @@
         "of": "of",
         "prev": "Previous",
         "next": "Next"
+      }
+    },
+    "articleForm": {
+      "titleCreate": "New article",
+      "titleEdit": "Edit article",
+      "back": "Back to list",
+      "saveDraft": "Save as draft",
+      "saving": "Saving…",
+      "publish": "Publish",
+      "publishing": "Publishing…",
+      "delete": "Delete",
+      "deleting": "Deleting…",
+      "unsavedChangesWarning": "Unsaved changes — re-publish to update live article",
+      "fields": {
+        "title": "Title",
+        "slug": "Slug",
+        "slugChecking": "Checking…",
+        "slugConflict": "This slug already exists. Choose a different one.",
+        "slugReadOnly": "Slug is locked after publish to preserve the URL.",
+        "category": "Category",
+        "publishedAt": "Published date",
+        "excerpt": "Excerpt",
+        "metaDescription": "Meta description",
+        "tags": "Tags",
+        "content": "Article body"
+      },
+      "seo": {
+        "heading": "SEO indicators",
+        "titleLength": "Title length",
+        "titleLengthHint": "Target: 50–60 characters for optimal SEO.",
+        "metaLength": "Meta description length",
+        "metaLengthHint": "Target: 120–160 characters for optimal SEO.",
+        "keywordInTitle": "Keyword from tag in title",
+        "excerptPresent": "Excerpt filled in"
+      },
+      "deleteConfirm": {
+        "title": "Delete article?",
+        "body": "This action is irreversible. The article will be removed from S3 and the sitemap.",
+        "cancel": "Cancel",
+        "confirm": "Yes, delete"
+      },
+      "toasts": {
+        "draftSaved": "Draft saved.",
+        "saveFailed": "Failed to save draft.",
+        "published": "Article published!",
+        "publishFailed": "Failed to publish article.",
+        "deleted": "Article deleted.",
+        "deleteFailed": "Failed to delete article."
       }
     }
   },

@@ -246,7 +246,28 @@ export class AdminStack extends cdk.Stack {
     kennisbankAdminFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['s3:GetObject'],
-        resources: ['arn:aws:s3:::aintern-kennisbank/index.json'],
+        resources: [
+          'arn:aws:s3:::aintern-kennisbank/index.json',
+          'arn:aws:s3:::aintern-kennisbank/posts/*',
+        ],
+      }),
+    )
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject'],
+        resources: [
+          'arn:aws:s3:::aintern-kennisbank/posts/*',
+          'arn:aws:s3:::aintern-kennisbank/index.json',
+          'arn:aws:s3:::aintern-kennisbank/sitemap.xml',
+        ],
+      }),
+    )
+
+    kennisbankAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:DeleteObject'],
+        resources: ['arn:aws:s3:::aintern-kennisbank/posts/*'],
       }),
     )
 
@@ -273,7 +294,7 @@ export class AdminStack extends cdk.Stack {
       deploy: false,
       defaultCorsPreflightOptions: {
         allowOrigins: ['https://aintern.nl', 'https://www.aintern.nl', 'https://test.aintern.nl', 'http://localhost:5173'],
-        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'OPTIONS'],
+        allowMethods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
         allowHeaders: ['Content-Type', 'Authorization'],
       },
     })
@@ -316,7 +337,18 @@ export class AdminStack extends cdk.Stack {
     meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
 
     // GET /admin/kennisbank
-    adminResource.addResource('kennisbank').addMethod('GET', aliasIntegration(kennisbankAdminFn))
+    // GET|PUT|DELETE /admin/kennisbank/{slug}
+    // POST /admin/kennisbank/{slug}/publish
+    const kennisbankResource = adminResource.addResource('kennisbank')
+    kennisbankResource.addMethod('GET', aliasIntegration(kennisbankAdminFn))
+
+    const kennisbankSlugResource = kennisbankResource.addResource('{slug}')
+    kennisbankSlugResource.addMethod('GET', aliasIntegration(kennisbankAdminFn))
+    kennisbankSlugResource.addMethod('PUT', aliasIntegration(kennisbankAdminFn))
+    kennisbankSlugResource.addMethod('DELETE', aliasIntegration(kennisbankAdminFn))
+
+    const kennisbankPublishResource = kennisbankSlugResource.addResource('publish')
+    kennisbankPublishResource.addMethod('POST', aliasIntegration(kennisbankAdminFn))
 
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')

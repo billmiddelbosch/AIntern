@@ -1,25 +1,28 @@
 # Morgan — Daily Context
-_Last updated: 2026-04-15_
+_Last updated: 2026-04-18_
 
 ## Open Acties (toegewezen aan mij)
-- Volgende /admin prioriteit: A-05 (article create/edit form) of A-15 (meeting action items view)
-- O-01 implementatie afstemmen met COO — Lambda endpoint plannen voor vergadering 16 april
-- LLM-citatie check uitvoeren (staat op schema — 1× per 2 weken)
+- B-28: A-05 implementeren — TipTap article create/edit form in /admin (spec: product/sections/admin-article-form/spec.md) — terminal dispatchen vandaag
+- B-29: A-18 implementeren — alle sub-agents + emoji-iconen in AdminOrganisationView.vue (spec: product/sections/admin-organisation/spec.md) — sequentieel na B-28
+- B-32: L-10 spec schrijven — Social Proof / Testimonials Section (product/sections/social-proof/spec.md) — HB-verzoek
 
 ## KPI Status (week 16, 13–19 april)
-- Security check: ✅ (gedaan 2026-04-11 — PASS WITH WARNINGS)
-- /admin sprint: A-16 vandaag afgerond ✅; volgende: A-05 of A-15
+- Security check: ✅ gedaan 2026-04-16 (week 16)
+- Sitemap: ✅ S3=8, sitemap.xml=8 (geen discrepantie)
+- Stale backlog sync: ✅ B-24/25/26/27 gecorrigeerd naar done
 
 ## Actieve Blockers
-- Geen
+- JWT/service-account A-14 KPI API — weekrapport O-01 kan KPI actuals niet ophalen zonder auth token (laag prio)
 
-## Genomen Beslissingen (board 2026-04-15 — goedgekeurd door Human Board)
-- B-12 (A-16): `/admin/organisation` pagina GEDAAN — commit 5c6e12a, feature/board-2026-04-15
-- B-14 (L-14 stap 3): Hero headline Big Idea GEDAAN — commit dac5cd6, feature/board-2026-04-15
-- Skill-verbeteringen 1–4 goedgekeurd en toegepast (SKILL.md v0.2.9)
+## Genomen Beslissingen (board 2026-04-18 — goedgekeurd door Human Board)
+- A-03 lage prioriteit — niet implementeren vandaag (Human Board 2026-04-18)
+- B-28 (A-05) goedgekeurd: terminal dispatchen voor TipTap implementation
+- B-29 (A-18) goedgekeurd: terminal dispatchen sequentieel na A-05
+- B-32 (L-10 spec) goedgekeurd: spec schrijven, geen implementatie
+- Skill v0.3.5: Apify blocker cross-check + ISO week verificatie toegevoegd aan Phase 1
 
 ## Lopende Context
-- Branch: feature/board-2026-04-15 — 2 commits klaar, wacht op Bill voor PR + merge
-- L-14 resterende stappen: stap 4 (Godfather Offer sectie) en stap 5 (intake-vragenlijst) — volgende sprint
-- Na merge: volgende admin-prioriteit A-05 (article form) of A-15 (meeting action items view)
-- /admin deadline 22 april — A-16 is de laatste geplande deadline-item; overige /admin items hebben geen harde deadline
+- Branch feature/board-2026-04-17: gemerged ✅ — A-05, A-18, O-02 implementaties zijn nu deblokkeerd
+- Implementatievolgorde vandaag: B-28 (A-05) → B-29 (A-18) → B-32 (L-10 spec)
+- O-02 implementatie: start volgende vergadering (deadline 30 april, T-12d)
+- A-05 open implementatiepunten: Amplify rewrite rules voor sitemap.xml verifiëren; Lambda IAM role PutObject permissie controleren

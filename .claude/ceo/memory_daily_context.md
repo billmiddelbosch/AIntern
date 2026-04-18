@@ -1,31 +1,36 @@
 # Alex — Daily Context
-_Last updated: 2026-04-15_
+_Last updated: 2026-04-18_
 
 ## Open Acties (toegewezen aan mij)
-- B-07: Apify credits bijvullen (≥ $5) — https://console.apify.com/billing/subscription — **handmatig na vergadering**
-- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig na vergadering**
-- Pipeline review bewaken — O-02 nog niet gestart, deadline 30 april (T-15 dagen)
-- OKR-voortgang reviewen (vrijdag 17 april)
+- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig vandaag** 🔴
+- B-07: Apify credits controleren — als FREE plan voldoende is → markeer B-07 als done (handmatig bevestigen)
 
 ## KPI Status (week 16, 13–19 april)
-- Prospect outreach verstuurd: 0 / ≥1 — ❌
+- Prospect outreach verstuurd: 0 / ≥1 — ❌ (handmatig)
 - Discovery call gevoerd/gepland: 0 / ≥0,5 — ❌
-- LinkedIn posts: 3 / 3 — ✅ (post gepubliceerd 2026-04-13)
-- Nieuwe connecties (week 16): 0 / 20–25 — ❌ (Apify geblokkeerd)
-- Kennisbank artikelen (week 16): 2 / 2 — ✅ (week 15: 1, week 16: 2 — incl. 2026-04-15)
+- LinkedIn posts: 3 / 3 — ✅
+- Nieuwe connecties (week 16): 2 / 20–25 — ❌
+- Kennisbank artikelen (week 16): 1 / 2 — ⚠️ (B-30 goedgekeurd maar AWS geblokkeerd)
 
 ## Actieve Blockers
-- Apify credits uitgeput ($0.066) — CEO-actie B-07: bijvullen vandaag
+- B-30 + B-31: AWS S3 onbereikbaar tijdens vergadering — Kennisbank publish en Apify run uitgesteld
+- O-03 deadline 1 mei (T-13d) — nog niet gestart
 
-## Genomen Beslissingen (board 2026-04-15 — goedgekeurd door Human Board)
-- B-12 (A-16 /admin/organisation) GEDAAN — commit 5c6e12a, feature/board-2026-04-15
-- B-14 (L-14 stap 3 hero headline Big Idea) GEDAAN — commit dac5cd6, feature/board-2026-04-15
-- B-13 (Kennisbank artikel "AI procesautomatisering") GEPUBLICEERD — s3://aintern-kennisbank/posts/ai-procesautomatisering-bereikbaar-voor-mkb.json
-- Skill-verbeteringen 1–4 GOEDGEKEURD en toegepast (SKILL.md v0.2.9)
-- Apify manual fallback toegevoegd aan skill: handmatige LinkedIn URL instructies voor Human Board wanneer Apify geblokkeerd
+## Genomen Beslissingen (board 2026-04-18 — goedgekeurd door Human Board)
+- Alles goedgekeurd in gate: Kennisbank artikel B-30, Apify enrichment B-31, skill verbeteringen 3 en 4
+- A-03 lage prioriteit, niet vandaag
+- L-10 spec-only (geen implementatie)
+- Branch feature/board-2026-04-17 gemerged ✅
+
+## Top 5 Dagelijkse Acties (2026-04-18)
+1. A-05 implementeren (CTO — B-28)
+2. A-18 implementeren (CTO — B-29)
+3. Kennisbank artikel "Waarom AI-tools niet landen" (CMO — B-30, GEBLOKKEERD AWS)
+4. Apify lead enrichment (CMO — B-31, GEBLOKKEERD AWS)
+5. L-10 spec schrijven (CTO — B-32)
 
 ## Lopende Context
-- Branch feature/board-2026-04-15 heeft 2 commits — wacht op Bill voor PR + merge
-- OKR 2.2: 3/300 connecties — kritiek achter; B-07 (Apify bijvullen) is meest urgente handmatige actie vandaag
-- A-16 deadline (22 april) ✅ afgehandeld vandaag — T-7 is nu T-7, maar implementatie is klaar
-- Collegepoint.nl wacht op Apify enrichment voor LinkedIn URL
+- OKR 2.2 kritiek achter: 2/300 connecties (week 16) + Apify enrichment geblokkeerd
+- O-02 deadline 30 april (T-12d) — start morgen
+- O-03 deadline 1 mei (T-13d) — scopen volgende vergadering
+- Token spend: $137/week — RTK installatie aanbevolen ($63 besparing/week)

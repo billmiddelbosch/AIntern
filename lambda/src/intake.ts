@@ -2,14 +2,9 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb'
 import { randomUUID } from 'crypto'
+import { respond } from './utils/cors'
 
 const client = DynamoDBDocumentClient.from(new DynamoDBClient({}))
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'Content-Type',
-  'Content-Type': 'application/json',
-}
 
 // Resolve table name from the invoked alias (last segment of the function ARN).
 // dev alias → TABLE_NAME_DEV, prod alias → TABLE_NAME_PROD
@@ -24,17 +19,19 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
+  const alias = context.invokedFunctionArn.split(':').pop() ?? 'dev'
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
   const TABLE_NAME = resolveTableName(context)
 
   try {
     if (!event.body) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'Missing request body' }) }
+      return respond(400, { error: 'Missing request body' }, alias, requestOrigin)
     }
 
     const data = JSON.parse(event.body)
 
     if (!data.email) {
-      return { statusCode: 400, headers: corsHeaders, body: JSON.stringify({ error: 'email is required' }) }
+      return respond(400, { error: 'email is required' }, alias, requestOrigin)
     }
 
     const submissionId = randomUUID()
@@ -50,13 +47,9 @@ export const handler = async (
       },
     }))
 
-    return {
-      statusCode: 201,
-      headers: corsHeaders,
-      body: JSON.stringify({ submissionId, submittedAt }),
-    }
+    return respond(201, { submissionId, submittedAt }, alias, requestOrigin)
   } catch (err) {
     console.error('intake error', err)
-    return { statusCode: 500, headers: corsHeaders, body: JSON.stringify({ error: 'Internal server error' }) }
+    return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }

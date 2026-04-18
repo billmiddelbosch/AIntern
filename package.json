@@ -14,12 +14,17 @@
     "format": "prettier --write src/",
     "type-check": "vue-tsc --noEmit",
     "sync:backlog": "aws s3 cp product/backlog.md s3://aintern-kennisbank/admin-assets/backlog.md",
+    "sitemap:generate": "npx tsx scripts/generate-sitemap.ts",
     "question": "test.ts"
   },
   "dependencies": {
+    "@tiptap/extension-link": "^3.22.3",
+    "@tiptap/starter-kit": "^3.22.3",
+    "@tiptap/vue-3": "^3.22.3",
     "@unhead/vue": "^2.1.12",
     "@vueuse/core": "^12.4.0",
     "axios": "^1.7.9",
+    "dompurify": "^3.4.0",
     "pinia": "^2.3.1",
     "tesseract.js": "^7.0.0",
     "vite-ssg": "^28.3.0",
@@ -28,8 +33,10 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
+    "@aws-sdk/client-s3": "^3.1031.0",
     "@playwright/test": "^1.49.1",
     "@tailwindcss/vite": "^4.0.0",
+    "@types/dompurify": "^3.0.5",
     "@types/node": "^22.10.1",
     "@typescript-eslint/eslint-plugin": "^8.18.2",
     "@typescript-eslint/parser": "^8.18.2",
@@ -50,5 +57,8 @@
     "vitest": "^3.0.4",
     "vue-eslint-parser": "^10.0.0",
     "vue-tsc": "^2.2.0"
+  },
+  "overrides": {
+    "@unhead/dom": ">=2.1.13"
   }
 }

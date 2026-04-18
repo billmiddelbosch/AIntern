@@ -289,6 +289,7 @@
       "loading": "Artikelen laden…",
       "error": "Artikelen konden niet worden geladen. Probeer opnieuw.",
       "empty": "Geen artikelen gevonden.",
+      "newArticle": "Nieuw artikel",
       "columns": {
         "title": "Titel",
         "slug": "Slug",
@@ -304,6 +305,54 @@
         "of": "van",
         "prev": "Vorige",
         "next": "Volgende"
+      }
+    },
+    "articleForm": {
+      "titleCreate": "Nieuw artikel",
+      "titleEdit": "Artikel bewerken",
+      "back": "Terug naar lijst",
+      "saveDraft": "Opslaan als concept",
+      "saving": "Opslaan…",
+      "publish": "Publiceren",
+      "publishing": "Publiceren…",
+      "delete": "Verwijderen",
+      "deleting": "Verwijderen…",
+      "unsavedChangesWarning": "Niet-opgeslagen wijzigingen — publiceer opnieuw om het live artikel bij te werken",
+      "fields": {
+        "title": "Titel",
+        "slug": "Slug",
+        "slugChecking": "Controleren…",
+        "slugConflict": "Deze slug bestaat al. Kies een andere.",
+        "slugReadOnly": "Slug is vergrendeld na publicatie om de URL te behouden.",
+        "category": "Categorie",
+        "publishedAt": "Publicatiedatum",
+        "excerpt": "Samenvatting",
+        "metaDescription": "Metaomschrijving",
+        "tags": "Tags",
+        "content": "Artikeltekst"
+      },
+      "seo": {
+        "heading": "SEO-indicatoren",
+        "titleLength": "Titellengte",
+        "titleLengthHint": "Doel: 50–60 tekens voor optimale SEO.",
+        "metaLength": "Lengte metaomschrijving",
+        "metaLengthHint": "Doel: 120–160 tekens voor optimale SEO.",
+        "keywordInTitle": "Trefwoord uit tag in titel",
+        "excerptPresent": "Samenvatting ingevuld"
+      },
+      "deleteConfirm": {
+        "title": "Artikel verwijderen?",
+        "body": "Deze actie is onomkeerbaar. Het artikel wordt verwijderd uit S3 en de sitemap.",
+        "cancel": "Annuleren",
+        "confirm": "Ja, verwijderen"
+      },
+      "toasts": {
+        "draftSaved": "Concept opgeslagen.",
+        "saveFailed": "Opslaan mislukt.",
+        "published": "Artikel gepubliceerd!",
+        "publishFailed": "Publiceren mislukt.",
+        "deleted": "Artikel verwijderd.",
+        "deleteFailed": "Verwijderen mislukt."
       }
     }
   },
