@@ -63,7 +63,7 @@
 | ID | Feature | Effort | Owner | Status | Source | Success Metric |
 |---|---|---|---|---|---|---|
 | ~~B-01~~ | ~~**Wekelijkse security check uitvoeren en documenteren**~~ | S | CTO | ✅ done | board-meeting-2026-04-11 | Commit 6ba7260 — PASS WITH WARNINGS, 3 high findings gedocumenteerd in .claude/cto/memory_security_check_2026-04-11.md |
-| B-02 | **Lead-CSV verrijken via Apify (LinkedIn URLs voor ≥5 resterende Lightspeed-leads)** | S | CMO | ❌ geblokkeerd | board-meeting-2026-04-12 | BLOCKER: Apify credits uitgeput ($0.07) — bijvullen via console.apify.com/billing |
+| ~~B-02~~ | ~~**Lead-CSV verrijken via Apify (LinkedIn URLs voor ≥5 resterende Lightspeed-leads)**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Apify credits beschikbaar (FREE plan reset maandelijks — gecorrigeerd 2026-04-17); vervangen door B-31 |
 | ~~B-03~~ | ~~**Kennisbank artikel publiceren: MKB AI-implementatiekloof (S3, Dutch, 400–700 woorden)**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: s3://aintern-kennisbank/posts/mkb-ai-implementatie-kloof-weten-doen.json |
 | ~~B-04~~ | ~~**1 LinkedIn post publiceren over AI voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: urn:li:share:7449037918192648192 — AIntern company page |
 | ~~B-05~~ | ~~**A-03 Role-based access implementeren (role: admin of editor in auth store)**~~ | S | CTO | ❌ gecancelled | board-meeting-2026-04-12 | Gecancelled 2026-04-12 op verzoek Human Board |
@@ -85,10 +85,15 @@
 | ~~B-21~~ | ~~**Lambda CORS fix: calendly-webhook.ts + intake.ts naar corsOrigin() patroon**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | Beide handlers gebruiken corsOrigin() + respond() conform CLAUDE.md — commit 7b47c1b |
 | ~~B-22~~ | ~~**npm audit fix: vite HIGH + axios/follow-redirects/unhead MODERATE**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | `package.json` override `@unhead/dom >= 2.1.13`; `npm audit` → 0 vulnerabilities |
 | ~~B-23~~ | ~~**v-html XSS review in KennisbankArtikelView.vue**~~ | S | CTO | ✅ done | board-meeting-2026-04-16 | DOMPurify geïnstalleerd; `sanitizedContent` computed; `eslint-disable` verwijderd — `KennisbankArtikelView.vue` |
-| B-24 | **BUG-04: Sitemap.xml fix — Kennisbank artikel-routes ontbreken** | S | CTO | todo | board-meeting-2026-04-17 | Alle gepubliceerde S3-artikelen aanwezig in sitemap.xml; sitemap-regeneratie onderdeel van publish-flow |
-| B-25 | **A-05 spec schrijven — article create/edit form** | S | CTO | todo | board-meeting-2026-04-17 | Spec aangemaakt + CEO-goedkeuring ontvangen vóór implementatie |
-| B-26 | **O-02 spec schrijven — Lead Pipeline CRM** | S | COO | todo | board-meeting-2026-04-17 | Spec aangemaakt + CEO-goedkeuring ontvangen vóór implementatie |
-| B-27 | **A-18 spec schrijven — Organisatieoverzicht agent-uitbreiding + iconen** | S | CTO | todo | board-meeting-2026-04-17 | Spec aangemaakt + CEO-goedkeuring ontvangen vóór implementatie |
+| ~~B-24~~ | ~~**BUG-04: Sitemap.xml fix — Kennisbank artikel-routes ontbreken**~~ | S | CTO | ✅ done | board-meeting-2026-04-17 | sitemap.xml gefixed, sitemap:generate npm script toegevoegd — feature/board-2026-04-17 |
+| ~~B-25~~ | ~~**A-05 spec schrijven — article create/edit form**~~ | S | CTO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-article-form/spec.md — feature/board-2026-04-17 |
+| ~~B-26~~ | ~~**O-02 spec schrijven — Lead Pipeline CRM**~~ | S | COO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-lead-pipeline/spec.md — feature/board-2026-04-17 |
+| ~~B-27~~ | ~~**A-18 spec schrijven — Organisatieoverzicht agent-uitbreiding + iconen**~~ | S | CTO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-organisation/spec.md — feature/board-2026-04-17 |
+| B-28 | **A-05 implementeren — article create/edit form (TipTap)** | M | CTO | todo | board-meeting-2026-04-18 | Route `/admin/kennisbank/new` + `/admin/kennisbank/:slug/edit` live; publish naar S3 werkt; type-check pass |
+| ~~B-29~~ | ~~**A-18 implementeren — alle sub-agents + emoji-iconen in AdminOrganisationView.vue**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | 37 agents (4 C-level + 33 sub-agents), emoji icons, chip-lijst, kaarten per parent — commit 42a2f37 |
+| ~~B-30~~ | ~~**Kennisbank artikel publiceren — AI-governance voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-18 | Gepubliceerd 2026-04-18: s3://aintern-kennisbank/posts/waarom-ai-tools-niet-landen-bij-webshops.json |
+| B-31 | **Apify lead enrichment — nieuwe Lightspeed-leads ophalen (≥5 URLs)** | S | CMO | todo | board-meeting-2026-04-18 | ≥5 nieuwe leads in outreach-log.csv met LinkedIn URL; enrichment-run gelogd |
+| ~~B-32~~ | ~~**L-10 spec schrijven — Social Proof / Testimonials Section**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt — feature/board-2026-04-18 |
 
 ## Organisation (O)
 
@@ -106,7 +111,7 @@
 |---|---|---|---|
 | ~~A-01~~ | ~~**Admin route + layout scaffold**~~ | S | ~~Add `/admin` route (lazy-loaded `AdminView.vue`) with `AdminLayout.vue` (sidebar nav, header). Route guard blocks unauthenticated access.~~ Geïmplementeerd 2026-04-09. |
 | ~~A-02~~ | ~~**Auth guard + login flow**~~ | M | ~~`useAuthStore` (Pinia) with login/logout, JWT storage. Add `/admin/login` route; redirect unauthenticated users.~~ Geïmplementeerd 2026-04-09. Inclusief backend: `AInternAdminStack` (API Gateway + Lambda + SSM), `/admin/register` first-run flow, esbuild voor alle Lambda handlers. |
-| A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. |
+| A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. **Lage prioriteit — niet vandaag (Human Board 2026-04-18).** |
 | A-04 | **Kennisbank article list view** | S | `/admin/kennisbank` — paginated table of articles with status, slug, last-modified. Sortable columns. |
 | A-05 | **Article create/edit form** | M | Rich text editor (TipTap) + frontmatter fields (title, slug, tags, published). Save drafts, publish to S3. |
 | A-06 | **Article delete + unpublish** | S | Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record. |
