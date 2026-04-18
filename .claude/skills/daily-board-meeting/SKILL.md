@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.4
+version: 0.3.5
 ---
 
 # Daily Board Meeting
@@ -53,6 +53,10 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
    - **Index freshness check:** Compare the CMO MEMORY.md index entry for `memory_outreach_dm_pending.md` against the actual file contents. If the index says "pending" but the file says "afgehandeld", update the MEMORY.md index immediately before opening the meeting. Stale index entries cause false blocker reports in Phase 3.
 3. Read CTO blockers explicitly:
    - `.claude/cto/memory_apify_credits_low.md` — flag if credits < $1
+   - **Apify blocker cross-check:** Immediately after reading `memory_apify_credits_low.md`, compare its status against CMO `memory_daily_context.md` Actieve Blockers. If the Apify memory shows ✅ available but CMO daily context still lists "Apify uitgeput" or "Apify geblokkeerd": (1) remove that blocker line from CMO `memory_daily_context.md` directly via Edit tool, (2) mark B-07 in `product/backlog.md` as `✅ done` with note "Apify FREE plan reset maandelijks — geen handmatige actie nodig". This prevents false blocker reports in the agenda.
+
+3.5. **Kennisbank week count verificatie (voer uit vóór de check-in):** Bereken de ISO week start = datum van vandaag minus (weekdag-index, maandag=0). Lees `.claude/cmo/memory_daily_context.md` voor Kennisbank-publicaties. Filter op `publishedAt >= [maandag ISO week start]`. Tel alleen publicaties die op of ná de maandag vallen. Rapporteer het gecorrigeerde aantal als `kennisbank_week_count` — gebruik dit getal (niet de CMO memory-waarde) voor de KPI Pulse in Phase 2 Round 3 en voor de Phase 4 skip condition 1. Meld de discrepantie als de gecorrigeerde telling lager is dan de memory-waarde.
+
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
