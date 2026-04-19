@@ -97,6 +97,8 @@
 | B-33 | **RTK installeren + Claude Code hook configureren** | S | CTO | todo | board-meeting-2026-04-19 | `sheal check` toont "RTK hook active in Claude Code"; token compressie actief |
 | ~~B-34~~ | ~~**Test suite — sitemap availability + correctheid (Vitest)**~~ | S | CTO | ✅ done | board-meeting-2026-04-19 | 8 sitemap tests groen — commit 935c167 |
 | ~~B-35~~ | ~~**Test suite — Lambda API endpoints (Vitest integration tests)**~~ | M | CTO | ✅ done | board-meeting-2026-04-19 | 21 Lambda endpoint tests groen (auth, GET list/slug, PUT, POST publish, DELETE, CORS) — commit 935c167; 112 totaal |
+| B-36 | **Reddit Hot Topics Detector — Lambda feature** | M | CTO | todo | board-meeting-2026-04-20 | Lambda functie die Reddit API pollt op hot topics per subreddit en resultaten opslaat voor gebruik door CMO/content pipeline. Approved by Human Board. |
+| B-37 | **Model usage analysis — right-size Claude models per action** | S | CTO | todo | board-meeting-2026-04-20 | Audit alle Claude API call sites in de codebase en Lambda functies. Bepaal per actie of een frontier model (Sonnet/Opus) nodig is of dat Haiku volstaat zonder kwaliteitsverlies. Deliverable: decision matrix — actie → aanbevolen model → cost/quality rationale. Doel: inference-kosten verlagen met behoud van outputkwaliteit. High priority. |
 
 ## Organisation (O)
 
