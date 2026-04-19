@@ -95,8 +95,8 @@
 | B-31 | **Apify lead enrichment — nieuwe Lightspeed-leads ophalen (≥5 URLs)** | S | CMO | todo | board-meeting-2026-04-18 | ≥5 nieuwe leads in outreach-log.csv met LinkedIn URL; enrichment-run gelogd |
 | ~~B-32~~ | ~~**L-10 spec schrijven — Social Proof / Testimonials Section**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt — feature/board-2026-04-18 |
 | B-33 | **RTK installeren + Claude Code hook configureren** | S | CTO | todo | board-meeting-2026-04-19 | `sheal check` toont "RTK hook active in Claude Code"; token compressie actief |
-| B-34 | **Test suite — sitemap availability + correctheid (Vitest)** | S | CTO | todo | board-meeting-2026-04-19 | ≥3 tests groen: sitemap bereikbaar, bevat homepage + kennisbank + artikel-slugs, geen dode URLs |
-| B-35 | **Test suite — Lambda API endpoints (Vitest integration tests)** | M | CTO | todo | board-meeting-2026-04-19 | ≥1 test per endpoint (GET list, GET slug, PUT draft, POST publish, DELETE); verwachte statuscodes geasserteerd |
+| ~~B-34~~ | ~~**Test suite — sitemap availability + correctheid (Vitest)**~~ | S | CTO | ✅ done | board-meeting-2026-04-19 | 8 sitemap tests groen — commit 935c167 |
+| ~~B-35~~ | ~~**Test suite — Lambda API endpoints (Vitest integration tests)**~~ | M | CTO | ✅ done | board-meeting-2026-04-19 | 21 Lambda endpoint tests groen (auth, GET list/slug, PUT, POST publish, DELETE, CORS) — commit 935c167; 112 totaal |
 
 ## Organisation (O)
 
