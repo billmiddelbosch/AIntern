@@ -343,4 +343,3 @@ Editing a published article and saving (without re-publishing) updates the S3 po
 - Image upload / media management
 - Scheduled publish (publishedAt in the future)
 - Version history / revision compare
-- Article deletion UI

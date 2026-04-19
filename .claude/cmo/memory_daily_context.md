@@ -11,7 +11,7 @@ _Last updated: 2026-04-18_
 - Kennisbank artikelen (week 16): 2 / 2 — ✅ (B-13 = 15 april + B-30 = 18 april)
 
 ## Actieve Blockers
-- AWS S3 onbereikbaar — B-30 en B-31 uitgesteld; herstel connectie en voer handmatig uit
+- Geen (AWS S3 toegankelijk per 2026-04-19 — stale blocker gecleard; B-30 ✅ gepubliceerd; B-31 kan uitgevoerd worden)
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt (Kennisbank artikelen, LinkedIn posts, connection requests, DMs) vereist altijd Human Board goedkeuring vóór uitvoering.
