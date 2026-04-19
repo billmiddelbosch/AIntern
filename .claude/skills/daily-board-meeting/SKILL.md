@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.5
+version: 0.3.6
 ---
 
 # Daily Board Meeting
@@ -32,6 +32,8 @@ sheal check
 ```
 Surface any warnings inline as `[HEALTH]` tags before continuing. A clean check proceeds silently. If `sheal` is not installed, skip and note it as a blocker.
 
+**RTK PATH auto-fix:** After the health check, if `sheal check` reports "RTK installed but no hook configured" or "RTK not installed", run: `which rtk || (export PATH="$HOME/.local/bin:$PATH" && which rtk)`. If RTK is found via the PATH fix, apply it for the rest of the session and note: `[HEALTH] RTK in PATH gefixed voor deze sessie`. This prevents wasted analysis rounds when RTK is installed but not in PATH.
+
 **Sitemap vs S3 check (runs as part of Step 0.1):** Compare the number of Kennisbank articles in S3 against entries in `public/sitemap.xml`. Run:
 ```bash
 aws s3 ls s3://aintern-kennisbank/posts/ | grep -c '\.json$'
@@ -58,7 +60,12 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 3.5. **Kennisbank week count verificatie (voer uit vóór de check-in):** Bereken de ISO week start = datum van vandaag minus (weekdag-index, maandag=0). Lees `.claude/cmo/memory_daily_context.md` voor Kennisbank-publicaties. Filter op `publishedAt >= [maandag ISO week start]`. Tel alleen publicaties die op of ná de maandag vallen. Rapporteer het gecorrigeerde aantal als `kennisbank_week_count` — gebruik dit getal (niet de CMO memory-waarde) voor de KPI Pulse in Phase 2 Round 3 en voor de Phase 4 skip condition 1. Meld de discrepantie als de gecorrigeerde telling lager is dan de memory-waarde.
 
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
+
+   **Backlog post-build-error check:** When loading the backlog, also check `git log --oneline --since="2 days ago"` for feature-implementation commits. For each recent implementation commit, verify the corresponding B-item is marked ✅ done. If an implementation commit exists but the B-item is still `todo`, mark it done immediately with the commit hash noted. This catches backlog updates missed due to build-error disruptie (root cause of B-28 being stale).
+
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
+
+6. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
 
 Then open the meeting in this format:
 

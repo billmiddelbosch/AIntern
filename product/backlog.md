@@ -68,7 +68,7 @@
 | ~~B-04~~ | ~~**1 LinkedIn post publiceren over AI voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-12 | Gepubliceerd 2026-04-12: urn:li:share:7449037918192648192 — AIntern company page |
 | ~~B-05~~ | ~~**A-03 Role-based access implementeren (role: admin of editor in auth store)**~~ | S | CTO | ❌ gecancelled | board-meeting-2026-04-12 | Gecancelled 2026-04-12 op verzoek Human Board |
 | ~~B-06~~ | ~~**Lead pipeline bijwerken: Bram, Jan, Bob op dm_sent status gedocumenteerd**~~ | S | COO | ✅ done | board-meeting-2026-04-12 | Al gedaan: outreach-log.csv had dm_sent voor Bram/Jan/Bob al correct sinds 2026-04-11 |
-| B-07 | **Apify credits bijvullen (≥ $5)** | S | CEO | todo | board-meeting-2026-04-13 | Saldo > $1, B-02 deblokkeerd |
+| ~~B-07~~ | ~~**Apify credits bijvullen (≥ $5)**~~ | S | CEO | ✅ done | board-meeting-2026-04-13 | Apify FREE plan reset maandelijks — geen handmatige actie nodig |
 | ~~B-08~~ | ~~**3e LinkedIn post publiceren (AIntern company page)**~~ | S | CMO | ✅ done | board-meeting-2026-04-13 | Gepubliceerd 2026-04-13: urn:li:share:7449412671705219072 — AIntern company page |
 | ~~B-09~~ | ~~**A-04 implementeren: Kennisbank article list in /admin**~~ | M | CTO | ✅ done | board-meeting-2026-04-13 | `/admin/kennisbank` route live, sortable paginated table, type-check pass — 9 files, feature/board-2026-04-13 |
 | B-10 | **CEO prospect outreach — 1 Lightspeed-prospect contacteren via LinkedIn** | S | CEO | todo | board-meeting-2026-04-13 | ≥1 prospect gecontacteerd, gelogd in pipeline |
@@ -89,11 +89,14 @@
 | ~~B-25~~ | ~~**A-05 spec schrijven — article create/edit form**~~ | S | CTO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-article-form/spec.md — feature/board-2026-04-17 |
 | ~~B-26~~ | ~~**O-02 spec schrijven — Lead Pipeline CRM**~~ | S | COO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-lead-pipeline/spec.md — feature/board-2026-04-17 |
 | ~~B-27~~ | ~~**A-18 spec schrijven — Organisatieoverzicht agent-uitbreiding + iconen**~~ | S | CTO | ✅ done | board-meeting-2026-04-17 | Spec aangemaakt: product/sections/admin-organisation/spec.md — feature/board-2026-04-17 |
-| B-28 | **A-05 implementeren — article create/edit form (TipTap)** | M | CTO | todo | board-meeting-2026-04-18 | Route `/admin/kennisbank/new` + `/admin/kennisbank/:slug/edit` live; publish naar S3 werkt; type-check pass |
+| ~~B-28~~ | ~~**A-05 implementeren — article create/edit form (TipTap)**~~ | M | CTO | ✅ done | board-meeting-2026-04-18 | Geïmplementeerd commit 25aeded — KennisbankArticleFormView.vue, 3 componenten, composable, Lambda GET/PUT/POST/DELETE, sitemap regeneratie, deletion UI ✅ — backlog-update gemist door build error disruptie |
 | ~~B-29~~ | ~~**A-18 implementeren — alle sub-agents + emoji-iconen in AdminOrganisationView.vue**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | 37 agents (4 C-level + 33 sub-agents), emoji icons, chip-lijst, kaarten per parent — commit 42a2f37 |
 | ~~B-30~~ | ~~**Kennisbank artikel publiceren — AI-governance voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-18 | Gepubliceerd 2026-04-18: s3://aintern-kennisbank/posts/waarom-ai-tools-niet-landen-bij-webshops.json |
 | B-31 | **Apify lead enrichment — nieuwe Lightspeed-leads ophalen (≥5 URLs)** | S | CMO | todo | board-meeting-2026-04-18 | ≥5 nieuwe leads in outreach-log.csv met LinkedIn URL; enrichment-run gelogd |
 | ~~B-32~~ | ~~**L-10 spec schrijven — Social Proof / Testimonials Section**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt — feature/board-2026-04-18 |
+| B-33 | **RTK installeren + Claude Code hook configureren** | S | CTO | todo | board-meeting-2026-04-19 | `sheal check` toont "RTK hook active in Claude Code"; token compressie actief |
+| ~~B-34~~ | ~~**Test suite — sitemap availability + correctheid (Vitest)**~~ | S | CTO | ✅ done | board-meeting-2026-04-19 | 8 sitemap tests groen — commit 935c167 |
+| ~~B-35~~ | ~~**Test suite — Lambda API endpoints (Vitest integration tests)**~~ | M | CTO | ✅ done | board-meeting-2026-04-19 | 21 Lambda endpoint tests groen (auth, GET list/slug, PUT, POST publish, DELETE, CORS) — commit 935c167; 112 totaal |
 
 ## Organisation (O)
 
