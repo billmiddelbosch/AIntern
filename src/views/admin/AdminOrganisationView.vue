@@ -5,7 +5,7 @@ interface Agent {
   name: string
   agentId: string
   emoji: string
-  tier: 'clevel' | 'subagent'
+  tier: 'clevel' | 'subagent' | 'human'
   parentRole: string | null
   roleLabel: string
   tileColor: string
@@ -106,6 +106,22 @@ const agents: Agent[] = [
   { name: 'Daily Board Meeting', agentId: 'daily-board-meeting', emoji: '📅', tier: 'subagent', parentRole: 'COO', roleLabel: 'Dagelijkse Standup', tileColor: 'bg-slate-50 text-slate-700 ring-slate-200', triggeredBy: 'COO — elke ochtend' },
   { name: 'Schedule', agentId: 'schedule', emoji: '🕐', tier: 'subagent', parentRole: 'COO', roleLabel: 'Cron Planner', tileColor: 'bg-slate-50 text-slate-700 ring-slate-200', triggeredBy: 'COO — automatiseringsplanning' },
   { name: 'Loop', agentId: 'loop', emoji: '🔁', tier: 'subagent', parentRole: 'COO', roleLabel: 'Herhalende Taken', tileColor: 'bg-slate-50 text-slate-700 ring-slate-200', triggeredBy: 'COO — polling, monitoringloops' },
+  // Human Board direct reports
+  {
+    name: 'Ghostwriter',
+    agentId: 'ghostwriter',
+    emoji: '✍️',
+    tier: 'human',
+    parentRole: 'Human Board',
+    roleLabel: 'LinkedIn Copywriter',
+    tileColor: 'bg-orange-50 text-orange-700 ring-orange-200',
+    responsibilities: [
+      'Schrijft kant-en-klare LinkedIn posts in de stem van Bill Middelbosch',
+      'Beheert de "AI-Duo Experiment" serie (2×/week: maandag + donderdag)',
+      'Zoekt actief stijlreferenties bij schrijvers over gerelateerde thema\'s',
+    ],
+    triggeredBy: 'Human Board (Bill) — LinkedIn post cycle',
+  },
 ]
 
 const ceo = computed(() => agents.find((a) => a.parentRole === null)!)
@@ -121,6 +137,7 @@ const subAgentsByParent = computed(() => {
   return map
 })
 const clevelAgents = computed(() => agents.filter((a) => a.tier === 'clevel'))
+const humanBoardReports = computed(() => agents.filter((a) => a.tier === 'human'))
 </script>
 
 <template>
@@ -138,6 +155,46 @@ const clevelAgents = computed(() => agents.filter((a) => a.tier === 'clevel'))
       <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-6">
         Organisatiehiërarchie
       </h3>
+
+      <!-- Human Board row (top level) -->
+      <div class="flex flex-col items-center">
+        <div class="flex items-center justify-center gap-4">
+          <!-- Human Board card -->
+          <div class="w-44 text-center rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 shadow-sm">
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xl">👤</span>
+              <p class="text-sm font-bold text-amber-800">Bill</p>
+            </div>
+            <span class="mt-1 inline-block text-xs font-semibold px-2 py-0.5 rounded-full ring-1 ring-amber-200 bg-amber-50 text-amber-700">
+              Human Board
+            </span>
+          </div>
+          <!-- Dashed connector to Ghostwriter -->
+          <div class="flex items-center gap-1">
+            <div class="w-6 border-t-2 border-dashed border-slate-300" />
+            <span class="text-xs text-slate-400 select-none">rapporteert aan</span>
+            <div class="w-6 border-t-2 border-dashed border-slate-300" />
+          </div>
+          <!-- Ghostwriter card -->
+          <div
+            v-for="h in humanBoardReports"
+            :key="h.agentId"
+            class="w-44 text-center rounded-xl border border-orange-200 bg-orange-50 px-4 py-3 shadow-sm"
+          >
+            <div class="flex items-center justify-center gap-2">
+              <span class="text-xl">{{ h.emoji }}</span>
+              <p class="text-sm font-bold text-orange-800">{{ h.name }}</p>
+            </div>
+            <span class="mt-1 inline-block text-xs font-semibold px-2 py-0.5 rounded-full ring-1" :class="h.tileColor">
+              {{ h.roleLabel }}
+            </span>
+            <p class="mt-1 text-xs text-orange-400">Menselijke medewerker</p>
+          </div>
+        </div>
+
+        <!-- Connector from Human Board down to CEO -->
+        <div class="w-px h-6 bg-slate-200" />
+      </div>
 
       <!-- CEO row -->
       <div class="flex flex-col items-center">
@@ -226,6 +283,44 @@ const clevelAgents = computed(() => agents.filter((a) => a.tier === 'clevel'))
               </li>
             </ul>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Human Board direct reports detail cards -->
+    <div v-if="humanBoardReports.length">
+      <h3 class="text-sm font-semibold text-slate-500 uppercase tracking-wide mb-3">Directe Rapporten Human Board</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          v-for="agent in humanBoardReports"
+          :key="agent.agentId"
+          class="bg-white rounded-2xl border border-orange-200 p-5 space-y-4"
+        >
+          <div class="flex items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="flex items-center justify-center w-10 h-10 rounded-xl text-xl bg-orange-50">
+                {{ agent.emoji }}
+              </div>
+              <div>
+                <p class="text-base font-semibold text-slate-800">{{ agent.name }}</p>
+                <p class="text-xs text-slate-400 mt-0.5">Rapporteert aan: Human Board (Bill)</p>
+                <p class="text-xs text-orange-500 mt-0.5">Menselijke medewerker</p>
+              </div>
+            </div>
+            <span class="shrink-0 text-xs font-semibold px-2.5 py-1 rounded-full ring-1" :class="agent.tileColor">
+              {{ agent.roleLabel }}
+            </span>
+          </div>
+          <div v-if="agent.responsibilities">
+            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide mb-2">Verantwoordelijkheden</p>
+            <ul class="space-y-1.5">
+              <li v-for="(resp, i) in agent.responsibilities" :key="i" class="flex items-start gap-2 text-sm text-slate-600">
+                <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-orange-300 shrink-0" />
+                {{ resp }}
+              </li>
+            </ul>
+          </div>
+          <p class="text-xs text-slate-400">{{ agent.triggeredBy }}</p>
         </div>
       </div>
     </div>

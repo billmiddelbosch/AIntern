@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.6
+version: 0.3.7
 ---
 
 # Daily Board Meeting
@@ -62,6 +62,8 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
 
    **Backlog post-build-error check:** When loading the backlog, also check `git log --oneline --since="2 days ago"` for feature-implementation commits. For each recent implementation commit, verify the corresponding B-item is marked ✅ done. If an implementation commit exists but the B-item is still `todo`, mark it done immediately with the commit hash noted. This catches backlog updates missed due to build-error disruptie (root cause of B-28 being stale).
+
+   **Admin-sectie cross-referentie check:** For each `todo` item in the Admin section (A-xx), check whether a ✅ done B-item references it (e.g. "B-28: A-05 implementeren"). If such a B-item exists and is ✅ done, mark the A-item as done immediately with a note: "Geïmplementeerd als onderdeel van [B-item] — [commit hash]". This prevents false positives in the check-in for features delivered via linked B-items (root cause of A-06 surfacing repeatedly after being implemented in A-05/B-28).
 
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
@@ -216,6 +218,16 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 ### Round 3 — Synthesis
 
 **Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available. Also run `sheal cost` — paste the per-project token spend line for AIntern into the table as the last row:
+
+**Step A.5 — Growth Levers Check.** Immediately after the KPI Pulse table, scan for the top 3 growth levers available this week. Present as a compact table before Step B so the Top 5 can incorporate them:
+
+```
+| Lever | Effort | Impact on OKR | Status |
+|-------|--------|---------------|--------|
+| [SEO item / B-item / Obsidian seed] | S/M/L | [KR ref] | ready / blocked |
+```
+
+Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-items tagged to marketing/CMO; (3) available Obsidian seeds. Pick the 3 with highest impact/effort ratio. This makes the "aanvullende acties" discussion proactive rather than reactive.
 - **Connection count:** count rows in `product/marketing/leads/outreach-log.csv` where `connection_sent_at` falls within the current ISO week (Monday of current week ≤ date ≤ today). Do **not** use the cumulative count from memory — filter by date to avoid carrying over last week's connections.
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md`. When the count is ≥ 1, verify each article's publish date against the current ISO week start (Monday). Only count articles published on or after Monday of the current ISO week. If the memory shows 2/2 but one article was published on a Sunday (previous week), the actual count for the current week is 1/2 — note this discrepancy.
 - **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback

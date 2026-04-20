@@ -9,9 +9,9 @@
 
 ## Approved Template (Lightspeed Webshop Owners)
 
-> Hoi {voornaam}, ik zie dat je een Lightspeed webshop runt. Wij helpen webshophouders met AI om 60 min producttijd terug te brengen naar 5 min. Mag ik je meer vertellen?
+> Hoi {voornaam}, met je eigen AI stagiair helpen wij voor geautomatiseerde product plaatsing in Lightspeed webshops. Zou dat iets voor jou zijn?
 
-Character count: ~170 — within limit.
+Character count: ~140 — within limit. **Updated 2026-04-20 — Human Board approved "AI stagiair" positioning.**
 
 ## Rotation Plan (3 Variants)
 
@@ -19,8 +19,8 @@ Use the variant that matches the lead's profile. Rotate per 10 leads. Scale the 
 
 | Variant | Angle | Template |
 |---------|-------|----------|
-| ROI | Cost & time saving | "Hoi {naam}, wij helpen Lightspeed webshops om 60 min/product terug te brengen naar 5 min — zonder IT-kennis. Zou dat iets voor jou zijn?" |
-| Nieuwsgierigheid | Curiosity hook | "Hoi {naam}, hoe lang doe jij er over om één product in Lightspeed in te voeren? Wij doen het in 5 minuten met AI. Benieuwd?" |
+| ROI | AI stagiair value prop | "Hoi {naam}, met je eigen AI stagiair helpen wij voor geautomatiseerde product plaatsing in Lightspeed webshops. Zou dat iets voor jou zijn?" |
+| Nieuwsgierigheid | Curiosity hook | "Hoi {naam}, wist je dat je met een eigen AI stagiair de product plaatsing in je Lightspeed webshop volledig kunt automatiseren? Benieuwd hoe dat werkt?" |
 | Resultaat | Social proof | "Hoi {naam}, we helpen Lightspeed-webshops al 2 weken na intake met AI-automatisering. No cure no pay. Zin om even te sparren?" |
 
 ## Lead File Location

@@ -1,39 +1,37 @@
 # Alex — Daily Context
-_Last updated: 2026-04-19_
+_Last updated: 2026-04-20_
 
 ## Open Acties (toegewezen aan mij)
-- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig door Bill** 🔴
+- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig door Bill** 🔴 (persistent)
 
-## KPI Status (week 16, 13–19 april)
+## KPI Status (week 17, 20–26 april — dag 1)
 - Prospect outreach verstuurd: 0 / ≥1 — ❌ (handmatig door Bill)
 - Discovery call gevoerd/gepland: 0 / ≥0,5 — ❌
-- LinkedIn posts: 3 / 3 — ✅
-- Nieuwe connecties (week 16): 2 / 20–25 — ❌
-- Kennisbank artikelen (week 16): 2 / 2 — ✅ (B-13: 15 apr, B-30: 18 apr)
 
 ## Actieve Blockers
-- Geen
+- B-10 persistent open — CEO prospect outreach handmatig door Bill
 
-## Genomen Beslissingen (board 2026-04-19 — goedgekeurd door Human Board)
-- B-28 (A-05 TipTap form) ✅ done — commit 25aeded, stale backlog gecorrigeerd
-- Artikel deletion UI ✅ done — aanwezig in KennisbankArticleFormView.vue; spec Out of Scope gecorrigeerd
-- B-07 Apify credits ✅ done — FREE plan reset maandelijks, geen handmatige actie nodig
-- B-33 RTK geïmplementeerd ✅ — CLAUDE.md mode (Windows), broken hook verwijderd, commit 9dcc05c
-- B-34 + B-35 test suite ✅ — sitemap tests (8) + Lambda kennisbank-admin tests (21), commit 935c167
-- B-31 gedeeltelijk: 5 leads gevonden via Apify Google Search; LinkedIn URLs handmatig door Bill
-- L-10 lagere prioriteit — B-32 spec only, implementatie uitgesteld
-- Skill v0.3.6: 3 verbeteringen toegevoegd (RTK PATH auto-fix, backlog post-build-error check, Obsidian vault pre-check)
+## Genomen Beslissingen (board 2026-04-20)
+- B-33 gecorrigeerd naar ✅ done (backlog stale; commit 9dcc05c, CLAUDE.md mode op Windows)
+- A-06 gecorrigeerd naar ✅ done (geïmplementeerd in A-05/B-28, commit 25aeded)
+- L-10 prioriteit verlaagd (Human Board 2026-04-20)
+- B-39 outreach uitgesteld — morgen discussie outreach strategie + andere kanalen
+- B-40 Kennisbank artikel gepubliceerd ✅ — AI operators artikel
+- Skill v0.3.7: Admin cross-referentie check + Growth Levers Check toegevoegd
+- Outreach messaging herzien: "AI stagiair" positioning goedgekeurd
+- O-02 fase 1: read-only Kanban start vandaag (CTO)
+- B-42 storywriter/copywriter initiatief: stijlgesprek met Human Board volgt
 
-## Top 5 Dagelijkse Acties (2026-04-19)
-1. B-33: RTK implementeren (CTO) ✅ done
-2. B-34: Sitemap test suite (CTO) ✅ done
-3. B-35: Lambda endpoint tests (CTO) ✅ done
-4. B-31: Lead enrichment Apify (CMO) — gedeeltelijk done; LinkedIn URLs handmatig
-5. B-10: Prospect outreach (CEO) — handmatig door Bill 🔴
+## Top 5 Dagelijkse Acties (2026-04-20)
+1. B-38: O-02 fase 1 — read-only Lead Pipeline Kanban (CTO) — in uitvoering
+2. B-39: 5 LinkedIn connection requests — UITGESTELD naar morgen
+3. B-40: Kennisbank artikel AI operators — ✅ gepubliceerd
+4. B-41: S-03 schema.org Article + BreadcrumbList (CTO) — in uitvoering
+5. B-42: Storywriter brief + stijlgesprek Human Board (CMO) — in behandeling
 
 ## Lopende Context
-- O-02 implementatie: start volgende vergadering (deadline 30 april, T-11d)
-- O-03 deadline 1 mei (T-12d) — scopen volgende vergadering
-- Token spend: RTK actief in CLAUDE.md mode — besparing meetbaar volgende vergadering
-- Week 17 start maandag 21 april — target 20-25 nieuwe connecties; 5 needs_enrichment leads klaar na URL lookup
-- Obsidian vault leeg t/m 2026-04-10 — Bill moet nieuwe seeds toevoegen voor week 17 content
+- O-02 deadline 30 april (T-10 dagen) — fase 1 start vandaag
+- O-03 Client Onboarding Checklist: scope starten volgende vergadering (deadline 1 mei)
+- Token spend week 16: $99.69 — B-37 model analysis prioriteit deze week
+- Morgen: outreach strategie review (andere kanalen, verbeteringen)
+- Storywriter stijlgesprek met Human Board: nog te voeren in huidige vergadering

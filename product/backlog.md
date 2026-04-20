@@ -13,7 +13,7 @@
 | ~~L-08~~ | ~~**Contact Form / Calendly Booking Widget**~~ | M | ~~Embedded Calendly widget or custom form to schedule a no-obligation intro call.~~ Geimplementeerd 2026-03-28. |
 | ~~L-09~~ | ~~**Cookie Consent Banner (GDPR)**~~ | S | ~~Consent banner required before loading analytics; stores preference in localStorage.~~ Geimplementeerd 2026-03-30. |
 | ~~L-14~~ | ~~**Marketing Alignment — Website verbeteringen obv go-to-market strategie**~~ | M | ~~5 verbeteringen gebaseerd op GTM-sessie 2026-04-01. Spec: `product/sections/marketing-alignment/spec.md`. Stap 1 ✅ de4ef63. Stap 2 ✅ de4ef63. Stap 3 ✅ B-14. Stap 4 ✅ B-16. Stap 5 ✅.~~ Alle 5 stappen geïmplementeerd — bevestigd gereed door Human Board 2026-04-17. |
-| L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. |
+| L-10 | **Social Proof / Testimonials Section** | M | Client quotes or logos to build trust. Ties into Resultaten & Cases narrative. **Lage prioriteit — Human Board 2026-04-20.** |
 | ~~L-11~~ | ~~**Blog / Kennisbank stub**~~ | M | ~~Placeholder section or route for future knowledge-base articles; improves SEO.~~ Geïmplementeerd 2026-04-02. |
 | L-12 | **AI Interaction Panel** | L | Direct in-page interaction with the AI intern — chat interface or task demo widget. |
 | L-13 | **Animations of Previous Assignments / Portfolio** | M | Animated showcase of past AI-intern work; visual portfolio to demonstrate capability. |
@@ -94,11 +94,17 @@
 | ~~B-30~~ | ~~**Kennisbank artikel publiceren — AI-governance voor MKB**~~ | S | CMO | ✅ done | board-meeting-2026-04-18 | Gepubliceerd 2026-04-18: s3://aintern-kennisbank/posts/waarom-ai-tools-niet-landen-bij-webshops.json |
 | B-31 | **Apify lead enrichment — nieuwe Lightspeed-leads ophalen (≥5 URLs)** | S | CMO | todo | board-meeting-2026-04-18 | ≥5 nieuwe leads in outreach-log.csv met LinkedIn URL; enrichment-run gelogd |
 | ~~B-32~~ | ~~**L-10 spec schrijven — Social Proof / Testimonials Section**~~ | S | CTO | ✅ done | board-meeting-2026-04-18 | product/sections/social-proof/spec.md aangemaakt — feature/board-2026-04-18 |
-| B-33 | **RTK installeren + Claude Code hook configureren** | S | CTO | todo | board-meeting-2026-04-19 | `sheal check` toont "RTK hook active in Claude Code"; token compressie actief |
+| ~~B-33~~ | ~~**RTK installeren + Claude Code hook configureren**~~ | S | CTO | ✅ done | board-meeting-2026-04-19 | RTK geïmplementeerd commit 9dcc05c — CLAUDE.md mode op Windows (hook-mode niet ondersteund); `rtk <cmd>` prefix actief |
 | ~~B-34~~ | ~~**Test suite — sitemap availability + correctheid (Vitest)**~~ | S | CTO | ✅ done | board-meeting-2026-04-19 | 8 sitemap tests groen — commit 935c167 |
 | ~~B-35~~ | ~~**Test suite — Lambda API endpoints (Vitest integration tests)**~~ | M | CTO | ✅ done | board-meeting-2026-04-19 | 21 Lambda endpoint tests groen (auth, GET list/slug, PUT, POST publish, DELETE, CORS) — commit 935c167; 112 totaal |
 | B-36 | **Reddit Hot Topics Detector — Lambda feature** | M | CTO | todo | board-meeting-2026-04-20 | Lambda functie die Reddit API pollt op hot topics per subreddit en resultaten opslaat voor gebruik door CMO/content pipeline. Approved by Human Board. |
 | B-37 | **Model usage analysis — right-size Claude models per action** | S | CTO | todo | board-meeting-2026-04-20 | Audit alle Claude API call sites in de codebase en Lambda functies. Bepaal per actie of een frontier model (Sonnet/Opus) nodig is of dat Haiku volstaat zonder kwaliteitsverlies. Deliverable: decision matrix — actie → aanbevolen model → cost/quality rationale. Doel: inference-kosten verlagen met behoud van outputkwaliteit. High priority. |
+| B-38 | **O-02 fase 1: read-only Lead Pipeline Kanban (/admin/leads)** | M | CTO | todo | board-meeting-2026-04-20 | Route `/admin/leads` live met Kanban-board per status-kolom; leads geladen via Lambda GET /leads (CSV als bron); type-check pass. Fase 1 = read-only (geen drag-and-drop DynamoDB write — dat is fase 2). |
+| B-39 | **5 LinkedIn connection requests versturen (week 17 batch 1)** | S | CMO | todo | board-meeting-2026-04-20 | 5 rijen in outreach-log.csv met status `connection_sent` en `connection_sent_at` 2026-04-20: Franny van Soest, Denise Aa, Ilse Huijbregts, Nick van den Berg, Bep Floor. |
+| B-40 | **Kennisbank artikel publiceren — week 17 artikel 1** | S | CMO | todo | board-meeting-2026-04-20 | JSON gepubliceerd op S3 aintern-kennisbank/posts/; sitemap.xml bijgewerkt; seed uit Obsidian vault (2026-04-19 of 2026-04-20 entries). |
+| B-41 | **S-03: Article + BreadcrumbList schema.org op Kennisbank-artikelpagina's** | S | CTO | todo | board-meeting-2026-04-20 | `KennisbankArtikelView.vue` injecteert JSON-LD @type:Article + @type:BreadcrumbList via useHead(); type-check pass. |
+| ~~B-42~~ | ~~**Storywriter/copywriter brief + stijlgesprek Human Board**~~ | S | CMO | ✅ done | board-meeting-2026-04-20 | Brief aangemaakt: `.claude/cmo/memory_storywriter_brief.md` — stijlgesprek gevoerd 2026-04-20; "AI-Duo Experiment" serie gedefinieerd, 2×/week (ma/do), ghostwriter zoekt actief stijlreferenties. |
+| B-43 | **A-19: LinkedIn Posts admin pagina (/admin/linkedin)** | M | CTO | todo | board-meeting-2026-04-20 | Admin pagina voor Bill's persoonlijk LinkedIn posts — zelfde workflow als Kennisbank: draft → review → goedkeuring → publiceren. Posts nooit automatisch publiceren zonder expliciete goedkeuring Human Board. Ghostwriter/AI levert drafts aan in admin UI; Bill keurt goed en past aan. Onderdeel van "AI-Duo Experiment" serie infrastructuur. |
 
 ## Organisation (O)
 
@@ -119,7 +125,7 @@
 | A-03 | **Role-based access** | S | Extend auth store with `role: 'admin' \| 'editor'`. Conditionally render nav items and block API calls per role. **Lage prioriteit — niet vandaag (Human Board 2026-04-18).** |
 | A-04 | **Kennisbank article list view** | S | `/admin/kennisbank` — paginated table of articles with status, slug, last-modified. Sortable columns. |
 | A-05 | **Article create/edit form** | M | Rich text editor (TipTap) + frontmatter fields (title, slug, tags, published). Save drafts, publish to S3. |
-| A-06 | **Article delete + unpublish** | S | Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record. |
+| ~~A-06~~ | ~~**Article delete + unpublish**~~ | S | ~~Soft-delete with confirmation modal. Unpublish updates S3 JSON without removing the record.~~ Geïmplementeerd als onderdeel van A-05/B-28 (commit 25aeded) — `showDeleteConfirm` modal + `handleDelete()` in `KennisbankArticleFormView.vue`. |
 | A-07 | **LinkedIn outreach dashboard** | M | Read outreach logs from `product/marketing/leads/`. Show connection status, DM sent/pending, conversion rate per DM variant. |
 | A-08 | **Lead management table** | M | Upload CSV, view lead pipeline, mark as contacted/converted. Integrates with existing outreach scripts. |
 | ~~A-09~~ | ~~**KPI dashboard**~~ | M | ~~Display Q2 OKR progress per C-level (CEO/CMO/CPO/CTO/COO). Charts via vue-chartjs.~~ Geimplementeerd 2026-04-09. |

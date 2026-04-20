@@ -1,40 +1,37 @@
 # Blake — Daily Context
-_Last updated: 2026-04-19_
+_Last updated: 2026-04-20_
 
 ## Open Acties (toegewezen aan mij)
-- B-31: LinkedIn URL enrichment afronden — 5 nieuwe leads in CSV met status `needs_enrichment`; Bill zoekt LinkedIn URLs handmatig op (zie lookup tabel hieronder)
+- B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **uitgesteld naar morgen**
+- B-40: Kennisbank artikel "De startup van de toekomst: 2 AI operators" — ✅ gepubliceerd 2026-04-20
+- B-43: LinkedIn Posts admin pagina (/admin/linkedin) — spec schrijven + implementeren (nieuwe feature)
+- B-31: LinkedIn URL enrichment — 4 leads nog needs_enrichment (handmatige lookup Bill)
 
-## KPI Status (week 16, 13–19 april)
-- LinkedIn posts: 3 / 3 — ✅
-- Nieuwe connecties: 2 / 20–25 — ❌ (Hilde Bolks + Robert Theuws, sent 2026-04-17)
-- Kennisbank artikelen: 2 / 2 — ✅ (B-13: 15 apr, B-30: 18 apr)
+## KPI Status (week 17, 20–26 april)
+- LinkedIn posts: 0 / 3 — ⚠️ (dag 1)
+- Nieuwe connecties: 0 / 20–25 — ⚠️ (batch klaar maar uitgesteld)
+- Kennisbank artikelen: 1 / 2 — ⚠️ (B-40 gepubliceerd vandaag)
 
 ## Actieve Blockers
 - Geen (AWS S3 toegankelijk; Apify toegankelijk)
+- Outreach uitgesteld — morgen discussie over strategie + andere kanalen
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
 
-## Genomen Beslissingen (board 2026-04-19)
-- B-31 gedeeltelijk uitgevoerd — 5 leads gevonden via Apify Google Search; LinkedIn URLs vereisen handmatige lookup of aparte Apify LinkedIn-run
-- Obsidian vault leeg — alle seeds t/m 2026-04-10 GEBRUIKT of AFGEWEZEN; nieuwe entries nodig voor week 17
-- Phase 4 overgeslagen — weekdoel 2/2 ✅ al behaald + vault leeg
-
-## Handmatige LinkedIn URL lookup (B-31 afronden)
-| Website | Bedrijf | Actie |
-|---------|---------|-------|
-| topicsfashion.nl | Topics Fashion | Zoek op LinkedIn: "Topics Fashion" + eigenaar/directeur |
-| chocoladeverpakking.nl | Pralibon | Zoek op LinkedIn: "Pralibon" OR "chocoladeverpakking" |
-| slijterij-jeppe.nl | Slijterij Jeppe | Zoek op LinkedIn: "Slijterij Jeppe" |
-| vansoest-amsterdam.nl | Van Soest Chocolatier | Zoek op LinkedIn: "Van Soest Chocolatier" Amsterdam |
-| oasegroen.nl | Oase Groen | Zoek op LinkedIn: "Oase Groen" kunstbloemen |
-
-Voeg gevonden URLs toe als `linkedin_url` in `product/marketing/leads/outreach-log.csv` en update status naar `not_contacted`.
+## Genomen Beslissingen (board 2026-04-20)
+- B-39 outreach NIET verstuurd — Human Board wil morgen discussie over outreach strategie + andere kanalen
+- Outreach berichttekst herzien: "AI stagiair" positioning goedgekeurd (2026-04-20); outreach-format.md bijgewerkt
+- B-40 Kennisbank artikel gepubliceerd ✅ — startup-van-de-toekomst-2-ai-operators.json, seed: Obsidian 2026-04-19
+- B-42 storywriter brief aangemaakt — stijlgesprek met Human Board volgt in deze vergadering
+- Obsidian seed "Product developers winnen..." bewaard voor Bill's persoonlijk LinkedIn profiel (ghostwriter materiaal)
+- Seed "Software bouwen is skills en agents bouwen" beschikbaar voor volgende Kennisbank artikel
 
 ## Lopende Context
-- 2 openstaande connection requests: Hilde Bolks (liatelier.nl), Robert Theuws (homefitness4you.nl) — wachten op acceptatie
+- 2 openstaande connection requests week 16: Hilde Bolks (liatelier.nl), Robert Theuws (homefitness4you.nl) — wachten op acceptatie
 - 3 dm_sent leads wachten op reactie: Bram Hofman, Jan Bulthuis, Bob van Boekel
-- Week 17 target: 20-25 nieuwe connecties; pipeline heeft 5 needs_enrichment leads klaar zodra URLs ingevuld zijn
+- 5 not_contacted leads klaar voor outreach (wachten op strategie-beslissing morgen): Franny van Soest, Denise Aa, Ilse Huijbregts, Nick van den Berg, Bep Floor
+- Morgen: outreach strategie review — andere kanalen bespreken
 - Afgewezen/gebruikte Obsidian seeds (alle t/m 2026-04-10 opgebruikt):
   - AFGEWEZEN: Claude superkracht.md, Claude people pleaser.md, AI Agent Beveiliging.md
-  - GEBRUIKT: AI implementatie MKB.md, AI-winnaars governance.md, AI-development democratiseert.md, AI procesautomatisering.md
+  - GEBRUIKT: AI implementatie MKB.md, AI-winnaars governance.md, AI-development democratiseert.md, AI procesautomatisering.md, De startup van de toekomst 2 AI operators.md (B-40, 2026-04-20)
