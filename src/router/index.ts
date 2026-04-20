@@ -82,4 +82,22 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/AdminLeadBoardView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'leads.board.pageTitle' },
   },
+  {
+    path: '/admin/linkedin',
+    name: 'admin-linkedin',
+    component: () => import('@/views/admin/AdminLinkedInView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'linkedinPosts.pageTitle' },
+  },
+  {
+    path: '/admin/linkedin/new',
+    name: 'admin-linkedin-new',
+    component: () => import('@/views/admin/AdminLinkedInPostFormView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'linkedinPosts.titleCreate' },
+  },
+  {
+    path: '/admin/linkedin/:id/edit',
+    name: 'admin-linkedin-edit',
+    component: () => import('@/views/admin/AdminLinkedInPostFormView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'linkedinPosts.titleEdit' },
+  },
 ]

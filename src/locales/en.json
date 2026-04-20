@@ -224,7 +224,8 @@
       "kpi": "KPI Dashboard",
       "kennisbank": "Kennisbank",
       "organisation": "Organisation",
-      "leads": "Pipeline"
+      "leads": "Pipeline",
+      "linkedin": "LinkedIn Posts"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -376,6 +377,76 @@
       "won": "Won",
       "lost": "Lost",
       "not_found": "Not found"
+    }
+  },
+  "linkedinPosts": {
+    "pageTitle": "LinkedIn Posts",
+    "heading": "LinkedIn Posts",
+    "subheading": "Draft and manage LinkedIn posts. Bill publishes manually.",
+    "newPost": "New post",
+    "loading": "Loading…",
+    "refresh": "Refresh",
+    "error": "Could not load posts. Please try again.",
+    "empty": "No posts found for this status.",
+    "episodeLabel": "Episode {n}",
+    "back": "Back to list",
+    "titleCreate": "New LinkedIn post",
+    "titleEdit": "Edit LinkedIn post",
+    "saveDraft": "Save as draft",
+    "saving": "Saving…",
+    "approve": "Approve",
+    "archive": "Archive",
+    "archiving": "Archiving…",
+    "tabs": {
+      "all": "All",
+      "draft": "Draft",
+      "approved": "Approved",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "status": {
+      "draft": "Draft",
+      "approved": "Approved",
+      "published": "Published",
+      "archived": "Archived"
+    },
+    "columns": {
+      "title": "Title",
+      "serie": "Series",
+      "status": "Status",
+      "updatedAt": "Updated"
+    },
+    "fields": {
+      "title": "Title (internal label)",
+      "titlePlaceholder": "E.g. Episode 1 — Het Begin",
+      "content": "Post content",
+      "contentPlaceholder": "Write your LinkedIn post here. Use line breaks for formatting.",
+      "contentHint": "Plain text — LinkedIn formatting via line breaks.",
+      "serie": "Series",
+      "seriePlaceholder": "E.g. Het AI-Duo Experiment",
+      "episode": "Episode number",
+      "episodePlaceholder": "1",
+      "hashtags": "Hashtags",
+      "hashtagsPlaceholder": "#HetAIDuoExperiment,#BouweninPublic",
+      "scheduledFor": "Scheduled for (reminder)",
+      "scheduledForHint": "Not enforced — reminder only.",
+      "publishedAt": "Published at",
+      "publishedAtHint": "Fill in manually after publishing on LinkedIn.",
+      "engagementNotes": "Engagement notes",
+      "engagementNotesPlaceholder": "Likes, comments, reach after 48–72h…"
+    },
+    "archiveConfirm": {
+      "title": "Archive post?",
+      "body": "The post will be soft-deleted (status: archived). You can still view it via the Archived tab.",
+      "cancel": "Cancel",
+      "confirm": "Yes, archive"
+    },
+    "toasts": {
+      "draftSaved": "Draft saved.",
+      "saveFailed": "Failed to save.",
+      "approved": "Post approved.",
+      "archived": "Post archived.",
+      "archiveFailed": "Failed to archive post."
     }
   },
   "hero": {
