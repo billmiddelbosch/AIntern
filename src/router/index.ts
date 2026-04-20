@@ -76,4 +76,10 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/AdminOrganisationView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'admin.organisation.pageTitle' },
   },
+  {
+    path: '/admin/leads',
+    name: 'admin-leads',
+    component: () => import('@/views/admin/AdminLeadBoardView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'leads.board.pageTitle' },
+  },
 ]

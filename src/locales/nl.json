@@ -223,7 +223,8 @@
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
       "kennisbank": "Kennisbank",
-      "organisation": "Organisatie"
+      "organisation": "Organisatie",
+      "leads": "Pipeline"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -354,6 +355,27 @@
         "deleted": "Artikel verwijderd.",
         "deleteFailed": "Verwijderen mislukt."
       }
+    }
+  },
+  "leads": {
+    "board": {
+      "pageTitle": "Lead Pipeline",
+      "heading": "Lead Pipeline",
+      "subheading": "Outreach-status per pipeline-fase.",
+      "loading": "Laden…",
+      "refresh": "Vernieuwen"
+    },
+    "status": {
+      "new": "Nieuw",
+      "enriched": "Verrijkt",
+      "connection_sent": "Verzoek verstuurd",
+      "connected": "Verbonden",
+      "dm_sent": "DM verstuurd",
+      "dm_responded": "Reactie ontvangen",
+      "discovery_booked": "Gesprek gepland",
+      "won": "Gewonnen",
+      "lost": "Verloren",
+      "not_found": "Niet gevonden"
     }
   },
   "hero": {

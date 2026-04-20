@@ -271,6 +271,45 @@ export class AdminStack extends cdk.Stack {
       }),
     )
 
+    // ── lead-crud Lambda ─────────────────────────────────────────────────────
+    const leadCrudFn = new lambda.Function(this, 'LeadCrudFunction', {
+      functionName: 'aintern-lead-crud',
+      handler: 'lead-crud.handler',
+      description: 'GET /admin/leads — reads outreach CSV from S3, returns leads as JSON array',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: ['arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv'],
+      }),
+    )
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -286,6 +325,9 @@ export class AdminStack extends cdk.Stack {
 
     const kennisbankAdminDevAlias = kennisbankAdminFn.addAlias('dev')
     const kennisbankAdminProdAlias = kennisbankAdminFn.addAlias('prod')
+
+    const leadCrudDevAlias = leadCrudFn.addAlias('dev')
+    const leadCrudProdAlias = leadCrudFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -336,6 +378,10 @@ export class AdminStack extends cdk.Stack {
     const meetingItemByIdResource = meetingItemsResource.addResource('{id}')
     meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
 
+    // GET /admin/leads
+    const leadsResource = adminResource.addResource('leads')
+    leadsResource.addMethod('GET', aliasIntegration(leadCrudFn))
+
     // GET /admin/kennisbank
     // GET|PUT|DELETE /admin/kennisbank/{slug}
     // POST /admin/kennisbank/{slug}/publish
@@ -365,6 +411,8 @@ export class AdminStack extends cdk.Stack {
       [kpiIntegrationsProdAlias, 'KpiIntegrationsProdAlias'],
       [kennisbankAdminDevAlias, 'KennisbankAdminDevAlias'],
       [kennisbankAdminProdAlias, 'KennisbankAdminProdAlias'],
+      [leadCrudDevAlias, 'LeadCrudDevAlias'],
+      [leadCrudProdAlias, 'LeadCrudProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,

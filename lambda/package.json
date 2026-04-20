@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
     "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*",
     "bundle:kpi-actuals": "esbuild src/kpi-actuals.ts --bundle --platform=node --target=node22 --outfile=dist/kpi-actuals.js --external:@aws-sdk/*",
     "bundle:meeting-actions": "esbuild src/meeting-actions.ts --bundle --platform=node --target=node22 --outfile=dist/meeting-actions.js --external:@aws-sdk/*",
     "bundle:kpi-integrations": "esbuild src/kpi-integrations.ts --bundle --platform=node --target=node22 --outfile=dist/kpi-integrations.js --external:@aws-sdk/*",
-    "bundle:kennisbank-admin": "esbuild src/kennisbank-admin.ts --bundle --platform=node --target=node22 --outfile=dist/kennisbank-admin.js --external:@aws-sdk/*"
+    "bundle:kennisbank-admin": "esbuild src/kennisbank-admin.ts --bundle --platform=node --target=node22 --outfile=dist/kennisbank-admin.js --external:@aws-sdk/*",
+    "bundle:lead-crud": "esbuild src/lead-crud.ts --bundle --platform=node --target=node22 --outfile=dist/lead-crud.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3",

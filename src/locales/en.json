@@ -223,7 +223,8 @@
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
       "kennisbank": "Kennisbank",
-      "organisation": "Organisation"
+      "organisation": "Organisation",
+      "leads": "Pipeline"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -354,6 +355,27 @@
         "deleted": "Article deleted.",
         "deleteFailed": "Failed to delete article."
       }
+    }
+  },
+  "leads": {
+    "board": {
+      "pageTitle": "Lead Pipeline",
+      "heading": "Lead Pipeline",
+      "subheading": "Outreach status overview per pipeline stage.",
+      "loading": "Loading…",
+      "refresh": "Refresh"
+    },
+    "status": {
+      "new": "New",
+      "enriched": "Enriched",
+      "connection_sent": "Request sent",
+      "connected": "Connected",
+      "dm_sent": "DM sent",
+      "dm_responded": "Responded",
+      "discovery_booked": "Call booked",
+      "won": "Won",
+      "lost": "Lost",
+      "not_found": "Not found"
     }
   },
   "hero": {
