@@ -19,6 +19,7 @@ const mode = computed<'create' | 'edit'>(() =>
 
 const saving = ref(false)
 const archiving = ref(false)
+const copied = ref(false)
 const toast = ref<{ msg: string; type: 'success' | 'error' } | null>(null)
 const showArchiveConfirm = ref(false)
 const existingPost = ref<LinkedInPost | null>(null)
@@ -113,6 +114,12 @@ async function handleApprove() {
   }
 }
 
+async function handleCopy() {
+  await navigator.clipboard.writeText(form.value.content)
+  copied.value = true
+  setTimeout(() => (copied.value = false), 2000)
+}
+
 async function handleArchive() {
   showArchiveConfirm.value = false
   archiving.value = true
@@ -201,9 +208,21 @@ async function handleArchive() {
 
       <!-- Content -->
       <div class="px-6 py-4 space-y-1">
-        <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide">
-          {{ t('linkedinPosts.fields.content') }} <span class="text-red-400">*</span>
-        </label>
+        <div class="flex items-center justify-between">
+          <label class="block text-xs font-semibold text-slate-500 uppercase tracking-wide">
+            {{ t('linkedinPosts.fields.content') }} <span class="text-red-400">*</span>
+          </label>
+          <button
+            type="button"
+            :disabled="!form.content"
+            class="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-md transition-colors disabled:opacity-40"
+            :class="copied ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 hover:bg-slate-200 text-slate-600'"
+            @click="handleCopy"
+          >
+            <span v-if="copied">✓ {{ t('linkedinPosts.fields.copied') }}</span>
+            <span v-else>{{ t('linkedinPosts.fields.copyContent') }}</span>
+          </button>
+        </div>
         <textarea
           v-model="form.content"
           rows="12"

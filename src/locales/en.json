@@ -422,6 +422,8 @@
       "content": "Post content",
       "contentPlaceholder": "Write your LinkedIn post here. Use line breaks for formatting.",
       "contentHint": "Plain text — LinkedIn formatting via line breaks.",
+      "copyContent": "Copy",
+      "copied": "Copied!",
       "serie": "Series",
       "seriePlaceholder": "E.g. Het AI-Duo Experiment",
       "episode": "Episode number",

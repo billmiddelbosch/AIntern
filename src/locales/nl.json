@@ -422,6 +422,8 @@
       "content": "Post-tekst",
       "contentPlaceholder": "Schrijf je LinkedIn-post hier. Gebruik regeleinden voor opmaak.",
       "contentHint": "Platte tekst — opmaak via regeleinden.",
+      "copyContent": "Kopiëren",
+      "copied": "Gekopieerd!",
       "serie": "Serie",
       "seriePlaceholder": "Bijv. Het AI-Duo Experiment",
       "episode": "Afleveringsnummer",
