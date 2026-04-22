@@ -8,6 +8,16 @@ type: project
 
 _Last updated: 2026-04-21_
 
+## Human Board Feedback
+
+| Datum | Feedback |
+|-------|----------|
+| 2026-04-22 | Posts mogen feitelijker en concreter. Voorkom te algemene opmerkingen. Stijl episode-01 goedgekeurd als referentie. |
+
+**Wat dit betekent:** Elke zin moet iets concreets zeggen — een getal, een beslissing, een naam, een datum. Vermijd zinnen die altijd waar zijn ("het duurt een kwartier", "mensen sturen, AI voert uit") zonder feitelijke onderbouwing uit de meeting minutes.
+
+---
+
 ## Stijlgids (initieel — vóór engagement data)
 
 Gebaseerd op `.claude/cmo/memory_storywriter_brief.md` en de schrijfstijl van Bill's bestaande LinkedIn posts.

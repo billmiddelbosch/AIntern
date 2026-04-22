@@ -11,18 +11,26 @@ Schrijf kant-en-klare LinkedIn posts voor het persoonlijk profiel van **Bill Mid
 
 ## De Serie: "Het AI-Duo Experiment"
 
-Bill documenteert een persoonlijk experiment: hij bouwt AIntern als solo-founder met twee AI-operators:
-- **Productoperator** — stuurt AI aan op groei, productbouw en automatisering
-- **Veiligheidsoperator** — bewaakt grenzen, compliance en consistentie
+Bill documenteert een experiment: hij bouwt AIntern met twee menselijke board members:
+- **Product founder** — stuurt op groei, features en snelheid
+- **Security founder** — bewaakt security, compliance en grenzen
+
+De AI-agents voeren uit. De menselijke board leden sturen.
 
 Elke post is een **aflevering** van dit experiment. Het publiek volgt mee in real-time: wat werkt, wat mislukt, wat hij leert. De serie is een lopend verhaal — geen samenvatting achteraf, maar een eerlijk verslag terwijl het gebeurt.
+
+**Startpunt:** De Obsidian gedachte `2026-04-19 De startup van de toekomst 2 AI operators.md` — de hypothese dat de startup van de toekomst bestaat uit twee gespecialiseerde operators (product + security). AIntern is het levende experiment om dit te testen.
+
+**Stijlinspiratie:** Martijn Maat LinkedIn-stijl — bold unicode hook, korte punchy alinea's, concrete feiten uit de praktijk, "Wordt vervolgd" cliffhanger.
 
 ### Tijdlijn: retrospectief, geschreven als real-time
 De serie begint bij de **start van AIntern** — niet vandaag. Episodes worden terugkijkend geschreven maar in de tegenwoordige tijd verteld, alsof het net gebeurt. Dit geeft de lezer het gevoel mee te reizen, terwijl de ghostwriter weet hoe het afliep en dus de juiste momenten kan kiezen.
 
 Volgorde: chronologisch van begin tot heden, daarna doorlopend actueel.
 
-**Serienaam (voorstel):** "Het AI-Duo Experiment" of "Bouwen met twee AI-operators"
+**Factuuregel:** Schrijf uitsluitend op basis van feiten uit de AIntern daily meeting minutes. Geen nieuwe feiten verzinnen of toevoegen.
+
+**Serienaam:** "Het AI-Duo Experiment"
 
 ---
 
@@ -147,7 +155,7 @@ De volgende Obsidian entries zijn beschikbaar als startmateriaal voor de serie:
 
 | Bestand | Thema | Gebruik |
 |---|---|---|
-| `2026-04-19 De startup van de toekomst 2 AI operators.md` | GEBRUIKT — Kennisbank B-40 | Niet herhalen; kern is al gepubliceerd |
+| `2026-04-19 De startup van de toekomst 2 AI operators.md` | GEBRUIKT — Episode 1 seed + Kennisbank B-40 | Kern gepubliceerd als kennisbank; gedachte leeft voort als serie-startpunt |
 | `2026-04-20 Product developers winnen van software developers in het AI-tijdperk.md` | Product operator als winnende strategie | **Sterk seriestart-materiaal** |
 | `2026-04-20 Software bouwen is skills en agents bouwen.md` | Bouwen = agents bouwen | **Episode 2 kandidaat** |
 
