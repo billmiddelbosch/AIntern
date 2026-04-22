@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.7
+version: 0.3.8
 ---
 
 # Daily Board Meeting
@@ -24,6 +24,8 @@ git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/b
 git branch --show-current
 ```
 The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
+
+**Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
 
 **Step 0.1 — CTO runs project health check:**
 
@@ -333,6 +335,28 @@ Before drafting any messages, evaluate the outreach state using context already 
 
 ---
 
+## Phase 3.5 — Ghostwriter Batch (conditioneel)
+
+**Trigger:** Alleen uitvoeren als Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt.
+
+Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profiel als onderdeel van "Het AI-Duo Experiment" serie.
+
+**Steps:**
+1. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
+2. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
+3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
+4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter (serie, episode, titel, post_voor, status: draft, seed)
+4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
+     ```bash
+     node lambda/scripts/import-ghostwriter-drafts.mjs
+     ```
+     Het script is idempotent — episodes die al in DynamoDB staan worden overgeslagen. Controleer de output op `✅` per episode. Als het script faalt (AWS credentials ontbreken), noteer dit als blocker in de gate.
+5. Presenteer de 4 drafts in de End-of-Meeting Approval Gate als "drafts ter review door Bill"
+
+> ⛔ **Nooit publiceren.** Goedkeuring in de gate = draft geaccepteerd. Bill publiceert altijd zelf via zijn LinkedIn-profiel.
+
+---
+
 ## Phase 4 — Kennisbank Content Proposals
 
 Blake (CMO) leads this phase. Source inspiration from Bill's Obsidian vault, then use `marketing-super-team` to shape the angle.
@@ -581,6 +605,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
 - **Stay in character** — each executive speaks in their own voice throughout
 - **Cite OKRs** — anchor every priority to a Q2 OKR metric

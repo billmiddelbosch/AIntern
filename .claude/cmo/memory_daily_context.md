@@ -3,14 +3,14 @@ _Last updated: 2026-04-20_
 
 ## Open Acties (toegewezen aan mij)
 - B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **uitgesteld naar morgen**
-- B-40: Kennisbank artikel "De startup van de toekomst: 2 AI operators" — ✅ gepubliceerd 2026-04-20
-- B-43: LinkedIn Posts admin pagina (/admin/linkedin) — spec schrijven + implementeren (nieuwe feature)
+- B-43: LinkedIn Posts admin pagina (/admin/linkedin) — spec schrijven + implementeren (morgen)
+- B-44: Ghostwriter eerste batch — 4 drafts aangemaakt in `.claude/cmo/ghostwriter_drafts/`, goedgekeurd door Human Board als drafts
 - B-31: LinkedIn URL enrichment — 4 leads nog needs_enrichment (handmatige lookup Bill)
 
 ## KPI Status (week 17, 20–26 april)
-- LinkedIn posts: 0 / 3 — ⚠️ (dag 1)
-- Nieuwe connecties: 0 / 20–25 — ⚠️ (batch klaar maar uitgesteld)
-- Kennisbank artikelen: 1 / 2 — ⚠️ (B-40 gepubliceerd vandaag)
+- LinkedIn posts: 0 / 3 — ⚠️ (ghostwriter batch klaar; Bill publiceert zelf)
+- Nieuwe connecties: 0 / 20–25 — ⚠️ (batch morgen)
+- Kennisbank artikelen: 1 / 2 — ⚠️ (B-40 ✅ gepubliceerd; volgende seed klaar)
 
 ## Actieve Blockers
 - Geen (AWS S3 toegankelijk; Apify toegankelijk)
