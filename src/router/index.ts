@@ -17,6 +17,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/wat-kost-handmatig-werk',
+    name: 'wat-kost-handmatig-werk',
+    component: () => import('@/views/WatKostHandmatigWerkView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/kennisbank',
     name: 'kennisbank',
     component: () => import('@/views/KennisbankView.vue'),

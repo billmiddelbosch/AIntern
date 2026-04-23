@@ -16,7 +16,10 @@ const navItems = [
   { labelKey: 'nav.nocurenopay', anchor: '#no-cure-no-pay' },
 ]
 
-const routeNavItems = [{ labelKey: 'nav.kennisbank', to: '/kennisbank' }]
+const routeNavItems = [
+  { labelKey: 'nav.kennisbank', to: '/kennisbank' },
+  { labelKey: 'nav.kostencalculator', to: '/wat-kost-handmatig-werk' },
+]
 
 function scrollTo(anchor: string) {
   mobileMenuOpen.value = false
