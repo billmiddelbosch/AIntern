@@ -1,7 +1,7 @@
 ---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.6
+version: 0.3.8
 ---
 
 # Daily Board Meeting
@@ -24,6 +24,8 @@ git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/b
 git branch --show-current
 ```
 The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
+
+**Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
 
 **Step 0.1 — CTO runs project health check:**
 
@@ -62,6 +64,8 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
 
    **Backlog post-build-error check:** When loading the backlog, also check `git log --oneline --since="2 days ago"` for feature-implementation commits. For each recent implementation commit, verify the corresponding B-item is marked ✅ done. If an implementation commit exists but the B-item is still `todo`, mark it done immediately with the commit hash noted. This catches backlog updates missed due to build-error disruptie (root cause of B-28 being stale).
+
+   **Admin-sectie cross-referentie check:** For each `todo` item in the Admin section (A-xx), check whether a ✅ done B-item references it (e.g. "B-28: A-05 implementeren"). If such a B-item exists and is ✅ done, mark the A-item as done immediately with a note: "Geïmplementeerd als onderdeel van [B-item] — [commit hash]". This prevents false positives in the check-in for features delivered via linked B-items (root cause of A-06 surfacing repeatedly after being implemented in A-05/B-28).
 
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
@@ -216,6 +220,16 @@ Each executive reacts to one priority from another exec. Surface dependencies, c
 ### Round 3 — Synthesis
 
 **Step A — KPI Pulse.** Before setting actions, check this week's progress against weekly targets (from OKRs memory). Use actual numbers where available. Also run `sheal cost` — paste the per-project token spend line for AIntern into the table as the last row:
+
+**Step A.5 — Growth Levers Check.** Immediately after the KPI Pulse table, scan for the top 3 growth levers available this week. Present as a compact table before Step B so the Top 5 can incorporate them:
+
+```
+| Lever | Effort | Impact on OKR | Status |
+|-------|--------|---------------|--------|
+| [SEO item / B-item / Obsidian seed] | S/M/L | [KR ref] | ready / blocked |
+```
+
+Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-items tagged to marketing/CMO; (3) available Obsidian seeds. Pick the 3 with highest impact/effort ratio. This makes the "aanvullende acties" discussion proactive rather than reactive.
 - **Connection count:** count rows in `product/marketing/leads/outreach-log.csv` where `connection_sent_at` falls within the current ISO week (Monday of current week ≤ date ≤ today). Do **not** use the cumulative count from memory — filter by date to avoid carrying over last week's connections.
 - **Kennisbank article count:** check `.claude/cmo/memory_daily_context.md`. When the count is ≥ 1, verify each article's publish date against the current ISO week start (Monday). Only count articles published on or after Monday of the current ISO week. If the memory shows 2/2 but one article was published on a Sunday (previous week), the actual count for the current week is 1/2 — note this discrepancy.
 - **LinkedIn post count:** use `.claude/cmo/memory_daily_context.md` as the **canonical source** — CEO memory may lag behind and should not be used for this metric. If not tracked in CMO memory, use `0 (niet getrackt — handmatige check vereist)` as fallback
@@ -318,6 +332,28 @@ Before drafting any messages, evaluate the outreach state using context already 
 4. Apply the `social-content` skill to check hook quality and adjust if needed
 5. Store the proposed messages internally — they will be presented at the **End-of-Meeting Approval Gate**. Do **not** pause here.
 6. **Do not send anything until the End-of-Meeting Approval Gate is reached.** After approval there, delegate to the `linkedin-outreach` agent with the approved message list.
+
+---
+
+## Phase 3.5 — Ghostwriter Batch (conditioneel)
+
+**Trigger:** Alleen uitvoeren als Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt.
+
+Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profiel als onderdeel van "Het AI-Duo Experiment" serie.
+
+**Steps:**
+1. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
+2. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
+3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
+4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter (serie, episode, titel, post_voor, status: draft, seed)
+4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
+     ```bash
+     node lambda/scripts/import-ghostwriter-drafts.mjs
+     ```
+     Het script is idempotent — episodes die al in DynamoDB staan worden overgeslagen. Controleer de output op `✅` per episode. Als het script faalt (AWS credentials ontbreken), noteer dit als blocker in de gate.
+5. Presenteer de 4 drafts in de End-of-Meeting Approval Gate als "drafts ter review door Bill"
+
+> ⛔ **Nooit publiceren.** Goedkeuring in de gate = draft geaccepteerd. Bill publiceert altijd zelf via zijn LinkedIn-profiel.
 
 ---
 
@@ -569,6 +605,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
 - **Stay in character** — each executive speaks in their own voice throughout
 - **Cite OKRs** — anchor every priority to a Q2 OKR metric

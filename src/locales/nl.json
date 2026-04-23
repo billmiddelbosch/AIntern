@@ -223,7 +223,9 @@
       "dashboard": "Dashboard",
       "kpi": "KPI Dashboard",
       "kennisbank": "Kennisbank",
-      "organisation": "Organisatie"
+      "organisation": "Organisatie",
+      "leads": "Pipeline",
+      "linkedin": "LinkedIn Posts"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -354,6 +356,99 @@
         "deleted": "Artikel verwijderd.",
         "deleteFailed": "Verwijderen mislukt."
       }
+    }
+  },
+  "leads": {
+    "board": {
+      "pageTitle": "Lead Pipeline",
+      "heading": "Lead Pipeline",
+      "subheading": "Outreach-status per pipeline-fase.",
+      "loading": "Laden…",
+      "refresh": "Vernieuwen"
+    },
+    "status": {
+      "new": "Nieuw",
+      "enriched": "Verrijkt",
+      "connection_sent": "Verzoek verstuurd",
+      "connected": "Verbonden",
+      "dm_sent": "DM verstuurd",
+      "dm_responded": "Reactie ontvangen",
+      "discovery_booked": "Gesprek gepland",
+      "won": "Gewonnen",
+      "lost": "Verloren",
+      "not_found": "Niet gevonden"
+    }
+  },
+  "linkedinPosts": {
+    "pageTitle": "LinkedIn Posts",
+    "heading": "LinkedIn Posts",
+    "subheading": "Schrijf en beheer LinkedIn-posts. Bill publiceert altijd zelf.",
+    "newPost": "Nieuwe post",
+    "loading": "Laden…",
+    "refresh": "Vernieuwen",
+    "error": "Posts konden niet geladen worden. Probeer opnieuw.",
+    "empty": "Geen posts gevonden met deze status.",
+    "episodeLabel": "Aflevering {n}",
+    "back": "Terug naar overzicht",
+    "titleCreate": "Nieuwe LinkedIn-post",
+    "titleEdit": "LinkedIn-post bewerken",
+    "saveDraft": "Opslaan als concept",
+    "saving": "Opslaan…",
+    "approve": "Goedkeuren",
+    "archive": "Archiveren",
+    "archiving": "Archiveren…",
+    "tabs": {
+      "all": "Alle",
+      "draft": "Concept",
+      "approved": "Goedgekeurd",
+      "published": "Gepubliceerd",
+      "archived": "Gearchiveerd"
+    },
+    "status": {
+      "draft": "Concept",
+      "approved": "Goedgekeurd",
+      "published": "Gepubliceerd",
+      "archived": "Gearchiveerd"
+    },
+    "columns": {
+      "title": "Titel",
+      "serie": "Serie",
+      "status": "Status",
+      "updatedAt": "Bijgewerkt"
+    },
+    "fields": {
+      "title": "Titel (intern label)",
+      "titlePlaceholder": "Bijv. Aflevering 1 — Het Begin",
+      "content": "Post-tekst",
+      "contentPlaceholder": "Schrijf je LinkedIn-post hier. Gebruik regeleinden voor opmaak.",
+      "contentHint": "Platte tekst — opmaak via regeleinden.",
+      "copyContent": "Kopiëren",
+      "copied": "Gekopieerd!",
+      "serie": "Serie",
+      "seriePlaceholder": "Bijv. Het AI-Duo Experiment",
+      "episode": "Afleveringsnummer",
+      "episodePlaceholder": "1",
+      "hashtags": "Hashtags",
+      "hashtagsPlaceholder": "#HetAIDuoExperiment,#BouweninPublic",
+      "scheduledFor": "Ingepland voor (herinnering)",
+      "scheduledForHint": "Niet afgedwongen — alleen als herinnering.",
+      "publishedAt": "Gepubliceerd op",
+      "publishedAtHint": "Handmatig invullen nadat Bill zelf gepubliceerd heeft op LinkedIn.",
+      "engagementNotes": "Engagement-notities",
+      "engagementNotesPlaceholder": "Likes, reacties, bereik na 48–72u…"
+    },
+    "archiveConfirm": {
+      "title": "Post archiveren?",
+      "body": "De post wordt soft-deleted (status: gearchiveerd). Je kunt hem nog terugvinden via het tabblad Gearchiveerd.",
+      "cancel": "Annuleren",
+      "confirm": "Ja, archiveren"
+    },
+    "toasts": {
+      "draftSaved": "Concept opgeslagen.",
+      "saveFailed": "Opslaan mislukt.",
+      "approved": "Post goedgekeurd.",
+      "archived": "Post gearchiveerd.",
+      "archiveFailed": "Archiveren mislukt."
     }
   },
   "hero": {
