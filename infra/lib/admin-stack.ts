@@ -275,12 +275,13 @@ export class AdminStack extends cdk.Stack {
     const leadCrudFn = new lambda.Function(this, 'LeadCrudFunction', {
       functionName: 'aintern-lead-crud',
       handler: 'lead-crud.handler',
-      description: 'GET /admin/leads — reads outreach CSV from S3, returns leads as JSON array',
+      description: 'CRUD endpoints for leads — reads/writes aintern-admin DynamoDB table',
       runtime: lambda.Runtime.NODEJS_22_X,
       code: lambdaCode,
       timeout: cdk.Duration.seconds(10),
       environment: {
         JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
       },
     })
 
@@ -289,6 +290,7 @@ export class AdminStack extends cdk.Stack {
         actions: ['ssm:GetParameter'],
         resources: [
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/*/dynamodb/table-name`,
         ],
       }),
     )
@@ -303,12 +305,7 @@ export class AdminStack extends cdk.Stack {
       }),
     )
 
-    leadCrudFn.addToRolePolicy(
-      new iam.PolicyStatement({
-        actions: ['s3:GetObject'],
-        resources: ['arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv'],
-      }),
-    )
+    adminTable.grantReadWriteData(leadCrudFn)
 
     // ── linkedin-posts Lambda ─────────────────────────────────────────────────
     const linkedInPostsFn = new lambda.Function(this, 'LinkedInPostsFunction', {
@@ -418,9 +415,15 @@ export class AdminStack extends cdk.Stack {
     const meetingItemByIdResource = meetingItemsResource.addResource('{id}')
     meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
 
-    // GET /admin/leads
+    // GET + POST /admin/leads
+    // GET + PUT /admin/leads/{id}
     const leadsResource = adminResource.addResource('leads')
     leadsResource.addMethod('GET', aliasIntegration(leadCrudFn))
+    leadsResource.addMethod('POST', aliasIntegration(leadCrudFn))
+
+    const leadResource = leadsResource.addResource('{id}')
+    leadResource.addMethod('GET', aliasIntegration(leadCrudFn))
+    leadResource.addMethod('PUT', aliasIntegration(leadCrudFn))
 
     // GET /admin/kennisbank
     // GET|PUT|DELETE /admin/kennisbank/{slug}
