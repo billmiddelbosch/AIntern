@@ -13,6 +13,8 @@ _Last updated: 2026-04-21_
 | Datum | Feedback |
 |-------|----------|
 | 2026-04-22 | Posts mogen feitelijker en concreter. Voorkom te algemene opmerkingen. Stijl episode-01 goedgekeurd als referentie. |
+| 2026-04-22 | Gebruik feiten niet expliciet maar als inspiratie. Noem geen namen uit meeting minutes, geen exacte backlog-nummers, geen interne beslissingsnotaties. Vertaal het feit naar Bills beleving, de spanning, de keuze die hij maakte. |
+| 2026-04-22 | Lees de vorige post altijd uit DynamoDB via `node lambda/scripts/get-latest-episode.mjs` — niet uit het markdown-bestand. Bill kan posts aanpassen in de admin vóór publicatie; die versie is authoritative. |
 
 **Wat dit betekent:** Elke zin moet iets concreets zeggen — een getal, een beslissing, een naam, een datum. Vermijd zinnen die altijd waar zijn ("het duurt een kwartier", "mensen sturen, AI voert uit") zonder feitelijke onderbouwing uit de meeting minutes.
 

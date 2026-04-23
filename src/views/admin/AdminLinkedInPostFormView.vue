@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import { useLinkedInPostStore } from '@/stores/useLinkedInPostStore'
 import { useLinkedInPosts } from '@/composables/useLinkedInPosts'
 import LinkedInPostStatusBadge from '@/components/linkedin/LinkedInPostStatusBadge.vue'
+import ArticleRichTextEditor from '@/components/admin/ArticleRichTextEditor.vue'
 import type { LinkedInPost } from '@/types/linkedinPost'
 
 const { t } = useI18n()
@@ -115,7 +116,10 @@ async function handleApprove() {
 }
 
 async function handleCopy() {
-  await navigator.clipboard.writeText(form.value.content)
+  const plain = new DOMParser()
+    .parseFromString(form.value.content, 'text/html')
+    .body.innerText
+  await navigator.clipboard.writeText(plain)
   copied.value = true
   setTimeout(() => (copied.value = false), 2000)
 }
@@ -223,12 +227,7 @@ async function handleArchive() {
             <span v-else>{{ t('linkedinPosts.fields.copyContent') }}</span>
           </button>
         </div>
-        <textarea
-          v-model="form.content"
-          rows="12"
-          :placeholder="t('linkedinPosts.fields.contentPlaceholder')"
-          class="w-full text-sm border border-slate-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 font-mono resize-y"
-        />
+        <ArticleRichTextEditor v-model="form.content" />
         <p class="text-xs text-slate-400">{{ t('linkedinPosts.fields.contentHint') }}</p>
       </div>
 

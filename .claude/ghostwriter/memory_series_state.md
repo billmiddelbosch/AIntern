@@ -8,7 +8,7 @@ type: project
 
 _Last updated: 2026-04-22_
 
-## Volgende episode: #1
+## Volgende episode: #2
 
 ## Serie concept
 
@@ -28,7 +28,9 @@ Dit is de kern van het experiment: kan een bedrijf draaien met twee menselijke o
 
 ## Episode overzicht
 
-_Geen drafts — serie gereset op 2026-04-22. Klaar voor nieuwe batch._
+| # | Titel | Bestand | Status | Post voor |
+|---|-------|---------|--------|-----------|
+| 1 | Ik heb geen team. Wel een experiment. | episode-01-introductie.md | draft | Ma 2026-04-27 |
 
 ## Retrospectief-waardige momenten (board agenda)
 
