@@ -60,7 +60,7 @@ useUnhead({
       description: post.value.metaDescription,
       url: articleUrl,
       datePublished: post.value.publishedAt,
-      author: { '@type': 'Organization', name: 'AIntern', url: SITE_URL },
+      author: { '@type': 'Person', name: 'Bill Middelbosch' },
       publisher: {
         '@type': 'Organization',
         name: 'AIntern',

@@ -271,6 +271,82 @@ export class AdminStack extends cdk.Stack {
       }),
     )
 
+    // ── lead-crud Lambda ─────────────────────────────────────────────────────
+    const leadCrudFn = new lambda.Function(this, 'LeadCrudFunction', {
+      functionName: 'aintern-lead-crud',
+      handler: 'lead-crud.handler',
+      description: 'GET /admin/leads — reads outreach CSV from S3, returns leads as JSON array',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    leadCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:GetObject'],
+        resources: ['arn:aws:s3:::aintern-kennisbank/admin-assets/outreach-log.csv'],
+      }),
+    )
+
+    // ── linkedin-posts Lambda ─────────────────────────────────────────────────
+    const linkedInPostsFn = new lambda.Function(this, 'LinkedInPostsFunction', {
+      functionName: 'aintern-linkedin-posts',
+      handler: 'linkedin-posts.handler',
+      description: 'CRUD endpoints for LinkedIn post drafts — reads/writes aintern-admin DynamoDB table',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    linkedInPostsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    linkedInPostsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(linkedInPostsFn)
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -286,6 +362,12 @@ export class AdminStack extends cdk.Stack {
 
     const kennisbankAdminDevAlias = kennisbankAdminFn.addAlias('dev')
     const kennisbankAdminProdAlias = kennisbankAdminFn.addAlias('prod')
+
+    const leadCrudDevAlias = leadCrudFn.addAlias('dev')
+    const leadCrudProdAlias = leadCrudFn.addAlias('prod')
+
+    const linkedInPostsDevAlias = linkedInPostsFn.addAlias('dev')
+    const linkedInPostsProdAlias = linkedInPostsFn.addAlias('prod')
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -336,6 +418,10 @@ export class AdminStack extends cdk.Stack {
     const meetingItemByIdResource = meetingItemsResource.addResource('{id}')
     meetingItemByIdResource.addMethod('PATCH', aliasIntegration(meetingActionsFn))
 
+    // GET /admin/leads
+    const leadsResource = adminResource.addResource('leads')
+    leadsResource.addMethod('GET', aliasIntegration(leadCrudFn))
+
     // GET /admin/kennisbank
     // GET|PUT|DELETE /admin/kennisbank/{slug}
     // POST /admin/kennisbank/{slug}/publish
@@ -349,6 +435,17 @@ export class AdminStack extends cdk.Stack {
 
     const kennisbankPublishResource = kennisbankSlugResource.addResource('publish')
     kennisbankPublishResource.addMethod('POST', aliasIntegration(kennisbankAdminFn))
+
+    // GET + POST /admin/linkedin-posts
+    // GET + PUT + DELETE /admin/linkedin-posts/{id}
+    const linkedInPostsResource = adminResource.addResource('linkedin-posts')
+    linkedInPostsResource.addMethod('GET', aliasIntegration(linkedInPostsFn))
+    linkedInPostsResource.addMethod('POST', aliasIntegration(linkedInPostsFn))
+
+    const linkedInPostByIdResource = linkedInPostsResource.addResource('{id}')
+    linkedInPostByIdResource.addMethod('GET', aliasIntegration(linkedInPostsFn))
+    linkedInPostByIdResource.addMethod('PUT', aliasIntegration(linkedInPostsFn))
+    linkedInPostByIdResource.addMethod('DELETE', aliasIntegration(linkedInPostsFn))
 
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
@@ -365,6 +462,10 @@ export class AdminStack extends cdk.Stack {
       [kpiIntegrationsProdAlias, 'KpiIntegrationsProdAlias'],
       [kennisbankAdminDevAlias, 'KennisbankAdminDevAlias'],
       [kennisbankAdminProdAlias, 'KennisbankAdminProdAlias'],
+      [leadCrudDevAlias, 'LeadCrudDevAlias'],
+      [leadCrudProdAlias, 'LeadCrudProdAlias'],
+      [linkedInPostsDevAlias, 'LinkedInPostsDevAlias'],
+      [linkedInPostsProdAlias, 'LinkedInPostsProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,
