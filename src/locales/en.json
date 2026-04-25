@@ -5,6 +5,7 @@
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Knowledge Base",
+    "kostencalculator": "What does manual work cost you?",
     "cta": "Free consultation",
     "menu": "Open menu"
   },
@@ -366,6 +367,30 @@
       "loading": "Loading…",
       "refresh": "Refresh"
     },
+    "form": {
+      "pageTitle": "Lead details",
+      "heading": "Lead details",
+      "back": "← Pipeline",
+      "save": "Save",
+      "saving": "Saving…",
+      "saved": "Saved ✓",
+      "copy": "Copy",
+      "copied": "Copied ✓",
+      "openLinkedIn": "Open profile",
+      "website": "Website",
+      "linkedinUrl": "LinkedIn URL",
+      "linkedinName": "LinkedIn name",
+      "status": "Status",
+      "notes": "Notes",
+      "connectionMessage": "Connection request message",
+      "connectionSentAt": "Sent at",
+      "connectionVariant": "Variant",
+      "dmMessage": "DM message",
+      "dmSentAt": "DM sent at",
+      "dmVariant": "DM variant",
+      "dmResponse": "Response received",
+      "notFound": "Lead not found"
+    },
     "status": {
       "new": "New",
       "enriched": "Enriched",
@@ -449,6 +474,33 @@
       "approved": "Post approved.",
       "archived": "Post archived.",
       "archiveFailed": "Failed to archive post."
+    }
+  },
+  "gratisToolView": {
+    "meta": {
+      "title": "What does your manual work really cost you? — Free calculator | AIntern",
+      "description": "Fill in three fields and instantly see what your repetitive processes cost your business per year — and what an AI intern gives back."
+    },
+    "eyebrow": "Free tool",
+    "headline": "What does your manual work really cost you?",
+    "subtext": "Fill in three fields and instantly see what your repetitive processes cost your business per year — and what you get back.",
+    "inputPanel": {
+      "heading": "Your situation",
+      "hoursLabel": "Hours per week spent on repetitive tasks",
+      "hoursUnit": "hrs/week",
+      "rateLabel": "Average hourly rate of the person doing this",
+      "processesLabel": "Number of processes you want to automate"
+    },
+    "resultsPanel": {
+      "heading": "Your potential savings",
+      "weekly": "Per week",
+      "monthly": "Per month",
+      "annual": "Per year",
+      "roiLabel": "Expected ROI",
+      "roiSuffix": ":1 ROI",
+      "socialProof": "20+ SMEs are already ahead of you",
+      "cta": "Book free call — and see what your AI intern can do",
+      "disclaimer": "Calculation based on averages. Exact savings vary by situation."
     }
   },
   "hero": {
