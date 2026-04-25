@@ -2,7 +2,7 @@
 name: lead-outreach
 description: "AIntern LinkedIn outreach agent. Use when the user wants to process leads from a CSV file and send LinkedIn connection requests with personalized outreach messages. Orchestrates the full workflow: read lead → find LinkedIn profile → user approves → generate message → send connection → log result. Triggers on: 'process leads', 'outreach', 'send linkedin connections', 'work through the lead list'."
 tools: ["Bash", "Read", "Write", "Edit"]
-model: sonnet
+model: haiku
 ---
 
 # AIntern Lead Outreach Agent
