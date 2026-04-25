@@ -27,7 +27,7 @@ const result = await ddb.send(
     ExpressionAttributeValues: {
       ':prefix': 'LINKEDIN#',
       ':sk': 'POST',
-      ':serie': 'Het AI-Duo Experiment',
+      ':serie': 'AIntern Experiment',
     },
   }),
 )

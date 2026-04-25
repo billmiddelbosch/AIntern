@@ -9,7 +9,7 @@ import { fileURLToPath } from 'url'
 import { randomUUID } from 'crypto'
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient, ScanCommand, PutCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBDocumentClient, ScanCommand, PutCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..', '..')
@@ -18,6 +18,7 @@ const REGION = 'eu-west-2'
 
 const aliasArg = process.argv.find((a) => a.startsWith('--alias='))
 const ALIAS = aliasArg ? aliasArg.split('=')[1] : (process.env.AINTERN_ALIAS ?? 'dev')
+const FORCE = process.argv.includes('--force')
 
 const ssm = new SSMClient({ region: REGION })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: REGION }))
@@ -32,8 +33,9 @@ async function getTableName() {
 }
 
 function parseFrontmatter(raw) {
-  const match = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
-  if (!match) return { frontmatter: {}, body: raw }
+  const normalized = raw.replace(/\r\n/g, '\n')
+  const match = normalized.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/)
+  if (!match) return { frontmatter: {}, body: normalized }
   const fm = {}
   for (const line of match[1].split('\n')) {
     const colonIdx = line.indexOf(':')
@@ -77,9 +79,10 @@ async function main() {
     }),
   )
 
-  const existingKeys = new Set(
-    (existing.Items ?? []).map((item) => `${item.serie}||${item.episode}`),
+  const existingItemsByKey = new Map(
+    (existing.Items ?? []).map((item) => [`${item.serie}||${item.episode}`, item]),
   )
+  const existingKeys = new Set(existingItemsByKey.keys())
 
   const files = readdirSync(DRAFTS_DIR)
     .filter((f) => f.endsWith('.md'))
@@ -103,9 +106,17 @@ async function main() {
 
     const key = `${serie}||${episode}`
     if (existingKeys.has(key)) {
-      console.log(`[import] Already exists: ${file} (${serie} ep.${episode}) — skip`)
-      skipped++
-      continue
+      if (!FORCE) {
+        console.log(`[import] Already exists: ${file} (${serie} ep.${episode}) — skip`)
+        skipped++
+        continue
+      }
+      // --force: delete existing item first so re-import uses fresh content
+      const existing = existingItemsByKey.get(key)
+      if (existing?.pk) {
+        await ddb.send(new DeleteCommand({ TableName: tableName, Key: { pk: existing.pk, sk: 'POST' } }))
+        console.log(`[import] --force: deleted existing ${serie} ep.${episode}`)
+      }
     }
 
     const now = new Date().toISOString()

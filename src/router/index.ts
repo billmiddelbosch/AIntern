@@ -17,6 +17,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/wat-kost-handmatig-werk',
+    name: 'wat-kost-handmatig-werk',
+    component: () => import('@/views/WatKostHandmatigWerkView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/kennisbank',
     name: 'kennisbank',
     component: () => import('@/views/KennisbankView.vue'),
@@ -81,6 +87,12 @@ export const routes: RouteRecordRaw[] = [
     name: 'admin-leads',
     component: () => import('@/views/admin/AdminLeadBoardView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'leads.board.pageTitle' },
+  },
+  {
+    path: '/admin/leads/:id',
+    name: 'admin-lead-detail',
+    component: () => import('@/views/admin/AdminLeadFormView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'leads.form.pageTitle' },
   },
   {
     path: '/admin/linkedin',

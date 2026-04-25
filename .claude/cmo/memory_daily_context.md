@@ -1,37 +1,36 @@
 # Blake — Daily Context
-_Last updated: 2026-04-20_
+_Last updated: 2026-04-25_
 
 ## Open Acties (toegewezen aan mij)
-- B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **uitgesteld naar morgen**
-- B-43: LinkedIn Posts admin pagina (/admin/linkedin) — spec schrijven + implementeren (morgen)
-- B-44: Ghostwriter eerste batch — 4 drafts aangemaakt in `.claude/cmo/ghostwriter_drafts/`, goedgekeurd door Human Board als drafts
+- B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **ON HOLD** — Bill wil nieuwe outreach optie evalueren
 - B-31: LinkedIn URL enrichment — 4 leads nog needs_enrichment (handmatige lookup Bill)
 
 ## KPI Status (week 17, 20–26 april)
-- LinkedIn posts: 0 / 3 — ⚠️ (ghostwriter batch klaar; Bill publiceert zelf)
-- Nieuwe connecties: 0 / 20–25 — ⚠️ (batch morgen)
-- Kennisbank artikelen: 1 / 2 — ⚠️ (B-40 ✅ gepubliceerd; volgende seed klaar)
+- LinkedIn posts: 1 / 3 — ⚠️ (B-59 company post gepubliceerd voor B-45 artikel; 2 nog te doen)
+- Nieuwe connecties: 0 / 20–25 — ⚠️ (outreach ON HOLD)
+- Kennisbank artikelen: 2 / 2 — ✅ (B-40: startup operators, B-45: van software naar agents)
 
 ## Actieve Blockers
-- Geen (AWS S3 toegankelijk; Apify toegankelijk)
-- Outreach uitgesteld — morgen discussie over strategie + andere kanalen
+- Outreach ON HOLD — Bill evalueert nieuwe outreach optie vóór goedkeuring leads 1–5
+- Obsidian vault leeg — alle seeds GEBRUIKT/AFGEWEZEN; Bill voegt nieuwe entries toe
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
 
-## Genomen Beslissingen (board 2026-04-20)
-- B-39 outreach NIET verstuurd — Human Board wil morgen discussie over outreach strategie + andere kanalen
-- Outreach berichttekst herzien: "AI stagiair" positioning goedgekeurd (2026-04-20); outreach-format.md bijgewerkt
-- B-40 Kennisbank artikel gepubliceerd ✅ — startup-van-de-toekomst-2-ai-operators.json, seed: Obsidian 2026-04-19
-- B-42 storywriter brief aangemaakt — stijlgesprek met Human Board volgt in deze vergadering
-- Obsidian seed "Product developers winnen..." bewaard voor Bill's persoonlijk LinkedIn profiel (ghostwriter materiaal)
-- Seed "Software bouwen is skills en agents bouwen" beschikbaar voor volgende Kennisbank artikel
+## Genomen Beslissingen (board 2026-04-25)
+- B-59 LinkedIn company post gepubliceerd ✅ — "Van software naar agents" (urn:li:share:7453754568632467458)
+- B-44 ghostwriter episodes 02–04 herschreven met echte feiten + geïmporteerd in DynamoDB ✅
+  - ep01: d215d623 | ep02: 84a8b02c | ep03: 15e4536c | ep04: 3bbcab6e
+- B-49 gecorrigeerd naar ✅ done (was stale; commit 7a1ab2e)
+- B-56, B-57 geannuleerd — stale security carry-overs, al gefixd in B-21/B-23
+- LinkedIn outreach leads 1–5: ON HOLD — wacht op nieuwe outreach optie van Bill
+- Haiku switch bevestigd actief voor lead-outreach + linkedin-outreach agents (commit 9083c37)
 
 ## Lopende Context
-- 2 openstaande connection requests week 16: Hilde Bolks (liatelier.nl), Robert Theuws (homefitness4you.nl) — wachten op acceptatie
+- 2 openstaande connection requests week 16: Hilde Bolks (liatelier.nl), Robert Theuws (homefitness4you.nl) — wachten op acceptatie (8 dagen)
 - 3 dm_sent leads wachten op reactie: Bram Hofman, Jan Bulthuis, Bob van Boekel
-- 5 not_contacted leads klaar voor outreach (wachten op strategie-beslissing morgen): Franny van Soest, Denise Aa, Ilse Huijbregts, Nick van den Berg, Bep Floor
-- Morgen: outreach strategie review — andere kanalen bespreken
-- Afgewezen/gebruikte Obsidian seeds (alle t/m 2026-04-10 opgebruikt):
+- 5 not_contacted leads KLAAR maar ON HOLD: Franny van Soest, Denise Aa, Ilse Huijbregts, Nick van den Berg, Bep Floor
+- Ghostwriter drafts beschikbaar in /admin/linkedin (ep01–04, status: draft)
+- Afgewezen/gebruikte Obsidian seeds (alle opgebruikt):
   - AFGEWEZEN: Claude superkracht.md, Claude people pleaser.md, AI Agent Beveiliging.md
-  - GEBRUIKT: AI implementatie MKB.md, AI-winnaars governance.md, AI-development democratiseert.md, AI procesautomatisering.md, De startup van de toekomst 2 AI operators.md (B-40, 2026-04-20)
+  - GEBRUIKT: AI implementatie MKB.md, AI-winnaars governance.md, AI-development democratiseert.md, AI procesautomatisering.md, De startup van de toekomst 2 AI operators.md, Software bouwen is skills en agents bouwen.md

@@ -6,7 +6,7 @@ type: project
 
 # Meeting Minutes Log
 
-_Last updated: 2026-04-22_
+_Last updated: 2026-04-25_
 
 ## Gebruiksregel
 
@@ -26,7 +26,7 @@ Vóór het schrijven: controleer welke feiten nog beschikbaar zijn. Na het schri
 | Datum | Feit | Bron | Status |
 |-------|------|------|--------|
 | 2026-04-09 | OKR Q2 vastgesteld door board: 300 LinkedIn connecties, 10 inbound leads, 20 kennisbank-artikelen als targets | memory_okr_q2_2026.md | gebruikt (ep.1) |
-| 2026-04-09 | LinkedIn aangewezen als primair acquisitiekanaal; target 20–25 nieuwe connecties per week | memory_okr_q2_2026.md | beschikbaar |
+| 2026-04-09 | LinkedIn aangewezen als primair acquisitiekanaal; target 20–25 nieuwe connecties per week | memory_okr_q2_2026.md | gebruikt (ep.2) |
 | 2026-04-11 | Eerste outreach DMs handmatig verstuurd door Bill: Bram Hofman, Jan Bulthuis, Bob van Boekel — ROI-variant berichten | memory_outreach_dm_pending.md | beschikbaar |
 | 2026-04-11 | Security check week 15: 3 high-severity bevindingen — Calendly webhook zonder HMAC-verificatie, JWT in localStorage, adminAxios zonder auth interceptor | memory_security_check_2026-04-11.md | beschikbaar |
 | 2026-04-12 | OKR O3 herzien: delivery-deadlines vervallen, focus verschoven naar organische vindbaarheid (SEO + LLM/GEO) | memory_okr_q2_2026.md | beschikbaar |
@@ -58,6 +58,7 @@ Vóór het schrijven: controleer welke feiten nog beschikbaar zijn. Na het schri
 | Episode | Feit | Post datum |
 |---------|------|------------|
 | 1 | OKR Q2 vastgesteld begin april — harde targets voor een bedrijf dat nauwelijks bestond | 2026-04-27 |
+| 2 | Week 15 — directie aangesteld (Alex CEO, Blake CMO, Morgan CTO, Sam COO); OKR Q2 geoperationaliseerd per week; LinkedIn bedrijfspagina gelanceerd; 2 kennisbank artikelen + 1 post + 3 connectieverzoeken in week 1 | 2026-05-01 |
 
 ---
 
