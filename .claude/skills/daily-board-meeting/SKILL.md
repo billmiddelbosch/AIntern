@@ -1,7 +1,7 @@
----
+﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.8
+version: 0.3.9
 ---
 
 # Daily Board Meeting
@@ -58,6 +58,8 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 3. Read CTO blockers explicitly:
    - `.claude/cto/memory_apify_credits_low.md` — flag if credits < $1
    - **Apify blocker cross-check:** Immediately after reading `memory_apify_credits_low.md`, compare its status against CMO `memory_daily_context.md` Actieve Blockers. If the Apify memory shows ✅ available but CMO daily context still lists "Apify uitgeput" or "Apify geblokkeerd": (1) remove that blocker line from CMO `memory_daily_context.md` directly via Edit tool, (2) mark B-07 in `product/backlog.md` as `✅ done` with note "Apify FREE plan reset maandelijks — geen handmatige actie nodig". This prevents false blocker reports in the agenda.
+
+   **Security carry-over cross-check:** After loading CTO blockers, read the most recent `.claude/cto/memory_security_check_*.md`. For each HIGH or MEDIUM finding listed, check whether the corresponding B-item in `product/backlog.md` is already done or cancelled. If so, do not surface it as a blocker — skip it silently. Only present findings where the B-item is still `	odo` or `in-progress`. This prevents stale carry-over security findings from appearing as active blockers (root cause: B-56/B-57 on 2026-04-25 were already fixed in B-21/B-23 but carried forward blindly by copying the previous week's check without re-verification).
 
 3.5. **Kennisbank week count verificatie (voer uit vóór de check-in):** Bereken de ISO week start = datum van vandaag minus (weekdag-index, maandag=0). Lees `.claude/cmo/memory_daily_context.md` voor Kennisbank-publicaties. Filter op `publishedAt >= [maandag ISO week start]`. Tel alleen publicaties die op of ná de maandag vallen. Rapporteer het gecorrigeerde aantal als `kennisbank_week_count` — gebruik dit getal (niet de CMO memory-waarde) voor de KPI Pulse in Phase 2 Round 3 en voor de Phase 4 skip condition 1. Meld de discrepantie als de gecorrigeerde telling lager is dan de memory-waarde.
 
@@ -345,7 +347,7 @@ Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
 1. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
 2. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
 3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
-4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter (serie, episode, titel, post_voor, status: draft, seed)
+4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter. **Verplichte velden:** `serie`, `episode`, `titel`, `post_voor`, `status: draft`, `seed`. Controleer alle 6 velden vóór opslaan — het importscript (`lambda/scripts/import-ghostwriter-drafts.mjs`) slaat episodes stil over als `serie` of `episode` ontbreekt. Als een bestaand draft (bijv. episode-01) deze velden mist, voeg ze dan nu toe voordat je verdergaat met de batch-import in stap 4.5.
 4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
      ```bash
      node lambda/scripts/import-ghostwriter-drafts.mjs

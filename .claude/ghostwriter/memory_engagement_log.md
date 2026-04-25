@@ -4,7 +4,7 @@ description: Engagement data per gepubliceerde episode (likes, comments, bereik,
 type: project
 ---
 
-# Engagement Log — Het AI-Duo Experiment
+# Engagement Log — Het AIntern Experiment
 
 _Last updated: 2026-04-21_
 

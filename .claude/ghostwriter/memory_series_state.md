@@ -1,18 +1,18 @@
 ---
-name: Series State — Het AI-Duo Experiment
+name: Series State — AIntern Experiment
 description: Episode overzicht met status per episode; gebruikt om te bepalen wat er al geschreven en gepubliceerd is en wat het volgende episodenummer is
 type: project
 ---
 
-# Serie State — Het AI-Duo Experiment
+# Serie State — AIntern Experiment
 
-_Last updated: 2026-04-22_
+_Last updated: 2026-04-25_
 
-## Volgende episode: #2
+## Volgende episode: #3
 
 ## Serie concept
 
-**"Het AI-Duo Experiment"** — AIntern heeft NIET 1 menselijke operator. Het heeft er twee:
+**"AIntern Experiment"** — AIntern heeft NIET 1 menselijke operator. Het heeft er twee:
 - **Productoperator** (menselijk) — stuurt op groei, productontwikkeling en snelheid
 - **Veiligheidsoperator** (menselijk) — bewaakt security, compliance en grenzen
 
@@ -30,7 +30,8 @@ Dit is de kern van het experiment: kan een bedrijf draaien met twee menselijke o
 
 | # | Titel | Bestand | Status | Post voor |
 |---|-------|---------|--------|-----------|
-| 1 | Ik heb geen team. Wel een experiment. | episode-01-introductie.md | draft | Ma 2026-04-27 |
+| 1 | Startups van de toekomst bestaan uit twee operators. | episode-01-introductie.md | approved | Ma 2026-04-27 |
+| 2 | We benoemden een directie. | episode-02-de-directie.md | approved | Do 2026-05-01 |
 
 ## Retrospectief-waardige momenten (board agenda)
 
