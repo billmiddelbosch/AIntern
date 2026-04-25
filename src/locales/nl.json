@@ -5,6 +5,7 @@
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Kennisbank",
+    "kostencalculator": "Wat kost handmatig werk jou?",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
   },
@@ -366,6 +367,30 @@
       "loading": "Laden…",
       "refresh": "Vernieuwen"
     },
+    "form": {
+      "pageTitle": "Lead details",
+      "heading": "Lead details",
+      "back": "← Pipeline",
+      "save": "Opslaan",
+      "saving": "Bezig…",
+      "saved": "Opgeslagen ✓",
+      "copy": "Kopiëren",
+      "copied": "Gekopieerd ✓",
+      "openLinkedIn": "Profiel openen",
+      "website": "Website",
+      "linkedinUrl": "LinkedIn URL",
+      "linkedinName": "LinkedIn naam",
+      "status": "Status",
+      "notes": "Notities",
+      "connectionMessage": "Connectieverzoek bericht",
+      "connectionSentAt": "Verstuurd op",
+      "connectionVariant": "Variant",
+      "dmMessage": "DM bericht",
+      "dmSentAt": "DM verstuurd op",
+      "dmVariant": "DM variant",
+      "dmResponse": "Reactie ontvangen",
+      "notFound": "Lead niet gevonden"
+    },
     "status": {
       "new": "Nieuw",
       "enriched": "Verrijkt",
@@ -449,6 +474,33 @@
       "approved": "Post goedgekeurd.",
       "archived": "Post gearchiveerd.",
       "archiveFailed": "Archiveren mislukt."
+    }
+  },
+  "gratisToolView": {
+    "meta": {
+      "title": "Wat kost jouw handmatige werk je? — Gratis berekening | AIntern",
+      "description": "Vul drie velden in en zie direct wat jouw repetitieve processen je per jaar kosten — en wat een AI-intern je teruggeeft."
+    },
+    "eyebrow": "Gratis tool",
+    "headline": "Wat kost jouw handmatige werk je?",
+    "subtext": "Vul drie velden in en zie direct wat jouw repetitieve processen je per jaar kosten — en wat je terugwint.",
+    "inputPanel": {
+      "heading": "Jouw situatie",
+      "hoursLabel": "Uur per week aan repetitieve taken",
+      "hoursUnit": "uur/week",
+      "rateLabel": "Gemiddeld uurtarief van de uitvoerder",
+      "processesLabel": "Aantal processen dat je wilt automatiseren"
+    },
+    "resultsPanel": {
+      "heading": "Jouw potentiële besparing",
+      "weekly": "Per week",
+      "monthly": "Per maand",
+      "annual": "Per jaar",
+      "roiLabel": "Verwachte ROI",
+      "roiSuffix": ":1 ROI",
+      "socialProof": "20+ MKB-bedrijven gingen je voor",
+      "cta": "Boek gratis gesprek — en zie wat jouw AI-intern kan doen",
+      "disclaimer": "Berekening op basis van gemiddelden. Exacte besparing verschilt per situatie."
     }
   },
   "hero": {

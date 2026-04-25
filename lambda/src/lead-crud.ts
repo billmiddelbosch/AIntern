@@ -1,12 +1,20 @@
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
+import {
+  DynamoDBDocumentClient,
+  ScanCommand,
+  GetCommand,
+  PutCommand,
+  UpdateCommand,
+} from '@aws-sdk/lib-dynamodb'
 import jwt from 'jsonwebtoken'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
-const s3 = new S3Client({ region: 'eu-west-2' })
+const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
 
 let cachedJwtSecret: string | null = null
+let cachedTableName: string | null = null
 
 const PROD_ORIGINS = new Set(['https://aintern.nl', 'https://www.aintern.nl'])
 
@@ -57,6 +65,16 @@ async function getJwtSecret(alias: string): Promise<string> {
   return secret
 }
 
+async function getTableName(alias: string): Promise<string> {
+  if (cachedTableName) return cachedTableName
+  const path = `${process.env.DYNAMODB_TABLE_SSM_PREFIX}/${alias}/dynamodb/table-name`
+  const result = await ssm.send(new GetParameterCommand({ Name: path, WithDecryption: false }))
+  const name = result.Parameter?.Value
+  if (!name) throw new Error(`DynamoDB table name not found at ${path}`)
+  cachedTableName = name
+  return name
+}
+
 async function requireAuth(event: APIGatewayProxyEvent, alias: string): Promise<void> {
   const authHeader = event.headers['Authorization'] ?? event.headers['authorization'] ?? ''
   const [scheme, token] = authHeader.split(' ')
@@ -86,9 +104,11 @@ type LeadStatus =
 interface Lead {
   id: string
   website: string
+  companyName?: string
   linkedinUrl?: string
   linkedinName?: string
   status: LeadStatus
+  assignee?: string
   connectionSentAt?: string
   connectionMessage?: string
   connectionVariant?: string
@@ -96,9 +116,17 @@ interface Lead {
   dmMessage?: string
   dmVariant?: string
   dmResponse?: string
-  source: string
+  discoveryBookedAt?: string
+  discoveryCallUrl?: string
+  source?: string
+  notes?: string
   createdAt: string
   updatedAt: string
+}
+
+interface DdbLead extends Lead {
+  pk: string
+  sk: string
 }
 
 const VALID_STATUSES = new Set<string>([
@@ -106,98 +134,192 @@ const VALID_STATUSES = new Set<string>([
   'dm_sent', 'dm_responded', 'discovery_booked', 'won', 'lost', 'not_found',
 ])
 
-function mapCsvStatus(raw: string): LeadStatus {
-  const s = raw.trim().toLowerCase()
-  if (VALID_STATUSES.has(s)) return s as LeadStatus
-  if (s === 'excluded') return 'lost'
-  if (s === 'needs_enrichment' || s === 'not_contacted') return 'new'
-  return 'new'
+const UPDATABLE_FIELDS = [
+  'connectionMessage', 'dmMessage', 'status', 'notes',
+  'linkedinUrl', 'linkedinName', 'companyName', 'assignee',
+  'connectionSentAt', 'connectionVariant', 'dmSentAt', 'dmVariant',
+  'dmResponse', 'discoveryBookedAt', 'discoveryCallUrl',
+] as const
+
+type UpdatableField = (typeof UPDATABLE_FIELDS)[number]
+
+function toLead(raw: DdbLead): Lead {
+  const { pk: _pk, sk: _sk, ...lead } = raw
+  return lead
 }
 
-function parseCsv(text: string): Lead[] {
-  const lines = text.split('\n').map((l) => l.trim()).filter(Boolean)
-  if (lines.length < 2) return []
+async function handleList(
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  const tableName = await getTableName(alias)
 
-  const headers = lines[0].split(',').map((h) => h.trim())
-  const idx = (name: string) => headers.indexOf(name)
+  const result = await ddb.send(
+    new ScanCommand({
+      TableName: tableName,
+      FilterExpression: 'begins_with(pk, :prefix)',
+      ExpressionAttributeValues: { ':prefix': 'LEAD#' },
+    }),
+  )
 
-  const leads: Lead[] = []
-  for (let i = 1; i < lines.length; i++) {
-    // Simple CSV split — values in this file do not contain commas
-    const cols = lines[i].split(',')
-    const get = (name: string) => (cols[idx(name)] ?? '').trim()
+  const leads = ((result.Items ?? []) as DdbLead[])
+    .map(toLead)
+    .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
 
-    const website = get('website')
-    if (!website) continue
+  console.log('[lead-crud] handleList | returning %d leads', leads.length)
+  return respond(200, leads, alias, requestOrigin)
+}
 
-    leads.push({
-      id: `csv-${encodeURIComponent(website)}`,
-      website,
-      linkedinUrl: get('linkedin_url') || undefined,
-      linkedinName: get('linkedin_name') || undefined,
-      status: mapCsvStatus(get('status')),
-      connectionSentAt: get('connection_sent_at') || undefined,
-      connectionMessage: get('connection_message') || undefined,
-      connectionVariant: get('connection_variant') || undefined,
-      dmSentAt: get('dm_sent_at') || undefined,
-      dmMessage: get('dm_message') || undefined,
-      dmVariant: get('dm_variant') || undefined,
-      dmResponse: get('dm_response') || undefined,
-      source: 'csv_import',
-      createdAt: '2026-04-08T00:00:00.000Z',
-      updatedAt: new Date().toISOString(),
-    })
+async function handleGetOne(
+  id: string,
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  const tableName = await getTableName(alias)
+
+  const result = await ddb.send(
+    new GetCommand({
+      TableName: tableName,
+      Key: { pk: `LEAD#${id}`, sk: 'METADATA' },
+    }),
+  )
+
+  if (!result.Item) {
+    return respond(404, { error: `Lead ${id} not found` }, alias, requestOrigin)
   }
-  return leads
+
+  return respond(200, toLead(result.Item as DdbLead), alias, requestOrigin)
 }
 
-// Mock data returned when S3 key does not exist yet
-const MOCK_LEADS: Lead[] = [
-  {
-    id: 'mock-tschuurtje-nl',
-    website: 'tschuurtje.nl',
-    linkedinName: 'Bram Hofman',
-    linkedinUrl: 'https://www.linkedin.com/in/bram-hofman-b0376a87/',
-    status: 'dm_sent',
-    source: 'mock',
-    createdAt: '2026-04-08T00:00:00.000Z',
-    updatedAt: '2026-04-11T00:00:00.000Z',
-  },
-]
-
-async function fetchLeadsFromS3(): Promise<Lead[]> {
-  // Real data lives at s3://aintern-kennisbank/admin-assets/outreach-log.csv
-  // Upload it with: aws s3 cp product/marketing/leads/outreach-log.csv s3://aintern-kennisbank/admin-assets/outreach-log.csv
+function parseUpdateBody(raw: string | null): Partial<Pick<Lead, UpdatableField>> {
+  let parsed: unknown
   try {
-    const result = await s3.send(
-      new GetObjectCommand({
-        Bucket: 'aintern-kennisbank',
-        Key: 'admin-assets/outreach-log.csv',
-      }),
-    )
-    const body = await result.Body?.transformToString('utf-8')
-    if (!body) return MOCK_LEADS
-    console.log('[lead-crud] fetchLeadsFromS3 | fetched CSV, length=%d', body.length)
-    return parseCsv(body)
-  } catch (err: unknown) {
-    const code = (err as { name?: string }).name
-    if (code === 'NoSuchKey' || code === 'NoSuchBucket') {
-      console.warn('[lead-crud] fetchLeadsFromS3 | S3 key not found — returning mock data')
-      return MOCK_LEADS
-    }
-    throw err
+    parsed = JSON.parse(raw ?? '{}')
+  } catch {
+    throw Object.assign(new Error('Invalid JSON body'), { statusCode: 400 })
   }
+
+  const p = parsed as Record<string, unknown>
+  const patch: Partial<Pick<Lead, UpdatableField>> = {}
+
+  for (const field of UPDATABLE_FIELDS) {
+    if (!(field in p)) continue
+    if (field === 'status') {
+      if (!VALID_STATUSES.has(p[field] as string)) {
+        throw Object.assign(
+          new Error(`status must be one of: ${Array.from(VALID_STATUSES).join(', ')}`),
+          { statusCode: 400 },
+        )
+      }
+      patch.status = p[field] as LeadStatus
+    } else {
+      ;(patch as Record<string, unknown>)[field] = p[field] !== null ? p[field] : undefined
+    }
+  }
+
+  if (Object.keys(patch).length === 0) {
+    throw Object.assign(new Error('At least one updatable field is required'), { statusCode: 400 })
+  }
+
+  return patch
 }
 
-async function handleGet(
+async function handleUpdate(
+  id: string,
   event: APIGatewayProxyEvent,
   alias: string,
 ): Promise<APIGatewayProxyResult> {
   const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
-  console.log('[lead-crud] GET /leads')
-  const leads = await fetchLeadsFromS3()
-  console.log('[lead-crud] GET /leads | returning %d leads', leads.length)
-  return respond(200, leads, alias, requestOrigin)
+  const patch = parseUpdateBody(event.body)
+  const tableName = await getTableName(alias)
+
+  const pk = `LEAD#${id}`
+  const sk = 'METADATA'
+
+  const existing = await ddb.send(new GetCommand({ TableName: tableName, Key: { pk, sk } }))
+  if (!existing.Item) {
+    return respond(404, { error: `Lead ${id} not found` }, alias, requestOrigin)
+  }
+
+  const setClauses: string[] = ['#updatedAt = :updatedAt']
+  const expressionNames: Record<string, string> = { '#updatedAt': 'updatedAt' }
+  const expressionValues: Record<string, unknown> = { ':updatedAt': new Date().toISOString() }
+  const removeClauses: string[] = []
+
+  for (const field of UPDATABLE_FIELDS) {
+    if (!(field in patch)) continue
+    const val = (patch as Record<string, unknown>)[field]
+    const nameToken = `#${field}`
+    const valueToken = `:${field}`
+
+    if (val === undefined || val === null) {
+      removeClauses.push(nameToken)
+      expressionNames[nameToken] = field
+    } else {
+      setClauses.push(`${nameToken} = ${valueToken}`)
+      expressionNames[nameToken] = field
+      expressionValues[valueToken] = val
+    }
+  }
+
+  let updateExpression = `SET ${setClauses.join(', ')}`
+  if (removeClauses.length > 0) {
+    updateExpression += ` REMOVE ${removeClauses.join(', ')}`
+  }
+
+  const result = await ddb.send(
+    new UpdateCommand({
+      TableName: tableName,
+      Key: { pk, sk },
+      UpdateExpression: updateExpression,
+      ExpressionAttributeNames: expressionNames,
+      ExpressionAttributeValues: expressionValues,
+      ReturnValues: 'ALL_NEW',
+    }),
+  )
+
+  return respond(200, toLead(result.Attributes as DdbLead), alias, requestOrigin)
+}
+
+async function handleImport(
+  event: APIGatewayProxyEvent,
+  alias: string,
+): Promise<APIGatewayProxyResult> {
+  const requestOrigin = event.headers['origin'] ?? event.headers['Origin']
+
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(event.body ?? '{}')
+  } catch {
+    throw Object.assign(new Error('Invalid JSON body'), { statusCode: 400 })
+  }
+
+  const body = parsed as Record<string, unknown>
+  if (!Array.isArray(body['leads'])) {
+    throw Object.assign(new Error('leads array is required'), { statusCode: 400 })
+  }
+
+  const leads = body['leads'] as Lead[]
+  const tableName = await getTableName(alias)
+  let imported = 0
+
+  for (const lead of leads) {
+    if (!lead.website) continue
+
+    const pk = `LEAD#${encodeURIComponent(lead.website)}`
+    const sk = 'METADATA'
+
+    const item: DdbLead = { ...lead, pk, sk }
+    const cleanItem = Object.fromEntries(
+      Object.entries(item).filter(([, v]) => v !== undefined && v !== ''),
+    ) as DdbLead
+
+    await ddb.send(new PutCommand({ TableName: tableName, Item: cleanItem }))
+    imported++
+  }
+
+  console.log('[lead-crud] handleImport | imported %d leads', imported)
+  return respond(200, { imported }, alias, requestOrigin)
 }
 
 export async function handler(
@@ -205,10 +327,11 @@ export async function handler(
   context: Context,
 ): Promise<APIGatewayProxyResult> {
   console.log(
-    '[lead-crud] handler | requestId=%s method=%s path=%s',
+    '[lead-crud] handler | requestId=%s method=%s path=%s resource=%s',
     context.awsRequestId,
     event.httpMethod,
     event.path,
+    event.resource,
   )
 
   const alias = resolveAlias(context)
@@ -222,12 +345,34 @@ export async function handler(
   }
 
   try {
-    if (event.httpMethod === 'GET') {
-      return await handleGet(event, alias)
+    const method = event.httpMethod
+    const resource = event.resource
+
+    if (method === 'GET' && resource === '/admin/leads') {
+      return await handleList(alias, requestOrigin)
     }
+
+    if (method === 'GET' && resource === '/admin/leads/{id}') {
+      const id = event.pathParameters?.['id'] ?? ''
+      return await handleGetOne(id, alias, requestOrigin)
+    }
+
+    if (method === 'PUT' && resource === '/admin/leads/{id}') {
+      const id = event.pathParameters?.['id'] ?? ''
+      return await handleUpdate(id, event, alias)
+    }
+
+    if (method === 'POST' && resource === '/admin/leads') {
+      return await handleImport(event, alias)
+    }
+
     return respond(405, { error: 'Method not allowed' }, alias, requestOrigin)
   } catch (err: unknown) {
-    console.error('[lead-crud] unhandled error | %s', (err as Error).message, err)
+    const code = (err as { statusCode?: number }).statusCode
+    if (code === 400) {
+      return respond(400, { error: (err as Error).message }, alias, requestOrigin)
+    }
+    console.error('[lead-crud] unhandled error:', err)
     return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
   }
 }

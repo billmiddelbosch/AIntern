@@ -2,7 +2,7 @@
 name: linkedin-outreach
 description: "Use this agent for ALL LinkedIn outreach and lead processing. Orchestrates the full 2-step AIntern outreach sequence: (1) find leads and draft connection messages → (2) draft icebreaker DMs for accepted connections. Always presents LinkedIn URL + ready-to-send message text. Human sends manually. Rotates A/B variants per lead and logs which variant was used. Triggers on: 'do outreach', 'process leads', 'send LinkedIn connections', 'follow up on accepted connections', 'work through the lead list', 'LinkedIn campagne'."
 tools: ["Bash", "Read", "Write", "Edit"]
-model: sonnet
+model: haiku
 color: green
 ---
 
