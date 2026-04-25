@@ -27,6 +27,16 @@ The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO)
 
 **Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
 
+**Maandag-verplichtingen (harde eis — alleen op maandag, nooit te skipppen):**
+
+Controleer of vandaag maandag is via `date +%A`. Als ja, zijn de volgende twee punten **verplicht** ongeacht backlog, blockers, of Human Board feedback. Ze worden altijd als de eerste twee items in de Top 5 Daily Actions opgenomen (Phase 2 Round 3 Step B) en kunnen niet worden verdrongen, uitgesteld, of overgeslagen:
+
+1. **Weekrapport vorige week — Sam (COO).** Genereer het weekrapport voor de ISO-week die eindigde op de afgelopen zondag, conform `.claude/skills/weekly-report.md`. Uitvoeren via een claude terminal. Rapport wordt opgeslagen in de Obsidian vault op het standaard pad. Backlog-item aanmaken vóór de terminal wordt gedispatcht.
+
+2. **Ghostwriter LinkedIn post AI-Duo Experiment — Blake (CMO).** Draft de volgende ongepubliceerde episode voor "Het AI-Duo Experiment" serie via Phase 3.5 (altijd actief op maandag, ongeacht de trigger-conditie). Als er een bestaande draft klaarligt die Bill nog niet heeft gepubliceerd, markeer die dan als urgent ter review in de Approval Gate.
+
+Noteer beide verplichtingen in de opening agenda onder een apart kopje **`Maandag-verplichtingen:`** vóór de normale Agenda van vandaag.
+
 **Step 0.1 — CTO runs project health check:**
 
 ```bash
@@ -255,6 +265,8 @@ Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-i
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
 
+> **Maandag-slot:** Op maandag zijn positie 1 en 2 altijd pre-gereserveerd: **(1) Weekrapport vorige week — Sam (COO)**, **(2) Ghostwriter LinkedIn post AI-Duo Experiment — Blake (CMO)**. De overige 3 posities worden vrij ingevuld op basis van de hoogste OKR-impact.
+
 ```
 | # | Action | Owner | Success Metric |
 |---|--------|-------|----------------|
@@ -339,13 +351,14 @@ Before drafting any messages, evaluate the outreach state using context already 
 
 ## Phase 3.5 — Ghostwriter Batch (conditioneel)
 
-**Trigger:** Alleen uitvoeren als Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt.
+**Trigger:** Uitvoeren als (1) Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt, **OF (2) vandaag maandag is** — op maandag is Phase 3.5 altijd verplicht, ongeacht de overige agenda (maandag-verplichting).
 
 Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profiel als onderdeel van "Het AI-Duo Experiment" serie.
 
 **Steps:**
-1. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
-2. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
+1. **Lees het weekrapport van de vorige week als feitenbasis.** Zoek het meest recente weekrapport in `C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/` met patroon `weekrapport-YYYY-WNN.md`. Als het huidige weekrapport al gegenereerd is (maandag-verplichting stap 1), gebruik dat. Extraheer uit het rapport de **Ghostwriter Input Block** (Stap 10 van de weekly-report skill) of — als dat blok ontbreekt — handmatig: shipped items, lead/outreach aantallen, gepubliceerde artikelen, KPI-highlights en opvallende momenten. Deze feiten zijn de **verplichte grondstof** voor de post; verzin geen data.
+2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
+3. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
 3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
 4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter. **Verplichte velden:** `serie`, `episode`, `titel`, `post_voor`, `status: draft`, `seed`. Controleer alle 6 velden vóór opslaan — het importscript (`lambda/scripts/import-ghostwriter-drafts.mjs`) slaat episodes stil over als `serie` of `episode` ontbreekt. Als een bestaand draft (bijv. episode-01) deze velden mist, voeg ze dan nu toe voordat je verdergaat met de batch-import in stap 4.5.
 4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
@@ -607,6 +620,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **Maandag-verplichtingen zijn niet-onderhandelbaar** — op maandag staan weekrapport (Sam/COO, vorige week) en ghostwriter LinkedIn post AI-Duo Experiment (Blake/CMO) altijd als #1 en #2 in de Top 5 Daily Actions; niet te verplaatsen, overslaan of uitstellen; Phase 3.5 (Ghostwriter) wordt op maandag altijd uitgevoerd ongeacht de trigger-conditie
 - **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
 - **Stay in character** — each executive speaks in their own voice throughout
