@@ -1,5 +1,5 @@
 ---
-serie: Het AI-Duo Experiment
+serie: AIntern Experiment
 episode: 1
 titel: Startups van de toekomst bestaan uit twee operators.
 post_voor: Maandag 2026-04-27
@@ -32,6 +32,6 @@ We wisten het niet.
 
 We begonnen toch.
 
-𝗗𝗶𝘁 𝗶𝘀 𝗮𝗳𝗹𝗲𝘃𝗲𝗿𝗶𝗻𝗴 𝟭 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜-𝗗𝘂𝗼 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁.
+𝗗𝗶𝘁 𝗶𝘀 𝗮𝗳𝗹𝗲𝘃𝗲𝗿𝗶𝗻𝗴 𝟭 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁.
 
 𝗪𝗼𝗿𝗱𝘁 𝘃𝗲𝗿𝘃𝗼𝗹𝗴𝗱.

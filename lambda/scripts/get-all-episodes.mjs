@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// Fetch the latest published/draft episode of "Het AI-Duo Experiment" from DynamoDB.
-// Prints the episode content to stdout so the ghostwriter can read it before writing the next post.
-// Usage: node lambda/scripts/get-latest-episode.mjs [--alias=dev|prod]
+// Fetch all episodes of "Het AI-Duo Experiment" from DynamoDB sorted by episode number.
+// Usage: node lambda/scripts/get-all-episodes.mjs [--alias=dev|prod]
 
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
@@ -31,19 +30,16 @@ const result = await ddb.send(
   }),
 )
 
-const items = result.Items ?? []
+const items = (result.Items ?? []).sort((a, b) => (a.episode ?? 0) - (b.episode ?? 0))
 if (items.length === 0) {
-  console.log('[get-latest-episode] No episodes found.')
+  console.log('[get-all-episodes] No episodes found.')
   process.exit(0)
 }
 
-// Sort by episode number descending, take the latest
-const latest = items.sort((a, b) => (b.episode ?? 0) - (a.episode ?? 0))[0]
-
-console.log(`[get-latest-episode] Latest episode: #${latest.episode} — "${latest.title}"`)
-console.log(`[get-latest-episode] Status: ${latest.status}`)
-console.log(`[get-latest-episode] Scheduled: ${latest.scheduledFor ?? 'not set'}`)
-console.log(`[get-latest-episode] Updated: ${latest.updatedAt}`)
-console.log(`\n--- CONTENT (as it exists in DynamoDB, including any human edits) ---\n`)
-console.log(latest.content)
-console.log(`\n--- END CONTENT ---`)
+for (const ep of items) {
+  console.log(`\n=== Episode #${ep.episode} — "${ep.title}" ===`)
+  console.log(`Status: ${ep.status} | Scheduled: ${ep.scheduledFor ?? 'not set'} | Updated: ${ep.updatedAt}`)
+  console.log(`\n--- CONTENT ---\n`)
+  console.log(ep.content)
+  console.log(`\n--- END EPISODE #${ep.episode} ---`)
+}
