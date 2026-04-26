@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.9
+version: 0.4.0
 ---
 
 # Daily Board Meeting
@@ -26,6 +26,8 @@ git branch --show-current
 The branch name uses today's date (e.g., `feature/board-2026-04-11`). Joost (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
 
 **Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
+
+**Rate-limit recovery (mid-meeting interruption):** If the session was interrupted by a Claude rate limit and the user resumes with "continue" (or similar), do NOT restart from Phase 1. Instead: (1) check `git log feature/board-{YYYY-MM-DD} --oneline` to see which terminals already committed, (2) check which backlog items are already `✅ done` today, (3) resume at the next pending terminal or phase. State explicitly: `_Herstart na rate limit — B-xx t/m B-yy al klaar; doorgaan met B-zz._` This prevents duplicate work after interruptions.
 
 **Maandag-verplichtingen (harde eis — alleen op maandag, nooit te skipppen):**
 
@@ -81,7 +83,9 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
-6. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
+6. **AI MKB Groei Systeem voortgang check:** Als er AI MKB Groei Systeem B-items in de backlog staan (B-36 en B-51–B-76 range), controleer dan welke stap actief is door te zoeken naar de eerste `todo` in de 7-stappen reeks (Stap 1 Signaaldetectie → Stap 2 Insight → ... → Stap 7 Distributie). Rapporteer als `**AI MKB Groei Systeem:** Stap N [naam] — [B-item] [status]` in de Actieve Blockers sectie (of Agenda als geen blockers). Dit voorkomt dat dit sprint-overstijgend initiatief onzichtbaar wordt in het dagelijkse check-in.
+
+7. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
 
 Then open the meeting in this format:
 
@@ -164,6 +168,8 @@ claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt.
 
 > ⛔ **NEVER use the Agent tool for terminal actions.** The Agent tool runs in a hidden sub-context that is invisible to the Human Board. Only `Bash` + `claude -p` produces a visible console terminal.
+
+> ⛔ **Terminals cannot write to `.claude/` directory files** (agent definitions, SKILL.md, memory files). The subprocess permission model blocks it. All edits to `.claude/` must be performed **directly in the main session** using the Edit or Write tools — never via a dispatched terminal. If a task requires both `.claude/` edits and code changes, split it: perform `.claude/` edits inline first, then dispatch a terminal for the code changes only.
 
 The prompt passed to each terminal **must**:
 1. Start with: `"You are working on branch feature/board-{YYYY-MM-DD}. Verify you are on this branch (git status) before making any changes. If not, run: git checkout feature/board-{YYYY-MM-DD}."`
