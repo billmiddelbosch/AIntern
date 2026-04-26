@@ -1,4 +1,4 @@
-# Sam — Daily Context
+# Emma — Daily Context
 _Last updated: 2026-04-25_
 
 ## Open Acties (toegewezen aan mij)

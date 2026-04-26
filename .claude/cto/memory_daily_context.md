@@ -1,4 +1,4 @@
-# Morgan — Daily Context
+# Lars — Daily Context
 _Last updated: 2026-04-25_
 
 ## Open Acties (toegewezen aan mij)
