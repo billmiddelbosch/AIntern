@@ -6,3 +6,4 @@
 - [Delegation Protocol](memory_delegation_protocol.md) — Dispatch agent terminals immediately on Human Board approval — never announce without executing
 - [OKR & KPI Governance](memory_okr_governance.md) — CEO is sole owner of OKR/KPI changes; never renumber IDs (orphans localStorage actuals)
 - [Lambda CORS Review Gate](memory_lambda_cors_review_gate.md) — CEO must approve corsOrigin() mapping on new Lambda handlers or new domains before deployment
+- [Ali — ITGuru Intern](memory_ali_intern.md) — AI intern in ITGuru repo; assign tasks via /assign-to-ali; works in dedicated VS Code window; never commits/pushes
