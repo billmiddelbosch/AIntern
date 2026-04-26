@@ -4,6 +4,8 @@ import * as lambda from 'aws-cdk-lib/aws-lambda'
 import * as apigateway from 'aws-cdk-lib/aws-apigateway'
 import * as iam from 'aws-cdk-lib/aws-iam'
 import * as ssm from 'aws-cdk-lib/aws-ssm'
+import * as events from 'aws-cdk-lib/aws-events'
+import * as targets from 'aws-cdk-lib/aws-events-targets'
 import { Construct } from 'constructs'
 import * as path from 'path'
 
@@ -344,6 +346,344 @@ export class AdminStack extends cdk.Stack {
 
     adminTable.grantReadWriteData(linkedInPostsFn)
 
+    // ── Groei Systeem — signaaldetectie Lambda ────────────────────────────────
+    const signaaldetectieFn = new lambda.Function(this, 'SignaaldetectieFunction', {
+      functionName: 'aintern-signaaldetectie',
+      handler: 'signaaldetectie.handler',
+      description: 'Daily Reddit scraper — stores MKB pain signals in DynamoDB (B-36)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(60),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    signaaldetectieFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    signaaldetectieFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(signaaldetectieFn)
+
+    const signaaldetectieProdAlias = signaaldetectieFn.addAlias('prod')
+
+    new events.Rule(this, 'SignaaldetectieRule', {
+      ruleName: 'aintern-signaaldetectie-daily',
+      description: 'Triggers signaaldetectie Lambda daily at 06:00 UTC (08:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '6' }),
+      targets: [new targets.LambdaFunction(signaaldetectieProdAlias)],
+    })
+
+    // ── Groei Systeem — subreddit-config Lambda ───────────────────────────────
+    const subredditConfigFn = new lambda.Function(this, 'SubredditConfigFunction', {
+      functionName: 'aintern-subreddit-config',
+      handler: 'subreddit-config.handler',
+      description: 'Admin CRUD for SubredditConfig (B-36)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    subredditConfigFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    subredditConfigFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(subredditConfigFn)
+
+    const subredditConfigDevAlias = subredditConfigFn.addAlias('dev')
+    const subredditConfigProdAlias = subredditConfigFn.addAlias('prod')
+
+    // ── Groei Systeem — insight-extractie Lambda ──────────────────────────────
+    const insightExtractieFn = new lambda.Function(this, 'InsightExtractieFunction', {
+      functionName: 'aintern-insight-extractie',
+      handler: 'insight-extractie.handler',
+      description: 'Weekly Lambda: clusters PainSignals into OpportunityStatements (B-61)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(90),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    insightExtractieFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    insightExtractieFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(insightExtractieFn)
+
+    const insightExtractieProdAlias = insightExtractieFn.addAlias('prod')
+
+    new events.Rule(this, 'InsightExtractieRule', {
+      ruleName: 'aintern-insight-extractie-weekly',
+      description: 'Triggers insight-extractie Lambda every Monday at 07:00 UTC (09:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '7', weekDay: 'MON' }),
+      targets: [new targets.LambdaFunction(insightExtractieProdAlias)],
+    })
+
+    // ── Groei Systeem — content-engine Lambda ─────────────────────────────────
+    const contentEngineFn = new lambda.Function(this, 'ContentEngineFunction', {
+      functionName: 'aintern-content-engine',
+      handler: 'content-engine.handler',
+      description: 'Weekly Lambda: generates LinkedIn+X content from OpportunityStatements (B-53)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(90),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    contentEngineFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    contentEngineFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(contentEngineFn)
+
+    const contentEngineProdAlias = contentEngineFn.addAlias('prod')
+
+    new events.Rule(this, 'ContentEngineRule', {
+      ruleName: 'aintern-content-engine-weekly',
+      description: 'Triggers content-engine Lambda every Wednesday at 07:00 UTC (09:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '7', weekDay: 'WED' }),
+      targets: [new targets.LambdaFunction(contentEngineProdAlias)],
+    })
+
+    // ── Groei Systeem — soft-outreach-monitor Lambda ──────────────────────────
+    const softOutreachFn = new lambda.Function(this, 'SoftOutreachMonitorFunction', {
+      functionName: 'aintern-soft-outreach-monitor',
+      handler: 'soft-outreach-monitor.handler',
+      description: 'Daily Lambda: detects intent signals and creates OutreachAlerts (B-62)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(60),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    softOutreachFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    softOutreachFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(softOutreachFn)
+
+    const softOutreachProdAlias = softOutreachFn.addAlias('prod')
+
+    new events.Rule(this, 'SoftOutreachRule', {
+      ruleName: 'aintern-soft-outreach-daily',
+      description: 'Triggers soft-outreach-monitor Lambda daily at 07:00 UTC (09:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '7' }),
+      targets: [new targets.LambdaFunction(softOutreachProdAlias)],
+    })
+
+    // ── Groei Systeem — workflow-scan Lambda (public) ─────────────────────────
+    const workflowScanFn = new lambda.Function(this, 'WorkflowScanFunction', {
+      functionName: 'aintern-workflow-scan',
+      handler: 'workflow-scan.handler',
+      description: 'Public POST /workflow-scan — stores submission and returns AI recommendations (B-54)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(30),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    workflowScanFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    workflowScanFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(workflowScanFn)
+
+    const workflowScanDevAlias = workflowScanFn.addAlias('dev')
+    const workflowScanProdAlias = workflowScanFn.addAlias('prod')
+
+    // ── Groei Systeem — sequence-scheduler Lambda ─────────────────────────────
+    const sequenceSchedulerFn = new lambda.Function(this, 'SequenceSchedulerFunction', {
+      functionName: 'aintern-sequence-scheduler',
+      handler: 'sequence-scheduler.handler',
+      description: 'Daily Lambda: advances cold email sequences (B-52)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(30),
+      environment: {
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    sequenceSchedulerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    adminTable.grantReadWriteData(sequenceSchedulerFn)
+
+    const sequenceSchedulerProdAlias = sequenceSchedulerFn.addAlias('prod')
+
+    new events.Rule(this, 'SequenceSchedulerRule', {
+      ruleName: 'aintern-sequence-scheduler-daily',
+      description: 'Triggers sequence-scheduler Lambda daily at 06:00 UTC (08:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '6' }),
+      targets: [new targets.LambdaFunction(sequenceSchedulerProdAlias)],
+    })
+
+    // ── Groei Systeem — flywheel-metrics Lambda ───────────────────────────────
+    const flywheelMetricsFn = new lambda.Function(this, 'FlywheelMetricsFunction', {
+      functionName: 'aintern-flywheel-metrics',
+      handler: 'flywheel-metrics.handler',
+      description: 'GET/PUT /admin/flywheel-metrics — weekly funnel metrics dashboard (B-63)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    flywheelMetricsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    flywheelMetricsFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(flywheelMetricsFn)
+
+    const flywheelMetricsDevAlias = flywheelMetricsFn.addAlias('dev')
+    const flywheelMetricsProdAlias = flywheelMetricsFn.addAlias('prod')
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -365,6 +705,11 @@ export class AdminStack extends cdk.Stack {
 
     const linkedInPostsDevAlias = linkedInPostsFn.addAlias('dev')
     const linkedInPostsProdAlias = linkedInPostsFn.addAlias('prod')
+
+    // Groei Systeem aliases already created inline above
+    // (signaaldetectie, insightExtractie, contentEngine, softOutreach,
+    //  sequenceScheduler are prod-only for EventBridge; subredditConfig,
+    //  workflowScan, flywheelMetrics have dev+prod for API Gateway)
 
     // ── API Gateway ──────────────────────────────────────────────────────────
     const api = new apigateway.RestApi(this, 'AInternAdminApi', {
@@ -450,6 +795,29 @@ export class AdminStack extends cdk.Stack {
     linkedInPostByIdResource.addMethod('PUT', aliasIntegration(linkedInPostsFn))
     linkedInPostByIdResource.addMethod('DELETE', aliasIntegration(linkedInPostsFn))
 
+    // GET + POST /admin/subreddit-config
+    // PUT + DELETE /admin/subreddit-config/{name}
+    const subredditConfigResource = adminResource.addResource('subreddit-config')
+    subredditConfigResource.addMethod('GET', aliasIntegration(subredditConfigFn))
+    subredditConfigResource.addMethod('POST', aliasIntegration(subredditConfigFn))
+
+    const subredditByNameResource = subredditConfigResource.addResource('{name}')
+    subredditByNameResource.addMethod('PUT', aliasIntegration(subredditConfigFn))
+    subredditByNameResource.addMethod('DELETE', aliasIntegration(subredditConfigFn))
+
+    // GET + PUT /admin/flywheel-metrics
+    const flywheelMetricsResource = adminResource.addResource('flywheel-metrics')
+    flywheelMetricsResource.addMethod('GET', aliasIntegration(flywheelMetricsFn))
+    flywheelMetricsResource.addMethod('PUT', aliasIntegration(flywheelMetricsFn))
+
+    // GET /admin/pain-signals (read-only, shares flywheel-metrics handler)
+    const painSignalsResource = adminResource.addResource('pain-signals')
+    painSignalsResource.addMethod('GET', aliasIntegration(flywheelMetricsFn))
+
+    // POST /workflow-scan (public — no JWT required)
+    const workflowScanResource = api.root.addResource('workflow-scan')
+    workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
+
     // ── API Gateway → Lambda permissions ─────────────────────────────────────
     const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
     const apigwPrincipal = new iam.ServicePrincipal('apigateway.amazonaws.com')
@@ -469,6 +837,12 @@ export class AdminStack extends cdk.Stack {
       [leadCrudProdAlias, 'LeadCrudProdAlias'],
       [linkedInPostsDevAlias, 'LinkedInPostsDevAlias'],
       [linkedInPostsProdAlias, 'LinkedInPostsProdAlias'],
+      [subredditConfigDevAlias, 'SubredditConfigDevAlias'],
+      [subredditConfigProdAlias, 'SubredditConfigProdAlias'],
+      [workflowScanDevAlias, 'WorkflowScanDevAlias'],
+      [workflowScanProdAlias, 'WorkflowScanProdAlias'],
+      [flywheelMetricsDevAlias, 'FlywheelMetricsDevAlias'],
+      [flywheelMetricsProdAlias, 'FlywheelMetricsProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,

@@ -54,3 +54,35 @@ The index holds only `BlogPostSummary` fields — no `content`. Prepend new post
 ## Notes
 - `VITE_KENNISBANK_BASE_URL` must be set in Amplify environment variables and a new build triggered before changes appear on aintern.nl — this is a Vite build-time variable.
 - Content topics that resonate: time savings, Lightspeed integrations, AI for repetitive tasks, case studies with real metrics (60 min → 5 min).
+
+## SEO Schrijfregels (verplicht per artikel — board 2026-04-26)
+
+### Title
+- Maximaal 60 tekens
+- Primair keyword vooraan (eerste 30 tekens)
+- Formaat: `[Keyword] — [belofte/resultaat]` of `Hoe [keyword] jouw MKB [resultaat]`
+
+### Meta description (veld `metaDescription`)
+- 120–155 tekens
+- Structuur: **probleem** + **oplossing** + **resultaat**
+- 1 hoofdkeyword verwerkt
+- Voorbeeld: "Veel MKB-bedrijven worstelen met handmatige productinvoer. AI automatiseert dit proces — en bespaart 50+ uur per maand."
+
+### Artikel H1/H2 structuur (verplicht)
+1. **H1** — hoofdonderwerp met keyword
+2. **Intro** (geen header) — probleem + herkenning bij MKB-lezer
+3. **H2** — Waarom dit probleem groeit
+4. **H2** — De oplossing met AI
+5. **H2** — Praktijkvoorbeeld MKB (concreet, met cijfers)
+6. **H2** — Eerste stap die je vandaag kunt zetten
+
+### Interne linking (verplicht)
+- Voeg 2–3 interne links per artikel toe
+- Gebruik keyword als anchor text (niet "klik hier")
+- Link bij voorkeur naar gerelateerde Kennisbank artikelen + homepage CTA
+
+### Content clusters (voorkom keyword cannibalization)
+Schrijf per cluster, niet door elkaar:
+1. **AI automatisering MKB** — procesautomatisering, tijdsbesparing, schaalbaarheid
+2. **AI webshop optimalisatie** — Lightspeed, productinvoer, voorraadbeheer, klantenservice
+3. **Proces automatisering** — workflows, herhaalbare taken, no-code/low-code AI tools

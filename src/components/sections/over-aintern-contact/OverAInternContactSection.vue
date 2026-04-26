@@ -9,6 +9,10 @@ const props = withDefaults(defineProps<{ bg?: BgColor }>(), { bg: 'light' })
 const { t } = useI18n()
 const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
+
+function openEmailClient() {
+  window.location.href = 'mailto:hello@aintern.nl'
+}
 </script>
 
 <template>
@@ -58,7 +62,11 @@ const { trackEvent } = useAnalytics()
             <span class="oac-cta-or">{{ t('overAIntern.contact.or') }}</span>
           </div>
 
-          <a href="mailto:hello@aintern.nl" class="oac-cta-email">
+          <a
+            href="mailto:hello@aintern.nl"
+            class="oac-cta-email"
+            @click.prevent="openEmailClient"
+          >
             {{ t('overAIntern.contact.email') }}
           </a>
         </div>
