@@ -164,6 +164,36 @@ const { t } = useI18n()
       </RouterLink>
 
       <RouterLink
+        to="/admin/groei-systeem"
+        active-class="bg-indigo-50 text-indigo-600"
+        class="rounded-lg"
+      >
+        <div
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+        >
+          <!-- arrow-path / flywheel icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M21.5 2v6h-6" />
+            <path d="M2.5 12a10 10 0 0 1 19-4.5L21.5 8" />
+            <path d="M2.5 22v-6h6" />
+            <path d="M21.5 12a10 10 0 0 1-19 4.5L2.5 16" />
+          </svg>
+          <span>Groei Systeem</span>
+        </div>
+      </RouterLink>
+
+      <RouterLink
         to="/admin/organisation"
         active-class="bg-indigo-50 text-indigo-600"
         class="rounded-lg"

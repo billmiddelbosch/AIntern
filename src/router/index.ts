@@ -94,6 +94,18 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'admin', requiresAuth: true, title: 'leads.form.pageTitle' },
   },
   {
+    path: '/workflow-scan',
+    name: 'workflow-scan',
+    component: () => import('@/views/WorkflowScanView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/admin/groei-systeem',
+    name: 'admin-groei-systeem',
+    component: () => import('@/views/admin/AdminGroeisysteemView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'groeiSysteem.pageTitle' },
+  },
+  {
     path: '/admin/linkedin',
     name: 'admin-linkedin',
     component: () => import('@/views/admin/AdminLinkedInView.vue'),

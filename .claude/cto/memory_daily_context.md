@@ -20,7 +20,7 @@ _Last updated: 2026-04-26_
 - B-65 ✅ BUG-02 email fix: `openEmailClient()` helper in OverAInternContactSection.vue (commit 7978517)
 - B-68 ✅ C-Level rename: Joost/Sanne/Lars/Emma — agent files + SKILL.md + admin view
 - B-66 ✅ P1 performance: HomeView dynamic import + WebP conversie-instructie
-- B-76 🔄 AI MKB Groei Systeem Stap 1: Reddit polling Lambda + PainDatabase DynamoDB tabel
+- B-76 ✅ AI MKB Groei Systeem Stap 1: Reddit polling Lambda + PainDatabase DynamoDB tabel — **gedeployed (2026-04-26)**
 - O-03: verlaagde prioriteit — implementatie maandag 28 april (deadline T-3 ipv T-6)
 - SKILL.md v0.4.0: 3 improvements (.claude/ terminal permissions, rate-limit recovery, AI MKB Groei check)
 
