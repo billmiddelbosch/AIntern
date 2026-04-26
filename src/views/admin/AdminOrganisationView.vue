@@ -30,7 +30,7 @@ const PARENT_BORDER: Record<string, string> = {
 const agents: Agent[] = [
   // C-level
   {
-    name: 'Alex', agentId: 'ceo', emoji: '🧑‍💼', tier: 'clevel', parentRole: null,
+    name: 'Joost', agentId: 'ceo', emoji: '🧑‍💼', tier: 'clevel', parentRole: null,
     roleLabel: 'CEO', tileColor: 'bg-indigo-50 text-indigo-700 ring-indigo-200',
     responsibilities: [
       'Eindverantwoordelijkheid voor strategie en richting van AIntern',
@@ -40,34 +40,34 @@ const agents: Agent[] = [
     triggeredBy: 'Human Board',
   },
   {
-    name: 'Blake', agentId: 'cmo', emoji: '📣', tier: 'clevel', parentRole: 'CEO',
+    name: 'Sanne', agentId: 'cmo', emoji: '📣', tier: 'clevel', parentRole: 'CEO',
     roleLabel: 'CMO', tileColor: 'bg-pink-50 text-pink-700 ring-pink-200',
     responsibilities: [
       'Contentmarketing, LinkedIn-presence en lead-generatie',
       'Kennisbank publicaties en campagnestrategie',
       'Merkpositionering en doelgroepbereik voor het MKB',
     ],
-    triggeredBy: 'CEO (Alex)',
+    triggeredBy: 'CEO (Joost)',
   },
   {
-    name: 'Morgan', agentId: 'cto', emoji: '🔧', tier: 'clevel', parentRole: 'CEO',
+    name: 'Lars', agentId: 'cto', emoji: '🔧', tier: 'clevel', parentRole: 'CEO',
     roleLabel: 'CTO', tileColor: 'bg-teal-50 text-teal-700 ring-teal-200',
     responsibilities: [
       'Technische architectuur van het platform en Lambda-functies',
       'Infrastructuur (AWS CDK), CI/CD en security',
       'Technische roadmap en sprint-planning',
     ],
-    triggeredBy: 'CEO (Alex)',
+    triggeredBy: 'CEO (Joost)',
   },
   {
-    name: 'Sam', agentId: 'coo', emoji: '⚙️', tier: 'clevel', parentRole: 'CEO',
+    name: 'Emma', agentId: 'coo', emoji: '⚙️', tier: 'clevel', parentRole: 'CEO',
     roleLabel: 'COO', tileColor: 'bg-violet-50 text-violet-700 ring-violet-200',
     responsibilities: [
       'Operationele processen, kwaliteitsbewaking en SLA-naleving',
       'Klant-onboarding en projectdelivery',
       'Interne efficiëntie en tooling',
     ],
-    triggeredBy: 'CEO (Alex)',
+    triggeredBy: 'CEO (Joost)',
   },
   // CEO sub-agents
   { name: 'Backlog Manager', agentId: 'backlog-manager', emoji: '📋', tier: 'subagent', parentRole: 'CEO', roleLabel: 'Backlog Manager', tileColor: 'bg-slate-50 text-slate-700 ring-slate-200', triggeredBy: 'CEO — feature triage, sprint planning' },

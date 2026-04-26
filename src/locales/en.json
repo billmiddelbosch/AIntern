@@ -226,7 +226,8 @@
       "kennisbank": "Kennisbank",
       "organisation": "Organisation",
       "leads": "Pipeline",
-      "linkedin": "LinkedIn Posts"
+      "linkedin": "LinkedIn Posts",
+      "groeiSysteem": "Growth System"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -516,5 +517,8 @@
     "tasksPerWeek": "tasks/wk",
     "statusActive": "Active",
     "statusInactive": "Inactive"
+  },
+  "groeiSysteem": {
+    "pageTitle": "Growth System"
   }
 }

@@ -44,6 +44,7 @@ function toggleLocale() {
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-8">
 
       <!-- Logo -->
+      <!-- TODO WebP: cwebp src/assets/brand/mascot-nav.png -o src/assets/brand/mascot-nav.webp -q 85 -->
       <RouterLink to="/" class="flex items-center gap-2 shrink-0">
         <img src="@/assets/brand/mascot-nav.png" alt="AIntern" class="h-8 w-auto" />
         <span class="font-heading text-xl font-bold text-indigo-600 tracking-tight">AIntern</span>

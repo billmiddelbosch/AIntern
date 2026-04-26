@@ -226,7 +226,8 @@
       "kennisbank": "Kennisbank",
       "organisation": "Organisatie",
       "leads": "Pipeline",
-      "linkedin": "LinkedIn Posts"
+      "linkedin": "LinkedIn Posts",
+      "groeiSysteem": "Groei Systeem"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -516,5 +517,8 @@
     "tasksPerWeek": "taken/wk",
     "statusActive": "Actief",
     "statusInactive": "Inactief"
+  },
+  "groeiSysteem": {
+    "pageTitle": "Groei Systeem"
   }
 }

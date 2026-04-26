@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
-description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Alex), CMO (Blake), CTO (Morgan), and COO (Sam) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.3.9
+description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
+version: 0.4.0
 ---
 
 # Daily Board Meeting
@@ -23,9 +23,21 @@ Run directly in the main session (no separate terminal needed — this is a safe
 git checkout -b feature/board-{YYYY-MM-DD} 2>/dev/null || git checkout feature/board-{YYYY-MM-DD}
 git branch --show-current
 ```
-The branch name uses today's date (e.g., `feature/board-2026-04-11`). Alex (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
+The branch name uses today's date (e.g., `feature/board-2026-04-11`). Joost (CEO) records this branch name — **all subsequent agent actions during this meeting must be executed on this branch**. If the branch already exists (repeat run), the `||` fallback checks it out instead of recreating it. The `git branch --show-current` call confirms the active branch explicitly in the output.
 
 **Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
+
+**Rate-limit recovery (mid-meeting interruption):** If the session was interrupted by a Claude rate limit and the user resumes with "continue" (or similar), do NOT restart from Phase 1. Instead: (1) check `git log feature/board-{YYYY-MM-DD} --oneline` to see which terminals already committed, (2) check which backlog items are already `✅ done` today, (3) resume at the next pending terminal or phase. State explicitly: `_Herstart na rate limit — B-xx t/m B-yy al klaar; doorgaan met B-zz._` This prevents duplicate work after interruptions.
+
+**Maandag-verplichtingen (harde eis — alleen op maandag, nooit te skipppen):**
+
+Controleer of vandaag maandag is via `date +%A`. Als ja, zijn de volgende twee punten **verplicht** ongeacht backlog, blockers, of Human Board feedback. Ze worden altijd als de eerste twee items in de Top 5 Daily Actions opgenomen (Phase 2 Round 3 Step B) en kunnen niet worden verdrongen, uitgesteld, of overgeslagen:
+
+1. **Weekrapport vorige week — Emma (COO).** Genereer het weekrapport voor de ISO-week die eindigde op de afgelopen zondag, conform `.claude/skills/weekly-report.md`. Uitvoeren via een claude terminal. Rapport wordt opgeslagen in de Obsidian vault op het standaard pad. Backlog-item aanmaken vóór de terminal wordt gedispatcht.
+
+2. **Ghostwriter LinkedIn post AI-Duo Experiment — Sanne (CMO).** Draft de volgende ongepubliceerde episode voor "Het AI-Duo Experiment" serie via Phase 3.5 (altijd actief op maandag, ongeacht de trigger-conditie). Als er een bestaande draft klaarligt die Bill nog niet heeft gepubliceerd, markeer die dan als urgent ter review in de Approval Gate.
+
+Noteer beide verplichtingen in de opening agenda onder een apart kopje **`Maandag-verplichtingen:`** vóór de normale Agenda van vandaag.
 
 **Step 0.1 — CTO runs project health check:**
 
@@ -71,15 +83,17 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
-6. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
+6. **AI MKB Groei Systeem voortgang check:** Als er AI MKB Groei Systeem B-items in de backlog staan (B-36 en B-51–B-76 range), controleer dan welke stap actief is door te zoeken naar de eerste `todo` in de 7-stappen reeks (Stap 1 Signaaldetectie → Stap 2 Insight → ... → Stap 7 Distributie). Rapporteer als `**AI MKB Groei Systeem:** Stap N [naam] — [B-item] [status]` in de Actieve Blockers sectie (of Agenda als geen blockers). Dit voorkomt dat dit sprint-overstijgend initiatief onzichtbaar wordt in het dagelijkse check-in.
+
+7. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
 
 Then open the meeting in this format:
 
 ```
 ## AIntern Dagelijkse Boardvergadering — {datum}
 
-**Aanwezig:** Alex (CEO), Blake (CMO), Morgan (CTO), Sam (COO)
-**Voorzitter:** Alex (CEO)
+**Aanwezig:** Joost (CEO), Sanne (CMO), Lars (CTO), Emma (COO)
+**Voorzitter:** Joost (CEO)
 
 **Actieve blockers:**
 - [Lijst blockers uit CTO/CMO memory — bijv. "Apify credits uitgeput ($0.07)" of "3 DMs wachten op handmatig verzenden"]
@@ -127,14 +141,14 @@ Typ je feedback of "geen feedback" om direct door te gaan.
 ### What to do with the response
 
 - **"geen feedback"** — proceed directly to Phase 2 with the backlog as-is
-- **Priority shift** (e.g. "doe B-12 eerst") — reorder in Phase 2 Round 1; Morgan (CTO) opens Round 1 by acknowledging the shift and anchoring it to the relevant OKR
+- **Priority shift** (e.g. "doe B-12 eerst") — reorder in Phase 2 Round 1; Lars (CTO) opens Round 1 by acknowledging the shift and anchoring it to the relevant OKR
 - **Skip item** — note it in Phase 2 and exclude it from the Top 5 Daily Actions
-- **New item** — Alex (CEO) notes it for Phase 2 Round 3 Step C (Backlog Registration); do not write to the backlog yet
-- **Other feedback** — Blake (CMO) or Morgan (CTO) address it in the relevant Round
+- **New item** — Joost (CEO) notes it for Phase 2 Round 3 Step C (Backlog Registration); do not write to the backlog yet
+- **Other feedback** — Sanne (CMO) or Lars (CTO) address it in the relevant Round
 
 Store the Human Board's response as `[HB_FEEDBACK]` — reference it explicitly at the start of Phase 2 Round 1:
 ```
-**Alex (CEO) — Opening Round 1:**
+**Joost (CEO) — Opening Round 1:**
 Human Board feedback ontvangen: [HB_FEEDBACK samenvatting]
 Dit nemen we mee als leidraad voor de prioriteiten van vandaag.
 ```
@@ -155,6 +169,8 @@ The `--allowedTools` flag pre-approves file writes so the terminal never blocks 
 
 > ⛔ **NEVER use the Agent tool for terminal actions.** The Agent tool runs in a hidden sub-context that is invisible to the Human Board. Only `Bash` + `claude -p` produces a visible console terminal.
 
+> ⛔ **Terminals cannot write to `.claude/` directory files** (agent definitions, SKILL.md, memory files). The subprocess permission model blocks it. All edits to `.claude/` must be performed **directly in the main session** using the Edit or Write tools — never via a dispatched terminal. If a task requires both `.claude/` edits and code changes, split it: perform `.claude/` edits inline first, then dispatch a terminal for the code changes only.
+
 The prompt passed to each terminal **must**:
 1. Start with: `"You are working on branch feature/board-{YYYY-MM-DD}. Verify you are on this branch (git status) before making any changes. If not, run: git checkout feature/board-{YYYY-MM-DD}."`
 2. Describe the specific action to take
@@ -168,7 +184,7 @@ The approval gate runs **inside the terminal** — the terminal itself outputs t
 
 ### CEO branch oversight
 
-Alex (CEO) is responsible for branch integrity and backlog governance throughout the meeting:
+Joost (CEO) is responsible for branch integrity and backlog governance throughout the meeting:
 
 - **Before each terminal is dispatched:** confirm (1) the branch name in the prompt matches `feature/board-{YYYY-MM-DD}` and (2) the corresponding backlog item exists and has status `todo` or `in-progress` — if the backlog item is missing, instruct the backlog manager to add it first and wait for confirmation before opening the terminal. State this check explicitly in the meeting output so Bill can verify before the terminal starts.
 - **After each terminal completes:** verify in the terminal output that (1) the full Terminal Summary was shown verbatim and (2) the Human Board was asked for approval and responded "ja" before the commit ran. If either step was skipped, surface a `[BLOCKER]` — the commit is invalid, must be reverted, and the terminal must re-run with the correct approval flow. If ❌ status, hold all subsequent terminals until resolved.
@@ -182,29 +198,29 @@ Alex (CEO) is responsible for branch integrity and backlog governance throughout
 Run a structured 3-round discussion modeled on the marketing-super-team debate format. Each executive speaks in character using their real name, role, and domain expertise.
 
 **Personas:**
-- **Alex (CEO)** — strategy, cross-functional alignment, board priorities, OKRs
-- **Blake (CMO)** — lead generation, content, LinkedIn campaigns, Kennisbank, outreach ROI
-- **Morgan (CTO)** — product velocity, technical blockers, infra, backlog feasibility
-- **Sam (COO)** — operations, lead pipeline health, client onboarding readiness, weekly report status
+- **Joost (CEO)** — strategy, cross-functional alignment, board priorities, OKRs
+- **Sanne (CMO)** — lead generation, content, LinkedIn campaigns, Kennisbank, outreach ROI
+- **Lars (CTO)** — product velocity, technical blockers, infra, backlog feasibility
+- **Emma (COO)** — operations, lead pipeline health, client onboarding readiness, weekly report status
 
 ### Round 1 — Domain Priorities
 
 Each executive states their **top 2 priorities for today**, anchored to the current OKRs and backlog. Format:
 
 ```
-**Alex (CEO):**
+**Joost (CEO):**
 1. [Priority] — [why it matters today]
 2. [Priority] — [why it matters today]
 
-**Blake (CMO):**
+**Sanne (CMO):**
 1. [Priority] — [why it matters today]
 2. [Priority] — [why it matters today]
 
-**Morgan (CTO):**
+**Lars (CTO):**
 1. [Priority] — [why it matters today]
 2. [Priority] — [why it matters today]
 
-**Sam (COO):**
+**Emma (COO):**
 1. [Priority] — [why it matters today]
 2. [Priority] — [why it matters today]
 ```
@@ -255,6 +271,8 @@ Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-i
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
 
+> **Maandag-slot:** Op maandag zijn positie 1 en 2 altijd pre-gereserveerd: **(1) Weekrapport vorige week — Emma (COO)**, **(2) Ghostwriter LinkedIn post AI-Duo Experiment — Sanne (CMO)**. De overige 3 posities worden vrij ingevuld op basis van de hoogste OKR-impact.
+
 ```
 | # | Action | Owner | Success Metric |
 |---|--------|-------|----------------|
@@ -265,7 +283,7 @@ Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-i
 
 **Step C — Backlog Registration (runs immediately after the Top 5 table is finalized, before any phase begins):**
 
-Alex (CEO) registers every Top 5 action directly in `product/backlog.md` (Edit tool). The `backlog-manager` is an **agent**, not a skill — calling it via `Skill()` fails. Instead, append rows to the Board Meeting Actions (B) table directly. Each item is registered with:
+Joost (CEO) registers every Top 5 action directly in `product/backlog.md` (Edit tool). The `backlog-manager` is an **agent**, not a skill — calling it via `Skill()` fails. Instead, append rows to the Board Meeting Actions (B) table directly. Each item is registered with:
 - **Title:** [action from the table]
 - **Owner:** [assigned exec]
 - **Status:** `todo`
@@ -275,7 +293,7 @@ Alex (CEO) registers every Top 5 action directly in `product/backlog.md` (Edit t
 The backlog manager confirms each item before writing (per its own rules). Alex waits for confirmation of all 5 items before proceeding to Phase 3. No agent terminal may be dispatched for an action that is not yet logged in the backlog.
 
 ```
-**Alex (CEO) — Backlog Registratie:**
+**Joost (CEO) — Backlog Registratie:**
 Ik instrueer de backlog manager om de volgende 5 acties te registreren vóór wij beginnen:
 1. [actie 1] — [eigenaar] — [succescriterium]
 2. [actie 2] — [eigenaar] — [succescriterium]
@@ -287,7 +305,7 @@ Ik instrueer de backlog manager om de volgende 5 acties te registreren vóór wi
 
 ## Phase 3 — LinkedIn Outreach Proposals
 
-Blake (CMO) leads this phase with support from the `marketing-super-team` and `social-content` skills.
+Sanne (CMO) leads this phase with support from the `marketing-super-team` and `social-content` skills.
 
 ### Pre-flight Check
 
@@ -339,13 +357,14 @@ Before drafting any messages, evaluate the outreach state using context already 
 
 ## Phase 3.5 — Ghostwriter Batch (conditioneel)
 
-**Trigger:** Alleen uitvoeren als Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt.
+**Trigger:** Uitvoeren als (1) Human Board in de check-in of Phase 2 het woord "ghostwriter", "draft posts", "hire ghostwriter", of "persoonlijk LinkedIn" gebruikt, **OF (2) vandaag maandag is** — op maandag is Phase 3.5 altijd verplicht, ongeacht de overige agenda (maandag-verplichting).
 
-Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profiel als onderdeel van "Het AI-Duo Experiment" serie.
+Sanne (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profiel als onderdeel van "Het AI-Duo Experiment" serie.
 
 **Steps:**
-1. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
-2. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
+1. **Lees het weekrapport van de vorige week als feitenbasis.** Zoek het meest recente weekrapport in `C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/` met patroon `weekrapport-YYYY-WNN.md`. Als het huidige weekrapport al gegenereerd is (maandag-verplichting stap 1), gebruik dat. Extraheer uit het rapport de **Ghostwriter Input Block** (Stap 10 van de weekly-report skill) of — als dat blok ontbreekt — handmatig: shipped items, lead/outreach aantallen, gepubliceerde artikelen, KPI-highlights en opvallende momenten. Deze feiten zijn de **verplichte grondstof** voor de post; verzin geen data.
+2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
+3. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
 3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
 4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter. **Verplichte velden:** `serie`, `episode`, `titel`, `post_voor`, `status: draft`, `seed`. Controleer alle 6 velden vóór opslaan — het importscript (`lambda/scripts/import-ghostwriter-drafts.mjs`) slaat episodes stil over als `serie` of `episode` ontbreekt. Als een bestaand draft (bijv. episode-01) deze velden mist, voeg ze dan nu toe voordat je verdergaat met de batch-import in stap 4.5.
 4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
@@ -361,7 +380,7 @@ Blake (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
 
 ## Phase 4 — Kennisbank Content Proposals
 
-Blake (CMO) leads this phase. Source inspiration from Bill's Obsidian vault, then use `marketing-super-team` to shape the angle.
+Sanne (CMO) leads this phase. Source inspiration from Bill's Obsidian vault, then use `marketing-super-team` to shape the angle.
 
 ### Pre-flight Check — Skip Conditions
 
@@ -420,7 +439,7 @@ Compile a concise management summary covering all phases.
 # AIntern Boardvergadering — {datum}
 
 ## Aanwezig
-Alex (CEO), Blake (CMO), Morgan (CTO), Sam (COO)
+Joost (CEO), Sanne (CMO), Lars (CTO), Emma (COO)
 
 ## Top 5 Dagelijkse Acties
 | # | Actie | Eigenaar | Succescriterium |
@@ -466,10 +485,10 @@ After receiving the Human Board's response at the End-of-Meeting Approval Gate, 
 
 | Executive | Directory |
 |-----------|-----------|
-| Alex (CEO) | `.claude/ceo/` |
-| Blake (CMO) | `.claude/cmo/` |
-| Morgan (CTO) | `.claude/cto/` |
-| Sam (COO) | `.claude/coo/` |
+| Joost (CEO) | `.claude/ceo/` |
+| Sanne (CMO) | `.claude/cmo/` |
+| Lars (CTO) | `.claude/cto/` |
+| Emma (COO) | `.claude/coo/` |
 
 ### What to write per executive
 
@@ -607,6 +626,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **Maandag-verplichtingen zijn niet-onderhandelbaar** — op maandag staan weekrapport (Sam/COO, vorige week) en ghostwriter LinkedIn post AI-Duo Experiment (Blake/CMO) altijd als #1 en #2 in de Top 5 Daily Actions; niet te verplaatsen, overslaan of uitstellen; Phase 3.5 (Ghostwriter) wordt op maandag altijd uitgevoerd ongeacht de trigger-conditie
 - **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
 - **Stay in character** — each executive speaks in their own voice throughout
@@ -620,7 +640,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
 - **Sequential dispatch** — terminals are dispatched one at a time; the next terminal only starts after the previous Terminal Summary shows ✅
-- **CEO gate on each terminal** — Alex (CEO) verifies the branch name in every terminal prompt before dispatch and reads the Terminal Summary on return; a ❌ status halts further terminals until resolved
+- **CEO gate on each terminal** — Joost (CEO) verifies the branch name in every terminal prompt before dispatch and reads the Terminal Summary on return; a ❌ status halts further terminals until resolved
 - **Merge conflict prevention** — every terminal starts with `git pull origin feature/board-{YYYY-MM-DD} --rebase` before making changes
 - **Backlog-first** — every action must be logged in `product/backlog.md` by the `backlog-manager` skill before its terminal is opened; CEO enforces this gate on every dispatch
 - **Backlog update after approval** — the `backlog-manager` is the first thing called after the human's approval response; it updates item statuses before any other post-approval action runs
