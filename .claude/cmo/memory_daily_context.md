@@ -1,5 +1,5 @@
-# Blake — Daily Context
-_Last updated: 2026-04-25_
+# Sanne — Daily Context
+_Last updated: 2026-04-26_
 
 ## Open Acties (toegewezen aan mij)
 - B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **ON HOLD** — Bill wil nieuwe outreach optie evalueren
@@ -11,11 +11,17 @@ _Last updated: 2026-04-25_
 - Kennisbank artikelen: 2 / 2 — ✅ (B-40: startup operators, B-45: van software naar agents)
 
 ## Actieve Blockers
-- Outreach ON HOLD — Bill evalueert nieuwe outreach optie vóór goedkeuring leads 1–5
+- Outreach ON HOLD — wacht op AI MKB Groei Systeem (B-76); herstart pas als Stap 1 live
 - Obsidian vault leeg — alle seeds GEBRUIKT/AFGEWEZEN; Bill voegt nieuwe entries toe
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
+
+## Genomen Beslissingen (board 2026-04-26)
+- SEO schrijfregels toegevoegd aan memory_kennisbank_publishing.md ✅ (title ≤60 chars, meta 120–155, H1/H2 structuur, interne links, content clusters)
+- LinkedIn outreach 5 leads: ON HOLD tot AI MKB Groei Systeem Stap 1 (B-76) live is
+- Kennisbank week 17 afgerond: 2/2 ✅ — Phase 4 overgeslagen (al gepubliceerd)
+- Maandag-verplichting: Ghostwriter ep5 draften (eerste ongepubliceerde na ep01–04)
 
 ## Genomen Beslissingen (board 2026-04-25)
 - B-59 LinkedIn company post gepubliceerd ✅ — "Van software naar agents" (urn:li:share:7453754568632467458)

@@ -26,6 +26,12 @@ export function respond(
       'Content-Type': 'application/json',
       'Access-Control-Allow-Origin': corsOrigin(alias, requestOrigin),
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+      'Content-Security-Policy': "default-src 'none'",
+      'X-Frame-Options': 'DENY',
+      'X-Content-Type-Options': 'nosniff',
+      'Referrer-Policy': 'strict-origin-when-cross-origin',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
     },
     body: JSON.stringify(body),
   }

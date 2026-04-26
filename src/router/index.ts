@@ -1,5 +1,4 @@
 import type { RouteRecordRaw } from 'vue-router'
-import HomeView from '@/views/HomeView.vue'
 
 declare module 'vue-router' {
   interface RouteMeta {
@@ -13,7 +12,7 @@ export const routes: RouteRecordRaw[] = [
   {
     path: '/',
     name: 'home',
-    component: HomeView,
+    component: () => import('@/views/HomeView.vue'),
     meta: { layout: 'public' },
   },
   {
@@ -93,6 +92,18 @@ export const routes: RouteRecordRaw[] = [
     name: 'admin-lead-detail',
     component: () => import('@/views/admin/AdminLeadFormView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'leads.form.pageTitle' },
+  },
+  {
+    path: '/workflow-scan',
+    name: 'workflow-scan',
+    component: () => import('@/views/WorkflowScanView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/admin/groei-systeem',
+    name: 'admin-groei-systeem',
+    component: () => import('@/views/admin/AdminGroeisysteemView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'groeiSysteem.pageTitle' },
   },
   {
     path: '/admin/linkedin',
