@@ -1,9 +1,9 @@
 ---
-serie: AIntern Experiment
+serie: Het Aintern experiment
 episode: 1
 titel: Startups van de toekomst bestaan uit twee operators.
 post_voor: Maandag 2026-04-27
-status: draft
+status: approved
 seed: 2026-04-19 De startup van de toekomst 2 AI operators.md
 meeting_minute_feit: Obsidian gedachte 2026-04-19 — aanleiding voor het experiment
 vorige_post: geen

@@ -1,29 +1,24 @@
 # Emma — Daily Context
-_Last updated: 2026-04-26_
+_Last updated: 2026-04-27_
 
 ## Open Acties (toegewezen aan mij)
-- O-03 Client Onboarding Checklist: spec ✅ — implementatie start maandag 28 april (deadline 1 mei = T-3)
-- Weekrapport week 17: **verplicht op maandag** — genereren via weekly-report skill
+- O-03 Client Onboarding Checklist: ✅ geïmplementeerd als B-80 — deadline 1 mei gehaald
 
-## KPI Status (week 17 afsluiting — 26 april)
-- Lead pipeline bijgewerkt: Hilde + Robert 9 dagen wacht (archiveren 2026-04-28 als geen acceptatie)
-- Open blockers geïdentificeerd: ✅
-- Onboarding checklist voortgang: spec klaar; implementatie maandag
+## KPI Status (week 18 start — 27 april)
+- Weekrapport week 17: ✅ aangemaakt (weekrapport-2026-W17.md)
+- Lead pipeline: Hilde Bolks + Robert Theuws archiveren 2026-04-28 als geen acceptatie (dag 10)
 
 ## Actieve Blockers
-- O-03 deadline 1 mei (T-3 vanuit maandag) — implementatie start maandag
-- Outreach ON HOLD — wacht op AI MKB Groei Systeem Stap 1 live
+- Outreach ON HOLD — wacht op B-61 (AI MKB Stap 2)
 
-## Genomen Beslissingen (board 2026-04-26)
-- O-03 implementatie uitgesteld naar maandag 28 april (lagere prioriteit vandaag)
-- Outreach leads 1–5: ON HOLD tot AI MKB Groei Systeem (B-76) live — nieuwe strategie
-- Hilde + Robert: archiveer op 2026-04-28 als geen acceptatie (9 → 11 dagen)
+## Genomen Beslissingen (board 2026-04-27)
+- O-03 B-80: ✅ volledig geïmplementeerd (Lambda + DynamoDB + Vue routes + i18n)
+- Weekrapport W17: aangemaakt inline (terminal backgrounded)
 
 ## Lopende Context
-- Weekrapport week 17 verplicht op maandag 28 april — Emma (COO)
 - Huidige leads pipeline:
   - dm_sent (3): tschuurtje.nl (Bram Hofman), zaderij.nl (Jan Bulthuis), wocashop.nl (Bob van Boekel)
-  - connection_sent (2): liatelier.nl (Hilde Bolks, 2026-04-17 — 9 dagen), homefitness4you.nl (Robert Theuws, 2026-04-17 — 9 dagen) → archiveren 2026-04-28
+  - connection_sent (2): liatelier.nl (Hilde Bolks, 2026-04-17 — 10 dagen ⚠️ archiveer morgen), homefitness4you.nl (Robert Theuws, 2026-04-17 — 10 dagen ⚠️ archiveer morgen)
   - not_contacted (5, ON HOLD): vansoest-amsterdam.nl, lijmenwinkel.nl, paperspecials.nl, dezeilenspecialist.nl, homesecuur.nl
   - not_found (1): sneeuwwinkel.nl
   - excluded (1): collegepoint.nl

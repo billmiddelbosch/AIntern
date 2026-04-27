@@ -3,9 +3,9 @@ export type PainUrgency = 'high' | 'medium' | 'low'
 
 export interface PainSignal {
   id: string
-  source: 'reddit'
+  source: 'reddit' | 'hackernews'
   sourceUrl: string
-  subreddit: string
+  subreddit?: string
   title: string
   text: string
   painCategory: string

@@ -367,6 +367,10 @@ export class AdminStack extends cdk.Stack {
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/reddit/client-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/reddit/client-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/reddit/client-secret`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/reddit/client-secret`,
         ],
       }),
     )
@@ -684,6 +688,61 @@ export class AdminStack extends cdk.Stack {
     const flywheelMetricsDevAlias = flywheelMetricsFn.addAlias('dev')
     const flywheelMetricsProdAlias = flywheelMetricsFn.addAlias('prod')
 
+    // ── ClientOnboarding DynamoDB table ──────────────────────────────────────
+    const onboardingTable = new dynamodb.Table(this, 'ClientOnboardingTable', {
+      tableName: 'aintern-onboarding',
+      partitionKey: { name: 'clientId', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
+
+    new ssm.StringParameter(this, 'OnboardingTableNameDev', {
+      parameterName: '/aintern/dev/dynamodb/onboarding-table-name',
+      stringValue: onboardingTable.tableName,
+    })
+
+    new ssm.StringParameter(this, 'OnboardingTableNameProd', {
+      parameterName: '/aintern/prod/dynamodb/onboarding-table-name',
+      stringValue: onboardingTable.tableName,
+    })
+
+    // ── onboarding Lambda ─────────────────────────────────────────────────────
+    const onboardingFn = new lambda.Function(this, 'OnboardingFunction', {
+      functionName: 'aintern-onboarding',
+      handler: 'onboarding.handler',
+      description: 'CRUD + toggle for client onboarding checklists — ClientOnboarding DynamoDB table (B-80)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        ONBOARDING_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    onboardingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/onboarding-table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/onboarding-table-name`,
+        ],
+      }),
+    )
+
+    onboardingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    onboardingTable.grantReadWriteData(onboardingFn)
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     const adminAuthDevAlias = adminAuthFn.addAlias('dev')
     const adminAuthProdAlias = adminAuthFn.addAlias('prod')
@@ -705,6 +764,9 @@ export class AdminStack extends cdk.Stack {
 
     const linkedInPostsDevAlias = linkedInPostsFn.addAlias('dev')
     const linkedInPostsProdAlias = linkedInPostsFn.addAlias('prod')
+
+    const onboardingDevAlias = onboardingFn.addAlias('dev')
+    const onboardingProdAlias = onboardingFn.addAlias('prod')
 
     // Groei Systeem aliases already created inline above
     // (signaaldetectie, insightExtractie, contentEngine, softOutreach,
@@ -814,6 +876,20 @@ export class AdminStack extends cdk.Stack {
     const painSignalsResource = adminResource.addResource('pain-signals')
     painSignalsResource.addMethod('GET', aliasIntegration(flywheelMetricsFn))
 
+    // POST + GET /admin/onboarding
+    // GET /admin/onboarding/{clientId}
+    // PATCH /admin/onboarding/{clientId}/items/{itemId}
+    const onboardingResource = adminResource.addResource('onboarding')
+    onboardingResource.addMethod('POST', aliasIntegration(onboardingFn))
+    onboardingResource.addMethod('GET', aliasIntegration(onboardingFn))
+
+    const onboardingByClientResource = onboardingResource.addResource('{clientId}')
+    onboardingByClientResource.addMethod('GET', aliasIntegration(onboardingFn))
+
+    const onboardingItemsResource = onboardingByClientResource.addResource('items')
+    const onboardingItemResource = onboardingItemsResource.addResource('{itemId}')
+    onboardingItemResource.addMethod('PATCH', aliasIntegration(onboardingFn))
+
     // POST /workflow-scan (public — no JWT required)
     const workflowScanResource = api.root.addResource('workflow-scan')
     workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
@@ -843,6 +919,8 @@ export class AdminStack extends cdk.Stack {
       [workflowScanProdAlias, 'WorkflowScanProdAlias'],
       [flywheelMetricsDevAlias, 'FlywheelMetricsDevAlias'],
       [flywheelMetricsProdAlias, 'FlywheelMetricsProdAlias'],
+      [onboardingDevAlias, 'OnboardingDevAlias'],
+      [onboardingProdAlias, 'OnboardingProdAlias'],
     ] as [lambda.Alias, string][]) {
       alias.addPermission(`Invoke${suffix}`, {
         principal: apigwPrincipal,
@@ -853,11 +931,21 @@ export class AdminStack extends cdk.Stack {
     // ── Deployment + stages ──────────────────────────────────────────────────
     const deployment = new apigateway.Deployment(this, 'AdminDeployment', { api })
 
+    // Per-method throttling for /workflow-scan POST — public endpoint with no auth,
+    // capped to prevent cost amplification from unbounded Haiku + DynamoDB calls (B-77).
+    const workflowScanThrottle: apigateway.MethodDeploymentOptions = {
+      throttlingRateLimit: 10,
+      throttlingBurstLimit: 20,
+    }
+
     const devStage = new apigateway.Stage(this, 'AdminDevStage', {
       deployment,
       stageName: 'dev',
       variables: { alias: 'dev' },
       description: 'Development stage — routes to dev alias',
+      methodOptions: {
+        '/workflow-scan/POST': workflowScanThrottle,
+      },
     })
 
     const prodStage = new apigateway.Stage(this, 'AdminProdStage', {
@@ -865,6 +953,9 @@ export class AdminStack extends cdk.Stack {
       stageName: 'prod',
       variables: { alias: 'prod' },
       description: 'Production stage — routes to prod alias',
+      methodOptions: {
+        '/workflow-scan/POST': workflowScanThrottle,
+      },
     })
 
     // ── Outputs ──────────────────────────────────────────────────────────────

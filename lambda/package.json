@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
     "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*",
@@ -21,7 +21,8 @@
     "bundle:workflow-scan": "esbuild src/workflow-scan.ts --bundle --platform=node --target=node22 --outfile=dist/workflow-scan.js --external:@aws-sdk/*",
     "bundle:sequence-scheduler": "esbuild src/sequence-scheduler.ts --bundle --platform=node --target=node22 --outfile=dist/sequence-scheduler.js --external:@aws-sdk/*",
     "bundle:flywheel-metrics": "esbuild src/flywheel-metrics.ts --bundle --platform=node --target=node22 --outfile=dist/flywheel-metrics.js --external:@aws-sdk/*",
-    "bundle:seed-subreddits": "esbuild src/seed-subreddits.ts --bundle --platform=node --target=node22 --outfile=dist/seed-subreddits.js --external:@aws-sdk/*"
+    "bundle:seed-subreddits": "esbuild src/seed-subreddits.ts --bundle --platform=node --target=node22 --outfile=dist/seed-subreddits.js --external:@aws-sdk/*",
+    "bundle:onboarding": "esbuild src/onboarding.ts --bundle --platform=node --target=node22 --outfile=dist/onboarding.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",

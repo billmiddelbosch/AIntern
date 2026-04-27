@@ -100,6 +100,18 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/admin/onboarding',
+    name: 'admin-onboarding',
+    component: () => import('@/views/admin/OnboardingListView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'onboarding.pageTitle' },
+  },
+  {
+    path: '/admin/onboarding/:clientId',
+    name: 'admin-onboarding-detail',
+    component: () => import('@/views/admin/OnboardingDetailView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'onboarding.pageTitle' },
+  },
+  {
     path: '/admin/groei-systeem',
     name: 'admin-groei-systeem',
     component: () => import('@/views/admin/AdminGroeisysteemView.vue'),

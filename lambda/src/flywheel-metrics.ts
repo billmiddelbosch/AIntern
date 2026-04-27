@@ -74,8 +74,8 @@ async function verifyJwt(event: APIGatewayProxyEvent, alias: string): Promise<bo
   const auth = event.headers['Authorization'] ?? event.headers['authorization'] ?? ''
   const token = auth.startsWith('Bearer ') ? auth.slice(7) : ''
   if (!token) return false
+  const secret = await getJwtSecret(alias) // intentionally not caught — SSM errors should surface as 500
   try {
-    const secret = await getJwtSecret(alias)
     jwt.verify(token, secret)
     return true
   } catch {

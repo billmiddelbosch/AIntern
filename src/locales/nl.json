@@ -227,7 +227,8 @@
       "organisation": "Organisatie",
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
-      "groeiSysteem": "Groei Systeem"
+      "groeiSysteem": "Groei Systeem",
+      "onboarding": "Onboarding"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -520,5 +521,53 @@
   },
   "groeiSysteem": {
     "pageTitle": "Groei Systeem"
+  },
+  "onboarding": {
+    "pageTitle": "Klant Onboarding",
+    "heading": "Klant Onboarding",
+    "subheading": "Volg het onboardingproces per klant.",
+    "newClient": "Nieuwe client toevoegen",
+    "loading": "Laden…",
+    "refresh": "Vernieuwen",
+    "error": "Onboarding-overzicht kon niet worden geladen. Probeer opnieuw.",
+    "empty": "Geen clients gevonden. Voeg je eerste client toe.",
+    "columns": {
+      "clientName": "Client",
+      "createdAt": "Aangemaakt",
+      "progress": "Voortgang",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Actief",
+      "completed": "Afgerond"
+    },
+    "modal": {
+      "title": "Nieuwe client toevoegen",
+      "clientNameLabel": "Klantnaam",
+      "clientNamePlaceholder": "Bijv. Acme BV",
+      "createdByLabel": "Aangemaakt door",
+      "createdByPlaceholder": "Bijv. ceo",
+      "cancel": "Annuleren",
+      "submit": "Checklist aanmaken",
+      "submitting": "Aanmaken…"
+    },
+    "detail": {
+      "backToList": "← Onboarding",
+      "progress": "{done} van {total} afgerond",
+      "completedAt": "Afgerond op {time}",
+      "notDone": "Nog niet gedaan"
+    },
+    "items": {
+      "intro_call": "Introductiegesprek gevoerd (doelen, verwachtingen, tijdlijn)",
+      "access_setup": "Toegang verleend (systemen, tools, accounts)",
+      "nda_signed": "NDA / verwerkersovereenkomst ondertekend",
+      "process_mapping": "Proceskaart opgesteld (te automatiseren workflow gedocumenteerd)",
+      "data_sample": "Voorbeelddata ontvangen en gevalideerd",
+      "first_automation": "Eerste automatisering opgeleverd (demo of live)",
+      "client_feedback": "Feedbackronde afgerond (client akkoord of aanpassingen verwerkt)",
+      "go_live": "Go-live bevestigd door client",
+      "training": "Gebruikerstraining gegeven",
+      "sign_off": "Formele sign-off ontvangen (handtekening of schriftelijke bevestiging)"
+    }
   }
 }
