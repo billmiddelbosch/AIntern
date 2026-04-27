@@ -12,7 +12,7 @@ _Last updated: 2026-04-26_
 
 ## Actieve Blockers
 - Outreach ON HOLD — wacht op AI MKB Groei Systeem (B-76); herstart pas als Stap 1 live
-- Obsidian vault leeg — alle seeds GEBRUIKT/AFGEWEZEN; Bill voegt nieuwe entries toe
+- Obsidian vault: 2 ongebruikte seeds beschikbaar in Technologie & Toekomst/: "2026-04-20 Product developers winnen van software developers in het AI-tijdperk.md" + "2026-04-25 Wie AI uitbesteedt verliest over twee jaar de regie.md"
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
