@@ -164,6 +164,35 @@ const { t } = useI18n()
       </RouterLink>
 
       <RouterLink
+        to="/admin/onboarding"
+        active-class="bg-indigo-50 text-indigo-600"
+        class="rounded-lg"
+      >
+        <div
+          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+        >
+          <!-- clipboard-check icon -->
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+            <rect x="9" y="3" width="6" height="4" rx="1" />
+            <polyline points="9 12 11 14 15 10" />
+          </svg>
+          <span>{{ t('admin.nav.onboarding') }}</span>
+        </div>
+      </RouterLink>
+
+      <RouterLink
         to="/admin/groei-systeem"
         active-class="bg-indigo-50 text-indigo-600"
         class="rounded-lg"

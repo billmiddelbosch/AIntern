@@ -227,7 +227,8 @@
       "organisation": "Organisation",
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
-      "groeiSysteem": "Growth System"
+      "groeiSysteem": "Growth System",
+      "onboarding": "Onboarding"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -520,5 +521,53 @@
   },
   "groeiSysteem": {
     "pageTitle": "Growth System"
+  },
+  "onboarding": {
+    "pageTitle": "Client Onboarding",
+    "heading": "Client Onboarding",
+    "subheading": "Track the onboarding process for every client.",
+    "newClient": "Add new client",
+    "loading": "Loading…",
+    "refresh": "Refresh",
+    "error": "Could not load onboarding entries. Please try again.",
+    "empty": "No clients found. Add your first client to get started.",
+    "columns": {
+      "clientName": "Client",
+      "createdAt": "Created",
+      "progress": "Progress",
+      "status": "Status"
+    },
+    "status": {
+      "active": "Active",
+      "completed": "Completed"
+    },
+    "modal": {
+      "title": "Add new client",
+      "clientNameLabel": "Client name",
+      "clientNamePlaceholder": "E.g. Acme BV",
+      "createdByLabel": "Added by",
+      "createdByPlaceholder": "E.g. ceo",
+      "cancel": "Cancel",
+      "submit": "Create checklist",
+      "submitting": "Creating…"
+    },
+    "detail": {
+      "backToList": "← Onboarding",
+      "progress": "{done} of {total} completed",
+      "completedAt": "Completed at {time}",
+      "notDone": "Not yet done"
+    },
+    "items": {
+      "intro_call": "Intro call held (goals, expectations, timeline)",
+      "access_setup": "Access granted (systems, tools, accounts)",
+      "nda_signed": "NDA / data processing agreement signed",
+      "process_mapping": "Process map created (workflow to automate documented)",
+      "data_sample": "Sample data received and validated",
+      "first_automation": "First automation delivered (demo or live)",
+      "client_feedback": "Feedback round completed (client approved or changes processed)",
+      "go_live": "Go-live confirmed by client",
+      "training": "User training given",
+      "sign_off": "Formal sign-off received (signature or written confirmation)"
+    }
   }
 }
