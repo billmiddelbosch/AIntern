@@ -320,7 +320,7 @@ onMounted(() => loadMetrics())
       <table v-else class="w-full text-sm">
         <thead>
           <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
-            <th class="pb-2 font-medium">Subreddit</th>
+            <th class="pb-2 font-medium">Bron</th>
             <th class="pb-2 font-medium">Titel</th>
             <th class="pb-2 font-medium">Urgentie</th>
             <th class="pb-2 font-medium">Categorie</th>
@@ -333,7 +333,10 @@ onMounted(() => loadMetrics())
             :key="pain.id"
             class="border-b border-slate-50 hover:bg-slate-50"
           >
-            <td class="py-2.5 text-slate-500 text-xs">r/{{ pain.subreddit }}</td>
+            <td class="py-2.5 text-slate-500 text-xs">
+              <span v-if="pain.source === 'reddit'">r/{{ pain.subreddit }}</span>
+              <span v-else class="text-orange-500">HN</span>
+            </td>
             <td class="py-2.5">
               <a :href="pain.sourceUrl" target="_blank" rel="noopener" class="text-indigo-600 hover:underline line-clamp-1">
                 {{ pain.title }}

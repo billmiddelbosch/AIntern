@@ -367,6 +367,10 @@ export class AdminStack extends cdk.Stack {
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/reddit/client-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/reddit/client-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/reddit/client-secret`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/reddit/client-secret`,
         ],
       }),
     )
