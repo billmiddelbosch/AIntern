@@ -99,21 +99,31 @@ const PAIN_KEYWORDS = [
   'always forgetting',
 ]
 
+// Pullpush server-side search query — broader than PAIN_KEYWORDS to maximise recall from the archive
+const PULLPUSH_QUERY = encodeURIComponent('automate manual expensive repetitive workflow tedious afford handmatig')
+
+interface PostData {
+  id: string
+  title: string
+  selftext: string
+  permalink: string
+  score: number
+  num_comments: number
+  subreddit: string
+  author: string
+}
+
 interface RedditPost {
-  data: {
-    id: string
-    title: string
-    selftext: string
-    permalink: string
-    score: number
-    num_comments: number
-    subreddit: string
-    author: string
-  }
+  data: PostData
 }
 
 interface RedditListing {
   data: { children: RedditPost[] }
+}
+
+// Pullpush.io mirror — flat array, same field names as PostData
+interface PullpushListing {
+  data: PostData[]
 }
 
 interface HNHit {
@@ -255,56 +265,77 @@ async function fetchFromReddit(
   subreddits: string[],
   tableName: string,
   anthropic: Anthropic,
-  initialToken: string,
   alias: string,
 ): Promise<number> {
-  let redditToken = initialToken
+  // Lazily loaded OAuth token — only fetched when Pullpush fails
+  let oauthToken: string | null | 'unavailable' = null
   let totalSaved = 0
 
   for (const subreddit of subreddits) {
     try {
-      const url = `https://oauth.reddit.com/r/${subreddit}/hot?limit=50`
-      let res = await fetch(url, {
-        headers: {
-          Authorization: `Bearer ${redditToken}`,
-          'User-Agent': 'AIntern-SignaalDetectie/2.0 by aintern_bot',
-        },
+      let posts: PostData[]
+      let usedPullpush = false
+
+      // Primary: Pullpush.io archive mirror — no credentials, no Lambda IP block
+      // q= does server-side keyword matching; no after= because Pullpush lags days-to-weeks behind Reddit
+      const pullpushUrl = `https://api.pullpush.io/reddit/search/submission/?subreddit=${subreddit}&q=${PULLPUSH_QUERY}&sort=desc&size=50`
+      const pullpushRes = await fetch(pullpushUrl, {
+        headers: { 'User-Agent': 'AIntern-SignaalDetectie/2.0' },
       })
 
-      // 401/403 may mean the cached token was revoked — retry once with a fresh token
-      if (res.status === 401 || res.status === 403) {
-        const freshToken = await getRedditToken(alias, true)
-        if (freshToken) {
-          redditToken = freshToken
-          res = await fetch(url, {
-            headers: {
-              Authorization: `Bearer ${freshToken}`,
-              'User-Agent': 'AIntern-SignaalDetectie/2.0 by aintern_bot',
-            },
-          })
+      if (pullpushRes.ok) {
+        const listing = (await pullpushRes.json()) as PullpushListing
+        posts = listing.data
+        usedPullpush = true
+      } else {
+        // Backup 1: Reddit OAuth when Pullpush fails
+        if (oauthToken === null) {
+          oauthToken = (await getRedditToken(alias)) ?? 'unavailable'
+          if (oauthToken === 'unavailable') {
+            console.log('[signaaldetectie] Pullpush failed (status=%d) and no OAuth credentials in SSM — skipping all subreddits', pullpushRes.status)
+            break
+          }
         }
+        const oauthUrl = `https://oauth.reddit.com/r/${subreddit}/hot?limit=50`
+        let oauthRes = await fetch(oauthUrl, {
+          headers: {
+            Authorization: `Bearer ${oauthToken}`,
+            'User-Agent': 'AIntern-SignaalDetectie/2.0 by aintern_bot',
+          },
+        })
+        // Stale cached token — refresh once and retry
+        if (oauthRes.status === 401 || oauthRes.status === 403) {
+          const fresh = await getRedditToken(alias, true)
+          if (fresh) {
+            oauthToken = fresh
+            oauthRes = await fetch(oauthUrl, {
+              headers: {
+                Authorization: `Bearer ${oauthToken}`,
+                'User-Agent': 'AIntern-SignaalDetectie/2.0 by aintern_bot',
+              },
+            })
+          }
+        }
+        if (!oauthRes.ok) {
+          const body = await oauthRes.text().catch(() => '')
+          console.error('[signaaldetectie] reddit fetch failed | subreddit=%s status=%d body=%s', subreddit, oauthRes.status, body.slice(0, 300))
+          continue
+        }
+        const listing = (await oauthRes.json()) as RedditListing
+        posts = listing.data.children.map((p) => p.data)
       }
-
-      if (!res.ok) {
-        const body = await res.text().catch(() => '')
-        console.error(
-          '[signaaldetectie] reddit fetch failed | subreddit=%s status=%d body=%s',
-          subreddit,
-          res.status,
-          body.slice(0, 300),
-        )
-        continue
-      }
-
-      const listing = (await res.json()) as RedditListing
-      const posts = listing.data.children
 
       const candidates = posts
         .map((p) => ({
-          ...p.data,
-          hotScore: p.data.score + p.data.num_comments * 3,
+          ...p,
+          hotScore: p.score + p.num_comments * 3,
         }))
         .filter((p) => {
+          if (usedPullpush) {
+            // Pullpush: q= already filtered for relevance; Haiku is the quality gate
+            return p.selftext !== '[removed]' && p.selftext !== ''
+          }
+          // OAuth: hot-sorted feed — require engagement score + exact keyword match
           if (p.hotScore < 10) return false
           const fullText = `${p.title} ${p.selftext}`.toLowerCase()
           return PAIN_KEYWORDS.some((kw) => fullText.includes(kw))
@@ -439,14 +470,13 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
 
   console.log('[signaaldetectie] active subreddits=%j', subreddits)
 
-  const redditToken = await getRedditToken(alias)
-  let totalSaved: number
+  // Primary: public Reddit .json (no OAuth app needed); per-subreddit OAuth backup is automatic
+  console.log('[signaaldetectie] source=reddit (Pullpush primary, OAuth backup)')
+  let totalSaved = await fetchFromReddit(subreddits, tableName, anthropic, alias)
 
-  if (redditToken !== null) {
-    console.log('[signaaldetectie] source=reddit')
-    totalSaved = await fetchFromReddit(subreddits, tableName, anthropic, redditToken, alias)
-  } else {
-    console.log('[signaaldetectie] source=hackernews (Reddit SSM absent)')
+  // Secondary: HN when Reddit returns nothing (all subreddits failed or empty)
+  if (totalSaved === 0) {
+    console.log('[signaaldetectie] Reddit returned 0 signals — falling back to HN')
     totalSaved = await fetchFromHN(tableName, anthropic, subreddits)
   }
 
