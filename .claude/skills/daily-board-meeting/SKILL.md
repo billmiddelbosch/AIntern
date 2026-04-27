@@ -33,7 +33,12 @@ The branch name uses today's date (e.g., `feature/board-2026-04-11`). Joost (CEO
 
 Controleer of vandaag maandag is via `date +%A`. Als ja, zijn de volgende twee punten **verplicht** ongeacht backlog, blockers, of Human Board feedback. Ze worden altijd als de eerste twee items in de Top 5 Daily Actions opgenomen (Phase 2 Round 3 Step B) en kunnen niet worden verdrongen, uitgesteld, of overgeslagen:
 
-1. **Weekrapport vorige week — Emma (COO).** Genereer het weekrapport voor de ISO-week die eindigde op de afgelopen zondag, conform `.claude/skills/weekly-report.md`. Uitvoeren via een claude terminal. Rapport wordt opgeslagen in de Obsidian vault op het standaard pad. Backlog-item aanmaken vóór de terminal wordt gedispatcht.
+1. **Weekrapport vorige week — Emma (COO).** Controleer **eerst** of het weekrapport voor de vorige ISO-week al bestaat:
+   ```bash
+   ls "C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/weekrapport-$(date -d 'last week' +%Y-W%V).md" 2>/dev/null && echo EXISTS || echo MISSING
+   ```
+   - Als `EXISTS`: markeer de maandag-verplichting als al voltooid; voeg het bestaande rapport toe als `✅ al gedaan` in de agenda — **geen terminal dispatchen**.
+   - Als `MISSING`: maak backlog-item aan, dispatch terminal conform `.claude/skills/weekly-report.md`. Rapport wordt opgeslagen in de Obsidian vault op het standaard pad.
 
 2. **Ghostwriter LinkedIn post AI-Duo Experiment — Sanne (CMO).** Draft de volgende ongepubliceerde episode voor "Het AI-Duo Experiment" serie via Phase 3.5 (altijd actief op maandag, ongeacht de trigger-conditie). Als er een bestaande draft klaarligt die Bill nog niet heeft gepubliceerd, markeer die dan als urgent ter review in de Approval Gate.
 
@@ -85,7 +90,11 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 
 6. **AI MKB Groei Systeem voortgang check:** Als er AI MKB Groei Systeem B-items in de backlog staan (B-36 en B-51–B-76 range), controleer dan welke stap actief is door te zoeken naar de eerste `todo` in de 7-stappen reeks (Stap 1 Signaaldetectie → Stap 2 Insight → ... → Stap 7 Distributie). Rapporteer als `**AI MKB Groei Systeem:** Stap N [naam] — [B-item] [status]` in de Actieve Blockers sectie (of Agenda als geen blockers). Dit voorkomt dat dit sprint-overstijgend initiatief onzichtbaar wordt in het dagelijkse check-in.
 
-7. **Obsidian vault pre-check:** Count available (non-GEBRUIKT/AFGEWEZEN) entries in `Thoughts/**/*.md`. If count = 0, add immediately to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe vóór week 17`. This surfaces the blocker at opening rather than discovering it in Phase 4.
+7. **Obsidian vault pre-check (recursief):** Count available (non-GEBRUIKT/AFGEWEZEN) entries across **all subdirectories** of the Obsidian Thoughts folder. Run:
+   ```bash
+   find "C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Thoughts" -name "*.md" -not -name "*GEBRUIKT*" -not -name "*AFGEWEZEN*" 2>/dev/null | wc -l
+   ```
+   If count = 0, add to "Actieve blockers": `Obsidian vault leeg — alle seeds gebruikt of afgewezen; Bill voegt nieuwe entries toe`. **Do NOT conclude count=0 based on a flat-directory listing** — subdirectories like `Technologie & Toekomst/` are easily missed. Always use a recursive glob or `find` with `-r` depth. This surfaces the blocker at opening rather than discovering it in Phase 4.
 
 Then open the meeting in this format:
 
@@ -364,7 +373,11 @@ Sanne (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
 **Steps:**
 1. **Lees het weekrapport van de vorige week als feitenbasis.** Zoek het meest recente weekrapport in `C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/` met patroon `weekrapport-YYYY-WNN.md`. Als het huidige weekrapport al gegenereerd is (maandag-verplichting stap 1), gebruik dat. Extraheer uit het rapport de **Ghostwriter Input Block** (Stap 10 van de weekly-report skill) of — als dat blok ontbreekt — handmatig: shipped items, lead/outreach aantallen, gepubliceerde artikelen, KPI-highlights en opvallende momenten. Deze feiten zijn de **verplichte grondstof** voor de post; verzin geen data.
 2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
-3. Identificeer de volgende 4 ongepubliceerde episodes op basis van de chronologische tijdlijn van AIntern
+3. **Identificeer de volgende ongepubliceerde episode(s) via DynamoDB — nooit via CMO memory.** Query de actieve DynamoDB-records:
+   ```bash
+   aws dynamodb query --table-name aintern-admin --key-condition-expression "PK = :pk" --expression-attribute-values '{":pk":{"S":"LINKEDIN#ghostwriter"}}' --region eu-west-1 2>/dev/null | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); (d.Items||[]).forEach(i=>console.log(i.episode?.N, i.serie?.S, i.status?.S));"
+   ```
+   Gebruik het **hoogste episode-nummer in DynamoDB + 1** als startpunt voor de nieuwe batch. Vertrouw CMO memory (`memory_daily_context.md`) nooit als bron voor episode-nummers — memory is niet real-time en bevat stale IDs na compaction. **Rootcause:** in 2026-04-27 werd ep5 geschreven i.p.v. ep3 omdat CMO memory "ep01-04 in DynamoDB" vermeldde maar DynamoDB alleen ep1+ep2 bevatte.
 3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
 4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter. **Verplichte velden:** `serie`, `episode`, `titel`, `post_voor`, `status: draft`, `seed`. Controleer alle 6 velden vóór opslaan — het importscript (`lambda/scripts/import-ghostwriter-drafts.mjs`) slaat episodes stil over als `serie` of `episode` ontbreekt. Als een bestaand draft (bijv. episode-01) deze velden mist, voeg ze dan nu toe voordat je verdergaat met de batch-import in stap 4.5.
 4.5. Importeer de geschreven drafts direct naar DynamoDB zodat ze zichtbaar zijn in `/admin/linkedin`:
@@ -636,6 +649,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
 - **Terminals must be visible** — always open terminals via `Bash` + `claude -p "..."`. Never use the Agent tool for terminal actions — it runs in a hidden context invisible to the Human Board
 - **Windows terminal prompt encoding** — `claude -p "..."` fails on Windows/Git Bash when the prompt exceeds ~1000 characters due to quote-escaping. Fix: write the prompt to a temp file first, then dispatch via `claude -p "$(cat /tmp/board-task-{n}.txt)" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"`. If the terminal output file is ≤30 lines and contains only bash errors (no Claude output), this encoding failure is the cause — fall back to implementing the task inline in the main session and note it as a blocker in the approval gate.
+- **0-bytes terminal output — immediate inline fallback** — After dispatching a terminal, check the output size before waiting. If the Bash output is 0 bytes or the terminal produces no Claude output within the first response (just an echo or immediate return), do **not** wait or retry. Implement the task inline in the main session immediately, note it in the approval gate as `[TERMINAL: inline fallback — terminal backgrounded]`. A terminal that exits with code 0 but produced 0 bytes of Claude output has been backgrounded by the OS and will never produce useful output for the current session.
 - **Human approval before every commit** — terminals write files and output a Terminal Summary but do NOT commit. The main session quotes the summary in full, asks "Goedkeuring voor commit?", and only commits via `git commit` after explicit Human Board approval
 - **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
