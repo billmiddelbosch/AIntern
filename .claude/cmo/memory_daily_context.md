@@ -1,27 +1,36 @@
 # Sanne — Daily Context
-_Last updated: 2026-04-26_
+_Last updated: 2026-04-27_
 
 ## Open Acties (toegewezen aan mij)
 - B-39: 5 LinkedIn connection requests (Franny, Denise, Ilse, Nick, Bep) — **ON HOLD** — Bill wil nieuwe outreach optie evalueren
 - B-31: LinkedIn URL enrichment — 4 leads nog needs_enrichment (handmatige lookup Bill)
 
-## KPI Status (week 17, 20–26 april)
-- LinkedIn posts: 1 / 3 — ⚠️ (B-59 company post gepubliceerd voor B-45 artikel; 2 nog te doen)
+## KPI Status (week 18, 27 april–)
+- LinkedIn posts: 0 / 3 — week 18 gestart
 - Nieuwe connecties: 0 / 20–25 — ⚠️ (outreach ON HOLD)
-- Kennisbank artikelen: 2 / 2 — ✅ (B-40: startup operators, B-45: van software naar agents)
+- Kennisbank artikelen: 1 / 2 — ⚠️ (B-81: ai-uitbesteden-mkb-regie-houden gepubliceerd 2026-04-27; 1 nog te doen)
 
 ## Actieve Blockers
-- Outreach ON HOLD — wacht op AI MKB Groei Systeem (B-76); herstart pas als Stap 1 live
-- Obsidian vault leeg — alle seeds GEBRUIKT/AFGEWEZEN; Bill voegt nieuwe entries toe
+- Outreach ON HOLD — wacht op B-61 (AI MKB Stap 2 Insight Extractie)
+- Kennisbank week 18 artikel 2: concept klaar ("Technisch inzicht is niet meer het voordeel") — publiceren morgen 2026-04-28
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
 
-## Genomen Beslissingen (board 2026-04-26)
-- SEO schrijfregels toegevoegd aan memory_kennisbank_publishing.md ✅ (title ≤60 chars, meta 120–155, H1/H2 structuur, interne links, content clusters)
-- LinkedIn outreach 5 leads: ON HOLD tot AI MKB Groei Systeem Stap 1 (B-76) live is
-- Kennisbank week 17 afgerond: 2/2 ✅ — Phase 4 overgeslagen (al gepubliceerd)
-- Maandag-verplichting: Ghostwriter ep5 draften (eerste ongepubliceerde na ep01–04)
+## Genomen Beslissingen (board 2026-04-27)
+- B-81 Kennisbank "AI uitbesteden of zelf doen?" gepubliceerd ✅ — ai-uitbesteden-mkb-regie-houden.json + index herbouwd (12 artikelen)
+- Kennisbank index.json gecorrigeerd: had 4 artikelen (corrupt), herbouwd naar 12 via S3 post-files
+- Ghostwriter ep03 aangemaakt: episode-03-het-eerste-lek.md (week 16 security audit) — status: draft, post_voor 2026-05-05
+- Ghostwriter ep01/ep02 frontmatter gecorrigeerd: serie-naam + status: approved
+- Ghostwriter DynamoDB: duplicaat drafts verwijderd voor ep01/ep02 (serie-naam mismatch veroorzaakte herduplicatie)
+- Kennisbank artikel 2 (Technisch inzicht) — concept klaar, publiceer morgen 2026-04-28
+
+## Ghostwriter Status (DynamoDB verified 2026-04-27)
+- ep01: ✅ approved (DynamoDB) | ep01-introductie.md: serie=Het Aintern experiment, status=approved
+- ep02: ✅ approved (DynamoDB) | ep02-de-directie.md: serie=Het Aintern Experiment, status=approved
+- ep03: draft | ep03-het-eerste-lek.md aangemaakt — nog niet in DynamoDB geïmporteerd
+- ep04: ontbreekt — nog te schrijven (feitenbasis: week 16/17 data)
+- **Volgende te schrijven: ep04** (query DynamoDB voor verifiëring, nooit CMO memory)
 
 ## Genomen Beslissingen (board 2026-04-25)
 - B-59 LinkedIn company post gepubliceerd ✅ — "Van software naar agents" (urn:li:share:7453754568632467458)

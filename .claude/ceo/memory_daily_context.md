@@ -1,38 +1,35 @@
 # Joost — Daily Context
-_Last updated: 2026-04-26_
+_Last updated: 2026-04-27_
 
 ## Open Acties (toegewezen aan mij)
 - B-10: 1 Lightspeed-prospect contacteren via LinkedIn — **handmatig door Bill** 🔴 (persistent)
 
-## KPI Status (week 17 afsluiting — 26 april)
-- Prospect outreach verstuurd: 0 / ≥1 — ❌ (handmatig door Bill)
-- Discovery call gevoerd/gepland: 0 / ≥0,5 — ❌
-- Kennisbank week 17: 2/2 ✅
-- LinkedIn posts week 17: 1/3 ⚠️
+## KPI Status (week 18 start — 27 april)
+- Kennisbank week 18: 1/2 ✅ (B-81 gepubliceerd)
+- LinkedIn posts week 18: 0/3 ⚠️
+- Onboarding checklist O-03: ✅ geïmplementeerd als B-80 (deadline 1 mei gehaald)
+- AI MKB Groei Systeem: Stap 1 ✅ live (B-76); Stap 2 (B-61) is volgende prioriteit
 
 ## Actieve Blockers
 - B-10 persistent open — CEO prospect outreach handmatig door Bill
-- Outreach 5 leads ON HOLD — wacht op AI MKB Groei Systeem (B-76)
+- Outreach 5 leads ON HOLD — wacht op B-61 (AI MKB Stap 2 Insight Extractie)
 - Hilde Bolks + Robert Theuws: archiveren 2026-04-28 als geen acceptatie
 
-## Top 5 Dagelijkse Acties (2026-04-26)
-1. B-67: Security headers Lambda + Amplify — ✅ gedaan (commit 42a5518)
-2. B-65: BUG-02 email fix Over AIntern — ✅ gedaan (commit 7978517)
-3. B-68: C-Level agents hernoemen (Joost/Sanne/Lars/Emma) — ✅ gedaan
-4. B-66: P1 Performance (dynamic imports, WebP note) — ✅ gedaan
-5. B-76: AI MKB Groei Systeem Stap 1 — 🔄 in progress (terminal actief)
+## Top 5 Dagelijkse Acties (2026-04-27)
+1. B-78: Weekrapport week 17 — ✅ gedaan (inline, terminal backgrounded)
+2. B-79: Ghostwriter ep03 (was ep05 foutief) — ✅ gedaan (episode-03-het-eerste-lek.md)
+3. B-80: O-03 Client Onboarding Checklist — ✅ build pass, wacht op commit
+4. B-77: Rate limiting /workflow-scan — ✅ geïmplementeerd in B-80 commit
+5. B-81: Kennisbank artikel "AI uitbesteden" — ✅ gepubliceerd + index herbouwd (12 art.)
 
-## Genomen Beslissingen (board 2026-04-26)
-- O-03: verlaagde prioriteit — implementatie start maandag 28 april (deadline 1 mei = T-3)
-- L-13: ITGuru repo (/c/Users/bmidd/development/ITGuru) als portfolio bron
-- B-36: uitgebreid naar volledig AI MKB Groei Systeem (7 stappen, B-36+B-51–B-54+B-61–B-63+B-76)
-- LinkedIn outreach 5 leads: ON HOLD tot AI MKB Groei Systeem klaar
-- C-Level namen: Joost (CEO/M), Sanne (CMO/F), Lars (CTO/M), Emma (COO/F) ✅
-- SKILL.md v0.4.0 (improvements: .claude/ terminal permissions + rate-limit recovery + AI MKB Groei Systeem check)
-- P1–P9 SEO items verwerkt: P1+P2 vandaag gedaan; P3–P9 als B-70–B-75 in backlog
+## Genomen Beslissingen (board 2026-04-27)
+- O-03 deadline 1 mei gehaald: B-80 geïmplementeerd ✅
+- Kennisbank index.json was corrupt (4/11 artikelen) — herbouwd vanuit S3 post-files
+- Ghostwriter duplicaten verwijderd: serie-naam mismatch veroorzaakte herduplicatie in DynamoDB
+- SKILL.md verbeterd: #7 Obsidian recursieve scan, #8 weekrapport pre-check, #9 0-bytes terminal fallback, ghostwriter DynamoDB-verificatie, kennisbank index-integriteitscheck
+- Kennisbank artikel 2 week 18 ("Technisch inzicht") — concept klaar, publiceren morgen 2026-04-28
 
 ## Lopende Context
-- O-03 deadline 1 mei (T-5 dagen) — implementatie start maandag
-- AI MKB Groei Systeem: Stap 1 Signaaldetectie (B-76) in uitvoering
 - Volgende vergadering: maandag 28 april 2026
-- Maandag-verplichtingen: weekrapport week 17 (Emma), Ghostwriter ep5 (Sanne)
+- Volgende prioriteit: B-61 (AI MKB Groei Systeem Stap 2 Insight Extractie)
+- Commits pending voor B-80: wacht op Human Board commit-goedkeuring voor feature/board-2026-04-27

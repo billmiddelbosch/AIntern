@@ -1,9 +1,9 @@
 ---
-serie: AIntern Experiment
+serie: Het Aintern Experiment
 episode: 2
 titel: We benoemden een directie.
 post_voor: Donderdag 2026-05-01
-status: draft
+status: approved
 seed: geen
 meeting_minute_feit: Week 15 (6-12 april) — directie aangesteld (Alex CEO, Blake CMO, Morgan CTO, Sam COO); OKR Q2 vastgesteld; LinkedIn bedrijfspagina gelanceerd; week 1 resultaten: 2 kennisbank-artikelen, 1 LinkedIn-post, 3 connectieverzoeken
 vorige_post: episode-01-introductie.md
