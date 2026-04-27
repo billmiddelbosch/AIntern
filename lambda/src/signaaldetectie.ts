@@ -175,6 +175,8 @@ Analyseer de onderstaande post en retourneer ONLY valid JSON zonder markdown:
   "isMkbRelevant": true|false
 }
 
+isMkbRelevant = true als de post een pijnpunt beschrijft dat relevant is voor kleine of middelgrote bedrijven (MKB/SMB/KMU), ongeacht taal of land van de auteur.
+
 Post titel: ${safeTitle}
 Post tekst: ${safeText}
 Bron: ${source}`
@@ -185,9 +187,18 @@ Bron: ${source}`
       messages: [{ role: 'user', content: prompt }],
     })
 
-    const raw = (msg.content[0] as { type: string; text: string }).text.trim()
-    return JSON.parse(raw) as HaikuClassification
-  } catch {
+    const raw = (msg.content[0] as { type: string; text: string }).text
+      .trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```$/, '')
+    try {
+      return JSON.parse(raw) as HaikuClassification
+    } catch {
+      console.error('[signaaldetectie] classifyPost parse error | raw=%s', raw.slice(0, 200))
+      return null
+    }
+  } catch (err) {
+    console.error('[signaaldetectie] classifyPost API error', err)
     return null
   }
 }
@@ -348,19 +359,13 @@ const HN_QUERIES_FALLBACK = [
   'too expensive software',
 ]
 
-function subredditsToHNQueryMap(subreddits: string[]): { query: string; subreddit: string | null }[] {
-  return subreddits.map((s) => ({ query: s.replace(/_/g, ' ').toLowerCase(), subreddit: s }))
-}
-
-async function fetchFromHN(tableName: string, anthropic: Anthropic, subreddits: string[]): Promise<number> {
-  const queryMap =
-    subreddits.length > 0
-      ? subredditsToHNQueryMap(subreddits)
-      : HN_QUERIES_FALLBACK.map((q) => ({ query: q, subreddit: null }))
+async function fetchFromHN(tableName: string, anthropic: Anthropic, _subreddits: string[]): Promise<number> {
+  // Always use intent-based queries for HN — subreddit names are Reddit-specific and return 0 HN hits
+  const queryMap = HN_QUERIES_FALLBACK.map((q) => ({ query: q, subreddit: null }))
   const seen = new Set<string>()
   let totalSaved = 0
 
-  for (const { query, subreddit } of queryMap) {
+  for (const { query } of queryMap) {
     const url = `https://hn.algolia.com/api/v1/search?tags=story,ask_hn&query=${encodeURIComponent(query)}&hitsPerPage=50`
     let res: Response
     try {
@@ -385,11 +390,8 @@ async function fetchFromHN(tableName: string, anthropic: Anthropic, subreddits: 
         selftext: h.story_text ?? '',
         hotScore: (h.points ?? 0) + (h.num_comments ?? 0) * 3,
       }))
-      .filter((h) => {
-        if (h.hotScore < 10) return false
-        const fullText = `${h.title} ${h.selftext}`.toLowerCase()
-        return PAIN_KEYWORDS.some((kw) => fullText.includes(kw))
-      })
+      // Algolia query already filters for topical relevance; PAIN_KEYWORDS are Reddit-specific
+      .filter((h) => h.hotScore >= 10)
       .sort((a, b) => b.hotScore - a.hotScore)
       .slice(0, 20)
 
@@ -399,7 +401,8 @@ async function fetchFromHN(tableName: string, anthropic: Anthropic, subreddits: 
       seen.add(post.id)
 
       const classification = await classifyPost(post.title, post.selftext, 'hackernews', anthropic)
-      if (!classification || !classification.isMkbRelevant) continue
+      if (!classification) { console.log('[signaaldetectie] HN classify null | id=%s title=%s', post.id, post.title.slice(0, 60)); continue }
+      if (!classification.isMkbRelevant) { console.log('[signaaldetectie] HN not-mkb | id=%s urgency=%s title=%s', post.id, classification.urgency, post.title.slice(0, 60)); continue }
 
       const ok = await saveSignal(tableName, {
         source: 'hackernews',
@@ -412,16 +415,6 @@ async function fetchFromHN(tableName: string, anthropic: Anthropic, subreddits: 
       })
 
       if (ok) {
-        if (subreddit !== null) {
-          await ddb.send(
-            new UpdateCommand({
-              TableName: tableName,
-              Key: { pk: `SUBREDDIT#${subreddit}`, sk: 'CONFIG' },
-              UpdateExpression: 'ADD signalCount :one SET updatedAt = :now',
-              ExpressionAttributeValues: { ':one': 1, ':now': new Date().toISOString() },
-            }),
-          )
-        }
         totalSaved++
         if (totalSaved >= 10) break
       }
