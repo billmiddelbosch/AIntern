@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
@@ -8,6 +8,7 @@ import { useAnalytics } from '@/composables/useAnalytics'
 const { t, locale } = useI18n()
 const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
+const router = useRouter()
 
 const mobileMenuOpen = ref(false)
 
@@ -25,7 +26,11 @@ function scrollTo(anchor: string) {
   mobileMenuOpen.value = false
   if (typeof document === 'undefined') return
   const el = document.querySelector(anchor)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    router.push('/' + anchor)
+  }
 }
 
 function handleCta() {
