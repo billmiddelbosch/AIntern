@@ -23,7 +23,7 @@
 | ID | Bug | Effort | Notes |
 |---|---|---|---|
 | ~~BUG-02~~ | ~~**Over AIntern — e-mailoptie werkt niet**~~ | S | ~~Geïmplementeerd als B-65 — commit 7978517.~~ |
-| BUG-01 | **Kennisbank navigatie — top en footer werken niet terug naar hoofdpagina** | S | Top- en footer-navigatielinks in de Kennisbank verwijzen niet correct terug naar de single-page app. Gebruiker zit vast in Kennisbank zonder terugweg. Onderzoek Vue Router link targets en of de Kennisbank route een aparte layout gebruikt die de globale nav overschrijft. |
+| ~~BUG-01~~ | ~~**Kennisbank navigatie — top en footer werken niet terug naar hoofdpagina**~~ | S | Opgelost als B-86 — commit 0e4e0c9. `scrollTo()` in MainNav + AppFooter navigeert nu naar `/#anchor` als element niet in huidige DOM bestaat. |
 | ~~BUG-04~~ | ~~**Sitemap.xml mist alle Kennisbank-artikel-routes**~~ | S | ~~Gesloten 2026-04-25 — opgelost via B-24 + B-58.~~ |
 | BUG-03 | **Calendly vervangen door eigen boekingscomponent** | L | De huidige Calendly-widget vervangen door eigen implementatie met vergelijkbare functionaliteit (tijdslot selectie, bevestiging, integratie met bestaande intake-flow). Zie ook I-04 en I-05 voor gerelateerde serverless backend en e-mail collectie. |
 
@@ -48,11 +48,11 @@
 
 | ID | Feature | Effort | Prio | Notes |
 |---|---|---|---|---|
-| S-01 | **Dynamische sitemap.xml generatie** | S | P1 | robots.txt verwijst naar sitemap.xml maar het bestand bestaat niet. Genereer bij build-tijd een sitemap die `/`, `/kennisbank`, en alle Kennisbank-artikelroutes bevat via een Vite-plugin of build-script dat de S3 index ophaalt. Pairs with I-03. **Op agenda board meeting 2026-04-28.** |
+| ~~S-01~~ | ~~**Dynamische sitemap.xml generatie**~~ | S | P1 | Geïmplementeerd als B-20 (commit 7c0eeac) via `vite-ssg-sitemap`. Bevestigd gesynchroniseerd: 13 S3-artikelen = 15 sitemap-routes (incl. `/` en `/kennisbank`). Gesloten 2026-04-28. |
 | ~~S-02~~ | ~~**OG / Twitter Card meta-tags homepage**~~ | S | P1 | ~~Geïmplementeerd als B-46 — board-meeting-2026-04-23.~~ |
 | ~~S-03~~ | ~~**Article + BreadcrumbList schema.org op Kennisbank-artikelpagina's**~~ | S | P1 | ~~Geïmplementeerd als B-41 — commit 3c3fa38.~~ |
 | S-04 | **FAQ schema.org op NoCureNoPayFaq sectie** | S | P2 | Voeg `@type: FAQPage` structured data toe aan de NoCureNoPayFaq sectie. FAQ-items als `Question`/`Answer` pairs in JSON-LD. Maakt rich snippets mogelijk op high-intent zoektermen als "no-cure-no-pay AI MKB". **Op agenda board meeting 2026-04-28.** |
-| S-05 | **Pre-rendering SPA voor SEO (vite-plugin-prerender)** | M | P1 | De Vue SPA rendert client-side — Google-crawlers zien een blanco `<div id="app">`. Installeer `vite-plugin-prerender` en pre-render bij build: `/`, `/kennisbank`, en alle actieve artikelroutes (ophalen uit S3 index). Structurele fix voor alle SEO-investeringen. **Op agenda board meeting 2026-04-28.** |
+| ~~S-05~~ | ~~**Pre-rendering SPA voor SEO (vite-plugin-prerender)**~~ | M | P1 | Al geïmplementeerd via `vite-ssg` (B-84 bevestigd 2026-04-28). Build genereert statische HTML voor alle routes. Gesloten 2026-04-28. |
 | S-06 | **Interne linking: Kennisbank-artikelen → Homepage CTA + breadcrumbs** | S | P2 | Elke Kennisbank-artikelpagina moet (1) een breadcrumb tonen (Home → Kennisbank → Artikel), (2) een CTA-blok bevatten dat teruglinkt naar de homepage intake-flow. Verhoogt dwell time, crawldiepte en conversie vanuit organisch traffic. **Op agenda board meeting 2026-04-28.** |
 | S-07 | **Image alt-tekst audit + correcties** | S | P2 | Audit alle `<img>` tags in `src/` op ontbrekende of lege `alt`-attributen. Herstel alle gevallen. Prioriteit op hero-afbeelding, Kennisbank og-image, en illustraties in sectieviews. Accessibility + image search indexering. **Op agenda board meeting 2026-04-28.** |
 | S-08 | ~~**SEO keyword-analyse + optimalisatiefundament**~~ | M | P1 | ~~Voer een volledige keyword-analyse uit voor aintern.nl vóór verdere SEO-implementaties.~~ Geïmplementeerd 2026-04-16 — `product/seo/keyword-strategy.md` aangemaakt (B-18). |
@@ -143,7 +143,12 @@
 | ~~B-79~~ | ~~**Ghostwriter ep03 AI-Duo Experiment draften**~~ | S | CMO | ✅ done | board-meeting-2026-04-27 | episode-03-het-eerste-lek.md aangemaakt in .claude/cmo/ghostwriter_drafts/ — week 16 security audit (3 HIGH findings: vite path traversal, CORS hardcoded, XSS v-html). Status: draft, post_voor 2026-05-05. |
 | ~~B-80~~ | ~~**O-03 Client Onboarding Checklist implementeren**~~ | M | CTO | ✅ done | board-meeting-2026-04-27 | /admin/onboarding + /admin/onboarding/:clientId routes live; Lambda onboarding.ts; DynamoDB aintern-onboarding tabel; build pass — deadline 1 mei gehaald. |
 | ~~B-81~~ | ~~**Kennisbank artikel week 18 #1 publiceren**~~ | S | CMO | ✅ done | board-meeting-2026-04-27 | "AI uitbesteden of zelf doen?" gepubliceerd op S3 (aintern-kennisbank/posts/ai-uitbesteden-mkb-regie-houden.json); index herbouwd (12 artikelen); sitemap bijgewerkt; 2026-04-27. |
-| B-82 | **[BLOCKER] Groei Systeem deployen + EventBridge fix** | M | CTO | todo | analyse-2026-04-27 | Root cause: AdminStack niet gedeployed na commit 75dae4c + geen subreddits geseeded + conflicterende PainStack. Stappen: (1) `pain-stack.ts` depreciëren (verwijder uit `aintern.ts` + verwijder `infra/lib/pain-stack.ts`); (2) `aws ssm put-parameter --name /aintern/prod/anthropic/api-key --value "<key>" --type SecureString --region eu-west-2`; (3) `aws ssm put-parameter --name /aintern/dev/anthropic/api-key --value "<key>" --type SecureString`; (4) `cd lambda && npm run build` + `cd infra && npx cdk deploy AInternAdminStack`; (5) `seed-subreddits` script uitvoeren om 7 startsubreddits in aintern-admin te laden; (6) Lambda handmatig triggeren via AWS console → verify CloudWatch logs. **Prio 1 — blokkeert B-36/B-61/B-53/B-54/B-62/B-52/B-63.** |
+| ~~B-82~~ | ~~**[BLOCKER] Groei Systeem deployen + EventBridge fix**~~ | M | CTO | ✅ done | analyse-2026-04-27 | Bevestigd gedeployed door Human Board 2026-04-28. AInternAdminStack live; B-36/B-61/B-53/B-54/B-62/B-52/B-63 gedeblokkeerd. |
+| ~~B-83~~ | ~~**Kennisbank artikel 2 week 18 publiceren — "Technisch inzicht is niet meer het voordeel"**~~ | S | CMO | ✅ done | board-meeting-2026-04-28 | Gepubliceerd 2026-04-28: s3://aintern-kennisbank/posts/technisch-inzicht-niet-meer-het-voordeel.json; index 13 artikelen; sitemap bijgewerkt. Week 18 KPI 2/2 ✅ |
+| ~~B-84~~ | ~~**S-05 Pre-rendering SPA implementeren (vite-plugin-prerender)**~~ | M | CTO | ✅ done | board-meeting-2026-04-28 | Al geïmplementeerd via `vite-ssg` (package.json build = `vite-ssg build`, ssgOptions in vite.config.ts). Build genereert statische HTML voor alle routes incl. alle 13 Kennisbank-artikelen. Geen extra werk nodig. |
+| ~~B-85~~ | ~~**Security check week 18 uitvoeren en documenteren**~~ | S | CTO | ✅ done | board-meeting-2026-04-28 | PASS — 0 nieuwe kwetsbaarheden; rapport commit bf97777. Alle week-16 carry-overs bevestigd gefixd. |
+| ~~B-86~~ | ~~**BUG-01 fixen — Kennisbank navigatie terug naar homepage**~~ | S | CTO | ✅ done | board-meeting-2026-04-28 | `scrollTo()` in MainNav + AppFooter navigeert naar `/#anchor` als element niet in huidige DOM bestaat — commit 0e4e0c9. Build pass. |
+| ~~B-87~~ | ~~**LinkedIn company post publiceren — gekoppeld aan Kennisbank artikel 2**~~ | S | CMO | ✅ done | board-meeting-2026-04-28 | Gepubliceerd 2026-04-28: urn:li:share:7454936394050916352 — AIntern company page. Week 18 LinkedIn post 1/3. |
 
 ## Organisation (O)
 
@@ -153,7 +158,7 @@
 | O-02 | **Lead Pipeline Board + CRM Sync** | M | As a sales lead, I want to view and update the status of all inbound leads from the website in a pipeline board, with leads auto-syncing from the website form, so that no prospect falls through the cracks and the team always works from a single source of truth. |
 | O-03 | **Client Onboarding Checklist** | S | As a delivery consultant, I want a standardised onboarding checklist automatically created for each new client, so that every engagement starts consistently and nothing is missed. |
 | O-04 | **Invoice from Milestone** | M | As the operations lead, I want to generate and send a client invoice directly from a completed project milestone, so that billing is prompt, traceable, and not dependent on manual reminders. |
-| O-05 | **Post-Delivery Retrospective** | S | As a delivery consultant, I want to complete a structured post-delivery retrospective template for each client project, so that automation patterns, pitfalls, and reusable components are captured in a shared knowledge base. **Org prio 1.** |
+| O-05 | **Post-Delivery Retrospective** | S | As a delivery consultant, I want to complete a structured post-delivery retrospective template for each client project, so that automation patterns, pitfalls, and reusable components are captured in a shared knowledge base. **Lage prioriteit — niet oppakken tot eerste betalende klant (Human Board 2026-04-28).** |
 
 ## Admin Dashboard (A)
 
