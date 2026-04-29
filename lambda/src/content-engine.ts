@@ -15,6 +15,7 @@ const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2'
 
 let cachedTableName: string | null = null
 let cachedAnthropicKey: string | null = null
+let cachedXWebhookUrl: string | null | undefined = undefined
 
 async function getAnthropicKey(alias: string): Promise<string> {
   if (cachedAnthropicKey) return cachedAnthropicKey
@@ -34,6 +35,19 @@ async function getTableName(alias: string): Promise<string> {
   )
   cachedTableName = res.Parameter?.Value ?? 'aintern-admin'
   return cachedTableName
+}
+
+async function getXWebhookUrl(alias: string): Promise<string | null> {
+  if (cachedXWebhookUrl !== undefined) return cachedXWebhookUrl
+  try {
+    const res = await ssm.send(
+      new GetParameterCommand({ Name: `/aintern/${alias}/zapier/x-webhook-url` }),
+    )
+    cachedXWebhookUrl = res.Parameter?.Value ?? null
+  } catch {
+    cachedXWebhookUrl = null
+  }
+  return cachedXWebhookUrl
 }
 
 interface OpportunityItem {
@@ -77,7 +91,10 @@ Retourneer ONLY valid JSON: { "content": "...", "hashtags": "..." }`
       max_tokens: 1024,
       messages: [{ role: 'user', content: prompt }],
     })
-    const raw = (msg.content[0] as { type: string; text: string }).text.trim()
+    const raw = (msg.content[0] as { type: string; text: string }).text
+      .trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```\s*$/, '')
     return JSON.parse(raw) as ContentResult
   } catch {
     return null
@@ -100,7 +117,10 @@ Retourneer ONLY valid JSON: { "content": "..." }`
       max_tokens: 512,
       messages: [{ role: 'user', content: prompt }],
     })
-    const raw = (msg.content[0] as { type: string; text: string }).text.trim()
+    const raw = (msg.content[0] as { type: string; text: string }).text
+      .trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```\s*$/, '')
     const parsed = JSON.parse(raw) as { content: string }
     return parsed.content
   } catch {
@@ -198,6 +218,45 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
         }),
       )
       console.log('[content-engine] x thread created | id=%s', xId)
+
+      // Publish to X via Zapier webhook (autonomous — no approval gate)
+      const xWebhookUrl = await getXWebhookUrl(alias)
+      if (xWebhookUrl) {
+        try {
+          const res = await fetch(xWebhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ content: xContent }),
+          })
+          if (res.ok) {
+            await ddb.send(
+              new UpdateCommand({
+                TableName: tableName,
+                Key: { pk: `CONTENT#${xId}`, sk: 'DRAFT' },
+                UpdateExpression: 'SET #status = :s, publishedAt = :now',
+                ExpressionAttributeNames: { '#status': 'status' },
+                ExpressionAttributeValues: { ':s': 'published', ':now': now },
+              }),
+            )
+            console.log('[content-engine] x post published via zapier | id=%s', xId)
+          } else {
+            const errText = await res.text().catch(() => res.statusText)
+            await ddb.send(
+              new UpdateCommand({
+                TableName: tableName,
+                Key: { pk: `CONTENT#${xId}`, sk: 'DRAFT' },
+                UpdateExpression: 'SET publishError = :e',
+                ExpressionAttributeValues: { ':e': `zapier ${res.status}: ${errText}` },
+              }),
+            )
+            console.error('[content-engine] x zapier webhook failed | id=%s status=%d', xId, res.status)
+          }
+        } catch (err) {
+          console.error('[content-engine] x zapier webhook error | id=%s', xId, err)
+        }
+      } else {
+        console.log('[content-engine] x webhook not configured — skipping publish | alias=%s', alias)
+      }
     }
 
     // Update opportunity status to in-content
