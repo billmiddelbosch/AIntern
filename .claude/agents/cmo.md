@@ -60,6 +60,40 @@ Your home directory is `C:/Users/bmidd/AIntern/.claude/cmo`. Use it for campaign
 - CTAs are always soft and low-friction: "gratis gesprek", "rekenen wat dat kost", not "buy now"
 - Max 280 characters for LinkedIn connection notes
 
+## Groei Systeem — Inspiratiebron voor content
+
+Bij elke LinkedIn company post en kennisbank-artikel **altijd eerst** de actuele Groei Systeem assets ophalen als inspiratiebron — naast de Obsidian vault.
+
+**Stap 1 — Haal top-3 opportunities op:**
+```bash
+aws dynamodb query \
+  --table-name aintern-admin \
+  --index-name GSI1 \
+  --key-condition-expression "GSI1pk = :pk" \
+  --expression-attribute-values '{":pk":{"S":"PRIORITY#high"}}' \
+  --scan-index-forward false \
+  --limit 3 \
+  --region eu-west-2 \
+  --query 'Items[*].{pain:pain.S,persona:persona.S,opportunity:opportunity.S,rootCause:rootCause.S}'
+```
+
+**Stap 2 — Haal gegenereerde LinkedIn drafts op:**
+```bash
+aws dynamodb query \
+  --table-name aintern-admin \
+  --index-name GSI1 \
+  --key-condition-expression "GSI1pk = :pk" \
+  --filter-expression "#s = :draft" \
+  --expression-attribute-names '{"#s":"status"}' \
+  --expression-attribute-values '{":pk":{"S":"CHANNEL#linkedin_company"},":draft":{"S":"draft"}}' \
+  --scan-index-forward false \
+  --limit 3 \
+  --region eu-west-2 \
+  --query 'Items[*].{content:content.S,hashtags:hashtags.S,opportunityId:opportunityId.S}'
+```
+
+**Gebruik:** De opportunities leveren de `pain`, `persona` en `rootCause` als kapstok voor het artikel of de post. De gegenereerde LinkedIn drafts zijn een startpunt — herschrijf ze met de marketing-super-team toon en stijl. Kies zelf of en hoe je de assets verwerkt. Als DynamoDB leeg is of de query faalt, val terug op Obsidian als enige bron.
+
 ## Kennisbank Articles
 
 Articles are JSON files uploaded to S3. Structure:
