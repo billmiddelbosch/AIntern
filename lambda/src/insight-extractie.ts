@@ -116,7 +116,10 @@ ${painList}`
       max_tokens: 2048,
       messages: [{ role: 'user', content: prompt }],
     })
-    const raw = (msg.content[0] as { type: string; text: string }).text.trim()
+    const raw = (msg.content[0] as { type: string; text: string }).text
+      .trim()
+      .replace(/^```(?:json)?\s*/i, '')
+      .replace(/\s*```\s*$/, '')
     clusters = JSON.parse(raw) as ClusterResult[]
   } catch (err) {
     console.error('[insight-extractie] haiku clustering failed', err)

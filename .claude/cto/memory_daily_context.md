@@ -1,30 +1,26 @@
 # Lars — Daily Context
-_Last updated: 2026-04-27_
+_Last updated: 2026-04-28_
 
 ## Open Acties (toegewezen aan mij)
-- B-61: AI MKB Groei Systeem Stap 2 Insight Extractie — volgende prioriteit
-- B-64: L-13 Portfolio/Animations (ITGuru als bron) — nog todo
+- B-84: S-05 Pre-rendering SPA implementeren (vite-plugin-prerender) — todo, terminal klaar
+- B-85: Security check week 18 uitvoeren en documenteren — todo, terminal klaar
+- B-86: BUG-01 Kennisbank navigatie fix — todo, terminal klaar
 
-## KPI Status (week 18 start — 27 april)
-- Security check: ✅ B-47 PASS 2026-04-25 (vorige week)
-- Build: ✅ npm run build slaagt (B-80 gebouwd)
-- Rate limiting B-77: ✅ workflowScanThrottle 10 rps/burst 20 in admin-stack.ts
+## KPI Status (week 18, 27 april–)
+- Security check: ❌ nog niet gedaan (laatste: 2026-04-25 week 17)
+- Backlog items shipped: 0 (B-84/B-85/B-86 pending)
+- Token spend: €166/week ⚠️ spike (monitoring)
 
 ## Actieve Blockers
-- JWT/service-account A-14 KPI API — weekrapport O-01 kan KPI actuals niet ophalen (laag prio)
-- Commits B-80 pending — wacht op Human Board goedkeuring voor feature/board-2026-04-27
+- B-61 EventBridge: CDK deploy door Bill vereist (B-82 confirmed deployed)
+- Geen andere technische blockers
 
-## Genomen Beslissingen (board 2026-04-27)
-- B-80 ✅ O-03 Client Onboarding Checklist: lambda/src/onboarding.ts + aintern-onboarding DynamoDB + Vue routes /admin/onboarding + i18n — build pass
-- B-77 ✅ Rate limiting /workflow-scan: workflowScanThrottle in admin-stack.ts (geïmplementeerd samen met B-80)
-- B-78 ✅ Weekrapport week 17 aangemaakt inline (terminal backgrounded)
-- SKILL.md verbeterd met 5 fixes: #7 Obsidian recursief, #8 weekrapport pre-check, #9 0-bytes fallback, ghostwriter DynamoDB-check, kennisbank index-integriteit
+## Genomen Beslissingen (board 2026-04-28)
+- B-82 ✅ confirmed deployed — alle Groei Systeem code actief na CDK deploy
+- S-01 effectief done (B-20 al geïmplementeerd; sitemap S3=13/sitemap=15 na B-83)
+- SKILL.md v0.4.1 — 3 verbeteringen toegepast
+- Sitemap geregenereerd na B-83 publicatie: 15 routes (13 artikelen)
 
 ## Lopende Context
-- Branch: feature/board-2026-04-27 (commits pending)
-- Ghostwriter DynamoDB status (2026-04-27 geverifieerd):
-  - ep01: goedgekeurd DynamoDB (serie: Het Aintern experiment)
-  - ep02: goedgekeurd DynamoDB (serie: Het Aintern Experiment)
-  - ep03/ep04: NIET in DynamoDB — alleen lokale .md files
-  - **Verwijder stale DynamoDB IDs uit memory**: ep01 d215d623 / ep02 84a8b02c / ep03 15e4536c / ep04 3bbcab6e zijn NIET de correcte IDs — queries zijn de enige betrouwbare bron
-- AI MKB Groei Systeem: Stap 1 Signaaldetectie ✅ (B-76) → Stap 2 B-61 volgende
+- Volgende terminals (sequentieel): B-85 → B-86 → B-84
+- B-76 (signaaldetectie): Bill heeft bugfixing2704 gemerged (+82/-52 in signaaldetectie.ts) — bevestig of dit de correcte versie is voor productie

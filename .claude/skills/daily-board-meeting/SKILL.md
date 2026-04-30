@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.0
+version: 0.4.1
 ---
 
 # Daily Board Meeting
@@ -125,7 +125,7 @@ Then open the meeting in this format:
 
 ### What to show
 
-Display the first non-completed item per backlog section (Landing Page, Admin, Organisation) — the same items loaded in Phase 1 Step 4. Use this format:
+Display the first non-completed item per backlog section (Landing Page, Admin, Organisation) — the same items loaded in Phase 1 Step 4. **Voor elk item in de tabel waarvan de titel "[BLOCKER]" bevat of waarvan de Notes een actieve blocker-melding bevatten: voeg een expliciete vraag toe: _"Is dit al opgelost buiten de meeting?"_ Dit voorkomt dat extern-deployed of al-opgeloste items als actieve blockers worden gepresenteerd.** **Rootcause (2026-04-28):** B-82 was deployed door Bill maar stond als `todo` in de backlog — Bill moest dit zelf aangeven zonder prompt. Use this format:
 
 ```
 ---
@@ -330,6 +330,7 @@ Before drafting any messages, evaluate the outreach state using context already 
 
 - Als Apify credits < $1 → skip nieuwe lead-enrichment; werk alleen met al verrijkte leads
 - Als er pending DMs zijn (uit `memory_outreach_dm_pending.md`) → prioritiseer deze boven nieuwe verzoeken; DMs worden handmatig verstuurd na approval
+- **Als outreach ON HOLD staat vanwege een specifiek B-item:** check eerst of dat B-item nu ✅ done is in `product/backlog.md`. Als ja, stel de Human Board expliciet de vraag: _"Outreach stond ON HOLD wachtend op [B-item]. Dat is nu gedaan — wil je nu starten met standaard templates, of wachten op AI-insights?"_ Noteer het antwoord als `[OUTREACH_DECISION]` en gebruik dat als trigger. Zonder expliciete reset blijft outreach indefinitely ON HOLD na een B-item completion. **Rootcause (2026-04-28):** B-82 done unblocked B-61, maar de ON HOLD-conditie werd niet automatisch gereset.
 - Als alles geblokkeerd → presenteer een actie-lijst en ga direct naar Phase 4:
   ```
   ### Outreach — GEBLOKKEERD
@@ -385,6 +386,8 @@ Sanne (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
      node lambda/scripts/import-ghostwriter-drafts.mjs
      ```
      Het script is idempotent — episodes die al in DynamoDB staan worden overgeslagen. Controleer de output op `✅` per episode. Als het script faalt (AWS credentials ontbreken), noteer dit als blocker in de gate.
+
+     **Pre-check regel:** Vóór je "nog niet in DynamoDB geïmporteerd" als blocker rapporteert (op basis van CMO memory): altijd eerst het import-script draaien. De scriptoutput ("Already exists: …— skip") is de betrouwbare bron; CMO memory is dat niet. **Rootcause (2026-04-28):** ep03 stond in DynamoDB maar CMO memory vermeldde "nog niet geïmporteerd" — blocker was vals.
 5. Presenteer de 4 drafts in de End-of-Meeting Approval Gate als "drafts ter review door Bill"
 
 > ⛔ **Nooit publiceren.** Goedkeuring in de gate = draft geaccepteerd. Bill publiceert altijd zelf via zijn LinkedIn-profiel.

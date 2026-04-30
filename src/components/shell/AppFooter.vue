@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 
 const { t, locale } = useI18n()
+const router = useRouter()
 
 const navItems = [
   { labelKey: 'nav.about', anchor: '#over-aintern' },
@@ -15,7 +16,11 @@ const routeNavItems = [{ labelKey: 'nav.kennisbank', to: '/kennisbank' }]
 function scrollTo(anchor: string) {
   if (typeof document === 'undefined') return
   const el = document.querySelector(anchor)
-  if (el) el.scrollIntoView({ behavior: 'smooth' })
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth' })
+  } else {
+    router.push('/' + anchor)
+  }
 }
 
 function toggleLocale() {

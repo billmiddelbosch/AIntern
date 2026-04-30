@@ -1,25 +1,24 @@
 # Emma — Daily Context
-_Last updated: 2026-04-27_
+_Last updated: 2026-04-28_
 
 ## Open Acties (toegewezen aan mij)
-- O-03 Client Onboarding Checklist: ✅ geïmplementeerd als B-80 — deadline 1 mei gehaald
+- Lead pipeline: 2× per week bijwerken — 0× deze week gedaan (week net gestart)
+- B-31: Apify enrichment 4 leads bijhouden (topicsfashion, chocoladeverpakking, slijterij-jeppe, oasegroen)
 
-## KPI Status (week 18 start — 27 april)
-- Weekrapport week 17: ✅ aangemaakt (weekrapport-2026-W17.md)
-- Lead pipeline: Hilde Bolks + Robert Theuws archiveren 2026-04-28 als geen acceptatie (dag 10)
+## KPI Status (week 18, 27 april–)
+- Pipeline bijgewerkt: 0/2 ⚠️ (Hilde + Robert gearchiveerd 2026-04-28 = 1 update)
+- Onboarding checklist O-03: ✅ geïmplementeerd (B-80, deadline 1 mei gehaald)
+- Weekrapport W17: ✅ gedaan (B-78, 2026-04-27)
 
 ## Actieve Blockers
-- Outreach ON HOLD — wacht op B-61 (AI MKB Stap 2)
+- Geen
 
-## Genomen Beslissingen (board 2026-04-27)
-- O-03 B-80: ✅ volledig geïmplementeerd (Lambda + DynamoDB + Vue routes + i18n)
-- Weekrapport W17: aangemaakt inline (terminal backgrounded)
+## Genomen Beslissingen (board 2026-04-28)
+- Hilde Bolks + Robert Theuws gearchiveerd → excluded in outreach-log.csv (>11 dagen geen acceptatie)
+- O-05 lage prioriteit — niet oppakken tot eerste betalende klant
+- Outreach 5 leads goedgekeurd: Franny, Denise, Ilse, Nick, Bep — dispatch na meeting
 
 ## Lopende Context
-- Huidige leads pipeline:
-  - dm_sent (3): tschuurtje.nl (Bram Hofman), zaderij.nl (Jan Bulthuis), wocashop.nl (Bob van Boekel)
-  - connection_sent (2): liatelier.nl (Hilde Bolks, 2026-04-17 — 10 dagen ⚠️ archiveer morgen), homefitness4you.nl (Robert Theuws, 2026-04-17 — 10 dagen ⚠️ archiveer morgen)
-  - not_contacted (5, ON HOLD): vansoest-amsterdam.nl, lijmenwinkel.nl, paperspecials.nl, dezeilenspecialist.nl, homesecuur.nl
-  - not_found (1): sneeuwwinkel.nl
-  - excluded (1): collegepoint.nl
-  - needs_enrichment (4): topicsfashion.nl, chocoladeverpakking.nl, slijterij-jeppe.nl, oasegroen.nl
+- Outreach-log.csv status: dm_sent:3, excluded:3, not_found:1, needs_enrichment:4, not_contacted:5
+- 3 dm_sent leads (Bram, Jan, Bob) wachten al >17 dagen op reactie — monitor wekelijks
+- Volgende pipeline-update: vandaag na outreach dispatch (connecties verzonden = update)
