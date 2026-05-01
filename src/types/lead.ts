@@ -16,6 +16,7 @@ export interface Lead {
   companyName?: string
   linkedinUrl?: string
   linkedinName?: string
+  email?: string
   status: LeadStatus
   assignee?: string
   connectionSentAt?: string

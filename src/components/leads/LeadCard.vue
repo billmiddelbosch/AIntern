@@ -23,5 +23,9 @@ function navigate(): void {
     <div class="font-medium text-sm text-slate-800 truncate">{{ displayName(lead) }}</div>
     <div v-if="lead.linkedinName" class="text-xs text-slate-500 truncate">{{ lead.linkedinName }}</div>
     <LeadStatusBadge :status="lead.status" />
+    <div v-if="!lead.email" class="flex items-center gap-1 text-xs text-amber-500">
+      <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400"></span>
+      e-mail ontbreekt
+    </div>
   </div>
 </template>

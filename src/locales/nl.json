@@ -382,6 +382,7 @@
       "website": "Website",
       "linkedinUrl": "LinkedIn URL",
       "linkedinName": "LinkedIn naam",
+      "email": "E-mailadres",
       "status": "Status",
       "notes": "Notities",
       "connectionMessage": "Connectieverzoek bericht",

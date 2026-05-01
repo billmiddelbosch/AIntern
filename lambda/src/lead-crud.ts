@@ -107,6 +107,7 @@ interface Lead {
   companyName?: string
   linkedinUrl?: string
   linkedinName?: string
+  email?: string
   status: LeadStatus
   assignee?: string
   connectionSentAt?: string
@@ -136,7 +137,7 @@ const VALID_STATUSES = new Set<string>([
 
 const UPDATABLE_FIELDS = [
   'connectionMessage', 'dmMessage', 'status', 'notes',
-  'linkedinUrl', 'linkedinName', 'companyName', 'assignee',
+  'linkedinUrl', 'linkedinName', 'email', 'companyName', 'assignee',
   'connectionSentAt', 'connectionVariant', 'dmSentAt', 'dmVariant',
   'dmResponse', 'discoveryBookedAt', 'discoveryCallUrl',
 ] as const
