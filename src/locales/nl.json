@@ -521,14 +521,14 @@
   },
   "portfolio": {
     "heading": "Bewijs van aanpak",
-    "subheading": "Hoe AIntern een AI-intern inzette bij ITGuru",
-    "project_title": "ITGuru — AI inkoopplatform",
-    "description": "ITGuru verkocht refurbished IT-hardware. Producten handmatig invoeren kostte uren per batch. AIntern bouwde een AI-pipeline die leveranciers-Excel automatisch verrijkt, marges berekent en producten direct pusht naar Lightspeed.",
+    "subheading": "Hoe AIntern een AI-intern inzette bij een IT-reseller",
+    "project_title": "IT-reseller — AI inkoopplatform",
+    "description": "Een IT-reseller in de regio verkocht refurbished hardware. Producten handmatig invoeren kostte uren per batch. AIntern bouwde een AI-pipeline die leveranciers-Excel automatisch verrijkt, marges berekent en producten direct pusht naar Lightspeed.",
     "stat1_value": "300 producten",
     "stat1_label": "verwerkt in 13 min",
     "stat2_value": "100% automatisch",
     "stat2_label": "van Excel naar webshop",
-    "cta": "Wil jij dit ook? →"
+    "cta": "Maak vrijblijvend kennis →"
   },
   "groeiSysteem": {
     "pageTitle": "Groei Systeem"

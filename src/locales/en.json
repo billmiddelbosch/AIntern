@@ -521,14 +521,14 @@
   },
   "portfolio": {
     "heading": "Proof of concept",
-    "subheading": "How AIntern deployed an AI intern at ITGuru",
-    "project_title": "ITGuru — AI procurement platform",
-    "description": "ITGuru sold refurbished IT hardware. Manually entering product data took hours per supplier batch. AIntern built an AI pipeline that automatically enriches supplier Excel files, calculates margins, and pushes products directly to Lightspeed.",
+    "subheading": "How AIntern deployed an AI intern at an IT reseller",
+    "project_title": "IT reseller — AI procurement platform",
+    "description": "An IT reseller in the region sold refurbished hardware. Manually entering product data took hours per supplier batch. AIntern built an AI pipeline that automatically enriches supplier Excel files, calculates margins, and pushes products directly to Lightspeed.",
     "stat1_value": "300 products",
     "stat1_label": "processed in 13 min",
     "stat2_value": "100% automated",
     "stat2_label": "from Excel to webshop",
-    "cta": "Want this too? →"
+    "cta": "Let's get acquainted →"
   },
   "groeiSysteem": {
     "pageTitle": "Growth System"

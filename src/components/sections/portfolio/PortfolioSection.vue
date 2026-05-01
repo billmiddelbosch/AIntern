@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { RouterLink } from 'vue-router'
+import { useBookingModal } from '@/composables/useBookingModal'
 
 const { bg } = defineProps<{ bg?: 'light' | 'dark' }>()
 
@@ -14,6 +14,8 @@ const isVisible = ref(false)
 useIntersectionObserver(sectionRef, ([entry]) => {
   if (entry.isIntersecting) isVisible.value = true
 }, { threshold: 0.15 })
+
+const { openBookingModal } = useBookingModal()
 
 const tags = ['Vue 3', 'AWS Lambda', 'Claude AI', 'Lightspeed API']
 </script>
@@ -119,15 +121,16 @@ const tags = ['Vue 3', 'AWS Lambda', 'Claude AI', 'Lightspeed API']
         </div>
 
         <!-- CTA -->
-        <RouterLink
-          to="/workflow-scan"
+        <button
+          type="button"
           :class="[
-            'inline-flex items-center font-semibold text-sm transition-colors',
+            'inline-flex items-center font-semibold text-sm transition-colors cursor-pointer',
             bg === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-800',
           ]"
+          @click="openBookingModal()"
         >
           {{ t('portfolio.cta') }}
-        </RouterLink>
+        </button>
       </div>
     </div>
   </section>
