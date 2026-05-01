@@ -1,5 +1,6 @@
 import type { Context } from 'aws-lambda'
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
+import { SESClient, SendEmailCommand } from '@aws-sdk/client-ses'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import {
   DynamoDBDocumentClient,
@@ -14,10 +15,10 @@ import { randomUUID } from 'crypto'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
+const ses = new SESClient({ region: 'eu-west-2' })
 
 let cachedTableName: string | null = null
 let cachedAnthropicKey: string | null = null
-let cachedGmailWebhookUrl: string | null | undefined = undefined
 
 async function getTableName(alias: string): Promise<string> {
   if (cachedTableName) return cachedTableName
@@ -37,19 +38,6 @@ async function getAnthropicKey(alias: string): Promise<string> {
   if (!key) throw new Error('[getAnthropicKey] SSM parameter missing or empty')
   cachedAnthropicKey = key
   return cachedAnthropicKey
-}
-
-async function getGmailWebhookUrl(alias: string): Promise<string | null> {
-  if (cachedGmailWebhookUrl !== undefined) return cachedGmailWebhookUrl
-  try {
-    const res = await ssm.send(
-      new GetParameterCommand({ Name: `/aintern/${alias}/zapier/gmail-webhook-url` }),
-    )
-    cachedGmailWebhookUrl = res.Parameter?.Value ?? null
-  } catch {
-    cachedGmailWebhookUrl = null
-  }
-  return cachedGmailWebhookUrl
 }
 
 // Step intervals in days
@@ -190,15 +178,7 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
         messages: [
           {
             role: 'user',
-            content: `Schrijf een professionele maar persoonlijke koude e-mail in het Nederlands namens Bill Middelbosch van AIntern.
-Onderwerp + body. Maximaal 150 woorden body.
-Toon: direct, concreet, geen buzzwords, geen AI-hype.
-
-Bedrijf: ${companyLabel}
-Pijn: MKB-ondernemers verliezen uren aan handmatig repetitief werk dat AI kan automatiseren.
-CTA: ${ctaText}
-
-Retourneer ONLY valid JSON: { "subject": "...", "body": "..." }`,
+            content: 'Schrijf een professionele maar persoonlijke koude e-mail in het Nederlands namens Sanne van AIntern.\nJe bent Sanne, CMO van AIntern — AI-marketing en automatisering voor het MKB.\nToon: warm, direct, resultaatgericht. Geen buzzwords, geen AI-hype. Maximaal 150 woorden body.\n\nBedrijf: ' + companyLabel + '\nPijn: MKB-ondernemers verliezen uren aan handmatig repetitief werk dat AI kan automatiseren.\nCTA: ' + ctaText + '\n\nRetourneer ONLY valid JSON: { "subject": "...", "body": "..." }',
           },
         ],
       })
@@ -277,78 +257,55 @@ Retourneer ONLY valid JSON: { "subject": "...", "body": "..." }`,
   const dueItems = (dueRes.Items ?? []) as EmailSequenceItem[]
   console.log('[sequence-scheduler] due email items=%d', dueItems.length)
 
-  const gmailWebhookUrl = await getGmailWebhookUrl(alias)
-  if (!gmailWebhookUrl) {
-    console.warn('[sequence-scheduler] Gmail webhook URL not configured — skipping email sends')
-  }
-
   let sent = 0
 
-  if (gmailWebhookUrl) {
-    for (const item of dueItems) {
-      if (sent >= 10) break
+  for (const item of dueItems) {
+    if (sent >= 10) break
 
-      try {
-        const response = await fetch(gmailWebhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            to: item.email,
-            subject: item.emailSubject,
-            body: item.emailBody,
-          }),
-        })
+    try {
+      await ses.send(
+        new SendEmailCommand({
+          Destination: { ToAddresses: [item.email] },
+          Message: {
+            Subject: { Data: item.emailSubject, Charset: 'UTF-8' },
+            Body: { Html: { Data: item.emailBody, Charset: 'UTF-8' } },
+          },
+          Source: 'Sanne van AIntern <sanne@aintern.nl>',
+        }),
+      )
 
-        if (response.ok) {
-          await ddb.send(
-            new UpdateCommand({
-              TableName: tableName,
-              Key: { pk: item.pk, sk: item.sk },
-              UpdateExpression: 'SET #status = :sent, sentAt = :ts, GSI1pk = :done',
-              ExpressionAttributeNames: { '#status': 'status' },
-              ExpressionAttributeValues: {
-                ':sent': 'sent',
-                ':ts': now,
-                ':done': 'STATUS#email_sent',
-              },
-            }),
-          )
-          console.log('[sequence-scheduler] email sent | pk=%s to=%s', item.pk, item.email)
-        } else {
-          const errMsg = `HTTP ${response.status}`
-          await ddb.send(
-            new UpdateCommand({
-              TableName: tableName,
-              Key: { pk: item.pk, sk: item.sk },
-              UpdateExpression: 'SET #status = :failed, sendError = :err',
-              ExpressionAttributeNames: { '#status': 'status' },
-              ExpressionAttributeValues: {
-                ':failed': 'send_failed',
-                ':err': errMsg,
-              },
-            }),
-          )
-          console.error('[sequence-scheduler] email send failed | pk=%s err=%s', item.pk, errMsg)
-        }
-      } catch (err) {
-        const errMsg = err instanceof Error ? err.message : String(err)
-        await ddb.send(
-          new UpdateCommand({
-            TableName: tableName,
-            Key: { pk: item.pk, sk: item.sk },
-            UpdateExpression: 'SET #status = :failed, sendError = :err',
-            ExpressionAttributeNames: { '#status': 'status' },
-            ExpressionAttributeValues: {
-              ':failed': 'send_failed',
-              ':err': errMsg,
-            },
-          }),
-        )
-        console.error('[sequence-scheduler] email send exception | pk=%s', item.pk, err)
-      }
-
-      sent++
+      await ddb.send(
+        new UpdateCommand({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+          UpdateExpression: 'SET #status = :sent, sentAt = :ts, GSI1pk = :done',
+          ExpressionAttributeNames: { '#status': 'status' },
+          ExpressionAttributeValues: {
+            ':sent': 'sent',
+            ':ts': now,
+            ':done': 'STATUS#email_sent',
+          },
+        }),
+      )
+      console.log('[sequence-scheduler] email sent | pk=%s to=%s', item.pk, item.email)
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err)
+      await ddb.send(
+        new UpdateCommand({
+          TableName: tableName,
+          Key: { pk: item.pk, sk: item.sk },
+          UpdateExpression: 'SET #status = :failed, sendError = :err',
+          ExpressionAttributeNames: { '#status': 'status' },
+          ExpressionAttributeValues: {
+            ':failed': 'send_failed',
+            ':err': errMsg,
+          },
+        }),
+      )
+      console.error('[sequence-scheduler] email send exception | pk=%s', item.pk, err)
     }
+
+    sent++
   }
 
   // ── Part 3: Advance existing active sequences ──────────────────────────────
