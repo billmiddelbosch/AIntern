@@ -274,6 +274,7 @@ export async function handler(
   const recommendations = await generateRecommendations(topIssues, anthropic, sector)
 
   const emailDomain = email.split('@')[1] ?? ''
+  const website = emailDomain ? `https://${emailDomain}` : ''
   const leadNotes = `Score: ${score}/100 | Sector: ${sector ?? 'Onbekend'} | Knelpunten: ${topIssues.join(', ')}`
   const htmlBody = toHtmlScanReport(score, topIssues, recommendations)
   const textBody = [
@@ -292,14 +293,16 @@ export async function handler(
     `-- Sanne, CMO — AIntern — aintern.nl`,
   ].join('\n')
 
+  const leadPk = website ? `LEAD#${encodeURIComponent(website)}` : `LEAD#${id}`
+
   await Promise.allSettled([
     ddb.send(new PutCommand({
       TableName: tableName,
       Item: {
-        pk: `LEAD#${id}`,
+        pk: leadPk,
         sk: 'METADATA',
         id,
-        website: emailDomain ? `https://${emailDomain}` : '',
+        website,
         email,
         status: 'email_sent',
         source: 'workflow-scan',
