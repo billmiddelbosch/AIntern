@@ -16,4 +16,15 @@ adminApiClient.interceptors.request.use((config) => {
   return config
 })
 
+adminApiClient.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('aintern_token')
+      window.location.href = '/admin/login'
+    }
+    return Promise.reject(error)
+  },
+)
+
 export default adminApiClient

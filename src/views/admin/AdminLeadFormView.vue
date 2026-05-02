@@ -15,6 +15,7 @@ const id = route.params.id as string
 const form = reactive({
   linkedinUrl: '',
   linkedinName: '',
+  email: '',
   status: 'new' as LeadStatus,
   notes: '',
   connectionMessage: '',
@@ -34,6 +35,7 @@ onMounted(async () => {
   if (lead) {
     form.linkedinUrl = lead.linkedinUrl ?? ''
     form.linkedinName = lead.linkedinName ?? ''
+    form.email = lead.email ?? ''
     form.status = lead.status
     form.notes = lead.notes ?? ''
     form.connectionMessage = lead.connectionMessage ?? ''
@@ -48,6 +50,7 @@ async function handleSave(): Promise<void> {
     const fields: Partial<Lead> = {
       linkedinUrl: form.linkedinUrl || undefined,
       linkedinName: form.linkedinName || undefined,
+      email: form.email || undefined,
       status: form.status,
       notes: form.notes || undefined,
       connectionMessage: form.connectionMessage || undefined,
@@ -152,6 +155,19 @@ async function copyText(text: string, setFlag: (v: boolean) => void): Promise<vo
             v-model="form.linkedinName"
             type="text"
             class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+
+        <!-- Email -->
+        <div>
+          <label class="block text-xs font-medium mb-1" :class="!form.email ? 'text-amber-500' : 'text-slate-500'">
+            {{ t('leads.form.email') }}<span v-if="!form.email" class="ml-1 text-amber-500">● ontbreekt</span>
+          </label>
+          <input
+            v-model="form.email"
+            type="email"
+            :class="['w-full rounded-lg border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400', !form.email ? 'border-amber-300 bg-amber-50' : 'border-slate-200']"
+            placeholder="naam@bedrijf.nl"
           />
         </div>
 

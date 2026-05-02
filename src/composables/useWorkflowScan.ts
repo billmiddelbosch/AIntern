@@ -75,6 +75,7 @@ export function useWorkflowScan() {
   const recommendations = ref<ScanRecommendation[]>([])
   const submitting = ref(false)
   const submissionId = ref<string | null>(null)
+  const submitError = ref<string | null>(null)
 
   function calculateScore() {
     let raw = 0
@@ -103,8 +104,9 @@ export function useWorkflowScan() {
     topIssues.value = issues.slice(0, 3)
   }
 
-  async function submitScan(email: string): Promise<void> {
+  async function submitScan(email: string): Promise<boolean> {
     submitting.value = true
+    submitError.value = null
     try {
       const { data } = await axios.post<{ id: string; recommendations: ScanRecommendation[] }>(
         '/workflow-scan',
@@ -118,6 +120,10 @@ export function useWorkflowScan() {
       )
       submissionId.value = data.id
       recommendations.value = data.recommendations
+      return true
+    } catch {
+      submitError.value = 'Er is iets misgegaan. Probeer het opnieuw.'
+      return false
     } finally {
       submitting.value = false
     }
@@ -137,6 +143,7 @@ export function useWorkflowScan() {
     topIssues,
     recommendations,
     submitting,
+    submitError,
     submissionId,
     calculateScore,
     submitScan,

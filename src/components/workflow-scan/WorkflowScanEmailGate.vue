@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-const props = defineProps<{ loading: boolean }>()
+const props = defineProps<{ loading: boolean; error?: string | null }>()
 const emit = defineEmits<{ submit: [email: string] }>()
 
 const email = ref('')
@@ -43,6 +43,10 @@ function handleSubmit() {
         <span v-if="props.loading">Rapport genereren...</span>
         <span v-else>Bekijk mijn volledige rapport →</span>
       </button>
+
+      <p v-if="props.error" class="text-sm text-red-600 text-center">
+        {{ props.error }}
+      </p>
 
       <p class="text-xs text-slate-400 text-center">
         Jouw gegevens worden niet gedeeld met derden.

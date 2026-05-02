@@ -1,26 +1,28 @@
 # Lars — Daily Context
-_Last updated: 2026-04-28_
+_Last updated: 2026-05-01_
 
 ## Open Acties (toegewezen aan mij)
-- B-84: S-05 Pre-rendering SPA implementeren (vite-plugin-prerender) — todo, terminal klaar
-- B-85: Security check week 18 uitvoeren en documenteren — todo, terminal klaar
-- B-86: BUG-01 Kennisbank navigatie fix — todo, terminal klaar
+- B-88c: Lead-matcher Lambda (HIGHEST PRIO) — nog todo
+- B-88d: ✅ done — commit d47cde1 (sequence-scheduler email sequentie)
+- B-64: ✅ done — commits 88cea95 + eabcc8f (portfolio sectie + anonimisering)
 
-## KPI Status (week 18, 27 april–)
-- Security check: ❌ nog niet gedaan (laatste: 2026-04-25 week 17)
-- Backlog items shipped: 0 (B-84/B-85/B-86 pending)
-- Token spend: €166/week ⚠️ spike (monitoring)
+## KPI Status (week 18, 27 april–3 mei)
+- Security check: ✅ gedaan 2026-04-28 (week 18)
+- Backlog items shipped: B-88d + B-64 (2 items vandaag)
+- Token spend: $159/week ⚠️ (monitoring)
 
 ## Actieve Blockers
-- B-61 EventBridge: CDK deploy door Bill vereist (B-82 confirmed deployed)
-- Geen andere technische blockers
+- B-88b (X/Twitter): Zapier heeft geen X-integratie meer — code klaar, webhook URL ontbreekt; on hold
+- B-88c: nog niet gestart, HIGHEST PRIO voor volgende sessie
 
-## Genomen Beslissingen (board 2026-04-28)
-- B-82 ✅ confirmed deployed — alle Groei Systeem code actief na CDK deploy
-- S-01 effectief done (B-20 al geïmplementeerd; sitemap S3=13/sitemap=15 na B-83)
-- SKILL.md v0.4.1 — 3 verbeteringen toegepast
-- Sitemap geregenereerd na B-83 publicatie: 15 routes (13 artikelen)
+## Genomen Beslissingen (board 2026-05-01)
+- B-88d ✅ sequence-scheduler.ts uitgebreid: Part 1 enriched leads → Haiku email + SEQUENCE# entries, Part 2 send via Zapier Gmail
+- B-64 ✅ portfolio sectie live: ITGuru anoniem gemaakt, CTA → BookingModal
+- references/portfolio-projects.md aangemaakt met ITGuru repo pad (C:/Users/bmidd/development/ITGuru)
+- B-88b uitgelegd aan Human Board: code klaar in content-engine.ts, on hold wegens Zapier X-integratie
 
 ## Lopende Context
-- Volgende terminals (sequentieel): B-85 → B-86 → B-84
-- B-76 (signaaldetectie): Bill heeft bugfixing2704 gemerged (+82/-52 in signaaldetectie.ts) — bevestig of dit de correcte versie is voor productie
+- Volgende prioriteit: B-88c (lead-matcher Lambda — EventBridge wed 10:00 UTC)
+- B-88d vereist nog SSM setup door Bill: /aintern/{alias}/zapier/gmail-webhook-url
+- B-88b vereist alternatief voor Zapier X: X API v2 direct of Make.com
+- Branch commits vandaag: d47cde1, 88cea95, 7ff5084, eabcc8f

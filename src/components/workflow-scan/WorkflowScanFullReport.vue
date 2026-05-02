@@ -1,11 +1,14 @@
 <script setup lang="ts">
 import type { ScanRecommendation } from '@/types/workflowScan'
+import { useBookingModal } from '@/composables/useBookingModal'
 
 defineProps<{
   score: number
   topIssues: string[]
   recommendations: ScanRecommendation[]
 }>()
+
+const { openBookingModal } = useBookingModal()
 
 function scoreLabel(score: number): string {
   if (score >= 70) return 'Relatief geoptimaliseerd'
@@ -55,14 +58,13 @@ function scoreLabel(score: number): string {
       <p class="text-indigo-100 text-sm">
         Plan een gratis 15-minuten gesprek. We laten zien welke knelpunten we als eerste aanpakken.
       </p>
-      <a
-        href="https://calendly.com/aintern/kennismaking"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="block w-full py-3 px-6 bg-white text-indigo-600 font-semibold rounded-xl text-center hover:bg-indigo-50 transition-colors"
+      <button
+        type="button"
+        class="block w-full py-3 px-6 bg-white text-indigo-600 font-semibold rounded-xl text-center hover:bg-indigo-50 transition-colors cursor-pointer"
+        @click="openBookingModal"
       >
         Plan een gratis gesprek →
-      </a>
+      </button>
     </div>
   </div>
 </template>
