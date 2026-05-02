@@ -27,5 +27,10 @@ function navigate(): void {
       <span class="inline-block w-1.5 h-1.5 rounded-full bg-amber-400"></span>
       e-mail ontbreekt
     </div>
+    <div v-if="lead.status === 'email_sent' && lead.lastEmailSubject" class="rounded-lg bg-cyan-50 border border-cyan-100 px-2.5 py-2 space-y-1">
+      <div class="text-[10px] font-semibold text-cyan-600 uppercase tracking-wide">Verstuurde e-mail</div>
+      <div class="text-xs font-medium text-slate-700 truncate">{{ lead.lastEmailSubject }}</div>
+      <div v-if="lead.lastEmailBody" class="text-[11px] text-slate-500 line-clamp-3 whitespace-pre-wrap">{{ lead.lastEmailBody }}</div>
+    </div>
   </div>
 </template>

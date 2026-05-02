@@ -122,6 +122,8 @@ interface Lead {
   discoveryCallUrl?: string
   source?: string
   notes?: string
+  lastEmailSubject?: string
+  lastEmailBody?: string
   createdAt: string
   updatedAt: string
 }

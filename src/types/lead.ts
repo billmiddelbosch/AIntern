@@ -31,6 +31,8 @@ export interface Lead {
   discoveryCallUrl?: string
   source?: string
   notes?: string
+  lastEmailSubject?: string
+  lastEmailBody?: string
   createdAt: string
   updatedAt: string
 }
@@ -38,6 +40,7 @@ export interface Lead {
 export const LEAD_STATUSES: LeadStatus[] = [
   'new',
   'enriched',
+  'email_sent',
   'connection_sent',
   'connected',
   'dm_sent',
@@ -46,5 +49,4 @@ export const LEAD_STATUSES: LeadStatus[] = [
   'won',
   'lost',
   'not_found',
-  'email_sent',
 ]
