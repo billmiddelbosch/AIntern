@@ -9,6 +9,7 @@ export type LeadStatus =
   | 'won'
   | 'lost'
   | 'not_found'
+  | 'email_sent'
 
 export interface Lead {
   id: string
@@ -45,4 +46,5 @@ export const LEAD_STATUSES: LeadStatus[] = [
   'won',
   'lost',
   'not_found',
+  'email_sent',
 ]

@@ -287,6 +287,19 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
           },
         }),
       )
+
+      await ddb.send(
+        new UpdateCommand({
+          TableName: tableName,
+          Key: { pk: item.leadId, sk: 'METADATA' },
+          UpdateExpression: 'SET #status = :email_sent, updatedAt = :ts',
+          ExpressionAttributeNames: { '#status': 'status' },
+          ExpressionAttributeValues: {
+            ':email_sent': 'email_sent',
+            ':ts': now,
+          },
+        }),
+      )
       console.log('[sequence-scheduler] email sent | pk=%s to=%s', item.pk, item.email)
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err)

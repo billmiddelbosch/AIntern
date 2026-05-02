@@ -404,7 +404,8 @@
       "discovery_booked": "Call booked",
       "won": "Won",
       "lost": "Lost",
-      "not_found": "Not found"
+      "not_found": "Not found",
+      "email_sent": "Email sent"
     }
   },
   "linkedinPosts": {

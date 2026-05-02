@@ -404,7 +404,8 @@
       "discovery_booked": "Gesprek gepland",
       "won": "Gewonnen",
       "lost": "Verloren",
-      "not_found": "Niet gevonden"
+      "not_found": "Niet gevonden",
+      "email_sent": "E-mail verstuurd"
     }
   },
   "linkedinPosts": {
