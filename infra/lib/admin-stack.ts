@@ -654,6 +654,7 @@ export class AdminStack extends cdk.Stack {
         actions: ['ses:SendEmail'],
         resources: [
           `arn:aws:ses:${this.region}:${this.account}:identity/*`,
+          `arn:aws:ses:${this.region}:${this.account}:configuration-set/*`,
         ],
       }),
     )
