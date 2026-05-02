@@ -9,6 +9,7 @@ export type LeadStatus =
   | 'won'
   | 'lost'
   | 'not_found'
+  | 'email_sent'
 
 export interface Lead {
   id: string
@@ -16,6 +17,7 @@ export interface Lead {
   companyName?: string
   linkedinUrl?: string
   linkedinName?: string
+  email?: string
   status: LeadStatus
   assignee?: string
   connectionSentAt?: string
@@ -29,13 +31,17 @@ export interface Lead {
   discoveryCallUrl?: string
   source?: string
   notes?: string
+  lastEmailSubject?: string
+  lastEmailBody?: string
   createdAt: string
   updatedAt: string
 }
 
 export const LEAD_STATUSES: LeadStatus[] = [
   'new',
+  'not_found',
   'enriched',
+  'email_sent',
   'connection_sent',
   'connected',
   'dm_sent',
@@ -43,5 +49,4 @@ export const LEAD_STATUSES: LeadStatus[] = [
   'discovery_booked',
   'won',
   'lost',
-  'not_found',
 ]

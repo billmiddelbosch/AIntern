@@ -17,6 +17,7 @@ const colorMap: Record<LeadStatus, string> = {
   won: 'bg-emerald-50 text-emerald-700 ring-emerald-200',
   lost: 'bg-red-50 text-red-600 ring-red-200',
   not_found: 'bg-slate-100 text-slate-500 ring-slate-200',
+  email_sent: 'bg-cyan-50 text-cyan-700 ring-cyan-200',
 }
 
 const classes = computed(() => colorMap[props.status])

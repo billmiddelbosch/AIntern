@@ -4,6 +4,7 @@ import HeroSectionView from '@/views/sections/HeroSectionView.vue'
 import HowItWorksSectionView from '@/views/sections/HowItWorksSectionView.vue'
 import ProbleemOplossingSectionView from '@/views/sections/ProbleemOplossingSectionView.vue'
 import GodfatherOfferSection from '@/components/sections/godfather-offer/GodfatherOfferSection.vue'
+import PortfolioSection from '@/components/sections/portfolio/PortfolioSection.vue'
 import ResultatenCasesSectionView from '@/views/sections/ResultatenCasesSectionView.vue'
 import NoCureNoPayFaqSectionView from '@/views/sections/NoCureNoPayFaqSectionView.vue'
 import OverAInternContactSectionView from '@/views/sections/OverAInternContactSectionView.vue'
@@ -17,6 +18,7 @@ import { RouterLink } from 'vue-router'
     <HeroSectionView              bg="light" />
     <HowItWorksSectionView     bg="dark" />
     <GodfatherOfferSection        bg="light" />
+    <PortfolioSection             bg="dark" />
     <ProbleemOplossingSectionView bg="dark" />
 
     <!-- B-54: AI Workflow Scanner CTA -->
