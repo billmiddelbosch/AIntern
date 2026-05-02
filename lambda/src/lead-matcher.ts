@@ -73,8 +73,8 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
     try {
       const res = await fetch('https://api.apollo.io/v1/people/match', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ api_key: apolloKey, domain, reveal_personal_emails: false }),
+        headers: { 'Content-Type': 'application/json', 'x-api-key': apolloKey },
+        body: JSON.stringify({ domain, reveal_personal_emails: false }),
       })
       apolloRes = (await res.json()) as ApolloResponse
     } catch (err) {
