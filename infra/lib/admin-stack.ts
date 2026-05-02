@@ -653,7 +653,7 @@ export class AdminStack extends cdk.Stack {
       new iam.PolicyStatement({
         actions: ['ses:SendEmail'],
         resources: [
-          `arn:aws:ses:${this.region}:${this.account}:identity/sanne@aintern.nl`,
+          `arn:aws:ses:${this.region}:${this.account}:identity/*`,
         ],
       }),
     )
