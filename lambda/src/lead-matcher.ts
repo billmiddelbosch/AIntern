@@ -85,6 +85,19 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
     const email = apolloRes.person?.email
     if (!email) {
       console.log('[lead-matcher] no email found | lead=%s domain=%s', lead.pk, domain)
+      try {
+        await ddb.send(
+          new UpdateCommand({
+            TableName: tableName,
+            Key: { pk: lead.pk, sk: lead.sk },
+            UpdateExpression: 'SET #status = :notFound, updatedAt = :ts',
+            ExpressionAttributeNames: { '#status': 'status' },
+            ExpressionAttributeValues: { ':notFound': 'not_found', ':ts': now },
+          }),
+        )
+      } catch (err) {
+        console.error('[lead-matcher] status update failed | lead=%s', lead.pk, err)
+      }
       notFound++
       continue
     }
