@@ -669,6 +669,49 @@ export class AdminStack extends cdk.Stack {
       targets: [new targets.LambdaFunction(sequenceSchedulerProdAlias)],
     })
 
+    // ── Groei Systeem — lead-matcher Lambda ──────────────────────────────────
+    const leadMatcherFn = new lambda.Function(this, 'LeadMatcherFunction', {
+      functionName: 'aintern-lead-matcher',
+      handler: 'lead-matcher.handler',
+      description: 'Daily Lambda: enriches new leads with email via Apollo API (B-88c)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(60),
+    })
+
+    leadMatcherFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/apollo/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/apollo/api-key`,
+        ],
+      }),
+    )
+
+    leadMatcherFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(leadMatcherFn)
+
+    const leadMatcherProdAlias = leadMatcherFn.addAlias('prod')
+
+    new events.Rule(this, 'LeadMatcherRule', {
+      ruleName: 'aintern-lead-matcher-daily',
+      description: 'Triggers lead-matcher Lambda daily at 05:00 UTC (07:00 Amsterdam)',
+      schedule: events.Schedule.cron({ minute: '0', hour: '5' }),
+      targets: [new targets.LambdaFunction(leadMatcherProdAlias)],
+    })
+
     // ── Groei Systeem — flywheel-metrics Lambda ───────────────────────────────
     const flywheelMetricsFn = new lambda.Function(this, 'FlywheelMetricsFunction', {
       functionName: 'aintern-flywheel-metrics',
