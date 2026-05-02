@@ -39,6 +39,7 @@ export interface Lead {
 
 export const LEAD_STATUSES: LeadStatus[] = [
   'new',
+  'not_found',
   'enriched',
   'email_sent',
   'connection_sent',
@@ -48,5 +49,4 @@ export const LEAD_STATUSES: LeadStatus[] = [
   'discovery_booked',
   'won',
   'lost',
-  'not_found',
 ]

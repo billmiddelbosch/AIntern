@@ -433,8 +433,8 @@ export class AdminStack extends cdk.Stack {
 
     adminTable.grantReadWriteData(subredditConfigFn)
 
-    const subredditConfigDevAlias = subredditConfigFn.addAlias('dev')
-    const subredditConfigProdAlias = subredditConfigFn.addAlias('prod')
+    subredditConfigFn.addAlias('dev')
+    subredditConfigFn.addAlias('prod')
 
     // ── Groei Systeem — insight-extractie Lambda ──────────────────────────────
     const insightExtractieFn = new lambda.Function(this, 'InsightExtractieFunction', {
@@ -611,8 +611,18 @@ export class AdminStack extends cdk.Stack {
 
     adminTable.grantReadWriteData(workflowScanFn)
 
-    const workflowScanDevAlias = workflowScanFn.addAlias('dev')
-    const workflowScanProdAlias = workflowScanFn.addAlias('prod')
+    workflowScanFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ses:SendEmail'],
+        resources: [
+          `arn:aws:ses:${this.region}:${this.account}:identity/*`,
+          `arn:aws:ses:${this.region}:${this.account}:configuration-set/*`,
+        ],
+      }),
+    )
+
+    workflowScanFn.addAlias('dev')
+    workflowScanFn.addAlias('prod')
 
     // ── Groei Systeem — sequence-scheduler Lambda ─────────────────────────────
     const sequenceSchedulerFn = new lambda.Function(this, 'SequenceSchedulerFunction', {
@@ -750,8 +760,8 @@ export class AdminStack extends cdk.Stack {
 
     adminTable.grantReadWriteData(flywheelMetricsFn)
 
-    const flywheelMetricsDevAlias = flywheelMetricsFn.addAlias('dev')
-    const flywheelMetricsProdAlias = flywheelMetricsFn.addAlias('prod')
+    flywheelMetricsFn.addAlias('dev')
+    flywheelMetricsFn.addAlias('prod')
 
     // ── ClientOnboarding DynamoDB table ──────────────────────────────────────
     const onboardingTable = new dynamodb.Table(this, 'ClientOnboardingTable', {
@@ -809,29 +819,29 @@ export class AdminStack extends cdk.Stack {
     onboardingTable.grantReadWriteData(onboardingFn)
 
     // ── Lambda aliases ───────────────────────────────────────────────────────
-    const adminAuthDevAlias = adminAuthFn.addAlias('dev')
-    const adminAuthProdAlias = adminAuthFn.addAlias('prod')
+    adminAuthFn.addAlias('dev')
+    adminAuthFn.addAlias('prod')
 
-    const kpiActualsDevAlias = kpiActualsFn.addAlias('dev')
-    const kpiActualsProdAlias = kpiActualsFn.addAlias('prod')
+    kpiActualsFn.addAlias('dev')
+    kpiActualsFn.addAlias('prod')
 
-    const meetingActionsDevAlias = meetingActionsFn.addAlias('dev')
-    const meetingActionsProdAlias = meetingActionsFn.addAlias('prod')
+    meetingActionsFn.addAlias('dev')
+    meetingActionsFn.addAlias('prod')
 
-    const kpiIntegrationsDevAlias = kpiIntegrationsFn.addAlias('dev')
-    const kpiIntegrationsProdAlias = kpiIntegrationsFn.addAlias('prod')
+    kpiIntegrationsFn.addAlias('dev')
+    kpiIntegrationsFn.addAlias('prod')
 
-    const kennisbankAdminDevAlias = kennisbankAdminFn.addAlias('dev')
-    const kennisbankAdminProdAlias = kennisbankAdminFn.addAlias('prod')
+    kennisbankAdminFn.addAlias('dev')
+    kennisbankAdminFn.addAlias('prod')
 
-    const leadCrudDevAlias = leadCrudFn.addAlias('dev')
-    const leadCrudProdAlias = leadCrudFn.addAlias('prod')
+    leadCrudFn.addAlias('dev')
+    leadCrudFn.addAlias('prod')
 
-    const linkedInPostsDevAlias = linkedInPostsFn.addAlias('dev')
-    const linkedInPostsProdAlias = linkedInPostsFn.addAlias('prod')
+    linkedInPostsFn.addAlias('dev')
+    linkedInPostsFn.addAlias('prod')
 
-    const onboardingDevAlias = onboardingFn.addAlias('dev')
-    const onboardingProdAlias = onboardingFn.addAlias('prod')
+    onboardingFn.addAlias('dev')
+    onboardingFn.addAlias('prod')
 
     // Groei Systeem aliases already created inline above
     // (signaaldetectie, insightExtractie, contentEngine, softOutreach,
@@ -850,12 +860,35 @@ export class AdminStack extends cdk.Stack {
       },
     })
 
+    // IAM role for API Gateway to invoke Lambda aliases via stage variable routing.
+    // Using credentialsRole avoids generating AWS::Lambda::Permission resources with
+    // '${stageVariables.alias}' as qualifier, which fails CloudFormation validation.
+    const apiGwInvokeRole = new iam.Role(this, 'ApiGatewayLambdaInvokeRole', {
+      assumedBy: new iam.ServicePrincipal('apigateway.amazonaws.com'),
+      inlinePolicies: {
+        LambdaInvoke: new iam.PolicyDocument({
+          statements: [
+            new iam.PolicyStatement({
+              actions: ['lambda:InvokeFunction'],
+              resources: [
+                `arn:aws:lambda:${this.region}:${this.account}:function:aintern-*`,
+                `arn:aws:lambda:${this.region}:${this.account}:function:aintern-*:*`,
+              ],
+            }),
+          ],
+        }),
+      },
+    })
+
     // Integration: stage variable `alias` routes to the correct Lambda alias
     const aliasIntegration = (fn: lambda.Function) =>
       new apigateway.Integration({
         type: apigateway.IntegrationType.AWS_PROXY,
         integrationHttpMethod: 'POST',
         uri: `arn:aws:apigateway:${this.region}:lambda:path/2015-03-31/functions/${fn.functionArn}:\${stageVariables.alias}/invocations`,
+        options: {
+          credentialsRole: apiGwInvokeRole,
+        },
       })
 
     const adminResource = api.root.addResource('admin')
@@ -958,40 +991,6 @@ export class AdminStack extends cdk.Stack {
     // POST /workflow-scan (public — no JWT required)
     const workflowScanResource = api.root.addResource('workflow-scan')
     workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
-
-    // ── API Gateway → Lambda permissions ─────────────────────────────────────
-    const apiExecuteArn = api.arnForExecuteApi('*', '/*', '*')
-    const apigwPrincipal = new iam.ServicePrincipal('apigateway.amazonaws.com')
-
-    for (const [alias, suffix] of [
-      [adminAuthDevAlias, 'AdminAuthDevAlias'],
-      [adminAuthProdAlias, 'AdminAuthProdAlias'],
-      [kpiActualsDevAlias, 'KpiActualsDevAlias'],
-      [kpiActualsProdAlias, 'KpiActualsProdAlias'],
-      [meetingActionsDevAlias, 'MeetingActionsDevAlias'],
-      [meetingActionsProdAlias, 'MeetingActionsProdAlias'],
-      [kpiIntegrationsDevAlias, 'KpiIntegrationsDevAlias'],
-      [kpiIntegrationsProdAlias, 'KpiIntegrationsProdAlias'],
-      [kennisbankAdminDevAlias, 'KennisbankAdminDevAlias'],
-      [kennisbankAdminProdAlias, 'KennisbankAdminProdAlias'],
-      [leadCrudDevAlias, 'LeadCrudDevAlias'],
-      [leadCrudProdAlias, 'LeadCrudProdAlias'],
-      [linkedInPostsDevAlias, 'LinkedInPostsDevAlias'],
-      [linkedInPostsProdAlias, 'LinkedInPostsProdAlias'],
-      [subredditConfigDevAlias, 'SubredditConfigDevAlias'],
-      [subredditConfigProdAlias, 'SubredditConfigProdAlias'],
-      [workflowScanDevAlias, 'WorkflowScanDevAlias'],
-      [workflowScanProdAlias, 'WorkflowScanProdAlias'],
-      [flywheelMetricsDevAlias, 'FlywheelMetricsDevAlias'],
-      [flywheelMetricsProdAlias, 'FlywheelMetricsProdAlias'],
-      [onboardingDevAlias, 'OnboardingDevAlias'],
-      [onboardingProdAlias, 'OnboardingProdAlias'],
-    ] as [lambda.Alias, string][]) {
-      alias.addPermission(`Invoke${suffix}`, {
-        principal: apigwPrincipal,
-        sourceArn: apiExecuteArn,
-      })
-    }
 
     // ── Deployment + stages ──────────────────────────────────────────────────
     const deployment = new apigateway.Deployment(this, 'AdminDeployment', { api })

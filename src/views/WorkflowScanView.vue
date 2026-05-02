@@ -6,9 +6,10 @@ import WorkflowScanProgress from '@/components/workflow-scan/WorkflowScanProgres
 import WorkflowScanPartialResult from '@/components/workflow-scan/WorkflowScanPartialResult.vue'
 import WorkflowScanEmailGate from '@/components/workflow-scan/WorkflowScanEmailGate.vue'
 import WorkflowScanFullReport from '@/components/workflow-scan/WorkflowScanFullReport.vue'
+import BookingModal from '@/components/ui/BookingModal.vue'
 import { useWorkflowScan } from '@/composables/useWorkflowScan'
 
-const { QUESTIONS, answers, score, topIssues, recommendations, submitting, calculateScore, submitScan } = useWorkflowScan()
+const { QUESTIONS, answers, score, topIssues, recommendations, submitting, submitError, calculateScore, submitScan } = useWorkflowScan()
 
 type Stage = 'welcome' | 'questions' | 'partial-result' | 'email-gate' | 'full-report'
 const stage = ref<Stage>('welcome')
@@ -39,8 +40,8 @@ function requestReport() {
 }
 
 async function handleEmailSubmit(email: string) {
-  await submitScan(email)
-  stage.value = 'full-report'
+  const ok = await submitScan(email)
+  if (ok) stage.value = 'full-report'
 }
 
 const canAdvance = computed(() => {
@@ -53,6 +54,7 @@ const canAdvance = computed(() => {
 
 <template>
   <div class="min-h-screen bg-slate-50 py-12 px-4">
+    <BookingModal />
     <div class="max-w-xl mx-auto">
       <!-- Welcome -->
       <WorkflowScanWelcome v-if="stage === 'welcome'" @start="startScan" />
@@ -98,7 +100,7 @@ const canAdvance = computed(() => {
 
       <!-- Email gate -->
       <div v-else-if="stage === 'email-gate'" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
-        <WorkflowScanEmailGate :loading="submitting" @submit="handleEmailSubmit" />
+        <WorkflowScanEmailGate :loading="submitting" :error="submitError" @submit="handleEmailSubmit" />
       </div>
 
       <!-- Full report -->
