@@ -73,18 +73,19 @@ Leest OpportunityStatements met status `draft`. Claude Haiku genereert per oppor
 
 ---
 
-### 4. `aintern-lead-matcher` _(gepland — B-88c, nog niet geïmplementeerd)_
+### 4. `aintern-lead-matcher` _(in ontwikkeling — B-88c)_
 | | |
 |---|---|
-| **Schema** | Wekelijks — woensdag 10:00 UTC (12:00 Amsterdam) |
+| **Schema** | Dagelijks — 05:00 UTC (07:00 Amsterdam) |
 | **Bron** | B-88c |
-| **Handler** | `lead-matcher.handler` (nog te bouwen) |
-| **Prioriteit** | **HOOGSTE PRIO** |
+| **Handler** | `lead-matcher.handler` |
 
 **Wat het doet:**
-Matcht high-priority OpportunityStatements aan leads met status `new` of `enriched` in DynamoDB. Claude Haiku genereert per match een gepersonaliseerd LinkedIn connection bericht (<200 tekens). Berichten worden zichtbaar in het `/admin/leads` detail modal voor handmatig verzenden door COO/CEO.
+Scant DynamoDB voor leads met `status: new` die nog geen e-mailadres hebben. Roept Apollo API aan met het domein van de lead (free tier: 50 lookups/maand). Als een e-mailadres gevonden wordt: schrijft het `email` veld terug naar de lead en zet `status: enriched`. Leads zonder vindbaar e-mailadres blijven `status: new` en worden gemarkeerd in de admin UI voor handmatige aanvulling.
 
-**Resultaat:** LinkedInConnectionMessage items gekoppeld aan lead-ID, klaar voor handmatige dispatch.
+Draait 1 uur vóór `sequence-scheduler` (06:00 UTC) zodat vers verrijkte leads diezelfde dag al in de e-mail sequentie terechtkomen.
+
+**Resultaat:** Leads met `status: enriched` + `email` veld gevuld — direct klaar als input voor `sequence-scheduler`. Leads zonder e-mailadres zichtbaar als oranje indicator in `/admin/leads` voor handmatige aanvulling door COO.
 
 ---
 
@@ -173,7 +174,7 @@ Monitort nieuwe PainSignals op intentiesignalen (vraag, klacht, oplossing zoeken
 | Ma t/m zo | 09:00 | `soft-outreach-monitor` |
 | Maandag | 09:00 | `insight-extractie` |
 | Woensdag | 09:00 | `content-engine` |
-| Woensdag | 12:00 | `lead-matcher` _(B-88c, gepland)_ |
+| Ma t/m zo | 07:00 | `lead-matcher` (B-88c) |
 
 ---
 
@@ -184,7 +185,7 @@ Monitort nieuwe PainSignals op intentiesignalen (vraag, klacht, oplossing zoeken
 | signaaldetectie | `PAIN_SIGNAL#` | SubredditConfig items |
 | insight-extractie | `OPPORTUNITY#` | `PAIN_SIGNAL#` (status: new) |
 | content-engine | `CONTENT#` | `OPPORTUNITY#` (status: draft) |
-| lead-matcher _(gepland)_ | LinkedInConnectionMessage | `OPPORTUNITY#` (high priority), leads |
+| lead-matcher | lead.email + status: enriched | Leads (status: new, geen email) via Apollo API |
 | soft-outreach-monitor | `OUTREACH#` | `PAIN_SIGNAL#` (nieuwe) |
 | sequence-scheduler | `SEQUENCE#` | Leads (status: enriched + email) |
 | workflow-scan | WorkflowScan | — |
