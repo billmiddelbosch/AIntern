@@ -78,7 +78,8 @@ interface Recommendation {
   ainternApproach: string
 }
 
-function escHtml(s: string): string {
+function escHtml(s: string | undefined | null): string {
+  if (!s) return ''
   return s
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -176,8 +177,10 @@ Retourneer ONLY valid JSON als array:
       messages: [{ role: 'user', content: prompt }],
     })
     const raw = (msg.content[0] as { type: string; text: string }).text.trim()
-    return JSON.parse(raw) as Recommendation[]
-  } catch {
+    const json = raw.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, '')
+    return JSON.parse(json) as Recommendation[]
+  } catch (err) {
+    console.error('[workflow-scan] generateRecommendations error', err)
     return topIssues.map((issue) => ({
       issue,
       recommendation: 'Overweeg procesautomatisering voor dit knelpunt.',
@@ -286,7 +289,7 @@ export async function handler(
     ...topIssues.map(i => `- ${i}`),
     ``,
     `Aanbevelingen:`,
-    ...recommendations.map((r, i) => `${i + 1}. ${r.issue}\n   ${r.recommendation}\n   AIntern aanpak: ${r.ainternApproach}`),
+    ...recommendations.map((r, i) => `${i + 1}. ${r.issue ?? ''}\n   ${r.recommendation ?? ''}\n   AIntern aanpak: ${r.ainternApproach ?? ''}`),
     ``,
     `Plan een gratis gesprek: https://aintern.nl/?booking=1`,
     ``,
@@ -294,8 +297,6 @@ export async function handler(
   ].join('\n')
 
   const leadPk = website ? `LEAD#${encodeURIComponent(website)}` : `LEAD#${id}`
-
-  const leadStatus = alias === 'prod' ? 'email_sent' : 'new'
 
   await Promise.allSettled([
     ddb.send(new PutCommand({
@@ -306,26 +307,24 @@ export async function handler(
         id,
         website,
         email,
-        status: leadStatus,
+        status: 'email_sent',
         source: 'workflow-scan',
         notes: leadNotes,
         createdAt: now,
         updatedAt: now,
       },
     })).catch(err => console.error('[workflow-scan] lead put error', err)),
-    alias === 'prod'
-      ? ses.send(new SendEmailCommand({
-          Source: 'Sanne van AIntern <sanne@aintern.nl>',
-          Destination: { ToAddresses: [email] },
-          Message: {
-            Subject: { Data: `Jouw AI Workflow Analyse — ${score}/100`, Charset: 'UTF-8' },
-            Body: {
-              Text: { Data: textBody, Charset: 'UTF-8' },
-              Html: { Data: htmlBody, Charset: 'UTF-8' },
-            },
-          },
-        })).catch(err => console.error('[workflow-scan] ses send error', err))
-      : Promise.resolve(console.log('[workflow-scan] SES skipped on dev alias (sandbox mode)')),
+    ses.send(new SendEmailCommand({
+      Source: 'Sanne van AIntern <sanne@aintern.nl>',
+      Destination: { ToAddresses: [email] },
+      Message: {
+        Subject: { Data: `Jouw AI Workflow Analyse — ${score}/100`, Charset: 'UTF-8' },
+        Body: {
+          Text: { Data: textBody, Charset: 'UTF-8' },
+          Html: { Data: htmlBody, Charset: 'UTF-8' },
+        },
+      },
+    })).catch(err => console.error('[workflow-scan] ses send error', err)),
   ])
 
   return respond(200, { id, recommendations }, alias, requestOrigin)
