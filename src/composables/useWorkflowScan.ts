@@ -117,9 +117,10 @@ export function useWorkflowScan() {
           rawScore: rawScore.value,
           topIssues: topIssues.value,
         },
+        { timeout: 45_000 },
       )
       submissionId.value = data.id
-      recommendations.value = data.recommendations
+      recommendations.value = Array.isArray(data.recommendations) ? data.recommendations : []
       return true
     } catch {
       submitError.value = 'Er is iets misgegaan. Probeer het opnieuw.'
