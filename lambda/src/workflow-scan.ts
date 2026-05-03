@@ -295,6 +295,8 @@ export async function handler(
 
   const leadPk = website ? `LEAD#${encodeURIComponent(website)}` : `LEAD#${id}`
 
+  const leadStatus = alias === 'prod' ? 'email_sent' : 'new'
+
   await Promise.allSettled([
     ddb.send(new PutCommand({
       TableName: tableName,
@@ -304,24 +306,26 @@ export async function handler(
         id,
         website,
         email,
-        status: 'email_sent',
+        status: leadStatus,
         source: 'workflow-scan',
         notes: leadNotes,
         createdAt: now,
         updatedAt: now,
       },
     })).catch(err => console.error('[workflow-scan] lead put error', err)),
-    ses.send(new SendEmailCommand({
-      Source: 'Sanne van AIntern <sanne@aintern.nl>',
-      Destination: { ToAddresses: [email] },
-      Message: {
-        Subject: { Data: `Jouw AI Workflow Analyse — ${score}/100`, Charset: 'UTF-8' },
-        Body: {
-          Text: { Data: textBody, Charset: 'UTF-8' },
-          Html: { Data: htmlBody, Charset: 'UTF-8' },
-        },
-      },
-    })).catch(err => console.error('[workflow-scan] ses send error', err)),
+    alias === 'prod'
+      ? ses.send(new SendEmailCommand({
+          Source: 'Sanne van AIntern <sanne@aintern.nl>',
+          Destination: { ToAddresses: [email] },
+          Message: {
+            Subject: { Data: `Jouw AI Workflow Analyse — ${score}/100`, Charset: 'UTF-8' },
+            Body: {
+              Text: { Data: textBody, Charset: 'UTF-8' },
+              Html: { Data: htmlBody, Charset: 'UTF-8' },
+            },
+          },
+        })).catch(err => console.error('[workflow-scan] ses send error', err))
+      : Promise.resolve(console.log('[workflow-scan] SES skipped on dev alias (sandbox mode)')),
   ])
 
   return respond(200, { id, recommendations }, alias, requestOrigin)
