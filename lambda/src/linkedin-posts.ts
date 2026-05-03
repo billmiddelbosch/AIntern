@@ -95,6 +95,7 @@ interface LinkedInPost {
   scheduledFor?: string
   publishedAt?: string
   engagementNotes?: string
+  imageUrl?: string
   createdAt: string
   updatedAt: string
 }
@@ -180,6 +181,7 @@ function parseCreateBody(raw: string | null): Pick<LinkedInPost, 'title' | 'cont
     hashtags: typeof p['hashtags'] === 'string' ? p['hashtags'] : undefined,
     scheduledFor: typeof p['scheduledFor'] === 'string' ? p['scheduledFor'] : undefined,
     engagementNotes: typeof p['engagementNotes'] === 'string' ? p['engagementNotes'] : undefined,
+    imageUrl: typeof p['imageUrl'] === 'string' ? p['imageUrl'] : undefined,
   }
 }
 
@@ -206,6 +208,7 @@ async function handleCreate(
     hashtags: fields.hashtags,
     scheduledFor: fields.scheduledFor,
     engagementNotes: fields.engagementNotes,
+    imageUrl: fields.imageUrl,
     createdAt: now,
     updatedAt: now,
   }
@@ -222,7 +225,7 @@ async function handleCreate(
 
 const UPDATABLE_FIELDS = [
   'title', 'content', 'status', 'serie', 'episode',
-  'hashtags', 'scheduledFor', 'publishedAt', 'engagementNotes',
+  'hashtags', 'scheduledFor', 'publishedAt', 'engagementNotes', 'imageUrl',
 ] as const
 
 type UpdatableField = (typeof UPDATABLE_FIELDS)[number]
