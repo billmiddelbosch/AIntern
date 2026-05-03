@@ -100,6 +100,7 @@ type LeadStatus =
   | 'won'
   | 'lost'
   | 'not_found'
+  | 'email_sent'
 
 interface Lead {
   id: string
@@ -107,6 +108,7 @@ interface Lead {
   companyName?: string
   linkedinUrl?: string
   linkedinName?: string
+  email?: string
   status: LeadStatus
   assignee?: string
   connectionSentAt?: string
@@ -120,6 +122,8 @@ interface Lead {
   discoveryCallUrl?: string
   source?: string
   notes?: string
+  lastEmailSubject?: string
+  lastEmailBody?: string
   createdAt: string
   updatedAt: string
 }
@@ -131,12 +135,12 @@ interface DdbLead extends Lead {
 
 const VALID_STATUSES = new Set<string>([
   'new', 'enriched', 'connection_sent', 'connected',
-  'dm_sent', 'dm_responded', 'discovery_booked', 'won', 'lost', 'not_found',
+  'dm_sent', 'dm_responded', 'discovery_booked', 'won', 'lost', 'not_found', 'email_sent',
 ])
 
 const UPDATABLE_FIELDS = [
   'connectionMessage', 'dmMessage', 'status', 'notes',
-  'linkedinUrl', 'linkedinName', 'companyName', 'assignee',
+  'linkedinUrl', 'linkedinName', 'email', 'companyName', 'assignee',
   'connectionSentAt', 'connectionVariant', 'dmSentAt', 'dmVariant',
   'dmResponse', 'discoveryBookedAt', 'discoveryCallUrl',
 ] as const

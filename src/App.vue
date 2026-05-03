@@ -3,15 +3,20 @@ import { computed, onMounted } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import { useHead } from '@/composables/useHead'
 import { useAnalytics } from '@/composables/useAnalytics'
+import { useBookingModal } from '@/composables/useBookingModal'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
 
 useHead()
 
 const { trackPageView } = useAnalytics()
+const { openBookingModal } = useBookingModal()
 
 onMounted(() => {
   trackPageView()
+  if (new URLSearchParams(window.location.search).get('booking') === '1') {
+    openBookingModal()
+  }
 })
 
 const route = useRoute()
