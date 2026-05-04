@@ -11,6 +11,7 @@ export interface LinkedInPost {
   scheduledFor?: string
   publishedAt?: string
   engagementNotes?: string
+  imageUrl?: string
   createdAt: string
   updatedAt: string
 }
