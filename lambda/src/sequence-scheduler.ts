@@ -74,13 +74,29 @@ function nextWorkday0900CET(): string {
   return target.toISOString()
 }
 
+function escapeHtml(s: string): string {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+}
+
+function safeUrl(raw: string): string {
+  try {
+    const u = new URL(raw)
+    if (u.protocol !== 'https:' && u.protocol !== 'http:') return '[invalid-url]'
+    return u.href
+  } catch {
+    return '[invalid-url]'
+  }
+}
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
+
 function toHtmlEmail(plainBody: string): string {
   const paragraphs = plainBody
     .split(/\n{2,}/)
     .map(block =>
       block
         .split('\n')
-        .map(line => line.trim())
+        .map(line => escapeHtml(line.trim()))
         .filter(Boolean)
         .join('<br>'),
     )
@@ -195,6 +211,7 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
   const alias = context.invokedFunctionArn.split(':').pop() ?? 'dev'
   const tableName = await getTableName(alias)
   const now = new Date().toISOString()
+  let anthropic: Anthropic | null = null
 
   // ── Part 0: Compose editorial outreach mails ─────────────────────────────
 
@@ -238,6 +255,10 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
       expert_quote: 'Bied een bruikbare uitspraak aan over het thema vanuit AIntern-praktijk. Geef alvast een concept-quote van max 2 zinnen.',
     }
 
+    const articleData = JSON.stringify({
+      url: safeUrl(item.articleUrl),
+      title: item.articleTitle.slice(0, 200),
+    })
     const prompt = `Je schrijft een outreach-mail namens Bill Middelbosch van AIntern (aintern.nl).
 AIntern is een no-cure-no-pay AI-automatiseringspartner voor het Nederlandse MKB.
 
@@ -245,8 +266,10 @@ Doel: opgenomen worden in het artikel van de redacteur als vermelding, tool-sugg
 Toon: direct, concreet, geen buzzwords, geen sales-pitch. Max 150 woorden body.
 Taal: Nederlands.
 
-Artikel-URL: ${item.articleUrl}
-Artikeltitel: ${item.articleTitle.slice(0, 200)}
+[EXTERNE ARTIKELDATA]
+${articleData}
+[EINDE EXTERNE ARTIKELDATA]
+
 Contactpersoon: ${contactName} van ${publicationName}
 Angle: ${angle}
 
@@ -343,8 +366,6 @@ Retourneer ONLY valid JSON zonder markdown:
 
   const enrichedLeads = (scanRes.Items ?? []) as LeadItem[]
   console.log('[sequence-scheduler] enriched leads found=%d', enrichedLeads.length)
-
-  let anthropic: Anthropic | null = null
 
   for (let i = 0; i < enrichedLeads.length; i++) {
     const lead = enrichedLeads[i]
@@ -453,6 +474,11 @@ Retourneer ONLY valid JSON zonder markdown:
 
   for (const item of dueItems) {
     if (sent >= 10) break
+    if (!EMAIL_RE.test(item.email)) {
+      console.warn('[sequence-scheduler] skip invalid email | pk=%s', item.pk)
+      sent++
+      continue
+    }
 
     try {
       await ses.send(
@@ -538,6 +564,10 @@ Retourneer ONLY valid JSON zonder markdown:
   for (const item of approvedItems) {
     if (editorialSentToday >= 5) break
     if (!item.contactEmail || !item.emailSubject || !item.emailBody) continue
+    if (!EMAIL_RE.test(item.contactEmail)) {
+      console.warn('[sequence-scheduler] editorial skip invalid email | pk=%s', item.pk)
+      continue
+    }
 
     // Anti-spam: same contactEmail not within 90 days
     if (item.sentAt) {

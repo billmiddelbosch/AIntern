@@ -221,9 +221,9 @@ Analyseer de onderstaande post en retourneer ONLY valid JSON zonder markdown:
 
 isMkbRelevant = true als de post een pijnpunt beschrijft dat relevant is voor kleine of middelgrote bedrijven (MKB/SMB/KMU), ongeacht taal of land van de auteur.
 
-Post titel: ${safeTitle}
-Post tekst: ${safeText}
-Bron: ${source}`
+[EXTERNE POSTDATA]
+${JSON.stringify({ title: safeTitle, text: safeText, source })}
+[EINDE EXTERNE POSTDATA]`
 
     const msg = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',
@@ -325,9 +325,9 @@ editorialReason:
   - trends: trendartikelen over AI/automatisering voor bedrijven
   - none: niet van toepassing
 
-Artikeltitel: ${safeTitle}
-Samenvatting: ${safeDesc}
-Publicatie: ${publicationName}`
+[EXTERNE ARTIKELDATA]
+${JSON.stringify({ title: safeTitle, summary: safeDesc, publication: publicationName })}
+[EINDE EXTERNE ARTIKELDATA]`
 
     const msg = await anthropic.messages.create({
       model: 'claude-haiku-4-5-20251001',

@@ -162,6 +162,55 @@ export async function handler(
     }
   }
 
+  // PATCH /admin/editorial-outreach/{id}  — update emailSubject / emailBody
+  if (method === 'PATCH') {
+    const patchMatch = path.match(/\/admin\/editorial-outreach\/([^/]+)$/)
+    if (!patchMatch) {
+      return respond(404, { error: 'Not found' }, alias, requestOrigin)
+    }
+    const id = patchMatch[1]
+    if (!id || !/^[a-f0-9]{24}$/.test(id)) {
+      return respond(400, { error: 'Invalid id' }, alias, requestOrigin)
+    }
+
+    let parsed: { emailSubject?: unknown; emailBody?: unknown }
+    try {
+      parsed = JSON.parse(event.body ?? '{}')
+    } catch {
+      return respond(400, { error: 'Invalid JSON body' }, alias, requestOrigin)
+    }
+
+    const { emailSubject, emailBody } = parsed
+    if (typeof emailSubject !== 'string' || typeof emailBody !== 'string') {
+      return respond(400, { error: 'emailSubject and emailBody required' }, alias, requestOrigin)
+    }
+
+    const pk = `EDITORIAL#${id}`
+    try {
+      await ddb.send(
+        new UpdateCommand({
+          TableName: tableName,
+          Key: { pk, sk: 'OUTREACH' },
+          UpdateExpression: 'SET emailSubject = :subj, emailBody = :body, updatedAt = :ts',
+          ExpressionAttributeValues: {
+            ':subj': emailSubject.slice(0, 200),
+            ':body': emailBody.slice(0, 2000),
+            ':ts': new Date().toISOString(),
+          },
+          ConditionExpression: 'attribute_exists(pk)',
+        }),
+      )
+    } catch (err: unknown) {
+      if ((err as { name?: string }).name === 'ConditionalCheckFailedException') {
+        return respond(404, { error: 'Editorial item not found' }, alias, requestOrigin)
+      }
+      console.error('[editorial-crud] patch error | pk=%s', pk, err)
+      return respond(500, { error: 'Internal server error' }, alias, requestOrigin)
+    }
+
+    return respond(200, { id, emailSubject: emailSubject.slice(0, 200), emailBody: emailBody.slice(0, 2000) }, alias, requestOrigin)
+  }
+
   // GET /admin/editorial-outreach?status=...
   if (method === 'GET') {
     const rawStatus = event.queryStringParameters?.status ?? 'pending_approval'

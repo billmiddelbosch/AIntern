@@ -1015,12 +1015,15 @@ export class AdminStack extends cdk.Stack {
     painSignalsResource.addMethod('GET', aliasIntegration(flywheelMetricsFn))
 
     // GET /admin/editorial-outreach?status=...
+    // PATCH /admin/editorial-outreach/{id}
     // PUT /admin/editorial-outreach/{id}/approve
     // PUT /admin/editorial-outreach/{id}/skip
     const editorialResource = adminResource.addResource('editorial-outreach')
     editorialResource.addMethod('GET', aliasIntegration(editorialCrudFn))
 
     const editorialByIdResource = editorialResource.addResource('{id}')
+    editorialByIdResource.addMethod('PATCH', aliasIntegration(editorialCrudFn))
+
     const editorialApproveResource = editorialByIdResource.addResource('approve')
     editorialApproveResource.addMethod('PUT', aliasIntegration(editorialCrudFn))
 

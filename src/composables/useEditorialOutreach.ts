@@ -53,12 +53,25 @@ export function useEditorialOutreach() {
 
   async function approve(id: string): Promise<boolean> {
     try {
-      const { data } = await adminAxios.put<EditorialItem>(`/admin/editorial-outreach/${id}/approve`)
-      const idx = items.value.findIndex((i) => i.id === id)
-      if (idx !== -1) items.value[idx] = data
+      await adminAxios.put(`/admin/editorial-outreach/${id}/approve`)
+      items.value = items.value.filter((i) => i.id !== id)
       return true
     } catch (e) {
       console.error('[useEditorialOutreach] approve', e)
+      return false
+    }
+  }
+
+  async function updateEmail(id: string, emailSubject: string, emailBody: string): Promise<boolean> {
+    try {
+      await adminAxios.patch(`/admin/editorial-outreach/${id}`, { emailSubject, emailBody })
+      const idx = items.value.findIndex((i) => i.id === id)
+      if (idx !== -1) {
+        items.value[idx] = { ...items.value[idx], emailSubject, emailBody }
+      }
+      return true
+    } catch (e) {
+      console.error('[useEditorialOutreach] updateEmail', e)
       return false
     }
   }
@@ -78,5 +91,5 @@ export function useEditorialOutreach() {
     return PUBLICATION_NAMES[id] ?? id
   }
 
-  return { items, loading, error, fetchItems, approve, skip, publicationName }
+  return { items, loading, error, fetchItems, approve, skip, updateEmail, publicationName }
 }
