@@ -1,24 +1,26 @@
 # Emma — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-04_
 
 ## Open Acties (toegewezen aan mij)
-- Lead pipeline: 2× per week bijwerken — 1× gedaan (Hilde + Robert gearchiveerd 2026-04-28)
-- B-90: 5 leads dispatchen — goedgekeurd 2026-04-28, verschoven naar volgende sessie
+- Lead pipeline: 2× per week bijwerken
+- Weekrapport W19: aanmaken volgende maandag (2026-05-11)
 
-## KPI Status (week 18, 27 april–3 mei)
-- Pipeline bijgewerkt: 1/2 ⚠️
-- Onboarding checklist O-03: ✅ geïmplementeerd (B-80)
-- Weekrapport W17: ✅ gedaan
+## KPI Status (week 19, 4–10 mei)
+- Weekrapport W18: ✅ gedaan 2026-05-04 — Obsidian vault
+- Onboarding checklist: operationeel (B-80 ✅)
+- Pipeline bijgewerkt: 0/2 (week net gestart)
 
 ## Actieve Blockers
 - Geen
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-90 verschoven: Human Board kiest ervoor vandaag niet te dispatchen
-- B-88d live: wanneer leads email-adres hebben en status enriched, worden ze automatisch in sequentie opgenomen
+## Genomen Beslissingen (board 2026-05-04)
+- B-94 Weekrapport W18 ✅ aangemaakt: 2026-04-27 t/m 2026-05-03 — Obsidian vault
+- B-90 outreach: tafel bij Bill — 5 connection requests ROI variant; update outreach-log.csv zodra Bill bevestigt
+- 5 backlog-items gecorrigeerd naar ✅ done (B-52, B-53, B-54, B-89, B-91)
 
 ## Lopende Context
 - Outreach-log.csv status: dm_sent:3, excluded:3, not_found:1, needs_enrichment:4, not_contacted:5
-- 3 dm_sent leads (Bram, Jan, Bob) wachten >20 dagen op reactie — monitor
-- B-88d actief zodra SSM gmail-webhook geconfigureerd door Bill
-- Volgende pipeline-update: zodra B-90 leads worden dispatched
+- 5 not_contacted leads klaar voor dispatch: Franny, Denise, Ilse, Nick, Bep (tafel bij Bill)
+- 3 dm_sent leads (Bram, Jan, Bob): nog geen reactie — monitor >20 dagen
+- B-88d: ✅ overgestapt op SES — email sequentie actief zonder Zapier webhook
+- Update outreach-log: zodra Bill bevestigt dat connection requests verzonden zijn

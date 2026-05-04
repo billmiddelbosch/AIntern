@@ -1,28 +1,27 @@
 # Lars — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-04_
 
 ## Open Acties (toegewezen aan mij)
-- B-88c: Lead-matcher Lambda (HIGHEST PRIO) — nog todo
-- B-88d: ✅ done — commit d47cde1 (sequence-scheduler email sequentie)
-- B-64: ✅ done — commits 88cea95 + eabcc8f (portfolio sectie + anonimisering)
+- B-88b (X/Twitter): on hold — Zapier X-integratie weg; alternatief nodig
+- Volgende B-item: volgt uit backlog check volgende sessie
 
-## KPI Status (week 18, 27 april–3 mei)
-- Security check: ✅ gedaan 2026-04-28 (week 18)
-- Backlog items shipped: B-88d + B-64 (2 items vandaag)
-- Token spend: $159/week ⚠️ (monitoring)
+## KPI Status (week 19, 4–10 mei)
+- Security check: ✅ gedaan 2026-05-04 (week 19) — PASS
+- Backlog items shipped: B-76 (pain-stack.ts cleanup) — commit 4ed7b20
+- Carry-over LOW: CORS-duplicatie workflow-scan.ts + linkedin-posts.ts
 
 ## Actieve Blockers
-- B-88b (X/Twitter): Zapier heeft geen X-integratie meer — code klaar, webhook URL ontbreekt; on hold
-- B-88c: nog niet gestart, HIGHEST PRIO voor volgende sessie
+- B-88b (X/Twitter): Zapier heeft geen X-integratie meer — on hold; code klaar
+- B-88d: ✅ overgestapt op SES — Zapier Gmail webhook niet meer nodig
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-88d ✅ sequence-scheduler.ts uitgebreid: Part 1 enriched leads → Haiku email + SEQUENCE# entries, Part 2 send via Zapier Gmail
-- B-64 ✅ portfolio sectie live: ITGuru anoniem gemaakt, CTA → BookingModal
-- references/portfolio-projects.md aangemaakt met ITGuru repo pad (C:/Users/bmidd/development/ITGuru)
-- B-88b uitgelegd aan Human Board: code klaar in content-engine.ts, on hold wegens Zapier X-integratie
+## Genomen Beslissingen (board 2026-05-04)
+- B-76 ✅ pain-stack.ts verwijderd (55 regels) + PainStack import uit aintern.ts — commit 4ed7b20
+- Security check week 19: PASS — lead-matcher (Apollo SSM ✅), linkedin-posts (JWT auth ✅), Vue components (no v-html ✅)
+- 2 LOW carry-overs: CORS-duplicatie workflow-scan.ts + linkedin-posts.ts — maintenance risk, geen security issue
+- Sitemap bijgewerkt: 15 artikelen (was 13) via npm run sitemap:generate
 
 ## Lopende Context
-- Volgende prioriteit: B-88c (lead-matcher Lambda — EventBridge wed 10:00 UTC)
-- B-88d vereist nog SSM setup door Bill: /aintern/{alias}/zapier/gmail-webhook-url
-- B-88b vereist alternatief voor Zapier X: X API v2 direct of Make.com
-- Branch commits vandaag: d47cde1, 88cea95, 7ff5084, eabcc8f
+- Branch feature/board-2026-05-04: commit 4ed7b20
+- Security rapport: .claude/cto/memory_security_check_2026-05-04.md
+- Volgende security check: week 20 (2026-05-11)
+- npm audit: run zodra nieuwe dependency wordt toegevoegd aan lambda/package.json
