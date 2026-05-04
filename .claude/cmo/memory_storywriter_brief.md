@@ -9,7 +9,7 @@ Schrijf kant-en-klare LinkedIn posts voor het persoonlijk profiel van **Bill Mid
 
 ---
 
-## De Serie: "Het AI-Duo Experiment"
+## De Serie: "Het AIntern Experiment"
 
 Bill documenteert een experiment: hij bouwt AIntern met twee menselijke board members:
 - **Product founder** — stuurt op groei, features en snelheid
@@ -30,7 +30,7 @@ Volgorde: chronologisch van begin tot heden, daarna doorlopend actueel.
 
 **Factuuregel:** Schrijf uitsluitend op basis van feiten uit de AIntern daily meeting minutes. Geen nieuwe feiten verzinnen of toevoegen.
 
-**Serienaam:** "Het AI-Duo Experiment"
+**Serienaam:** "Het AIntern Experiment" _(gecorrigeerd 2026-05-04 — eerder stond hier "Het AI-Duo Experiment")_
 
 ---
 

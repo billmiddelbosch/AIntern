@@ -1,14 +1,14 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.1
+version: 0.4.3
 ---
 
 # Daily Board Meeting
 
 A structured daily session that runs the AIntern C-suite through seven phases: context loading, executive discussion, LinkedIn outreach proposals, Kennisbank content proposals, meeting summary, board memory update, and skill improvement.
 
-**Execution model:** Run all phases fully automatically without stopping. **Internal actions execute immediately** (backlog updates, board memory files, SKILL.md, Obsidian meeting minutes, summary email to Bill) — no approval needed. **Everything that becomes externally visible always requires explicit Human Board approval** before execution: Kennisbank articles, LinkedIn brand posts, LinkedIn personal posts, LinkedIn connection requests, LinkedIn DMs, and any external emails to prospects. Present a single End-of-Meeting Approval Gate for all external items. Hard blockers (missing file, auth error) are surfaced inline and the remaining phases continue.
+**Execution model:** Run all phases fully automatically without stopping. **Internal actions execute immediately** (backlog updates, board memory files, SKILL.md, Obsidian meeting minutes, summary email to Bill, ghostwriter draft aanmaken + DynamoDB import) — no approval needed. **Everything that becomes externally visible always requires explicit Human Board approval** before execution: Kennisbank articles, LinkedIn brand posts, LinkedIn personal posts, LinkedIn connection requests, LinkedIn DMs, and any external emails to prospects. Present a single End-of-Meeting Approval Gate for all external items. Hard blockers (missing file, auth error) are surfaced inline and the remaining phases continue.
 
 ---
 
@@ -40,7 +40,7 @@ Controleer of vandaag maandag is via `date +%A`. Als ja, zijn de volgende twee p
    - Als `EXISTS`: markeer de maandag-verplichting als al voltooid; voeg het bestaande rapport toe als `✅ al gedaan` in de agenda — **geen terminal dispatchen**.
    - Als `MISSING`: maak backlog-item aan, dispatch terminal conform `.claude/skills/weekly-report.md`. Rapport wordt opgeslagen in de Obsidian vault op het standaard pad.
 
-2. **Ghostwriter LinkedIn post AI-Duo Experiment — Sanne (CMO).** Draft de volgende ongepubliceerde episode voor "Het AI-Duo Experiment" serie via Phase 3.5 (altijd actief op maandag, ongeacht de trigger-conditie). Als er een bestaande draft klaarligt die Bill nog niet heeft gepubliceerd, markeer die dan als urgent ter review in de Approval Gate.
+2. **Ghostwriter LinkedIn post Het AIntern Experiment — Sanne (CMO).** Draft de volgende ongepubliceerde episode voor "Het AIntern Experiment" serie via Phase 3.5 (altijd actief op maandag, ongeacht de trigger-conditie). Als er een bestaande draft klaarligt die Bill nog niet heeft gepubliceerd, markeer die dan als urgent ter review in de Approval Gate.
 
 Noteer beide verplichtingen in de opening agenda onder een apart kopje **`Maandag-verplichtingen:`** vóór de normale Agenda van vandaag.
 
@@ -78,6 +78,11 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
 
    **Security carry-over cross-check:** After loading CTO blockers, read the most recent `.claude/cto/memory_security_check_*.md`. For each HIGH or MEDIUM finding listed, check whether the corresponding B-item in `product/backlog.md` is already done or cancelled. If so, do not surface it as a blocker — skip it silently. Only present findings where the B-item is still `	odo` or `in-progress`. This prevents stale carry-over security findings from appearing as active blockers (root cause: B-56/B-57 on 2026-04-25 were already fixed in B-21/B-23 but carried forward blindly by copying the previous week's check without re-verification).
 
+3.5a. **Open acties relevantie-check:** Na het laden van CEO/CTO/CMO/COO memory, loop door alle open human-acties (regels die beginnen met een actie voor Bill of een specifieke exec). Controleer per actie:
+   - Is het bijbehorende B-item inmiddels ✅ done of ❌ cancelled in `product/backlog.md`?
+   - Is de technische context gewijzigd waardoor de actie vervalt (bijv. migratie van Zapier → SES, of een feature die anders geïmplementeerd is)?
+   Als ja: verwijder de actie direct uit de betreffende memory-bestanden via Edit tool en noteer de verwijdering als `[AUTO-CLEANUP]` in de opening agenda. Dit voorkomt dat verouderde acties als blocker of open punt worden gepresenteerd (root cause: SSM webhook B-88d bleef staan na SES-migratie 2026-05-04).
+
 3.5. **Kennisbank week count verificatie (voer uit vóór de check-in):** Bereken de ISO week start = datum van vandaag minus (weekdag-index, maandag=0). Lees `.claude/cmo/memory_daily_context.md` voor Kennisbank-publicaties. Filter op `publishedAt >= [maandag ISO week start]`. Tel alleen publicaties die op of ná de maandag vallen. Rapporteer het gecorrigeerde aantal als `kennisbank_week_count` — gebruik dit getal (niet de CMO memory-waarde) voor de KPI Pulse in Phase 2 Round 3 en voor de Phase 4 skip condition 1. Meld de discrepantie als de gecorrigeerde telling lager is dan de memory-waarde.
 
 4. Read `product/backlog.md` — identify the first non-completed item per section (Landing Page, Admin, Organisation). These are the top 3 for today's discussion.
@@ -85,6 +90,8 @@ Use the digest output as context for Phase 2 (which areas got the most work, wha
    **Backlog post-build-error check:** When loading the backlog, also check `git log --oneline --since="2 days ago"` for feature-implementation commits. For each recent implementation commit, verify the corresponding B-item is marked ✅ done. If an implementation commit exists but the B-item is still `todo`, mark it done immediately with the commit hash noted. This catches backlog updates missed due to build-error disruptie (root cause of B-28 being stale).
 
    **Admin-sectie cross-referentie check:** For each `todo` item in the Admin section (A-xx), check whether a ✅ done B-item references it (e.g. "B-28: A-05 implementeren"). If such a B-item exists and is ✅ done, mark the A-item as done immediately with a note: "Geïmplementeerd als onderdeel van [B-item] — [commit hash]". This prevents false positives in the check-in for features delivered via linked B-items (root cause of A-06 surfacing repeatedly after being implemented in A-05/B-28).
+
+   **Sub-item auto-sync:** When a parent B-item notes in its description "Sub-items B-XX t/m B-YY done" or "Sub-items B-XX, B-YY done" (or English equivalent), immediately mark every listed sub-item as ✅ done inline before presenting the backlog. Do not wait for the Human Board check-in to surface them as stale. This prevents the pattern where sub-items remain `todo` after the parent is completed (root cause: B-52, B-53, B-54 stale after B-36 completed in 2026-04-28).
 
 5. **Spec open-questions pre-check:** For each backlog item likely to be implemented today (based on step 4), check its spec file for an "Open Questions" section. If unanswered questions exist, flag them immediately in the agenda under "Actieve blockers" so the CEO can resolve them in Round 2 before any terminal is dispatched.
 
@@ -280,7 +287,7 @@ Sources to scan: (1) SEO section of backlog — P1 S-items not yet done; (2) B-i
 
 **Step B — Top 5 Daily Actions** — agreed by the group, ordered by impact on the highest off-track OKR metric:
 
-> **Maandag-slot:** Op maandag zijn positie 1 en 2 altijd pre-gereserveerd: **(1) Weekrapport vorige week — Emma (COO)**, **(2) Ghostwriter LinkedIn post AI-Duo Experiment — Sanne (CMO)**. De overige 3 posities worden vrij ingevuld op basis van de hoogste OKR-impact.
+> **Maandag-slot:** Op maandag zijn positie 1 en 2 altijd pre-gereserveerd: **(1) Weekrapport vorige week — Emma (COO)**, **(2) Ghostwriter LinkedIn post Het AIntern Experiment — Sanne (CMO)**. De overige 3 posities worden vrij ingevuld op basis van de hoogste OKR-impact.
 
 ```
 | # | Action | Owner | Success Metric |
@@ -373,7 +380,7 @@ Sanne (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
 
 **Steps:**
 1. **Lees het weekrapport van de vorige week als feitenbasis.** Zoek het meest recente weekrapport in `C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/` met patroon `weekrapport-YYYY-WNN.md`. Als het huidige weekrapport al gegenereerd is (maandag-verplichting stap 1), gebruik dat. Extraheer uit het rapport de **Ghostwriter Input Block** (Stap 10 van de weekly-report skill) of — als dat blok ontbreekt — handmatig: shipped items, lead/outreach aantallen, gepubliceerde artikelen, KPI-highlights en opvallende momenten. Deze feiten zijn de **verplichte grondstof** voor de post; verzin geen data.
-2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds
+2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds. **Serienaam — lees uit frontmatter, niet uit brief:** Gebruik de `serie:` waarde uit het meest recente bestaande episodebestand (`.claude/cmo/ghostwriter_drafts/episode-*.md` gesorteerd op hoogste episodenummer) als de gezaghebbende serienaam — niet de waarde in `memory_storywriter_brief.md`. De brief kan stale zijn na een naamswijziging mid-meeting (root cause: "Het AI-Duo Experiment" → "Het AIntern Experiment" gecorrigeerd 2026-05-04, brief werd later bijgewerkt maar al gedraaide sessies hadden de stale naam gebruikt).
 3. **Identificeer de volgende ongepubliceerde episode(s) via DynamoDB — nooit via CMO memory.** Query de actieve DynamoDB-records:
    ```bash
    aws dynamodb query --table-name aintern-admin --key-condition-expression "PK = :pk" --expression-attribute-values '{":pk":{"S":"LINKEDIN#ghostwriter"}}' --region eu-west-1 2>/dev/null | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); (d.Items||[]).forEach(i=>console.log(i.episode?.N, i.serie?.S, i.status?.S));"
@@ -642,7 +649,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
-- **Maandag-verplichtingen zijn niet-onderhandelbaar** — op maandag staan weekrapport (Sam/COO, vorige week) en ghostwriter LinkedIn post AI-Duo Experiment (Blake/CMO) altijd als #1 en #2 in de Top 5 Daily Actions; niet te verplaatsen, overslaan of uitstellen; Phase 3.5 (Ghostwriter) wordt op maandag altijd uitgevoerd ongeacht de trigger-conditie
+- **Maandag-verplichtingen zijn niet-onderhandelbaar** — op maandag staan weekrapport (Emma/COO, vorige week) en ghostwriter LinkedIn post Het AIntern Experiment (Sanne/CMO) altijd als #1 en #2 in de Top 5 Daily Actions; niet te verplaatsen, overslaan of uitstellen; Phase 3.5 (Ghostwriter) wordt op maandag altijd uitgevoerd ongeacht de trigger-conditie
 - **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
 - **Stay in character** — each executive speaks in their own voice throughout
@@ -652,7 +659,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Feature branch required** — CTO creates `feature/board-{YYYY-MM-DD}` in Phase 1 Step 0; no agent may write, commit, or publish outside this branch
 - **Terminals must be visible** — always open terminals via `Bash` + `claude -p "..."`. Never use the Agent tool for terminal actions — it runs in a hidden context invisible to the Human Board
 - **Windows terminal prompt encoding** — `claude -p "..."` fails on Windows/Git Bash when the prompt exceeds ~1000 characters due to quote-escaping. Fix: write the prompt to a temp file first, then dispatch via `claude -p "$(cat /tmp/board-task-{n}.txt)" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"`. If the terminal output file is ≤30 lines and contains only bash errors (no Claude output), this encoding failure is the cause — fall back to implementing the task inline in the main session and note it as a blocker in the approval gate.
-- **0-bytes terminal output — immediate inline fallback** — After dispatching a terminal, check the output size before waiting. If the Bash output is 0 bytes or the terminal produces no Claude output within the first response (just an echo or immediate return), do **not** wait or retry. Implement the task inline in the main session immediately, note it in the approval gate as `[TERMINAL: inline fallback — terminal backgrounded]`. A terminal that exits with code 0 but produced 0 bytes of Claude output has been backgrounded by the OS and will never produce useful output for the current session.
+- **0-bytes terminal output — verify via git status before fallback** — After dispatching a terminal that produces 0 bytes of Claude output (or exits immediately), do **not** assume the terminal did nothing. First run `git status --short` to check if any files were changed or deleted. If git shows changes, the terminal ran successfully but was backgrounded — do not implement inline; instead proceed as if the terminal completed and ask for commit approval based on `git diff --stat`. Only fall back to inline implementation if git status also shows no changes. Note in the approval gate as `[TERMINAL: backgrounded — verified via git status]`. Root cause: a terminal with 0-byte output can still have completed its work before being backgrounded (observed 2026-05-04 with B-76 cleanup terminal).
 - **Human approval before every commit** — terminals write files and output a Terminal Summary but do NOT commit. The main session quotes the summary in full, asks "Goedkeuring voor commit?", and only commits via `git commit` after explicit Human Board approval
 - **Terminal Summary verbatim inside the terminal** — the terminal itself must output the full Terminal Summary and ask "Goedkeuring voor commit?" before committing. The CEO verifies this happened; the main meeting output does not repeat or re-ask it
 - **One terminal per backlog item** — each `claude -p "..."` terminal covers exactly one backlog item end-to-end. Never combine multiple backlog items in one terminal. Every terminal prompt must include the instruction: "Complete all steps inline — do not spawn sub-agents or additional terminals." If a backlog item is too large, split it into smaller items and get Human Board approval before dispatching
