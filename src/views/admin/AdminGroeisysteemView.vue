@@ -3,11 +3,12 @@ import { ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import adminAxios from '@/lib/adminAxios'
 import { useSubredditConfig } from '@/composables/useSubredditConfig'
+import { useEditorialOutreach } from '@/composables/useEditorialOutreach'
 import type { PainSignal } from '@/types/painSignal'
 
 const { t } = useI18n()
 
-type Tab = 'flywheel' | 'subreddits' | 'pains' | 'cadans'
+type Tab = 'flywheel' | 'subreddits' | 'pains' | 'cadans' | 'editorial'
 const activeTab = ref<Tab>('flywheel')
 
 // ── Flywheel metrics ──────────────────────────────────────────────────────────
@@ -89,6 +90,44 @@ async function loadPains() {
   }
 }
 
+// ── Editorial outreach (S-13) ─────────────────────────────────────────────────
+
+const editorial = useEditorialOutreach()
+type EditorialFilter = 'pending_approval' | 'sent' | 'replied' | 'all'
+const editorialFilter = ref<EditorialFilter>('pending_approval')
+
+const STATUS_LABELS: Record<string, { label: string; cls: string }> = {
+  needs_contact:    { label: 'Contact zoeken', cls: 'bg-slate-100 text-slate-600' },
+  ready_for_compose:{ label: 'Mail samenstellen', cls: 'bg-blue-100 text-blue-700' },
+  pending_approval: { label: 'Wacht op goedkeuring', cls: 'bg-amber-100 text-amber-700' },
+  approved:         { label: 'Goedgekeurd', cls: 'bg-green-100 text-green-700' },
+  sent:             { label: 'Verstuurd', cls: 'bg-indigo-100 text-indigo-700' },
+  follow_up_pending:{ label: 'Follow-up klaar', cls: 'bg-purple-100 text-purple-700' },
+  follow_up_sent:   { label: 'Follow-up verstuurd', cls: 'bg-purple-100 text-purple-700' },
+  replied:          { label: 'Gereageerd', cls: 'bg-green-100 text-green-800' },
+  backlink_confirmed:{ label: 'Backlink bevestigd', cls: 'bg-emerald-100 text-emerald-800' },
+  no_reply:         { label: 'Geen reactie', cls: 'bg-slate-100 text-slate-500' },
+  skipped:          { label: 'Overgeslagen', cls: 'bg-slate-100 text-slate-400' },
+  compose_failed:   { label: 'Samenstelling mislukt', cls: 'bg-red-100 text-red-600' },
+}
+
+function statusBadge(status: string) {
+  return STATUS_LABELS[status] ?? { label: status, cls: 'bg-slate-100 text-slate-600' }
+}
+
+async function loadEditorial() {
+  await editorial.fetchItems(editorialFilter.value)
+}
+
+async function handleApprove(id: string) {
+  await editorial.approve(id)
+}
+
+async function handleSkip(id: string) {
+  if (!confirm('Editorial item overslaan?')) return
+  await editorial.skip(id)
+}
+
 // ── Cadans checklist ──────────────────────────────────────────────────────────
 
 const cadans = [
@@ -119,6 +158,7 @@ async function switchTab(tab: Tab) {
   if (tab === 'flywheel' && !metrics.value) await loadMetrics()
   if (tab === 'subreddits' && subreddits.value.length === 0) await fetchSubreddits()
   if (tab === 'pains' && pains.value.length === 0) await loadPains()
+  if (tab === 'editorial' && editorial.items.value.length === 0) await loadEditorial()
 }
 
 onMounted(() => loadMetrics())
@@ -135,15 +175,15 @@ onMounted(() => loadMetrics())
     <!-- Tabs -->
     <div class="flex border-b border-slate-200 gap-1">
       <button
-        v-for="tab in (['flywheel', 'subreddits', 'pains', 'cadans'] as const)"
+        v-for="tab in (['flywheel', 'subreddits', 'pains', 'editorial', 'cadans'] as const)"
         :key="tab"
-        class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors capitalize"
+        class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors"
         :class="activeTab === tab
           ? 'border-indigo-500 text-indigo-600'
           : 'border-transparent text-slate-500 hover:text-slate-700'"
         @click="switchTab(tab)"
       >
-        {{ { flywheel: 'Flywheel', subreddits: 'Subreddits', pains: 'Pains', cadans: 'Cadans' }[tab] }}
+        {{ { flywheel: 'Flywheel', subreddits: 'Subreddits', pains: 'Pains', editorial: 'Editorial', cadans: 'Cadans' }[tab] }}
       </button>
     </div>
 
@@ -359,6 +399,108 @@ onMounted(() => loadMetrics())
           </tr>
           <tr v-if="pains.length === 0">
             <td colspan="5" class="py-6 text-center text-slate-400 text-sm">Nog geen pain signals</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tab: Editorial -->
+    <div v-else-if="activeTab === 'editorial'" class="space-y-4">
+      <!-- Filter + reload -->
+      <div class="flex items-center gap-3 flex-wrap">
+        <select
+          v-model="editorialFilter"
+          class="px-3 py-1.5 border border-slate-200 rounded-lg text-sm bg-white"
+          @change="loadEditorial"
+        >
+          <option value="pending_approval">Wacht op goedkeuring</option>
+          <option value="approved">Goedgekeurd</option>
+          <option value="sent">Verstuurd</option>
+          <option value="follow_up_pending">Follow-up klaar</option>
+          <option value="replied">Gereageerd</option>
+          <option value="no_reply">Geen reactie</option>
+          <option value="all">Alle statussen</option>
+        </select>
+        <button
+          class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm rounded-lg transition-colors"
+          :disabled="editorial.loading.value"
+          @click="loadEditorial"
+        >
+          Verversen
+        </button>
+        <span v-if="editorial.items.value.length" class="text-sm text-slate-500">
+          {{ editorial.items.value.length }} item(s)
+        </span>
+      </div>
+
+      <div v-if="editorial.loading.value" class="text-slate-500 text-sm">Laden...</div>
+      <p v-else-if="editorial.error.value" class="text-red-600 text-sm">{{ editorial.error.value }}</p>
+
+      <table v-else class="w-full text-sm">
+        <thead>
+          <tr class="text-left text-xs text-slate-500 border-b border-slate-100">
+            <th class="pb-2 font-medium">Publicatie</th>
+            <th class="pb-2 font-medium">Artikel</th>
+            <th class="pb-2 font-medium">Reden</th>
+            <th class="pb-2 font-medium">Contact</th>
+            <th class="pb-2 font-medium">Status</th>
+            <th class="pb-2 font-medium">Acties</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="item in editorial.items.value"
+            :key="item.id"
+            class="border-b border-slate-50 hover:bg-slate-50"
+          >
+            <td class="py-2.5 text-xs font-medium text-slate-700 whitespace-nowrap">
+              {{ editorial.publicationName(item.publicationId) }}
+            </td>
+            <td class="py-2.5 max-w-xs">
+              <a
+                :href="item.articleUrl"
+                target="_blank"
+                rel="noopener"
+                class="text-indigo-600 hover:underline line-clamp-2 block text-xs"
+              >{{ item.articleTitle }}</a>
+              <span v-if="item.emailSubject" class="text-slate-400 text-xs italic block mt-0.5 line-clamp-1">
+                "{{ item.emailSubject }}"
+              </span>
+            </td>
+            <td class="py-2.5 text-xs text-slate-500 whitespace-nowrap">{{ item.editorialReason }}</td>
+            <td class="py-2.5 text-xs text-slate-500">
+              <span v-if="item.contactEmail" class="block">{{ item.contactName ?? item.contactEmail }}</span>
+              <span v-if="item.emailSource" class="text-slate-400 text-[10px]">{{ item.emailSource }}</span>
+              <span v-else class="text-slate-400">—</span>
+            </td>
+            <td class="py-2.5">
+              <span
+                class="inline-flex text-xs px-2 py-0.5 rounded-full font-medium whitespace-nowrap"
+                :class="statusBadge(item.status).cls"
+              >
+                {{ statusBadge(item.status).label }}
+              </span>
+            </td>
+            <td class="py-2.5">
+              <div v-if="item.status === 'pending_approval'" class="flex gap-1.5">
+                <button
+                  class="text-xs px-2.5 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white font-medium transition-colors"
+                  @click="handleApprove(item.id)"
+                >
+                  Goedkeuren
+                </button>
+                <button
+                  class="text-xs px-2.5 py-1 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors"
+                  @click="handleSkip(item.id)"
+                >
+                  Overslaan
+                </button>
+              </div>
+              <span v-else class="text-xs text-slate-400">{{ item.sentAt?.slice(0, 10) ?? item.createdAt.slice(0, 10) }}</span>
+            </td>
+          </tr>
+          <tr v-if="editorial.items.value.length === 0">
+            <td colspan="6" class="py-6 text-center text-slate-400 text-sm">Geen editorial items gevonden</td>
           </tr>
         </tbody>
       </table>

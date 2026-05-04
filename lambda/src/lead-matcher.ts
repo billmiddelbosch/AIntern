@@ -1,7 +1,7 @@
 import type { Context } from 'aws-lambda'
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient, ScanCommand, UpdateCommand } from '@aws-sdk/lib-dynamodb'
+import { DynamoDBDocumentClient, ScanCommand, UpdateCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
@@ -124,4 +124,95 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
   }
 
   console.log('[lead-matcher] done | enriched=%d notFound=%d', enriched, notFound)
+
+  // ── Editorial track — S-13 ───────────────────────────────────────────────
+  const PUBLICATION_FALLBACKS: Record<string, { domain: string; email: string }> = {
+    sprout:         { domain: 'sprout.nl',         email: 'redactie@sprout.nl' },
+    emerce:         { domain: 'emerce.nl',          email: 'redactie@emerce.nl' },
+    agconnect:      { domain: 'agconnect.nl',       email: 'redactie@agconnect.nl' },
+    computable:     { domain: 'computable.nl',      email: 'redactie@computable.nl' },
+    zipconomy:      { domain: 'zipconomy.nl',       email: 'redactie@zipconomy.nl' },
+    mkbservicedesk: { domain: 'mkbservicedesk.nl',  email: 'info@mkbservicedesk.nl' },
+  }
+
+  const editorialRes = await ddb.send(
+    new QueryCommand({
+      TableName: tableName,
+      IndexName: 'GSI1',
+      KeyConditionExpression: 'GSI1pk = :gsi1pk',
+      FilterExpression: 'begins_with(pk, :prefix)',
+      ExpressionAttributeValues: {
+        ':gsi1pk': 'STATUS#needs_contact',
+        ':prefix': 'EDITORIAL#',
+      },
+      Limit: 10,
+    }),
+  )
+
+  const editorialItems = editorialRes.Items ?? []
+  console.log('[lead-matcher] editorial items to enrich=%d', editorialItems.length)
+
+  let editorialEnriched = 0
+  const editorialNow = new Date().toISOString()
+
+  for (const item of editorialItems) {
+    const publicationId = item['publicationId'] as string ?? ''
+    const pub = PUBLICATION_FALLBACKS[publicationId]
+    if (!pub) {
+      console.log('[lead-matcher] unknown publication | pk=%s id=%s', item['pk'], publicationId)
+      continue
+    }
+
+    const authorName = item['authorName'] as string | undefined
+    let contactEmail: string | null = null
+    let emailSource = 'fallback_redactie'
+
+    if (authorName) {
+      try {
+        const apolloRes = await fetch('https://api.apollo.io/v1/people/match', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-api-key': apolloKey },
+          body: JSON.stringify({ name: authorName, domain: pub.domain, reveal_personal_emails: false }),
+        })
+        const apolloData = (await apolloRes.json()) as ApolloResponse
+        if (apolloData.person?.email) {
+          contactEmail = apolloData.person.email
+          emailSource = 'apollo'
+        }
+      } catch (err) {
+        console.error('[lead-matcher] editorial apollo error | pk=%s', item['pk'], err)
+      }
+    }
+
+    if (!contactEmail) {
+      contactEmail = pub.email
+    }
+
+    try {
+      await ddb.send(
+        new UpdateCommand({
+          TableName: tableName,
+          Key: { pk: item['pk'] as string, sk: 'OUTREACH' },
+          UpdateExpression:
+            'SET contactEmail = :email, emailSource = :src, #status = :ready, GSI1pk = :gsi1pk, updatedAt = :ts' +
+            (authorName && emailSource === 'apollo' ? ', contactName = :name' : ''),
+          ExpressionAttributeNames: { '#status': 'status' },
+          ExpressionAttributeValues: {
+            ':email': contactEmail,
+            ':src': emailSource,
+            ':ready': 'ready_for_compose',
+            ':gsi1pk': 'STATUS#ready_for_compose',
+            ':ts': editorialNow,
+            ...(authorName && emailSource === 'apollo' && { ':name': authorName }),
+          },
+        }),
+      )
+      editorialEnriched++
+      console.log('[lead-matcher] editorial enriched | pk=%s source=%s', item['pk'], emailSource)
+    } catch (err) {
+      console.error('[lead-matcher] editorial update error | pk=%s', item['pk'], err)
+    }
+  }
+
+  console.log('[lead-matcher] editorial done | enriched=%d', editorialEnriched)
 }
