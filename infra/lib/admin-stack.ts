@@ -350,10 +350,10 @@ export class AdminStack extends cdk.Stack {
     const signaaldetectieFn = new lambda.Function(this, 'SignaaldetectieFunction', {
       functionName: 'aintern-signaaldetectie',
       handler: 'signaaldetectie.handler',
-      description: 'Daily Reddit scraper — stores MKB pain signals in DynamoDB (B-36)',
+      description: 'Daily Reddit + RSS scraper — stores MKB pain signals and editorial opportunities in DynamoDB (B-36 + S-13)',
       runtime: lambda.Runtime.NODEJS_22_X,
       code: lambdaCode,
-      timeout: cdk.Duration.seconds(60),
+      timeout: cdk.Duration.seconds(120),
       environment: {
         DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
       },
@@ -723,6 +723,43 @@ export class AdminStack extends cdk.Stack {
       targets: [new targets.LambdaFunction(leadMatcherProdAlias)],
     })
 
+    // ── S-13 — editorial-crud Lambda ─────────────────────────────────────────
+    const editorialCrudFn = new lambda.Function(this, 'EditorialCrudFunction', {
+      functionName: 'aintern-editorial-crud',
+      handler: 'editorial-crud.handler',
+      description: 'GET/PUT /admin/editorial-outreach — editorial outreach CRUD with approve/skip (S-13)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        DYNAMODB_TABLE_SSM_PREFIX: '/aintern',
+      },
+    })
+
+    editorialCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    editorialCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(editorialCrudFn)
+
     // ── Groei Systeem — flywheel-metrics Lambda ───────────────────────────────
     const flywheelMetricsFn = new lambda.Function(this, 'FlywheelMetricsFunction', {
       functionName: 'aintern-flywheel-metrics',
@@ -762,6 +799,9 @@ export class AdminStack extends cdk.Stack {
 
     flywheelMetricsFn.addAlias('dev')
     flywheelMetricsFn.addAlias('prod')
+
+    editorialCrudFn.addAlias('dev')
+    editorialCrudFn.addAlias('prod')
 
     // ── ClientOnboarding DynamoDB table ──────────────────────────────────────
     const onboardingTable = new dynamodb.Table(this, 'ClientOnboardingTable', {
@@ -973,6 +1013,22 @@ export class AdminStack extends cdk.Stack {
     // GET /admin/pain-signals (read-only, shares flywheel-metrics handler)
     const painSignalsResource = adminResource.addResource('pain-signals')
     painSignalsResource.addMethod('GET', aliasIntegration(flywheelMetricsFn))
+
+    // GET /admin/editorial-outreach?status=...
+    // PATCH /admin/editorial-outreach/{id}
+    // PUT /admin/editorial-outreach/{id}/approve
+    // PUT /admin/editorial-outreach/{id}/skip
+    const editorialResource = adminResource.addResource('editorial-outreach')
+    editorialResource.addMethod('GET', aliasIntegration(editorialCrudFn))
+
+    const editorialByIdResource = editorialResource.addResource('{id}')
+    editorialByIdResource.addMethod('PATCH', aliasIntegration(editorialCrudFn))
+
+    const editorialApproveResource = editorialByIdResource.addResource('approve')
+    editorialApproveResource.addMethod('PUT', aliasIntegration(editorialCrudFn))
+
+    const editorialSkipResource = editorialByIdResource.addResource('skip')
+    editorialSkipResource.addMethod('PUT', aliasIntegration(editorialCrudFn))
 
     // POST + GET /admin/onboarding
     // GET /admin/onboarding/{clientId}
