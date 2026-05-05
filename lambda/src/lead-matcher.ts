@@ -49,18 +49,25 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
   const apolloKey = await getApolloKey(alias)
   const now = new Date().toISOString()
 
-  const scanRes = await ddb.send(
-    new ScanCommand({
-      TableName: tableName,
-      FilterExpression:
-        '#status = :new AND attribute_not_exists(email) AND attribute_exists(website)',
-      ExpressionAttributeNames: { '#status': 'status' },
-      ExpressionAttributeValues: { ':new': 'new' },
-      Limit: 20,
-    }),
-  )
-
-  const leads = (scanRes.Items ?? []) as LeadItem[]
+  const leads: LeadItem[] = []
+  let lastKey: Record<string, unknown> | undefined = undefined
+  do {
+    const scanRes = await ddb.send(
+      new ScanCommand({
+        TableName: tableName,
+        FilterExpression:
+          '#status = :new AND attribute_not_exists(email) AND attribute_exists(website)',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: { ':new': 'new' },
+        ExclusiveStartKey: lastKey,
+      }),
+    )
+    for (const item of scanRes.Items ?? []) {
+      leads.push(item as LeadItem)
+      if (leads.length >= 20) break
+    }
+    lastKey = leads.length < 20 ? (scanRes.LastEvaluatedKey as typeof lastKey) : undefined
+  } while (lastKey)
   console.log('[lead-matcher] leads to enrich=%d', leads.length)
 
   let enriched = 0
