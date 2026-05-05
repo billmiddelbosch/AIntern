@@ -49,7 +49,9 @@ export class AdminStack extends cdk.Stack {
     adminAuthFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ssm:GetParameter', 'ssm:PutParameter'],
-        resources: ['*'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/*`,
+        ],
       }),
     )
 
