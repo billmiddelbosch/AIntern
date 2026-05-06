@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.3
+version: 0.4.4
 ---
 
 # Daily Board Meeting
@@ -28,6 +28,8 @@ The branch name uses today's date (e.g., `feature/board-2026-04-11`). Joost (CEO
 **Second-session detection (same day):** After confirming the branch, read `.claude/ceo/memory_daily_context.md`. If `_Last updated:` matches today's date (YYYY-MM-DD), skip Phase 1 context loading and go directly to the Human Board Check-in with a note: `_Tweede sessie vandaag — context al geladen. Ga direct naar check-in._` This prevents redundant context loading when the board reconvenes mid-day.
 
 **Rate-limit recovery (mid-meeting interruption):** If the session was interrupted by a Claude rate limit and the user resumes with "continue" (or similar), do NOT restart from Phase 1. Instead: (1) check `git log feature/board-{YYYY-MM-DD} --oneline` to see which terminals already committed, (2) check which backlog items are already `✅ done` today, (3) resume at the next pending terminal or phase. State explicitly: `_Herstart na rate limit — B-xx t/m B-yy al klaar; doorgaan met B-zz._` This prevents duplicate work after interruptions.
+
+**Context-compaction recovery (mid-meeting interruption):** If the session was interrupted by context compaction (the conversation was summarised and the user resumes with "continue" or similar), do NOT restart from Phase 1. Detection: the session opens with a structured summary block (not a rate-limit error). In this case: (1) read the summary to identify completed phases and pending tasks, (2) skip all phases already executed per the summary, (3) resume at the first pending phase or pending approval gate item. State explicitly: `_Herstart na context-compaction — samenvatting geladen; doorgaan vanaf [fase/item]._` Unlike rate-limit recovery, git log is not needed because the summary is authoritative.
 
 **Maandag-verplichtingen (harde eis — alleen op maandag, nooit te skipppen):**
 
@@ -182,6 +184,8 @@ Use the `claude` CLI via **Bash** — this makes the terminal visible in the Cla
 claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 ```
 The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt.
+
+**Windows compatibility:** On Windows, `/tmp/` does not exist — never write task prompts to `/tmp/`. Pass the prompt inline as a quoted string, or use `$env:TEMP` for temp files. If the terminal produces 0-byte output, it is a shell-encoding failure (not a timeout) — fall back to implementing the task inline in the main session rather than re-dispatching the terminal.
 
 > ⛔ **NEVER use the Agent tool for terminal actions.** The Agent tool runs in a hidden sub-context that is invisible to the Human Board. Only `Bash` + `claude -p` produces a visible console terminal.
 
@@ -641,6 +645,8 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 5. Voer Phase 6 uit — update board memory met de beslissingen van de Human Board
 
 **Afgewezen of overgeslagen items:** zet backlog-status terug naar `todo` en log de reden in CMO/CEO memory.
+
+**Inline security fix → verplichte commit-actie in gate:** Wanneer een MEDIUM of HIGH security finding direct inline gefixd wordt (i.e. niet via een terminal, maar via Edit tool in de hoofdsessie), voeg dan een `[COMMIT NODIG]` item toe aan de Approval Gate — met de exacte git-commando's voor Bill om te runnen via `!`. De fix staat anders stil op de branch zonder commit. Dit item verschijnt altijd als eerste in de gate, vóór LinkedIn/Kennisbank items.
 
 ---
 
