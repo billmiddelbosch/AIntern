@@ -114,12 +114,14 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
         new UpdateCommand({
           TableName: tableName,
           Key: { pk: lead.pk, sk: lead.sk },
-          UpdateExpression: 'SET email = :email, #status = :enriched, updatedAt = :ts',
+          UpdateExpression: 'SET email = :email, #status = :enriched, updatedAt = :ts, GSI1pk = :gsi1pk, GSI1sk = :gsi1sk',
           ExpressionAttributeNames: { '#status': 'status' },
           ExpressionAttributeValues: {
             ':email': email,
             ':enriched': 'enriched',
             ':ts': now,
+            ':gsi1pk': 'STATUS#enriched',
+            ':gsi1sk': now,
           },
         }),
       )

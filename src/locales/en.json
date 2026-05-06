@@ -146,7 +146,7 @@
   "seo": {
     "home": {
       "title": "AIntern — Your AI Intern for SMEs | No-Cure-No-Pay",
-      "description": "AIntern builds a dedicated AI intern for your business — automating internal processes like an extra employee. No risk: you only pay when results are verified. Free consultation.",
+      "description": "AIntern builds a dedicated AI intern for your SME — automating repetitive processes like an extra employee. You only pay when results are verified.",
       "ogImageAlt": "AIntern — Your AI Intern for SMEs"
     }
   },
@@ -358,6 +358,15 @@
         "publishFailed": "Failed to publish article.",
         "deleted": "Article deleted.",
         "deleteFailed": "Failed to delete article."
+      },
+      "links": {
+        "heading": "Links in article",
+        "empty": "No hyperlinks in this article.",
+        "broken": "⚠ This article does not exist",
+        "brokenCount": "broken",
+        "edit": "Edit",
+        "save": "Save",
+        "cancel": "Cancel"
       }
     }
   },
@@ -509,7 +518,7 @@
   },
   "hero": {
     "eyebrow": "Your AI intern",
-    "headline": "Everyone feels that AI can change something. We take the repetitive work that consumes your day off your hands.",
+    "headline": "Everyone feels that AI can change something. We take the repetitive work of your SME off your hands.",
     "subtext": "AIntern builds a dedicated AI intern for your business — specifically configured for your processes, not a standard template. You only pay when you see results.",
     "cta": "Free consultation",
     "ctaSecondary": "See how it works",

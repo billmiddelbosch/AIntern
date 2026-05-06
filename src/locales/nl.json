@@ -146,7 +146,7 @@
   "seo": {
     "home": {
       "title": "AIntern — Jouw AI-stagiaire voor het MKB | No-Cure-No-Pay",
-      "description": "AIntern bouwt een dedicated AI-stagiaire voor jouw bedrijf — die interne processen automatiseert als een extra medewerker. Geen risico: je betaalt pas bij bewezen resultaat. Gratis kennismaking.",
+      "description": "AIntern bouwt een AI-stagiaire voor jouw MKB — die herhaalprocessen automatiseert als een extra medewerker. Je betaalt pas bij bewezen resultaat.",
       "ogImageAlt": "AIntern — Jouw AI-stagiaire voor het MKB"
     }
   },
@@ -358,6 +358,15 @@
         "publishFailed": "Publiceren mislukt.",
         "deleted": "Artikel verwijderd.",
         "deleteFailed": "Verwijderen mislukt."
+      },
+      "links": {
+        "heading": "Links in artikel",
+        "empty": "Geen hyperlinks in dit artikel.",
+        "broken": "Dit artikel bestaat niet",
+        "brokenCount": "kapot",
+        "edit": "Bewerken",
+        "save": "Opslaan",
+        "cancel": "Annuleren"
       }
     }
   },
@@ -509,7 +518,7 @@
   },
   "hero": {
     "eyebrow": "Jouw AI-stagiaire",
-    "headline": "Iedereen voelt dat AI iets kan veranderen. Wij nemen het herhaalwerk dat uw dag opslokt uit handen.",
+    "headline": "Iedereen voelt dat AI iets kan veranderen. Wij nemen het herhaalwerk van uw MKB uit handen.",
     "subtext": "AIntern bouwt een eigen AI-stagiaire voor uw bedrijf — specifiek ingericht op uw processen, niet op een standaard template. U betaalt pas als het resultaat er is.",
     "cta": "Gratis kennismaking",
     "ctaSecondary": "Bekijk hoe het werkt",

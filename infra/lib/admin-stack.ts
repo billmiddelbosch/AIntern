@@ -49,7 +49,9 @@ export class AdminStack extends cdk.Stack {
     adminAuthFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ssm:GetParameter', 'ssm:PutParameter'],
-        resources: ['*'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/*`,
+        ],
       }),
     )
 
@@ -803,6 +805,45 @@ export class AdminStack extends cdk.Stack {
     editorialCrudFn.addAlias('dev')
     editorialCrudFn.addAlias('prod')
 
+    // ── sequence-crud Lambda ──────────────────────────────────────────────────
+    const sequenceCrudFn = new lambda.Function(this, 'SequenceCrudFunction', {
+      functionName: 'aintern-sequence-crud',
+      handler: 'sequence-crud.handler',
+      description: 'GET /admin/sequences + PATCH /admin/sequences/{id} — review and edit scheduled cold email sequences',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    sequenceCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    sequenceCrudFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    adminTable.grantReadWriteData(sequenceCrudFn)
+
+    sequenceCrudFn.addAlias('dev')
+    sequenceCrudFn.addAlias('prod')
+
     // ── ClientOnboarding DynamoDB table ──────────────────────────────────────
     const onboardingTable = new dynamodb.Table(this, 'ClientOnboardingTable', {
       tableName: 'aintern-onboarding',
@@ -1029,6 +1070,14 @@ export class AdminStack extends cdk.Stack {
 
     const editorialSkipResource = editorialByIdResource.addResource('skip')
     editorialSkipResource.addMethod('PUT', aliasIntegration(editorialCrudFn))
+
+    // GET /admin/sequences
+    // PATCH /admin/sequences/{id}
+    const sequencesResource = adminResource.addResource('sequences')
+    sequencesResource.addMethod('GET', aliasIntegration(sequenceCrudFn))
+
+    const sequenceByIdResource = sequencesResource.addResource('{id}')
+    sequenceByIdResource.addMethod('PATCH', aliasIntegration(sequenceCrudFn))
 
     // POST + GET /admin/onboarding
     // GET /admin/onboarding/{clientId}
