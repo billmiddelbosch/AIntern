@@ -1,35 +1,43 @@
 # Joost — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-05_
 
 ## Open Acties (toegewezen aan mij)
 - B-10: 1 Lightspeed-prospect contacteren via LinkedIn — handmatig door Bill 🔴 (persistent)
-- MeerBusiness: Bill plaatst zelf LinkedIn post + top-10 connection requests (content klaar)
+- ep03 "Het eerste lek" — Bill post vandaag op persoonlijk LinkedIn
+- ep04 "De eerste autonome actie" — Bill post donderdag 2026-05-07
+- infra/lib/admin-stack.ts security fix commit goedkeuren (feature/board-2026-05-05)
 
-## KPI Status (week 18, 27 april–3 mei)
-- LinkedIn posts: 2/3 ⚠️ (1 nog nodig voor maandag)
-- Kennisbank: 2/2 ✅
-- Nieuwe connecties: 0/20–25 ❌ (B-90 verschoven)
-- B-88d: ✅ live — email sequentie actief zodra Bill SSM instelt
+## KPI Status (week 19, 4–10 mei)
+- LinkedIn posts: 0/3 (week gestart)
+- Kennisbank: 2/2 ✅ (gepubliceerd 2026-05-04)
+- Nieuwe connecties: 5 connection_sent (B-90 ✅ done)
+- Security check: ✅ done (B-95)
 
 ## Actieve Blockers
-- B-88d vereist handmatige SSM setup door Bill: `/aintern/{alias}/zapier/gmail-webhook-url`
-- B-90: 5 leads nog te dispatchen (next session)
+- B-31: 4 needs_enrichment leads zonder LinkedIn URL (topicsfashion, chocoladeverpakking, slijterij-jeppe, oasegroen)
+- B-97: LinkedIn company post editorial outreach milestone — wacht op gate-goedkeuring Bill
 
-## Top 4 Dagelijkse Acties (2026-05-01)
-1. B-89: MeerBusiness outreach .md ✅ — Bill handelt zelf af
-2. B-91: LinkedIn brand post ✅ gepubliceerd — urn:li:share:7456031083629944832
-3. B-88d: Autonome e-mail sequentie ✅ — commit d47cde1
-4. B-64: Portfolio sectie ITGuru ✅ — commits 88cea95 + eabcc8f
+## Top 5 Dagelijkse Acties (2026-05-05)
+1. B-95 security check PR #149 ✅ — PASS na fix; MEDIUM gefixd in admin-stack.ts
+2. S-13 ✅ done — eerste editorial outreach mails verstuurd door Bill
+3. B-90 ✅ done — 5 connection requests verstuurd door Bill (ROI variant)
+4. B-96 ✅ done — S-12 MKB al geïmplementeerd (locale-check bevestigd)
+5. Phase 5 vergaderverslag ✅ — Obsidian vault + email verstuurd
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-89 content klaar; Bill plaatst LinkedIn post + top-10 MeerBusiness connection requests zelf
-- B-91 gepubliceerd via Zapier — Groei Systeem angle, week 18 post 2/3
-- B-64 portfolio: klant anoniem ("IT-reseller in de regio"), kennismaken CTA via BookingModal
-- B-88b uitgelegd: code klaar, on hold wegens Zapier X-integratie verdwijning
-- B-88c HIGHEST PRIO voor volgende sessie
-- Skill verbetering: references/portfolio-projects.md aangemaakt
+## Backlog Correcties (2026-05-05)
+- B-76, B-92, B-93, B-94 ✅ done — auto-sync bevestigd
+- B-95 ✅ done — security check + MEDIUM fix admin-stack.ts
+- B-96 / S-12 ✅ done — al geïmplementeerd
+- S-13 ✅ done — eerste mails verstuurd
+
+## Genomen Beslissingen (board 2026-05-05)
+- Security MEDIUM gevonden en direct gefixd inline (geen carry-over): adminAuthFn SSM resources → /aintern/admin/*
+- B-51 cold email experiment (B-98): targets + 3 varianten voorbereiden — CMO taak
+- B-88f lead import automatiseren: backlog-item toegevoegd, nog niet in sprint
+- 3 nieuwe backlog items aangemaakt: B-97, B-98, B-99
 
 ## Lopende Context
-- Branch feature/board-2026-05-01: 4 commits vandaag — klaar voor PR na review
-- Volgende meeting: 2 mei 2026
-- SSM acties voor Bill: /aintern/{alias}/zapier/gmail-webhook-url instellen voor B-88d activering
+- Branch feature/board-2026-05-05: security fix infra/lib/admin-stack.ts (nog te committen door Bill)
+- Security rapport: .claude/cto/memory_security_check_2026-05-05.md
+- Vergaderverslag: Obsidian vault → Aintern Meeting Minutes → board-2026-05-05.md
+- Volgende meeting: woensdag 2026-05-07

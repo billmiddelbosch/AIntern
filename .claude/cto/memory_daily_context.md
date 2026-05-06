@@ -1,28 +1,27 @@
 # Lars — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-05_
 
 ## Open Acties (toegewezen aan mij)
-- B-88c: Lead-matcher Lambda (HIGHEST PRIO) — nog todo
-- B-88d: ✅ done — commit d47cde1 (sequence-scheduler email sequentie)
-- B-64: ✅ done — commits 88cea95 + eabcc8f (portfolio sectie + anonimisering)
+- B-88b (X/Twitter): on hold — Zapier X-integratie weg; alternatief nodig
+- infra/lib/admin-stack.ts security fix deployen — commit klaar op feature/board-2026-05-05; Bill keurt goed
 
-## KPI Status (week 18, 27 april–3 mei)
-- Security check: ✅ gedaan 2026-04-28 (week 18)
-- Backlog items shipped: B-88d + B-64 (2 items vandaag)
-- Token spend: $159/week ⚠️ (monitoring)
+## KPI Status (week 19, 4–10 mei)
+- Security check: ✅ gedaan 2026-05-05 (B-95, PR #149) — PASS na fix
+- Backlog items shipped: B-95 (security check + MEDIUM fix admin-stack.ts)
+- Volgende security check: week 20 (2026-05-11)
 
 ## Actieve Blockers
-- B-88b (X/Twitter): Zapier heeft geen X-integratie meer — code klaar, webhook URL ontbreekt; on hold
-- B-88c: nog niet gestart, HIGHEST PRIO voor volgende sessie
+- B-88b (X/Twitter): Zapier heeft geen X-integratie meer — on hold; code klaar
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-88d ✅ sequence-scheduler.ts uitgebreid: Part 1 enriched leads → Haiku email + SEQUENCE# entries, Part 2 send via Zapier Gmail
-- B-64 ✅ portfolio sectie live: ITGuru anoniem gemaakt, CTA → BookingModal
-- references/portfolio-projects.md aangemaakt met ITGuru repo pad (C:/Users/bmidd/development/ITGuru)
-- B-88b uitgelegd aan Human Board: code klaar in content-engine.ts, on hold wegens Zapier X-integratie
+## Genomen Beslissingen (board 2026-05-05)
+- B-95 security check PR #149: PASS na fix
+  - MEDIUM gefixd: adminAuthFn SSM resources ['*'] → arn:aws:ssm:${region}:${account}:parameter/aintern/admin/*
+  - Fix in infra/lib/admin-stack.ts op feature/board-2026-05-05 (nog te committen)
+  - 3 LOWs geaccepteerd: lead-matcher Apollo contactEmail, useEditorialOutreach client-length, apiGwInvokeRole scope
+- B-96 / S-12: al geïmplementeerd — bevestigd via locale-check
 
 ## Lopende Context
-- Volgende prioriteit: B-88c (lead-matcher Lambda — EventBridge wed 10:00 UTC)
-- B-88d vereist nog SSM setup door Bill: /aintern/{alias}/zapier/gmail-webhook-url
-- B-88b vereist alternatief voor Zapier X: X API v2 direct of Make.com
-- Branch commits vandaag: d47cde1, 88cea95, 7ff5084, eabcc8f
+- Branch feature/board-2026-05-05: security fix infra/lib/admin-stack.ts
+- Security rapport: .claude/cto/memory_security_check_2026-05-05.md
+- Carry-over LOW: CORS-duplicatie workflow-scan.ts + linkedin-posts.ts (maintenance risk, geen security issue)
+- npm audit: run zodra nieuwe dependency wordt toegevoegd aan lambda/package.json

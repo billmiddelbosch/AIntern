@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher && npm run bundle:editorial-crud && npm run bundle:sequence-crud",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
     "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*",
@@ -23,7 +23,9 @@
     "bundle:flywheel-metrics": "esbuild src/flywheel-metrics.ts --bundle --platform=node --target=node22 --outfile=dist/flywheel-metrics.js --external:@aws-sdk/*",
     "bundle:seed-subreddits": "esbuild src/seed-subreddits.ts --bundle --platform=node --target=node22 --outfile=dist/seed-subreddits.js --external:@aws-sdk/*",
     "bundle:onboarding": "esbuild src/onboarding.ts --bundle --platform=node --target=node22 --outfile=dist/onboarding.js --external:@aws-sdk/*",
-    "bundle:lead-matcher": "esbuild src/lead-matcher.ts --bundle --platform=node --target=node22 --outfile=dist/lead-matcher.js --external:@aws-sdk/*"
+    "bundle:lead-matcher": "esbuild src/lead-matcher.ts --bundle --platform=node --target=node22 --outfile=dist/lead-matcher.js --external:@aws-sdk/*",
+    "bundle:editorial-crud": "esbuild src/editorial-crud.ts --bundle --platform=node --target=node22 --outfile=dist/editorial-crud.js --external:@aws-sdk/*",
+    "bundle:sequence-crud": "esbuild src/sequence-crud.ts --bundle --platform=node --target=node22 --outfile=dist/sequence-crud.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -33,6 +35,7 @@
     "@aws-sdk/lib-dynamodb": "^3",
     "@google-analytics/data": "^5.2.1",
     "bcryptjs": "^2",
+    "fast-xml-parser": "^4.4.0",
     "jsonwebtoken": "^9"
   },
   "devDependencies": {

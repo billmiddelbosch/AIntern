@@ -1,35 +1,38 @@
 # Sanne — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-05_
 
 ## Open Acties (toegewezen aan mij)
 - B-31: LinkedIn URL enrichment — 4 leads nog needs_enrichment (topicsfashion, chocoladeverpakking, slijterij-jeppe, oasegroen)
-- B-90: LinkedIn outreach 5 pending leads — goedgekeurd 2026-04-28, verschoven naar volgende sessie
-- B-89: MeerBusiness outreach content ✅ — meerBusiness-outreach.md aangemaakt 2026-05-01
+- B-97: LinkedIn company post — editorial outreach milestone — wacht op gate-goedkeuring
+- B-98: Cold email experiment — 5 targets + 3 varianten voorbereiden
+- ep03 posten: Bill doet vandaag (2026-05-05) — reminder gegeven
+- ep04 posten: Bill doet donderdag (2026-05-07)
 
-## KPI Status (week 18, 27 april–3 mei)
-- LinkedIn posts: 2 / 3 ⚠️ (B-87 2026-04-28 + B-91 2026-05-01)
-- Nieuwe connecties: 0 / 20–25 ❌ — B-90 verschoven
-- Kennisbank artikelen: 2 / 2 ✅
+## KPI Status (week 19, 4–10 mei)
+- LinkedIn posts: 0 / 3 (week gestart; B-97 in gate)
+- Nieuwe connecties: 5 connection_sent ✅ (B-90 done)
+- Kennisbank artikelen: 2 / 2 ✅ (gepubliceerd 2026-05-04)
 
 ## Actieve Blockers
-- B-90 dispatch 5 leads: verschoven door Human Board 2026-05-01 — next session
+- B-31: 4 leads zonder LinkedIn URL — Apify enrichment of handmatig opzoeken nodig
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-91 LinkedIn company post gepubliceerd ✅ — urn:li:share:7456031083629944832 (Groei Systeem angle)
-- B-89 MeerBusiness outreach .md klaar — Bill plaatst post en connection requests zelf
-- B-64 portfolio sectie: ITGuru naam verwijderd → "IT-reseller in de regio"; CTA gewijzigd naar kennismaken (BookingModal)
-- B-88d Autonome e-mail sequentie ✅ — commit d47cde1; sequence-scheduler uitgebreid
+## Genomen Beslissingen (board 2026-05-05)
+- S-13 ✅ done — eerste editorial outreach mails verstuurd door Bill 2026-05-05
+- B-90 ✅ done — 5 connection requests verstuurd (Franny, Denise, Ilse, Nick, Bep; ROI variant)
+- B-97 aangemaakt: LinkedIn company post editorial outreach milestone — in gate
+- B-98 aangemaakt: cold email experiment — 5 targets + 3 varianten
 
-## Ghostwriter Status (DynamoDB verified 2026-04-28)
-- ep01: ✅ approved | ep02: ✅ approved | ep03: ✅ in DynamoDB (draft) | ep04: ontbreekt — nog te schrijven
-- **Volgende te schrijven: ep04** (query DynamoDB voor verifiëring)
+## Ghostwriter Status
+- ep01: ✅ approved | ep02: ✅ approved | ep03: ✅ in DynamoDB → Bill post vandaag | ep04: ✅ draft aangemaakt 2026-05-04
+- **Serienaam: "Het AIntern Experiment"** (gecorrigeerd; brief bijgewerkt 2026-05-04)
+- DynamoDB id ep03: 15e4536c | Post voor: 2026-05-05 (VANDAAG)
+- DynamoDB id ep04: 3bbcab6e | Post voor: 2026-05-07
 
 ## Lopende Context
 - 3 dm_sent leads wachten op reactie: Bram Hofman, Jan Bulthuis, Bob van Boekel
-- 5 not_contacted leads KLAAR, goedgekeurd voor dispatch: Franny van Soest, Denise Aa, Ilse Huijbregts, Nick van den Berg, Bep Floor
+- 5 connection_sent leads (2026-05-05): Franny, Denise, Ilse, Nick, Bep
 - 4 needs_enrichment leads: topicsfashion.nl, chocoladeverpakking.nl, slijterij-jeppe.nl, oasegroen.nl
-- MeerBusiness outreach: content klaar in product/marketing/Ondernemingsclubs/meerBusiness-outreach.md
-- Afgewezen/gebruikte Obsidian seeds: zie vorige context (ongewijzigd)
+- outreach-log.csv bijgewerkt 2026-05-05 (Write tool)

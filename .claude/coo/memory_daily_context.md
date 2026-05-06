@@ -1,24 +1,26 @@
 # Emma — Daily Context
-_Last updated: 2026-05-01_
+_Last updated: 2026-05-05_
 
 ## Open Acties (toegewezen aan mij)
-- Lead pipeline: 2× per week bijwerken — 1× gedaan (Hilde + Robert gearchiveerd 2026-04-28)
-- B-90: 5 leads dispatchen — goedgekeurd 2026-04-28, verschoven naar volgende sessie
+- B-99: Pipeline review — 8 actieve leads updaten; tweede review plannen voor vrijdag 2026-05-09
+- Weekrapport W19: aanmaken maandag 2026-05-11
 
-## KPI Status (week 18, 27 april–3 mei)
-- Pipeline bijgewerkt: 1/2 ⚠️
-- Onboarding checklist O-03: ✅ geïmplementeerd (B-80)
-- Weekrapport W17: ✅ gedaan
+## KPI Status (week 19, 4–10 mei)
+- Weekrapport W18: ✅ gedaan 2026-05-04 — Obsidian vault
+- Onboarding checklist: operationeel (B-80 ✅)
+- Pipeline bijgewerkt: 1/2 (2026-05-05)
 
 ## Actieve Blockers
 - Geen
 
-## Genomen Beslissingen (board 2026-05-01)
-- B-90 verschoven: Human Board kiest ervoor vandaag niet te dispatchen
-- B-88d live: wanneer leads email-adres hebben en status enriched, worden ze automatisch in sequentie opgenomen
+## Genomen Beslissingen (board 2026-05-05)
+- B-90 ✅ done — 5 connection requests verstuurd door Bill 2026-05-05 (Franny, Denise, Ilse, Nick, Bep)
+- outreach-log.csv bijgewerkt: alle 5 leads op connection_sent
+- B-99 aangemaakt: COO pipeline review — 8 actieve leads, tweede check vrijdag
 
 ## Lopende Context
-- Outreach-log.csv status: dm_sent:3, excluded:3, not_found:1, needs_enrichment:4, not_contacted:5
-- 3 dm_sent leads (Bram, Jan, Bob) wachten >20 dagen op reactie — monitor
-- B-88d actief zodra SSM gmail-webhook geconfigureerd door Bill
-- Volgende pipeline-update: zodra B-90 leads worden dispatched
+- Outreach-log.csv status: dm_sent:3, connection_sent:5, excluded:3, not_found:1, needs_enrichment:4, not_contacted:0
+- 3 dm_sent leads (Bram, Jan, Bob): nog geen reactie — monitor >20 dagen; eerste follow-up check na 30 dagen
+- 5 connection_sent leads (2026-05-05): Franny, Denise, Ilse, Nick, Bep — DM klaarstaan zodra connectie geaccepteerd
+- 4 needs_enrichment leads: B-31 open (Apify of handmatig)
+- B-88d: ✅ SES email sequentie actief (sanne@aintern.nl) — Zapier Gmail webhook vervalt
