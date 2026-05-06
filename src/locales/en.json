@@ -358,6 +358,15 @@
         "publishFailed": "Failed to publish article.",
         "deleted": "Article deleted.",
         "deleteFailed": "Failed to delete article."
+      },
+      "links": {
+        "heading": "Links in article",
+        "empty": "No hyperlinks in this article.",
+        "broken": "⚠ This article does not exist",
+        "brokenCount": "broken",
+        "edit": "Edit",
+        "save": "Save",
+        "cancel": "Cancel"
       }
     }
   },

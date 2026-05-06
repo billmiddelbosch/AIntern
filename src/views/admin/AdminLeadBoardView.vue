@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useLeadStore } from '@/stores/useLeadStore'
 import { useEditorialOutreach } from '@/composables/useEditorialOutreach'
+import { useEmailSequences } from '@/composables/useEmailSequences'
 import LeadColumn from '@/components/leads/LeadColumn.vue'
 import { LEAD_STATUSES } from '@/types/lead'
 import type { LeadStatus } from '@/types/lead'
@@ -10,18 +11,20 @@ import type { LeadStatus } from '@/types/lead'
 const { t } = useI18n()
 const store = useLeadStore()
 
-type Tab = 'leads' | 'editorial'
+type Tab = 'leads' | 'editorial' | 'sequences'
 type EditorialFilter = 'pending_approval' | 'sent'
 
 const activeTab = ref<Tab>('leads')
 const editorialFilter = ref<EditorialFilter>('pending_approval')
 
 const editorial = useEditorialOutreach()
+const sequences = useEmailSequences()
 const actioningId = ref<string | null>(null)
 const actionError = ref<string | null>(null)
 
 interface EditDraft { subject: string; body: string }
 const editDrafts = ref<Record<string, EditDraft>>({})
+const seqEditDrafts = ref<Record<string, EditDraft>>({})
 
 function startEdit(id: string, subject: string, body: string) {
   editDrafts.value[id] = { subject: subject ?? '', body: body ?? '' }
@@ -50,6 +53,31 @@ async function switchTab(tab: Tab) {
   if (tab === 'editorial' && editorial.items.value.length === 0) {
     await editorial.fetchItems('pending_approval')
   }
+  if (tab === 'sequences' && sequences.items.value.length === 0) {
+    await sequences.fetchItems()
+  }
+}
+
+function seqStartEdit(id: string, subject: string, body: string) {
+  seqEditDrafts.value[id] = { subject: subject ?? '', body: body ?? '' }
+}
+
+function seqCancelEdit(id: string) {
+  delete seqEditDrafts.value[id]
+}
+
+async function seqSaveEdit(id: string) {
+  const draft = seqEditDrafts.value[id]
+  if (!draft) return
+  actioningId.value = id
+  actionError.value = null
+  const ok = await sequences.updateEmail(id, draft.subject, draft.body)
+  if (ok) {
+    delete seqEditDrafts.value[id]
+  } else {
+    actionError.value = 'Opslaan mislukt — probeer opnieuw'
+  }
+  actioningId.value = null
 }
 
 async function switchEditorialFilter(filter: EditorialFilter) {
@@ -117,7 +145,7 @@ const leadsByStatus = computed(() => {
     <!-- Tabs -->
     <div class="flex border-b border-slate-200 gap-1 mb-5">
       <button
-        v-for="tab in (['leads', 'editorial'] as const)"
+        v-for="tab in (['leads', 'editorial', 'sequences'] as const)"
         :key="tab"
         class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors"
         :class="activeTab === tab
@@ -125,7 +153,7 @@ const leadsByStatus = computed(() => {
           : 'border-transparent text-slate-500 hover:text-slate-700'"
         @click="switchTab(tab)"
       >
-        {{ tab === 'leads' ? 'Leads' : 'Editorial Outreach' }}
+        {{ tab === 'leads' ? 'Leads' : tab === 'editorial' ? 'Editorial Outreach' : 'E-mail Sequences' }}
       </button>
     </div>
 
@@ -369,6 +397,108 @@ const leadsByStatus = computed(() => {
           </div>
         </template>
 
+      </template>
+    </template>
+
+    <!-- Tab: E-mail Sequences -->
+    <template v-else-if="activeTab === 'sequences'">
+      <div v-if="sequences.loading.value" class="text-slate-500 text-sm">Laden...</div>
+      <p v-else-if="sequences.error.value" class="text-red-600 text-sm">{{ sequences.error.value }}</p>
+
+      <template v-else>
+        <div v-if="sequences.items.value.length === 0" class="py-12 text-center text-slate-400 text-sm">
+          Geen e-mail sequenties ingepland
+        </div>
+
+        <div v-else class="space-y-3">
+          <div class="flex items-center justify-between">
+            <p class="text-sm text-slate-500">
+              {{ sequences.items.value.length }} sequentie(s) ingepland voor morgenochtend 09:00. Pas de tekst aan vóór de run.
+            </p>
+            <button
+              class="text-xs text-indigo-600 hover:underline"
+              @click="sequences.fetchItems()"
+            >
+              Verversen
+            </button>
+          </div>
+
+          <p v-if="actionError" class="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+            {{ actionError }}
+          </p>
+
+          <div
+            v-for="item in sequences.items.value"
+            :key="item.id"
+            class="bg-white border border-slate-200 rounded-xl p-4 space-y-3"
+            :class="{ 'opacity-50 pointer-events-none': actioningId === item.id }"
+          >
+            <div class="flex items-start justify-between gap-4">
+              <div class="min-w-0">
+                <div class="flex items-center gap-2 flex-wrap">
+                  <span class="text-xs font-semibold text-slate-700">{{ item.company ?? item.email }}</span>
+                  <span class="text-xs text-slate-400">·</span>
+                  <span class="text-xs text-slate-500">{{ item.email }}</span>
+                  <span class="text-xs px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700">CTA {{ item.ctaVariant }}</span>
+                </div>
+                <p class="text-xs text-slate-500 mt-0.5">
+                  Verzending: {{ formatDate(item.sendAt) }}
+                </p>
+              </div>
+            </div>
+
+            <!-- Mail — edit mode -->
+            <div v-if="seqEditDrafts[item.id]" class="space-y-2">
+              <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Onderwerp</label>
+                <input
+                  v-model="seqEditDrafts[item.id].subject"
+                  type="text"
+                  class="w-full text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-slate-600 mb-1">Mailbody</label>
+                <textarea
+                  v-model="seqEditDrafts[item.id].body"
+                  rows="8"
+                  class="w-full text-xs border border-slate-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-y font-mono"
+                />
+              </div>
+              <div class="flex gap-2">
+                <button
+                  class="px-3 py-1.5 text-xs font-medium rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white transition-colors disabled:opacity-50"
+                  :disabled="actioningId === item.id"
+                  @click="seqSaveEdit(item.id)"
+                >
+                  {{ actioningId === item.id ? 'Opslaan...' : 'Opslaan' }}
+                </button>
+                <button
+                  class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 transition-colors"
+                  @click="seqCancelEdit(item.id)"
+                >
+                  Annuleren
+                </button>
+              </div>
+            </div>
+
+            <!-- Mail — read mode -->
+            <div v-else class="bg-slate-50 rounded-lg p-3 space-y-2">
+              <div class="flex items-center justify-between">
+                <p class="text-xs font-semibold text-slate-700">
+                  Onderwerp: {{ item.emailSubject }}
+                </p>
+                <button
+                  class="text-xs text-indigo-600 hover:underline shrink-0 ml-2"
+                  @click="seqStartEdit(item.id, item.emailSubject, item.emailBody)"
+                >
+                  Bewerken
+                </button>
+              </div>
+              <p class="text-xs text-slate-600 whitespace-pre-line">{{ item.emailBody }}</p>
+            </div>
+          </div>
+        </div>
       </template>
     </template>
   </div>

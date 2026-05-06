@@ -307,6 +307,10 @@ async function handlePut(
   return respond(200, { slug }, alias, requestOrigin)
 }
 
+function extractKennisbankSlugs(html: string): string[] {
+  return Array.from(html.matchAll(/href="\/kennisbank\/([^"]+)"/g), (m) => m[1])
+}
+
 async function handlePublish(
   event: APIGatewayProxyEvent,
   alias: string,
@@ -320,6 +324,18 @@ async function handlePublish(
     return respond(400, { error: 'Invalid category' }, alias, requestOrigin)
   }
 
+  const indexMap = await readIndex()
+  const linkedSlugs = extractKennisbankSlugs(body.content ?? '')
+  const brokenLinks = linkedSlugs.filter((s) => !indexMap.has(s))
+  if (brokenLinks.length > 0) {
+    return respond(
+      400,
+      { error: 'Broken internal links', brokenLinks },
+      alias,
+      requestOrigin,
+    )
+  }
+
   const post: KennisbankPost = { ...body, slug, status: 'published' }
 
   await s3.send(
@@ -331,7 +347,6 @@ async function handlePublish(
     }),
   )
 
-  const indexMap = await readIndex()
   const entry: IndexEntry = {
     slug,
     title: post.title,

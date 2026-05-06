@@ -358,6 +358,15 @@
         "publishFailed": "Publiceren mislukt.",
         "deleted": "Artikel verwijderd.",
         "deleteFailed": "Verwijderen mislukt."
+      },
+      "links": {
+        "heading": "Links in artikel",
+        "empty": "Geen hyperlinks in dit artikel.",
+        "broken": "Dit artikel bestaat niet",
+        "brokenCount": "kapot",
+        "edit": "Bewerken",
+        "save": "Opslaan",
+        "cancel": "Annuleren"
       }
     }
   },

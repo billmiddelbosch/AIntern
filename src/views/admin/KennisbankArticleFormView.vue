@@ -4,8 +4,10 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import ArticleFormHeader from '@/components/admin/ArticleFormHeader.vue'
 import ArticleMetaPanel from '@/components/admin/ArticleMetaPanel.vue'
+import ArticleLinksPanel from '@/components/admin/ArticleLinksPanel.vue'
 import ArticleRichTextEditor from '@/components/admin/ArticleRichTextEditor.vue'
 import { useKennisbankArticleEditor } from '@/composables/useKennisbankArticleEditor'
+import apiClient from '@/lib/adminAxios'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -24,8 +26,15 @@ const toast = ref<{ msg: string; type: 'success' | 'error' } | null>(null)
 const showDeleteConfirm = ref(false)
 const initialStatus = ref<'draft' | 'published'>('draft')
 const hasUnsavedPublishedChanges = ref(false)
+const knownSlugs = ref<string[]>([])
 
 onMounted(async () => {
+  try {
+    const res = await apiClient.get<{ articles: { slug: string }[] }>('/admin/kennisbank')
+    knownSlugs.value = res.data.articles.map((a) => a.slug)
+  } catch {
+    // non-critical
+  }
   if (mode.value === 'edit') {
     const slug = route.params.slug as string
     await loadArticle(slug)
@@ -82,6 +91,35 @@ async function handleDelete() {
 
 function updateForm(updated: typeof form) {
   Object.assign(form, updated)
+}
+
+function isAllowedHref(href: string): boolean {
+  if (href.startsWith('/')) return true
+  try {
+    const url = new URL(href)
+    return url.protocol === 'https:' || url.protocol === 'http:'
+  } catch {
+    return false
+  }
+}
+
+function handleUpdateLink(oldHref: string, newHref: string) {
+  if (!isAllowedHref(newHref)) return
+  const escaped = oldHref.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  // Escape $ to prevent replace() treating it as a backreference
+  const safeNewHref = newHref.replace(/\$/g, '$$$$')
+  form.content = form.content.replace(new RegExp(`href="${escaped}"`, 'g'), `href="${safeNewHref}"`)
+}
+
+function handleRemoveLink(href: string, anchorText: string) {
+  const escapedHref = href.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const escapedText = anchorText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  // Escape $ to prevent replace() treating anchorText as a backreference
+  const safeAnchorText = anchorText.replace(/\$/g, '$$$$')
+  form.content = form.content.replace(
+    new RegExp(`<a[^>]*href="${escapedHref}"[^>]*>${escapedText}</a>`, 'g'),
+    safeAnchorText,
+  )
 }
 </script>
 
@@ -155,15 +193,23 @@ function updateForm(updated: typeof form) {
         <ArticleRichTextEditor v-model="form.content" />
       </div>
 
-      <!-- Meta panel -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-5">
-        <ArticleMetaPanel
-          :form="form"
-          :mode="mode"
-          :slug-conflict="slugConflict"
-          :slug-checking="slugChecking"
-          @update:form="updateForm"
-          @slug-conflict="(v) => (slugConflict = v)"
+      <!-- Meta panel + links panel -->
+      <div class="space-y-4">
+        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+          <ArticleMetaPanel
+            :form="form"
+            :mode="mode"
+            :slug-conflict="slugConflict"
+            :slug-checking="slugChecking"
+            @update:form="updateForm"
+            @slug-conflict="(v) => (slugConflict = v)"
+          />
+        </div>
+        <ArticleLinksPanel
+          :content="form.content"
+          :known-slugs="knownSlugs"
+          @update-link="handleUpdateLink"
+          @remove-link="handleRemoveLink"
         />
       </div>
     </div>
