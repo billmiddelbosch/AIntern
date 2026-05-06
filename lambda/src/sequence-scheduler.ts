@@ -8,7 +8,6 @@ import {
   GetCommand,
   UpdateCommand,
   PutCommand,
-  ScanCommand,
 } from '@aws-sdk/lib-dynamodb'
 import Anthropic from '@anthropic-ai/sdk'
 import { randomUUID } from 'crypto'
@@ -325,53 +324,44 @@ Retourneer ONLY valid JSON zonder markdown:
     }
   }
 
-  if (editorialComposed > 0) {
-    try {
-      await ses.send(new SendEmailCommand({
-        Destination: { ToAddresses: ['w.middelbosch@gmail.com'] },
-        Message: {
-          Subject: { Data: `[AIntern] ${editorialComposed} editorial mail(s) wachten op jouw goedkeuring`, Charset: 'UTF-8' },
-          Body: {
-            Html: {
-              Data: toHtmlEmail(
-                `Er zijn ${editorialComposed} nieuwe editorial outreach-mails samengesteld die wachten op jouw goedkeuring.\n\nGa naar /admin/groei-systeem → tabblad Editorial om de mails te bekijken en goed te keuren.\n\nGoedgekeurde mails worden verstuurd door de volgende dagelijkse run van de sequence-scheduler.`,
-              ),
-              Charset: 'UTF-8',
-            },
-          },
-        },
-        Source: 'Sanne van AIntern <sanne@aintern.nl>',
-      }))
-    } catch (err) {
-      console.error('[sequence-scheduler] editorial notification failed', err)
-    }
-  }
-
   console.log('[sequence-scheduler] editorial composed=%d', editorialComposed)
 
   // ── Part 1: Create email sequences for enriched leads ──────────────────────
 
   const scanRes = await ddb.send(
-    new ScanCommand({
+    new QueryCommand({
       TableName: tableName,
-      FilterExpression: '#status = :enriched AND attribute_exists(email) AND email <> :empty',
-      ExpressionAttributeNames: { '#status': 'status' },
+      IndexName: 'GSI1',
+      KeyConditionExpression: 'GSI1pk = :gsi1pk',
       ExpressionAttributeValues: {
-        ':enriched': 'enriched',
-        ':empty': '',
+        ':gsi1pk': 'STATUS#enriched',
       },
       Limit: 30,
     }),
   )
 
-  const enrichedLeads = (scanRes.Items ?? []) as LeadItem[]
+  console.log('[sequence-scheduler] enriched query raw=%d', scanRes.Items?.length ?? 0)
+  const enrichedLeads = (scanRes.Items ?? []).filter(
+    (item) => typeof item['email'] === 'string' && item['email'] !== '',
+  ) as LeadItem[]
   console.log('[sequence-scheduler] enriched leads found=%d', enrichedLeads.length)
+
+  let newSequencesCount = 0
 
   for (let i = 0; i < enrichedLeads.length; i++) {
     const lead = enrichedLeads[i]
 
-    // Skip if already has an email sequence
-    if (lead.emailSequenceCreatedAt) continue
+    // Skip if already has an email sequence — but clean up stale GSI attributes first
+    if (lead.emailSequenceCreatedAt) {
+      if (lead.GSI1pk) {
+        await ddb.send(new UpdateCommand({
+          TableName: tableName,
+          Key: { pk: lead.pk, sk: lead.sk },
+          UpdateExpression: 'REMOVE GSI1pk, GSI1sk',
+        })).catch(() => {})
+      }
+      continue
+    }
 
     // Lazy-init Anthropic client
     if (!anthropic) {
@@ -436,7 +426,7 @@ Retourneer ONLY valid JSON zonder markdown:
         new UpdateCommand({
           TableName: tableName,
           Key: { pk: lead.pk, sk: lead.sk },
-          UpdateExpression: 'SET emailSequenceCreatedAt = :ts',
+          UpdateExpression: 'SET emailSequenceCreatedAt = :ts REMOVE GSI1pk, GSI1sk',
           ExpressionAttributeValues: { ':ts': now },
         }),
       )
@@ -447,8 +437,57 @@ Retourneer ONLY valid JSON zonder markdown:
         ctaVariantKey,
         sendAt,
       )
+      newSequencesCount++
     } catch (err) {
       console.error('[sequence-scheduler] failed to write sequence entry | lead=%s', lead.pk, err)
+    }
+  }
+
+  // ── Combined notification to Bill ─────────────────────────────────────────
+
+  if (editorialComposed > 0 || newSequencesCount > 0) {
+    const lines: string[] = ['Goedemorgen Bill,', '']
+
+    if (editorialComposed > 0) {
+      lines.push(
+        `${editorialComposed} editorial outreach mail(s) staan klaar voor goedkeuring in het admin dashboard.`,
+        '',
+      )
+    }
+
+    if (newSequencesCount > 0) {
+      lines.push(
+        `${newSequencesCount} nieuwe e-mail sequentie(s) zijn ingepland voor morgenochtend 09:00.`,
+        'Je kunt de tekst nog aanpassen via het Sequences-tabblad in admin/leads.',
+        '',
+      )
+    }
+
+    lines.push('— AIntern')
+
+    const notificationBody = lines.join('\n')
+
+    try {
+      await ses.send(
+        new SendEmailCommand({
+          Destination: { ToAddresses: ['w.middelbosch@gmail.com'] },
+          Message: {
+            Subject: { Data: 'AIntern — Dagelijks overzicht', Charset: 'UTF-8' },
+            Body: {
+              Text: { Data: notificationBody, Charset: 'UTF-8' },
+              Html: { Data: toHtmlEmail(notificationBody), Charset: 'UTF-8' },
+            },
+          },
+          Source: 'AIntern <sanne@aintern.nl>',
+        }),
+      )
+      console.log(
+        '[sequence-scheduler] notification sent | editorial=%d sequences=%d',
+        editorialComposed,
+        newSequencesCount,
+      )
+    } catch (err) {
+      console.error('[sequence-scheduler] notification failed', err)
     }
   }
 

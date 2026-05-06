@@ -67,9 +67,14 @@ Leest nieuwe PainSignals (status: `new`) uit DynamoDB. Vereist minimaal 3 signal
 | **Timeout** | 90 sec |
 
 **Wat het doet:**
-Leest OpportunityStatements met status `draft`. Claude Haiku genereert per opportunity een LinkedIn company post (zakelijke toon, MKB-angle, CTA naar aintern.nl). X/Twitter generatie is geïmplementeerd maar **on hold** — Zapier heeft geen X-integratie meer (B-88b).
+Leest OpportunityStatements met status `draft` (max 3 per run, gesorteerd op prioriteit). Claude Haiku genereert per opportunity:
 
-**Resultaat:** `CONTENT#` items met `channel: linkedin_company`, `body`, `status: draft`. GSI1pk: `CHANNEL#linkedin_company` voor snelle query per kanaal.
+1. **LinkedIn company post** — zakelijke toon, MKB-angle. Wordt opgeslagen als `CONTENT#` item met `status: draft`. Geen automatische publicatie; wacht op handmatige goedkeuring in de admin UI.
+2. **X thread (3–5 tweets)** — geïmplementeerd, maar **on hold** vanwege ontbrekende Zapier X-integratie (B-88b). Code is aanwezig: als SSM-parameter `/aintern/{alias}/zapier/x-webhook-url` gevuld is, wordt de thread autonoom gepubliceerd via Zapier webhook en de status bijgewerkt naar `published`. Bij een webhook-fout wordt een `publishError` veld gezet.
+
+Na verwerking wordt de OpportunityStatement bijgewerkt van `status: draft` → `status: in-content`.
+
+**Resultaat:** `CONTENT#` items per kanaal (`linkedin_company`, `x`), `status: draft` (LinkedIn) of `status: published` (X bij actieve webhook). GSI1pk: `CHANNEL#linkedin_company` / `CHANNEL#x` voor snelle query per kanaal.
 
 ---
 

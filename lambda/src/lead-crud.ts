@@ -266,6 +266,16 @@ async function handleUpdate(
     }
   }
 
+  if ('status' in patch) {
+    if (patch.status === 'enriched') {
+      setClauses.push('GSI1pk = :gsi1pk', 'GSI1sk = :gsi1sk')
+      expressionValues[':gsi1pk'] = 'STATUS#enriched'
+      expressionValues[':gsi1sk'] = new Date().toISOString()
+    } else {
+      removeClauses.push('GSI1pk', 'GSI1sk')
+    }
+  }
+
   let updateExpression = `SET ${setClauses.join(', ')}`
   if (removeClauses.length > 0) {
     updateExpression += ` REMOVE ${removeClauses.join(', ')}`
