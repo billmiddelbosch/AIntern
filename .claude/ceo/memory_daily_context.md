@@ -3,9 +3,7 @@ _Last updated: 2026-05-05_
 
 ## Open Acties (toegewezen aan mij)
 - B-10: 1 Lightspeed-prospect contacteren via LinkedIn — handmatig door Bill 🔴 (persistent)
-- ep03 "Het eerste lek" — Bill post vandaag op persoonlijk LinkedIn
-- ep04 "De eerste autonome actie" — Bill post donderdag 2026-05-07
-- infra/lib/admin-stack.ts security fix commit goedkeuren (feature/board-2026-05-05)
+- ep04 "De eerste autonome actie" — Bill post VANDAAG (2026-05-07) op persoonlijk LinkedIn
 
 ## KPI Status (week 19, 4–10 mei)
 - LinkedIn posts: 0/3 (week gestart)
@@ -14,8 +12,7 @@ _Last updated: 2026-05-05_
 - Security check: ✅ done (B-95)
 
 ## Actieve Blockers
-- B-31: 4 needs_enrichment leads zonder LinkedIn URL (topicsfashion, chocoladeverpakking, slijterij-jeppe, oasegroen)
-- B-97: LinkedIn company post editorial outreach milestone — wacht op gate-goedkeuring Bill
+- B-31: 4 leads zonder LinkedIn URL (topicsfashion, chocoladeverpakking, slijterij-jeppe, oasegroen)
 
 ## Top 5 Dagelijkse Acties (2026-05-05)
 1. B-95 security check PR #149 ✅ — PASS na fix; MEDIUM gefixd in admin-stack.ts
@@ -37,7 +34,6 @@ _Last updated: 2026-05-05_
 - 3 nieuwe backlog items aangemaakt: B-97, B-98, B-99
 
 ## Lopende Context
-- Branch feature/board-2026-05-05: security fix infra/lib/admin-stack.ts (nog te committen door Bill)
-- Security rapport: .claude/cto/memory_security_check_2026-05-05.md
-- Vergaderverslag: Obsidian vault → Aintern Meeting Minutes → board-2026-05-05.md
-- Volgende meeting: woensdag 2026-05-07
+- Security fix admin-stack.ts: ✅ gecommit 023f7e9 ("Run 5-5")
+- S-10 SEO landing page: ✅ gecommit 1469c4a op feature/board-2026-05-07
+- B-100 LinkedIn analytics: overgeslagen door Human Board 2026-05-07 — todo
