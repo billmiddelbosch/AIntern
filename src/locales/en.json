@@ -544,6 +544,57 @@
   "groeiSysteem": {
     "pageTitle": "Growth System"
   },
+  "aiAgentMkb": {
+    "meta": {
+      "title": "AI Agent for SMEs | Automate Smarter — AIntern",
+      "description": "An AI agent for SMEs that takes over repetitive work. Automate product entry, customer queries, and quotes — no-cure-no-pay for Dutch SMEs."
+    },
+    "hero": {
+      "eyebrow": "AI automation for SMEs",
+      "headline": "AI agent for SMEs — your repetitive work, our responsibility",
+      "subtext": "AIntern builds a custom AI agent for your SME that takes over repetitive processes like a dedicated team member — you only pay when time savings are proven.",
+      "cta": "Free introductory call",
+      "ctaSub": "No obligation — no-cure-no-pay"
+    },
+    "what": {
+      "eyebrow": "What does an AI agent do?",
+      "heading": "What does an AI agent do for your SME?",
+      "body": "An AI agent executes repetitive tasks autonomously — without you or your team having to oversee them. It learns your workflow, works 24/7, and scales with your business. No separate tools, no monthly subscriptions — one AI agent that truly works for your processes."
+    },
+    "useCases": {
+      "heading": "3 processes SMEs can automate right now",
+      "productInvoer": {
+        "tag": "Product entry",
+        "title": "From supplier Excel to webshop",
+        "description": "The AI agent enriches product data, calculates margins, and pushes products directly to your webshop — what used to take hours now takes minutes."
+      },
+      "klantvragen": {
+        "tag": "Customer queries",
+        "title": "Automated email handling & customer queries",
+        "description": "Incoming customer queries are categorised, summarised, and forwarded — or answered directly with your standard responses. Never miss a message again."
+      },
+      "offertes": {
+        "tag": "Quotes",
+        "title": "Compose quotes based on your templates",
+        "description": "Quote requests are converted into ready-to-send documents based on your templates and price lists. Respond faster, close more deals."
+      }
+    },
+    "pricing": {
+      "eyebrow": "No-cure-no-pay",
+      "heading": "No result, no invoice",
+      "intro": "For SMEs that want to use AI without upfront investment:",
+      "point1": "Free process analysis (30 min) — no sales pitch, just honest advice",
+      "point2": "2-week pilot — working AI agent, you set the success criteria",
+      "point3": "You pay only after proven, measurable results — no exceptions"
+    },
+    "ctaBlock": {
+      "heading": "Ready to automate your SME with AI?",
+      "subtext": "Max. 2 new clients per quarter. Request a free introductory call today.",
+      "button": "Start free introductory call",
+      "orText": "or see",
+      "homeLink": "how AIntern works"
+    }
+  },
   "onboarding": {
     "pageTitle": "Client Onboarding",
     "heading": "Client Onboarding",
