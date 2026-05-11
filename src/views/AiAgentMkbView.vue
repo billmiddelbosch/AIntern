@@ -26,8 +26,34 @@ useUnhead({
     { property: 'og:description', content: computed(() => t('aiAgentMkb.meta.description')) },
     { property: 'og:url', content: computed(() => `${SITE_URL}${route.path}`) },
     { property: 'og:locale', content: computed(() => (locale.value === 'nl' ? 'nl_NL' : 'en_US')) },
+    { property: 'og:image', content: `${SITE_URL}/og-image.png` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '627' },
   ],
   link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Service',
+        name: 'AI Agent voor MKB — no-cure-no-pay',
+        description:
+          'AIntern bouwt een op maat gemaakte AI agent voor MKB-bedrijven in Nederland. De agent automatiseert productinvoer, klantemails en offertes — je betaalt pas bij bewezen tijdsbesparing.',
+        url: `${SITE_URL}/ai-agent-mkb`,
+        inLanguage: 'nl',
+        provider: { '@type': 'Organization', name: 'AIntern', url: SITE_URL },
+        areaServed: { '@type': 'Country', name: 'Netherlands' },
+        serviceType: 'AI-procesautomatisering',
+        offers: {
+          '@type': 'Offer',
+          description: 'No-cure-no-pay: betaling start pas na verificatie van de afgesproken succescriteria.',
+          price: '0',
+          priceCurrency: 'EUR',
+        },
+      }),
+    },
+  ],
 })
 
 function handleCta(location: string) {

@@ -18,6 +18,7 @@
     "eslint.config.ts",
     "playwright.config.ts",
     "server.ts",
-    "scripts/generate-sitemap.ts"
+    "scripts/generate-sitemap.ts",
+    "scripts/generate-llms-full.ts"
   ]
 }
