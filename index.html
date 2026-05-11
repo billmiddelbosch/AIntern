@@ -21,6 +21,11 @@
     <meta property="og:image:height" content="627" />
     <meta property="og:site_name" content="AIntern" />
     <meta property="og:locale" content="nl_NL" />
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="AIntern — Jouw AI-stagiaire voor het MKB | No-Cure-No-Pay" />
+    <meta name="twitter:description" content="AIntern bouwt een dedicated AI-stagiaire voor jouw bedrijf — die interne processen automatiseert als een extra medewerker. Geen risico: je betaalt pas bij bewezen resultaat." />
+    <meta name="twitter:image" content="https://aintern.nl/og-image.png" />
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -28,13 +33,91 @@
       "name": "AIntern",
       "url": "https://aintern.nl",
       "description": "AIntern helpt MKB-bedrijven hun interne processen slimmer te maken met gerichte AI-oplossingen — no-cure-no-pay.",
-      "logo": "https://aintern.nl/favicon.ico",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://aintern.nl/og-image.png",
+        "width": 1200,
+        "height": 627
+      },
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "customer service",
         "email": "info@aintern.nl",
         "availableLanguage": ["Dutch", "English"]
       }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "AIntern",
+      "url": "https://aintern.nl",
+      "description": "AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven — no-cure-no-pay.",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://aintern.nl/kennisbank?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Wat betekent no-cure-no-pay precies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Je betaalt alleen als de AI-oplossing aantoonbaar resultaat oplevert. Wij definiëren samen met jou vooraf meetbare doelen — zoals tijdsbesparing, kostenverlaging of verhoogde output. Halen we die doelen niet? Dan betaal je niets."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Hoe lang duurt een gemiddeld traject?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De meeste trajecten duren vier tot acht weken van analyse tot live implementatie. Complexere processen kunnen langer duren, maar je hebt altijd zicht op de planning en tussentijdse mijlpalen."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Moet ik technische kennis hebben?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nee. AIntern regelt de volledige technische implementatie. Jij hoeft alleen te vertellen hoe je bedrijfsproces nu werkt en wat je wilt bereiken. Wij vertalen dat naar een werkende AI-oplossing."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat als de AI-oplossing niet werkt voor mijn bedrijf?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We beginnen altijd met een gratis analyse van jouw processen. Als we zien dat AI geen significante winst oplevert voor jouw specifieke situatie, zeggen we dat eerlijk — zodat je geen tijd en geld verspilt."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Zijn mijn bedrijfsgegevens veilig?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Ja. We werken uitsluitend met GDPR-conforme oplossingen en verwerken jouw bedrijfsdata nooit buiten de afgesproken context. Vertrouwelijkheid is een basisvereiste, geen optie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wat kost het als het wél resultaat oplevert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "De vergoeding is gebaseerd op een percentage van de behaalde besparing of een vaste fee die we samen bepalen op basis van de scope. Je betaalt pas als de resultaten zijn gemeten en geverifieerd."
+          }
+        }
+      ]
     }
     </script>
     <!-- Google tag (gtag.js) -->

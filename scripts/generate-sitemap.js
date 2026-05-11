@@ -6,7 +6,7 @@ const HOSTNAME = 'https://aintern.nl';
 const BUCKET = 'aintern-kennisbank';
 const REGION = 'eu-west-2';
 const SLUG_PATTERN = /^posts\/([a-z0-9-]+)\.json$/;
-const STATIC_ROUTES = ['/', '/kennisbank'];
+const STATIC_ROUTES = ['/', '/kennisbank', '/ai-agent-mkb', '/wat-kost-handmatig-werk', '/workflow-scan'];
 export async function getSlugsFromS3() {
     const client = new S3Client({ region: REGION });
     const slugs = [];
@@ -30,7 +30,13 @@ function buildXml(routes) {
     const today = new Date().toISOString().split('T')[0];
     const urls = routes
         .map((route) => {
-        const priority = route === '/' ? '1.0' : route === '/kennisbank' ? '0.9' : '0.8';
+        const priority = route === '/'
+            ? '1.0'
+            : route === '/kennisbank'
+                ? '0.9'
+                : route === '/wat-kost-handmatig-werk' || route === '/workflow-scan'
+                    ? '0.7'
+                    : '0.8';
         const changefreq = route === '/' ? 'weekly' : 'monthly';
         return `  <url>
     <loc>${HOSTNAME}${route}</loc>

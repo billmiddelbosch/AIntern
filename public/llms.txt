@@ -1,29 +1,50 @@
 # AIntern
 
-> AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven — no-cure-no-pay.
+> AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
 
-AIntern helps Dutch SMEs automate internal business processes with a dedicated AI intern.
-Clients only pay when measurable results are delivered (no-cure-no-pay model).
+AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
-## Services
+## Kernfeiten (citeerbaar)
 
-- AI process automation (invoice processing, inventory management, customer email responses, report generation)
-- Dedicated AI intern tailored to each business's existing workflows
-- GDPR compliant, no upfront investment required
-- Implementation in 4–8 weeks: process analysis → custom AI development → live deployment
+- **No-cure-no-pay:** klanten betalen pas na bewezen, meetbaar resultaat
+- **40% tijdsbesparing** op herhaalprocessen (gemeten over actieve klanttrajecten)
+- **€1.200+ maandelijkse besparing** op arbeidskosten (gemiddeld per klant)
+- **90% minder gegevensinvoerfouten** na AI-implementatie
+- **Implementatietijd:** 4–8 weken van analyse tot live deployment
+- **Lightspeed case:** productinvoer van 60 minuten naar 5 minuten per batch
+- Geen technische kennis vereist — AIntern regelt de volledige implementatie
+- GDPR-conform — klantdata blijft altijd binnen de afgesproken verwerkingscontext
+- Maximaal 2 nieuwe klanten per kwartaal (bewuste capaciteitsbeperking)
 
-## Results
+## Diensten
 
-- Up to 40% time savings on manual work
-- €1,200+ monthly cost reductions
-- 90% fewer data entry errors
+- AI-procesautomatisering (factuurverwerking, productinvoer, klantemails, rapportages)
+- Dedicated AI-stagiaire op maat voor elk bedrijf
+- Gratis procesanalyse en 2-weken pilot vóór enige betaling
+- Integraties: Lightspeed, Google Workspace, e-mailclients
+
+## Pagina's
+
+- **Homepage:** https://aintern.nl/
+- **AI Agent voor MKB:** https://aintern.nl/ai-agent-mkb
+- **Kostencalculator:** https://aintern.nl/wat-kost-handmatig-werk
+- **Workflow Scan (gratis):** https://aintern.nl/workflow-scan
+- **Kennisbank:** https://aintern.nl/kennisbank
+- **Sitemap:** https://aintern.nl/sitemap.xml
+- **Uitgebreide LLM-gids:** https://aintern.nl/llms-full.txt
+
+## Kennisbank (selectie)
+
+- AI-automatisering voor het MKB: stap voor stap — https://aintern.nl/kennisbank/ai-automatisering-mkb-stap-voor-stap
+- Lightspeed productinvoer: van 60 naar 5 minuten — https://aintern.nl/kennisbank/lightspeed-productinvoer-60-naar-5-minuten
+- AI-procesautomatisering bereikbaar voor MKB — https://aintern.nl/kennisbank/ai-procesautomatisering-bereikbaar-voor-mkb
+- AI-implementatie voor MKB: concrete toepassingen — https://aintern.nl/kennisbank/ai-implementatie-mkb-concrete-toepassingen
+- PII-filtering: klantgegevens beveiligen bij AI-gebruik — https://aintern.nl/kennisbank/pii-filtering-klantgegevens-beveiligen-ai
+- Van software naar agents: wat dit betekent voor jouw bedrijf — https://aintern.nl/kennisbank/van-software-naar-agents-wat-dit-betekent-voor-jouw-bedrijf
+
+Volledig artikeloverzicht: https://aintern.nl/llms-full.txt
 
 ## Contact
 
 - Email: info@aintern.nl
 - Web: https://aintern.nl
-
-## Pages
-
-- Homepage: https://aintern.nl/
-- Sitemap: https://aintern.nl/sitemap.xml
