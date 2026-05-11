@@ -15,6 +15,7 @@
     "type-check": "vue-tsc --noEmit",
     "sync:backlog": "aws s3 cp product/backlog.md s3://aintern-kennisbank/admin-assets/backlog.md",
     "sitemap:generate": "npx tsx scripts/generate-sitemap.ts",
+    "llms:generate": "npx tsx scripts/generate-llms-full.ts",
     "question": "test.ts"
   },
   "dependencies": {
