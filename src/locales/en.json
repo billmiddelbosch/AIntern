@@ -642,5 +642,17 @@
       "training": "User training given",
       "sign_off": "Formal sign-off received (signature or written confirmation)"
     }
+  },
+  "watKostHandmatigWerk": {
+    "meta": {
+      "title": "What Does Manual Work Cost You? | Free AI Calculator — AIntern",
+      "description": "Calculate in 30 seconds how much your business spends on repetitive work. Enter hours, hourly rate, and number of processes — see your potential AI savings instantly."
+    }
+  },
+  "workflowScan": {
+    "meta": {
+      "title": "Free AI Workflow Scan — Discover Your Top 3 Bottlenecks | AIntern",
+      "description": "Take the free AI Workflow Scan in 3 minutes. Answer 5 questions and receive your top-3 bottlenecks plus concrete AI recommendations for your business."
+    }
   }
 }

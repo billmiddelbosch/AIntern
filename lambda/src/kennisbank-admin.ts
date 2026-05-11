@@ -127,6 +127,176 @@ interface KennisbankPost {
   status: 'draft' | 'published'
 }
 
+// ── GEO helpers ───────────────────────────────────────────────────────────────
+
+function htmlToPlainText(html: string): string {
+  return html
+    .replace(/<\/(h[1-6]|p|li|blockquote|br|div|tr)[^>]*>/gi, '\n')
+    .replace(/<(br|hr)[^>]*\/?>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, ' ')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/\n{3,}/g, '\n\n')
+    .trim()
+}
+
+function buildLlmsFullContent(posts: KennisbankPost[]): string {
+  const today = new Date().toISOString().split('T')[0]
+  const sorted = [...posts].sort((a, b) => a.publishedAt.localeCompare(b.publishedAt))
+
+  const articleBlocks = sorted.map((article) => {
+    const plainBody = htmlToPlainText(article.content)
+    return [
+      `### ${article.title}`,
+      ``,
+      `**Categorie:** ${article.category}`,
+      `**URL:** ${HOSTNAME}/kennisbank/${article.slug}`,
+      `**Gepubliceerd:** ${article.publishedAt}`,
+      ``,
+      article.excerpt,
+      ``,
+      plainBody,
+      ``,
+      `---`,
+    ].join('\n')
+  })
+
+  const header = `# AIntern — Volledige LLM-gids
+
+> AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
+> Laatste update: ${today}
+
+AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
+
+---
+
+## Over AIntern
+
+**Missie:** Elk MKB-bedrijf een dedicated AI-stagiaire geven — een die de interne processen van dat specifieke bedrijf uitvoert als een extra medewerker, zonder overhead.
+
+**Model:** No-cure-no-pay. AIntern definieert samen met de klant vooraf meetbare succescriteria. Geen resultaat = geen factuur.
+
+**Aanpak in drie stappen:**
+1. Gratis procesanalyse (30 minuten) — vrijblijvend, geen verkooppraatje
+2. 2-weken pilot — werkende AI-oplossing bouwen voor het gekozen proces
+3. Live implementatie — betaling start pas na verificatie van de resultaten
+
+**Capaciteitsbeperking:** AIntern neemt maximaal 2 nieuwe klanten per kwartaal aan om kwaliteit te garanderen.
+
+---
+
+## Bewezen resultaten (geverifieerde cijfers)
+
+- **40% tijdsbesparing** op herhaalprocessen (gemeten over actieve klanttrajecten)
+- **€1.200+ maandelijkse kostenbesparing** (gemiddelde besparing op arbeidskosten per klant)
+- **90% minder gegevensinvoerfouten** na AI-implementatie
+- **Implementatietijd:** 4–8 weken van analyse tot live deployment
+- **Lightspeed case:** productinvoer gereduceerd van 60 minuten naar 5 minuten per batch
+
+---
+
+## Dienstverlening
+
+### Geautomatiseerde processen (voorbeelden)
+- Factuurverwerking en boekhoudkundige data-extractie
+- Productteksten schrijven en uploaden (Lightspeed, WooCommerce, Shopify)
+- Klantemails categoriseren en beantwoorden
+- Offertes opstellen op basis van vaste formats
+- Rapportages genereren uit ruwe data
+- Voorraadbeheer en inkoopsignalen
+
+### Sectoren
+- E-commerce / webshops (sterk vertegenwoordigd)
+- Groothandel en distributie
+- Administratieve dienstverleners
+- Retail (fysiek + online)
+
+### Technisch
+- GDPR-conform — klantdata verlaat nooit de afgesproken verwerkingscontext
+- Geen technische kennis vereist van de klant
+- Integratie met bestaande software (Lightspeed, e-mailclients, Google Workspace)
+
+---
+
+## Prijsmodel
+
+- **Geen voorinvestering** — nul euro upfront
+- **Gratis analyse** — eerste gesprek en procesanalyse zijn altijd gratis
+- **Resultaatgebaseerde vergoeding** — percentage van behaalde besparing of vaste fee op basis van scope
+- Betaling start pas na meting en verificatie van de afgesproken succescriteria
+
+---
+
+## Veelgestelde vragen
+
+**Wat betekent no-cure-no-pay precies?**
+Je betaalt alleen als de AI-oplossing aantoonbaar resultaat oplevert. Wij definiëren samen met jou vooraf meetbare doelen — zoals tijdsbesparing, kostenverlaging of verhoogde output. Halen we die doelen niet? Dan betaal je niets.
+
+**Hoe lang duurt een gemiddeld traject?**
+De meeste trajecten duren vier tot acht weken van analyse tot live implementatie. Complexere processen kunnen langer duren, maar je hebt altijd zicht op de planning en tussentijdse mijlpalen.
+
+**Moet ik technische kennis hebben?**
+Nee. AIntern regelt de volledige technische implementatie. Jij hoeft alleen te vertellen hoe je bedrijfsproces nu werkt en wat je wilt bereiken. Wij vertalen dat naar een werkende AI-oplossing.
+
+**Wat als de AI-oplossing niet werkt voor mijn bedrijf?**
+We beginnen altijd met een gratis analyse van jouw processen. Als we zien dat AI geen significante winst oplevert voor jouw specifieke situatie, zeggen we dat eerlijk — zodat je geen tijd en geld verspilt.
+
+**Zijn mijn bedrijfsgegevens veilig?**
+Ja. We werken uitsluitend met GDPR-conforme oplossingen en verwerken jouw bedrijfsdata nooit buiten de afgesproken context. Vertrouwelijkheid is een basisvereiste, geen optie.
+
+**Wat kost het als het wél resultaat oplevert?**
+De vergoeding is gebaseerd op een percentage van de behaalde besparing of een vaste fee die we samen bepalen op basis van de scope. Je betaalt pas als de resultaten zijn gemeten en geverifieerd.
+
+---
+
+## Pagina-overzicht
+
+### Hoofdpagina's
+
+**Homepage** — ${HOSTNAME}/
+Overzicht van de dienst: hero-sectie, hoe het werkt, het aanbod, portfolio van cases, problemen en oplossingen, FAQ, contactsectie.
+
+**AI Agent voor MKB** — ${HOSTNAME}/ai-agent-mkb
+Uitgebreide uitleg over AI-agents voor het MKB: wat een AI-agent doet, concrete use cases (productinvoer, klantvragen, offertes), no-cure-no-pay uitleg.
+
+**Wat kost handmatig werk jou?** — ${HOSTNAME}/wat-kost-handmatig-werk
+Interactieve calculator: voer uren per week, uurtarief en aantal processen in. Toont wekelijkse, maandelijkse en jaarlijkse kostenbesparingen bij 70% AI-automatiseringsgraad.
+
+**Gratis AI Workflow Scan** — ${HOSTNAME}/workflow-scan
+Gratis diagnose-tool in 3 minuten: beantwoord vragen over herhaalprocessen, krijg top-3 knelpunten + concrete aanbevelingen. Leadgeneratie-tool.
+
+**Kennisbank** — ${HOSTNAME}/kennisbank
+Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op categorie: AI Automatisering, MKB Praktijkcases, Implementatietips, AI Tools & Technologie.
+
+---`
+
+  const articleSection = [
+    `## Kennisbank — Volledige artikelen`,
+    ``,
+    `Alle artikelen zijn Nederlandstalig, gericht op MKB-eigenaren zonder technische achtergrond.`,
+    ``,
+    ...articleBlocks,
+  ].join('\n')
+
+  const footer = [
+    `## Contact`,
+    ``,
+    `- **Website:** ${HOSTNAME}`,
+    `- **E-mail:** info@aintern.nl`,
+    `- **Kennisbank:** ${HOSTNAME}/kennisbank`,
+    `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
+    `- **llms.txt:** ${HOSTNAME}/llms.txt`,
+    ``,
+  ].join('\n')
+
+  return [header, ``, articleSection, ``, footer].join('\n')
+}
+
 // ── S3 helpers ────────────────────────────────────────────────────────────────
 
 async function readIndex(): Promise<Map<string, IndexEntry>> {
@@ -219,6 +389,35 @@ ${urls}
     }),
   )
   console.log('[kennisbank-admin] writeSitemap | wrote %d routes', routes.length)
+}
+
+async function writeLlmsFullTxt(indexMap: Map<string, IndexEntry>): Promise<void> {
+  const slugs = Array.from(indexMap.keys())
+  const results = await Promise.all(
+    slugs.map(async (slug) => {
+      try {
+        const resp = await s3.send(
+          new GetObjectCommand({ Bucket: KENNISBANK_BUCKET, Key: `posts/${slug}.json` }),
+        )
+        const raw = await resp.Body?.transformToString('utf-8')
+        if (!raw) return null
+        return JSON.parse(raw) as KennisbankPost
+      } catch {
+        return null
+      }
+    }),
+  )
+  const posts = results.filter((p): p is KennisbankPost => p !== null)
+  const content = buildLlmsFullContent(posts)
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: KENNISBANK_BUCKET,
+      Key: 'llms-full.txt',
+      Body: content,
+      ContentType: 'text/plain; charset=utf-8',
+    }),
+  )
+  console.log('[kennisbank-admin] writeLlmsFullTxt | wrote %d articles', posts.length)
 }
 
 // ── Route handlers ────────────────────────────────────────────────────────────
@@ -358,7 +557,7 @@ async function handlePublish(
   indexMap.set(slug, entry)
   await writeIndex(indexMap)
 
-  await writeSitemap()
+  await Promise.all([writeSitemap(), writeLlmsFullTxt(indexMap)])
 
   console.log('[kennisbank-admin] handlePublish | published slug=%s', slug)
   return respond(200, { slug, publishedAt: post.publishedAt }, alias, requestOrigin)
@@ -379,7 +578,7 @@ async function handleDelete(
   if (indexMap.has(slug)) {
     indexMap.delete(slug)
     await writeIndex(indexMap)
-    await writeSitemap()
+    await Promise.all([writeSitemap(), writeLlmsFullTxt(indexMap)])
   }
 
   console.log('[kennisbank-admin] handleDelete | deleted slug=%s', slug)
