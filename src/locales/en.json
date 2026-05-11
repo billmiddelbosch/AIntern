@@ -228,7 +228,8 @@
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
       "groeiSysteem": "Growth System",
-      "onboarding": "Onboarding"
+      "onboarding": "Onboarding",
+      "aiStudio": "AI Studio"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -312,6 +313,34 @@
         "next": "Next"
       }
     },
+    "aiStudio": {
+        "pageTitle": "AI Studio",
+        "heading": "AI Component Studio",
+        "subheading": "Generate, preview, and save Vue components with AI.",
+        "templateLabel": "Template",
+        "loadingTemplates": "Loading templates…",
+        "promptLabel": "Describe the component you want to build",
+        "promptPlaceholder": "E.g. A card component with a title, description, and CTA button styled with Tailwind…",
+        "generate": "Generate",
+        "generating": "Generating…",
+        "codeLabel": "Generated code",
+        "codePlaceholder": "Your generated code will appear here…",
+        "copyCode": "Copy",
+        "previewLabel": "Preview",
+        "previewSandboxNote": "sandboxed",
+        "previewEmpty": "Generate code to see a preview.",
+        "saveTitle": "Save to gallery",
+        "saveNamePlaceholder": "Component name…",
+        "save": "Save",
+        "saving": "Saving…",
+        "saveConflict": "A component with this name already exists. Choose a different name.",
+        "saveSuccess": "Saved to gallery.",
+        "galleryTitle": "Saved components",
+        "galleryRefresh": "Refresh",
+        "galleryLoading": "Loading gallery…",
+        "galleryEmpty": "No saved components yet. Generate and save one.",
+        "galleryLoad": "Load"
+      },
     "articleForm": {
       "titleCreate": "New article",
       "titleEdit": "Edit article",

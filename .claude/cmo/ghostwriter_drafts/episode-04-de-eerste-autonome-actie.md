@@ -11,32 +11,28 @@ vorige_post: episode-03-het-eerste-lek.md
 
 # Episode 4 — De AI begon deze week zelfstandig e-mails te sturen.
 
-**Draft:**
+**Draft (herschreven o.b.v. AInternProcesses.png — 2026-05-09):**
 
-𝗪𝗲𝗲𝗸 𝟱 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁. 𝗗𝗲 𝗔𝗜 𝗯𝗲𝗴𝗼𝗻 𝗱𝗲𝘇𝗲 𝘄𝗲𝗲𝗸 𝘇𝗲𝗹𝗳𝘀𝘁𝗮𝗻𝗱𝗶𝗴 𝗲-𝗺𝗮𝗶𝗹𝘀 𝘁𝗲 𝘀𝘁𝘂𝗿𝗲𝗻.
+𝗪𝗲𝗲𝗸 𝟱 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁. 𝗗𝗲𝘇𝗲 𝘄𝗲𝗲𝗸 𝘁𝗲𝗸𝗲𝗻𝗱𝗲 𝗶𝗸 𝗵𝗲𝘁 𝘃𝗼𝗼𝗿 𝗵𝗲𝘁 𝗲𝗲𝗿𝘀𝘁 𝗼𝗽.
 
-Niet naar mij. Naar prospects.
+Twee kolommen. Links: ik zit er nog tussen. Rechts: de AI doet het zelf.
 
-We hebben een email sequentie gebouwd die automatisch gepersonaliseerde berichten verstuurt — namens Sanne, via het AIntern domein, met door AI geschreven content op basis van het profiel van de ontvanger.
+Dat onderscheid ziet er op papier simpel uit. Maar om het echt te bouwen, moet je keuzes maken die ongemakkelijk voelen.
 
-Dat klinkt logisch als je het zo opschrijft.
+De linkerkolom gaat over content — LinkedIn posts, kennisbank. Ik schrijf niet meer, maar ik keur nog goed. Een agent draftet, ik bekijk het, het gaat live. Menselijk oordeel als sluiswachter.
 
-Maar op het moment dat het live ging, voelde het anders.
+De rechterkolom gaat over outreach. Elke dag draait een agent die leads ophaalt, e-mailadressen zoekt, een gepersonaliseerd bericht schrijft en dat verstuurt. Namens AIntern. Zonder dat ik iets doe.
 
-De code stond al weken klaar. De Lambda draait. SES is geconfigureerd. Een tweede systeem — de lead-matcher — zoekt automatisch e-mailadressen op voor elke lead die binnenkomt. En dan triggert de sequentie. Zonder dat ik iets doe.
+Dat ging deze week live.
 
-Dat is het experiment.
+Of bijna. Er ontbrak één schakel — een URL die ik zelf moest instellen. Vijf minuten. Maar het systeem stond klaar en wachtte op mij.
 
-Niet: kan AI helpen met schrijven of plannen? Maar: kan AI een stuk van de commerciële cyclus zelfstandig uitvoeren?
+Dat is het eerlijkste beeld van waar we staan. De infrastructuur is klaar. De autonomie is gebouwd. En de enige bottleneck was de menselijke operator die één keer de schakelaar omzet.
 
-Deze week is het antwoord: bijna.
-
-Er ontbreekt nog één schakel — een webhook URL in SSM die ik zelf moet instellen. Vijf minuten werk. Maar het systeem wacht op mij.
-
-Dat is misschien het eerlijkste beeld van waar we nu staan. De infrastructuur is klaar. De autonomie is gebouwd. En er is één handmatig moment over — de menselijke operator die de brug oversteekt.
-
-Ik ga die brug deze week oversteken.
+Ik heb de schakelaar omgezet.
 
 𝗗𝗶𝘁 𝗶𝘀 𝗮𝗳𝗹𝗲𝘃𝗲𝗿𝗶𝗻𝗴 𝟰 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁.
 
 𝗪𝗼𝗿𝗱𝘁 𝘃𝗲𝗿𝘃𝗼𝗹𝗴𝗱.
+
+_Visual: AInternProcesses.png — het procesoverzicht dat de twee loops naast elkaar zet._

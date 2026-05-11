@@ -31,6 +31,33 @@ Een ingestuurde intake-vragenlijst van een bezoeker. Opgeslagen in DynamoDB (`ai
 ### ContactRequest
 De gegevens die een bezoeker achterlaat bij het aanvragen van een gratis kennismaking. Wordt verwerkt als lead voor opvolging door AIntern.
 
+### AiGeneratedItem
+Een door Claude AI gegenereerd Vue 3 SFC-bestand (component of template), inclusief de originele instructie en de GitHub-commitreferentie. Opgeslagen in DynamoDB (`aintern-admin` single-table).
+
+| Veld | Type | Beschrijving |
+|---|---|---|
+| `id` | String | UUID (part of SK) |
+| `type` | String | `component` of `template` |
+| `name` | String | PascalCase bestandsnaam zonder extensie |
+| `instruction` | String | Originele natural language prompt |
+| `code` | String | Gegenereerde `.vue` SFC broncode |
+| `filePath` | String | Pad in de repo (bijv. `src/components/ai-generated/PricingCard.vue`) |
+| `githubCommitSha` | String | Commit SHA van de GitHub API-response |
+| `createdAt` | String | ISO-8601 timestamp |
+| `createdBy` | String | Admin user-ID uit de JWT-token |
+
+DynamoDB: PK = `AI_STUDIO#{type}`, SK = `ITEM#{createdAt}#{id}`
+
+### KennisbankTemplateConfig
+Configuratierecord dat bepaalt welk Vue-template op kennisbank-artikelpagina's gebruikt wordt. Eén record in DynamoDB — geen deploy nodig bij wisselen.
+
+| Veld | Type | Beschrijving |
+|---|---|---|
+| `activeTemplateName` | String | PascalCase naam van het actieve Vue-template (bijv. `KennisbankArtikelView`) |
+| `updatedAt` | String | ISO-8601 timestamp van laatste wijziging |
+
+DynamoDB: PK = `CONFIG#kennisbank-template`, SK = `LATEST`
+
 ## Relationships
 
 - Case verwijst naar een Problem (de case lost een specifiek pijnpunt op)

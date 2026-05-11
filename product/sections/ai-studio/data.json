@@ -1,0 +1,129 @@
+{
+  "_meta": {
+    "models": {
+      "componentItems": "Een door Claude AI gegenereerd Vue 3 component-bestand. Wordt opgeslagen in src/components/ai-generated/ en bijgehouden in de gallery zodat het opnieuw geladen of hersteld kan worden.",
+      "templateItems": "Een door Claude AI gegenereerd Vue 3 page template voor kennisbank-artikelen. Kan als actief template worden ingesteld via de DynamoDB configuratie — zonder deploy.",
+      "mockArticle": "Nep-artikeldata die in de iframe preview wordt meegegeven wanneer een template wordt gegenereerd, zodat de layout realistische inhoud laat zien.",
+      "templateConfig": "De huidige actieve kennisbank template configuratie. Eén record in DynamoDB; wordt gelezen door de KennisbankArtikelView route."
+    },
+    "relationships": [
+      "componentItems en templateItems zijn beide AiGeneratedItem records — ze delen dezelfde TypeScript interface, onderscheiden door het 'type' veld",
+      "templateConfig.activeTemplateName verwijst naar de 'name' van een templateItem (bijv. 'KennisbankArtikelViewMinimal')",
+      "mockArticle wordt alleen gebruikt door AiPreviewPane wanneer type === 'template' — het simuleert de props die een echte kennisbank-artikelpagina zou ontvangen"
+    ]
+  },
+
+  "componentItems": [
+    {
+      "id": "ci-001",
+      "type": "component",
+      "name": "PricingCard",
+      "instruction": "Create a pricing card with a plan name, monthly price, bullet list of features, and a CTA button. Highlight the recommended plan with an indigo border.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ plan: string; price: number; features: string[]; recommended?: boolean }>()\n</script>\n<template>\n  <div :class=\"['rounded-xl border p-6', props.recommended ? 'border-indigo-500 ring-2 ring-indigo-200' : 'border-slate-200']\">\n    <h3 class=\"text-lg font-semibold text-slate-800\">{{ props.plan }}</h3>\n    <p class=\"mt-2 text-3xl font-bold text-indigo-600\">€{{ props.price }}<span class=\"text-sm text-slate-400\">/mo</span></p>\n    <ul class=\"mt-4 space-y-2\">\n      <li v-for=\"f in props.features\" :key=\"f\" class=\"flex items-center gap-2 text-sm text-slate-600\">\n        <span class=\"text-green-500\">✓</span> {{ f }}\n      </li>\n    </ul>\n    <button class=\"mt-6 w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 rounded-lg text-sm font-medium transition-colors\">Get started</button>\n  </div>\n</template>",
+      "filePath": "src/components/ai-generated/PricingCard.vue",
+      "githubCommitSha": "a3f7c2e",
+      "createdAt": "2026-05-06T09:14:22Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ci-002",
+      "type": "component",
+      "name": "TestimonialCard",
+      "instruction": "A testimonial card showing a quote, the author's name, company, and a star rating (1-5). Use a subtle background and a large quotation mark as decoration.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ quote: string; author: string; company: string; rating: number }>()\n</script>\n<template>\n  <div class=\"relative bg-slate-50 border border-slate-200 rounded-2xl p-6\">\n    <span class=\"absolute top-4 left-5 text-6xl text-slate-200 font-serif leading-none select-none\">&ldquo;</span>\n    <div class=\"flex gap-0.5 mb-3 mt-4\">\n      <span v-for=\"i in 5\" :key=\"i\" :class=\"i <= props.rating ? 'text-amber-400' : 'text-slate-300'\" class=\"text-lg\">&#9733;</span>\n    </div>\n    <p class=\"text-slate-700 text-sm leading-relaxed relative z-10\">{{ props.quote }}</p>\n    <p class=\"mt-4 text-sm font-semibold text-slate-800\">{{ props.author }}</p>\n    <p class=\"text-xs text-slate-400\">{{ props.company }}</p>\n  </div>\n</template>",
+      "filePath": "src/components/ai-generated/TestimonialCard.vue",
+      "githubCommitSha": "b91d4a8",
+      "createdAt": "2026-05-06T11:32:05Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ci-003",
+      "type": "component",
+      "name": "StatsBanner",
+      "instruction": "A horizontal banner showing three key stats side by side: a number, a label, and an optional unit. Use large bold numbers with a coloured accent and a divider between stats.",
+      "code": "<script setup lang=\"ts\">\ninterface Stat { value: string; label: string; unit?: string }\nconst props = defineProps<{ stats: Stat[] }>()\n</script>\n<template>\n  <div class=\"flex divide-x divide-slate-200 bg-white border border-slate-200 rounded-xl overflow-hidden\">\n    <div v-for=\"s in props.stats\" :key=\"s.label\" class=\"flex-1 px-6 py-5 text-center\">\n      <p class=\"text-3xl font-bold text-indigo-600\">{{ s.value }}<span v-if=\"s.unit\" class=\"text-sm text-slate-400 ml-1\">{{ s.unit }}</span></p>\n      <p class=\"mt-1 text-xs text-slate-500 uppercase tracking-wide\">{{ s.label }}</p>\n    </div>\n  </div>\n</template>",
+      "filePath": "src/components/ai-generated/StatsBanner.vue",
+      "githubCommitSha": "c04e91b",
+      "createdAt": "2026-05-07T08:47:30Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ci-004",
+      "type": "component",
+      "name": "AlertBanner",
+      "instruction": "An inline alert banner with four variants: info, success, warning, error. Shows an icon, a title, an optional description, and a dismiss button.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ variant: 'info' | 'success' | 'warning' | 'error'; title: string; description?: string }>()\nconst emit = defineEmits<{ dismiss: [] }>()\nconst map = { info: 'bg-blue-50 border-blue-200 text-blue-800', success: 'bg-green-50 border-green-200 text-green-800', warning: 'bg-amber-50 border-amber-200 text-amber-800', error: 'bg-red-50 border-red-200 text-red-800' }\n</script>\n<template>\n  <div :class=\"['flex items-start gap-3 border rounded-lg px-4 py-3', map[props.variant]]\">\n    <div class=\"flex-1\">\n      <p class=\"font-medium text-sm\">{{ props.title }}</p>\n      <p v-if=\"props.description\" class=\"text-sm opacity-80 mt-0.5\">{{ props.description }}</p>\n    </div>\n    <button class=\"opacity-60 hover:opacity-100 text-lg leading-none\" @click=\"emit('dismiss')\">&#x2715;</button>\n  </div>\n</template>",
+      "filePath": "src/components/ai-generated/AlertBanner.vue",
+      "githubCommitSha": "d17b55f",
+      "createdAt": "2026-05-07T10:03:18Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ci-005",
+      "type": "component",
+      "name": "EmptyState",
+      "instruction": "An empty state placeholder component with an icon slot, a heading, a supporting text, and an optional action button. Centred layout, soft background.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ heading: string; description: string; actionLabel?: string }>()\nconst emit = defineEmits<{ action: [] }>()\n</script>\n<template>\n  <div class=\"flex flex-col items-center justify-center py-16 text-center\">\n    <div class=\"w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mb-4\">\n      <slot name=\"icon\"><span class=\"text-2xl text-slate-400\">&#9723;</span></slot>\n    </div>\n    <h3 class=\"text-base font-semibold text-slate-700\">{{ props.heading }}</h3>\n    <p class=\"mt-1 text-sm text-slate-400 max-w-xs\">{{ props.description }}</p>\n    <button v-if=\"props.actionLabel\" class=\"mt-5 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-lg transition-colors\" @click=\"emit('action')\">{{ props.actionLabel }}</button>\n  </div>\n</template>",
+      "filePath": "src/components/ai-generated/EmptyState.vue",
+      "githubCommitSha": "e28c33a",
+      "createdAt": "2026-05-07T14:22:44Z",
+      "createdBy": "admin@aintern.nl"
+    }
+  ],
+
+  "templateItems": [
+    {
+      "id": "ti-001",
+      "type": "template",
+      "name": "KennisbankArtikelViewMinimal",
+      "instruction": "Minimal kennisbank article template: article title at the top, reading time badge, clean body text with good line spacing, a subtle category tag, and a single CTA at the bottom linking to the workflow scan.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ title: string; body: string; publishedAt: string; readingTimeMinutes: number; category: string }>()\n</script>\n<template>\n  <div class=\"max-w-2xl mx-auto px-4 py-12\">\n    <span class=\"text-xs font-medium text-indigo-600 uppercase tracking-wider\">{{ props.category }}</span>\n    <h1 class=\"mt-2 text-3xl font-bold text-slate-900 leading-snug\">{{ props.title }}</h1>\n    <p class=\"mt-2 text-sm text-slate-400\">{{ props.readingTimeMinutes }} min lezen &middot; {{ props.publishedAt }}</p>\n    <div class=\"mt-8 prose prose-slate max-w-none\" v-html=\"props.body\"></div>\n    <div class=\"mt-12 bg-indigo-50 border border-indigo-100 rounded-xl p-6 text-center\">\n      <p class=\"text-base font-semibold text-indigo-900\">Benieuwd wat AI kan betekenen voor jouw bedrijf?</p>\n      <a href=\"/workflow-scan\" class=\"mt-3 inline-block bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors\">Doe de gratis Workflow Scan</a>\n    </div>\n  </div>\n</template>",
+      "filePath": "src/views/KennisbankArtikelViewMinimal.vue",
+      "githubCommitSha": "f39d72c",
+      "createdAt": "2026-05-06T15:10:00Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ti-002",
+      "type": "template",
+      "name": "KennisbankArtikelViewVisual",
+      "instruction": "Visual kennisbank article template with a large hero area showing the category and title on a dark indigo background, a two-column layout for wide screens (body left, table-of-contents right), reading time prominently displayed, and a sticky CTA sidebar panel.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ title: string; body: string; publishedAt: string; readingTimeMinutes: number; category: string }>()\n</script>\n<template>\n  <div>\n    <div class=\"bg-indigo-900 text-white py-16 px-4\">\n      <div class=\"max-w-3xl mx-auto\">\n        <span class=\"text-indigo-300 text-xs font-semibold uppercase tracking-widest\">{{ props.category }}</span>\n        <h1 class=\"mt-3 text-4xl font-extrabold leading-tight\">{{ props.title }}</h1>\n        <p class=\"mt-3 text-indigo-300 text-sm\">{{ props.readingTimeMinutes }} min lezen &middot; Gepubliceerd {{ props.publishedAt }}</p>\n      </div>\n    </div>\n    <div class=\"max-w-3xl mx-auto px-4 py-10\">\n      <div class=\"prose prose-slate max-w-none\" v-html=\"props.body\"></div>\n    </div>\n  </div>\n</template>",
+      "filePath": "src/views/KennisbankArtikelViewVisual.vue",
+      "githubCommitSha": "g44e18d",
+      "createdAt": "2026-05-07T09:55:12Z",
+      "createdBy": "admin@aintern.nl"
+    },
+    {
+      "id": "ti-003",
+      "type": "template",
+      "name": "KennisbankArtikelViewCtaHeavy",
+      "instruction": "CTA-heavy kennisbank article template. Include three conversion touchpoints: a top inline banner (book a demo), an inline mid-article CTA after the first 300 words, and a bottom CTA block with two buttons (workflow scan + contact). Keep the article body readable but conversion-focused.",
+      "code": "<script setup lang=\"ts\">\nconst props = defineProps<{ title: string; body: string; publishedAt: string; readingTimeMinutes: number; category: string }>()\n</script>\n<template>\n  <div class=\"max-w-2xl mx-auto px-4 py-10 space-y-8\">\n    <div class=\"bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 flex items-center justify-between\">\n      <p class=\"text-sm text-amber-800 font-medium\">Gratis demo: zie hoe AI werkt voor jouw bedrijf</p>\n      <a href=\"/contact\" class=\"text-xs bg-amber-500 hover:bg-amber-600 text-white px-3 py-1.5 rounded-lg font-medium\">Plan demo</a>\n    </div>\n    <h1 class=\"text-2xl font-bold text-slate-900\">{{ props.title }}</h1>\n    <p class=\"text-xs text-slate-400\">{{ props.readingTimeMinutes }} min &middot; {{ props.publishedAt }}</p>\n    <div class=\"prose prose-slate max-w-none\" v-html=\"props.body\"></div>\n    <div class=\"grid grid-cols-2 gap-3\">\n      <a href=\"/workflow-scan\" class=\"bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-3 rounded-lg text-sm font-medium text-center transition-colors\">Workflow Scan</a>\n      <a href=\"/contact\" class=\"border border-indigo-200 hover:bg-indigo-50 text-indigo-700 px-4 py-3 rounded-lg text-sm font-medium text-center transition-colors\">Neem contact op</a>\n    </div>\n  </div>\n</template>",
+      "filePath": "src/views/KennisbankArtikelViewCtaHeavy.vue",
+      "githubCommitSha": "h57f90e",
+      "createdAt": "2026-05-07T11:41:38Z",
+      "createdBy": "admin@aintern.nl"
+    }
+  ],
+
+  "mockArticle": {
+    "title": "AI automatisering voor het MKB: zo begin je zonder technische kennis",
+    "body": "<p>Veel MKB-ondernemers willen AI inzetten, maar weten niet waar ze moeten beginnen. De tools zijn beschikbaar, de kosten zijn gedaald — maar het ontbreekt aan een helder stappenplan.</p><p>In dit artikel laten we zien hoe je in drie stappen een eerste AI-proces opzet, zonder dat je een ontwikkelaar nodig hebt.</p><h2>Stap 1: Identificeer een repetitief proces</h2><p>Begin met iets dat je medewerkers dagelijks doen en dat weinig beslissingsvermogen vereist: het verwerken van inkomende e-mails, het invullen van offerteformulieren, of het categoriseren van klantvragen.</p><h2>Stap 2: Kies het juiste gereedschap</h2><p>Voor de meeste MKB-processen volstaat een combinatie van een LLM (zoals Claude of GPT-4) en een automatiseringstool (zoals Make of Zapier). Je hoeft geen eigen software te bouwen.</p><h2>Stap 3: Meet het resultaat</h2><p>Stel twee metrics vast vóór de implementatie: de tijd per handeling en het foutpercentage. Vergelijk deze na twee weken. Onze klanten zien gemiddeld 60-80% tijdsbesparing op het geautomatiseerde proces.</p>",
+    "publishedAt": "2026-05-07",
+    "readingTimeMinutes": 4,
+    "category": "AI Automatisering"
+  },
+
+  "templateConfig": {
+    "activeTemplateName": "KennisbankArtikelViewMinimal",
+    "updatedAt": "2026-05-06T15:10:00Z"
+  },
+
+  "generationStatusExamples": [
+    { "status": "idle", "message": null },
+    { "status": "loading", "message": "Generating with Claude..." },
+    { "status": "success", "message": "Component generated" },
+    { "status": "error", "message": "Claude API timeout — please try again" }
+  ]
+}

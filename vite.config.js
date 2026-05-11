@@ -34,8 +34,11 @@ export default defineConfig({
         },
     },
     resolve: {
-        alias: {
-            '@': fileURLToPath(new URL('./src', import.meta.url)),
-        },
+        alias: [
+            { find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+            // Full Vue build: enables runtime template compilation in AiPreviewPane.
+            // Regex prevents the alias from mangling vue/server-renderer (used by vite-ssg).
+            { find: /^vue$/, replacement: 'vue/dist/vue.esm-bundler.js' },
+        ],
     },
 });

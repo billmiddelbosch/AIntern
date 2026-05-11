@@ -1097,6 +1097,177 @@ export class AdminStack extends cdk.Stack {
     const workflowScanResource = api.root.addResource('workflow-scan')
     workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
 
+    // ── AI Studio DynamoDB table ──────────────────────────────────────────────
+    const aiStudioTable = new dynamodb.Table(this, 'AiStudioTable', {
+      tableName: 'aintern-ai-studio',
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+    })
+
+    // ── AI Studio Lambda functions ────────────────────────────────────────────
+    const aiStudioGenerateFn = new lambda.Function(this, 'AiStudioGenerateFunction', {
+      functionName: 'aintern-ai-studio-generate',
+      handler: 'ai-studio-generate.handler',
+      description: 'POST /admin/ai-studio/generate — generates Vue component/template via Claude',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(60),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        ANTHROPIC_API_KEY_SSM: '/aintern/dev/anthropic/api-key',
+      },
+    })
+
+    aiStudioGenerateFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    aiStudioGenerateFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    const aiStudioSaveFn = new lambda.Function(this, 'AiStudioSaveFunction', {
+      functionName: 'aintern-ai-studio-save',
+      handler: 'ai-studio-save.handler',
+      description: 'POST /admin/ai-studio/save — persists generated component metadata to DynamoDB',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        AI_STUDIO_TABLE: 'aintern-ai-studio',
+      },
+    })
+
+    aiStudioSaveFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    aiStudioSaveFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    aiStudioTable.grantReadWriteData(aiStudioSaveFn)
+
+    const aiStudioGalleryFn = new lambda.Function(this, 'AiStudioGalleryFunction', {
+      functionName: 'aintern-ai-studio-gallery',
+      handler: 'ai-studio-gallery.handler',
+      description: 'GET/DELETE /admin/ai-studio/gallery — lists and deletes saved AI Studio items',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        AI_STUDIO_TABLE: 'aintern-ai-studio',
+      },
+    })
+
+    aiStudioGalleryFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    aiStudioGalleryFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    aiStudioTable.grantReadWriteData(aiStudioGalleryFn)
+
+    const aiStudioTemplateConfigFn = new lambda.Function(this, 'AiStudioTemplateConfigFunction', {
+      functionName: 'aintern-ai-studio-template-config',
+      handler: 'ai-studio-template-config.handler',
+      description: 'GET /admin/ai-studio/template-config — returns available template catalogue',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    aiStudioTemplateConfigFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+        ],
+      }),
+    )
+
+    aiStudioTemplateConfigFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Lambda aliases
+    aiStudioGenerateFn.addAlias('dev')
+    aiStudioGenerateFn.addAlias('prod')
+    aiStudioSaveFn.addAlias('dev')
+    aiStudioSaveFn.addAlias('prod')
+    aiStudioGalleryFn.addAlias('dev')
+    aiStudioGalleryFn.addAlias('prod')
+    aiStudioTemplateConfigFn.addAlias('dev')
+    aiStudioTemplateConfigFn.addAlias('prod')
+
+    // API Gateway routes — /admin/ai-studio/*
+    const aiStudioResource = adminResource.addResource('ai-studio')
+
+    const aiStudioGenerateResource = aiStudioResource.addResource('generate')
+    aiStudioGenerateResource.addMethod('POST', aliasIntegration(aiStudioGenerateFn))
+
+    const aiStudioSaveResource = aiStudioResource.addResource('save')
+    aiStudioSaveResource.addMethod('POST', aliasIntegration(aiStudioSaveFn))
+
+    const aiStudioGalleryResource = aiStudioResource.addResource('gallery')
+    aiStudioGalleryResource.addMethod('GET', aliasIntegration(aiStudioGalleryFn))
+
+    const aiStudioGalleryItemResource = aiStudioGalleryResource.addResource('{id}')
+    aiStudioGalleryItemResource.addMethod('DELETE', aliasIntegration(aiStudioGalleryFn))
+
+    const aiStudioTemplateConfigResource = aiStudioResource.addResource('template-config')
+    aiStudioTemplateConfigResource.addMethod('GET', aliasIntegration(aiStudioTemplateConfigFn))
+    aiStudioTemplateConfigResource.addMethod('PUT', aliasIntegration(aiStudioTemplateConfigFn))
+
     // ── Deployment + stages ──────────────────────────────────────────────────
     const deployment = new apigateway.Deployment(this, 'AdminDeployment', { api })
 

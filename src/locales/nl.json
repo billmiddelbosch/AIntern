@@ -228,7 +228,8 @@
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
       "groeiSysteem": "Groei Systeem",
-      "onboarding": "Onboarding"
+      "onboarding": "Onboarding",
+      "aiStudio": "AI Studio"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -312,6 +313,34 @@
         "next": "Volgende"
       }
     },
+    "aiStudio": {
+        "pageTitle": "AI Studio",
+        "heading": "AI Component Studio",
+        "subheading": "Genereer, bekijk en sla Vue-componenten op met AI.",
+        "templateLabel": "Template",
+        "loadingTemplates": "Templates laden…",
+        "promptLabel": "Beschrijf het component dat je wilt bouwen",
+        "promptPlaceholder": "Bijv. Een kaartcomponent met een titel, beschrijving en CTA-knop, gestyled met Tailwind…",
+        "generate": "Genereren",
+        "generating": "Genereren…",
+        "codeLabel": "Gegenereerde code",
+        "codePlaceholder": "Jouw gegenereerde code verschijnt hier…",
+        "copyCode": "Kopiëren",
+        "previewLabel": "Voorbeeld",
+        "previewSandboxNote": "sandbox",
+        "previewEmpty": "Genereer code om een voorbeeld te zien.",
+        "saveTitle": "Opslaan in galerij",
+        "saveNamePlaceholder": "Componentnaam…",
+        "save": "Opslaan",
+        "saving": "Bezig met opslaan…",
+        "saveConflict": "Er bestaat al een component met deze naam. Kies een andere naam.",
+        "saveSuccess": "Opgeslagen in de galerij.",
+        "galleryTitle": "Opgeslagen componenten",
+        "galleryRefresh": "Vernieuwen",
+        "galleryLoading": "Galerij laden…",
+        "galleryEmpty": "Nog geen opgeslagen componenten. Genereer en sla er een op.",
+        "galleryLoad": "Laden"
+      },
     "articleForm": {
       "titleCreate": "Nieuw artikel",
       "titleEdit": "Artikel bewerken",

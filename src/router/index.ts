@@ -124,6 +124,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'admin', requiresAuth: true, title: 'groeiSysteem.pageTitle' },
   },
   {
+    path: '/admin/ai-studio',
+    name: 'admin-ai-studio',
+    component: () => import('@/views/admin/AdminAiStudioView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.aiStudio.pageTitle' },
+  },
+  {
     path: '/admin/linkedin',
     name: 'admin-linkedin',
     component: () => import('@/views/admin/AdminLinkedInView.vue'),
