@@ -544,6 +544,57 @@
   "groeiSysteem": {
     "pageTitle": "Groei Systeem"
   },
+  "aiAgentMkb": {
+    "meta": {
+      "title": "AI Agent voor MKB | Automatiseer Slimmer — AIntern",
+      "description": "Wat is een AI agent MKB-bedrijven echt helpt? AIntern automatiseert productinvoer, klantvragen en offertes — no-cure-no-pay voor Nederland."
+    },
+    "hero": {
+      "eyebrow": "AI automatisering MKB Nederland",
+      "headline": "AI agent voor MKB — jouw herhaalwerk, onze verantwoordelijkheid",
+      "subtext": "AIntern bouwt een AI agent op maat voor jouw MKB. Hij neemt je repetitieve processen over als een extra medewerker — je betaalt pas als de tijdsbesparing aantoonbaar is.",
+      "cta": "Gratis kennismakingsgesprek",
+      "ctaSub": "Vrijblijvend — no-cure-no-pay"
+    },
+    "what": {
+      "eyebrow": "Wat doet een AI agent?",
+      "heading": "Wat doet een AI agent voor jouw MKB?",
+      "body": "Een AI agent voert repetitieve taken zelfstandig uit — zonder dat jij of je team er naar om hoeven te kijken. Hij leert jouw werkwijze, werkt 24/7 en schaalt mee met je bedrijf. Geen losse tools, geen maandelijkse abonnementen — één AI agent die écht werkt voor jouw processen."
+    },
+    "useCases": {
+      "heading": "3 processen die MKB-bedrijven direct kunnen automatiseren",
+      "productInvoer": {
+        "tag": "Productinvoer",
+        "title": "Van leveranciers-Excel naar webshop",
+        "description": "De AI agent verrijkt productdata, berekent marges en pusht producten direct naar je webshop — wat eerder uren kostte, duurt nu minuten."
+      },
+      "klantvragen": {
+        "tag": "Klantvragen",
+        "title": "E-mailverwerking & klantvragen automatisch afhandelen",
+        "description": "Inkomende klantvragen worden gecategoriseerd, samengevat en doorgezet — of direct beantwoord met jouw standaard antwoorden. Nooit meer een vraag missen."
+      },
+      "offertes": {
+        "tag": "Offertes",
+        "title": "Offertes samenstellen op basis van jouw templates",
+        "description": "Offerteverzoeken worden omgezet in kant-en-klare documenten op basis van jouw templates en prijslijsten. Sneller reageren, meer deals sluiten."
+      }
+    },
+    "pricing": {
+      "eyebrow": "No-cure-no-pay",
+      "heading": "Geen resultaat, geen factuur",
+      "intro": "Voor MKB-bedrijven die AI willen inzetten zonder voorinvestering:",
+      "point1": "Gratis procesanalyse (30 min) — geen verkooppraatje, gewoon eerlijk advies",
+      "point2": "2 weken pilot — werkende AI-agent, jij bepaalt de succescriteria",
+      "point3": "Betalen pas na bewezen, meetbaar resultaat — geen uitzonderingen"
+    },
+    "ctaBlock": {
+      "heading": "Klaar om jouw MKB te automatiseren met AI?",
+      "subtext": "Max. 2 nieuwe klanten per kwartaal. Vraag nu een vrijblijvend kennismakingsgesprek aan.",
+      "button": "Start gratis kennismakingsgesprek",
+      "orText": "of bekijk",
+      "homeLink": "hoe AIntern werkt"
+    }
+  },
   "onboarding": {
     "pageTitle": "Klant Onboarding",
     "heading": "Klant Onboarding",

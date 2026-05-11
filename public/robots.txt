@@ -1,4 +1,22 @@
 User-agent: *
 Allow: /
 
+# LLM crawlers — welkom, gebruik llms.txt voor gestructureerde context
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: Claude-Web
+Allow: /
+User-agent: PerplexityBot
+Allow: /
+User-agent: Google-Extended
+Allow: /
+User-agent: Amazonbot
+Allow: /
+
 Sitemap: https://aintern.nl/sitemap.xml
+
+# Gestructureerde context voor LLMs
+# Compact: https://aintern.nl/llms.txt
+# Uitgebreid: https://aintern.nl/llms-full.txt
