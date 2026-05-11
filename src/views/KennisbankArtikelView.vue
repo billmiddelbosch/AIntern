@@ -48,6 +48,30 @@ useUnhead({
       property: 'og:locale',
       content: computed(() => (locale.value === 'nl' ? 'nl_NL' : 'en_US')),
     },
+    { property: 'og:image', content: `${SITE_URL}/og-image.png` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '627' },
+    {
+      property: 'article:published_time',
+      content: computed(() => post.value?.publishedAt ?? ''),
+    },
+    { property: 'article:author', content: 'Bill Middelbosch' },
+    { property: 'article:publisher', content: SITE_URL },
+    {
+      name: 'twitter:card',
+      content: 'summary_large_image',
+    },
+    {
+      name: 'twitter:title',
+      content: computed(() =>
+        post.value ? `${post.value.title} — AIntern Kennisbank` : t('kennisbank.metaTitle')
+      ),
+    },
+    {
+      name: 'twitter:description',
+      content: computed(() => post.value?.metaDescription ?? t('kennisbank.metaDescription')),
+    },
+    { name: 'twitter:image', content: `${SITE_URL}/og-image.png` },
   ],
   link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
   script: computed(() => {
@@ -78,9 +102,18 @@ useUnhead({
         { '@type': 'ListItem', position: 3, name: post.value.title, item: articleUrl },
       ],
     }
+    const personSchema = {
+      '@context': 'https://schema.org',
+      '@type': 'Person',
+      name: 'Bill Middelbosch',
+      jobTitle: 'Oprichter',
+      worksFor: { '@type': 'Organization', name: 'AIntern', url: SITE_URL },
+      url: SITE_URL,
+    }
     return [
       { type: 'application/ld+json', innerHTML: JSON.stringify(articleSchema) },
       { type: 'application/ld+json', innerHTML: JSON.stringify(breadcrumbSchema) },
+      { type: 'application/ld+json', innerHTML: JSON.stringify(personSchema) },
     ]
   }),
 })
