@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useHead as useUnhead } from '@unhead/vue'
+import { useRoute } from 'vue-router'
 import WorkflowScanWelcome from '@/components/workflow-scan/WorkflowScanWelcome.vue'
 import WorkflowScanQuestion from '@/components/workflow-scan/WorkflowScanQuestion.vue'
 import WorkflowScanProgress from '@/components/workflow-scan/WorkflowScanProgress.vue'
@@ -8,6 +11,29 @@ import WorkflowScanEmailGate from '@/components/workflow-scan/WorkflowScanEmailG
 import WorkflowScanFullReport from '@/components/workflow-scan/WorkflowScanFullReport.vue'
 import BookingModal from '@/components/ui/BookingModal.vue'
 import { useWorkflowScan } from '@/composables/useWorkflowScan'
+
+const { t, locale } = useI18n()
+const route = useRoute()
+
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://aintern.nl'
+
+useUnhead({
+  title: computed(() => t('workflowScan.meta.title')),
+  htmlAttrs: { lang: computed(() => locale.value) },
+  meta: [
+    { name: 'description', content: computed(() => t('workflowScan.meta.description')) },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: computed(() => t('workflowScan.meta.title')) },
+    { property: 'og:description', content: computed(() => t('workflowScan.meta.description')) },
+    { property: 'og:url', content: computed(() => `${SITE_URL}${route.path}`) },
+    { property: 'og:locale', content: computed(() => (locale.value === 'nl' ? 'nl_NL' : 'en_US')) },
+    { property: 'og:image', content: `${SITE_URL}/og-image.png` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '627' },
+  ],
+  link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+})
 
 const { QUESTIONS, answers, score, topIssues, recommendations, submitting, submitError, calculateScore, submitScan } = useWorkflowScan()
 
