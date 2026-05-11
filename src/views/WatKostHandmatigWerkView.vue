@@ -1,12 +1,35 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useHead as useUnhead } from '@unhead/vue'
+import { useRoute } from 'vue-router'
 import AppShell from '@/components/shell/AppShell.vue'
 import IntakeModal from '@/components/ui/IntakeModal.vue'
 import { useIntakeModal } from '@/composables/useIntakeModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
+const route = useRoute()
+
+const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://aintern.nl'
+
+useUnhead({
+  title: computed(() => t('watKostHandmatigWerk.meta.title')),
+  htmlAttrs: { lang: computed(() => locale.value) },
+  meta: [
+    { name: 'description', content: computed(() => t('watKostHandmatigWerk.meta.description')) },
+    { name: 'robots', content: 'index, follow' },
+    { property: 'og:type', content: 'website' },
+    { property: 'og:title', content: computed(() => t('watKostHandmatigWerk.meta.title')) },
+    { property: 'og:description', content: computed(() => t('watKostHandmatigWerk.meta.description')) },
+    { property: 'og:url', content: computed(() => `${SITE_URL}${route.path}`) },
+    { property: 'og:locale', content: computed(() => (locale.value === 'nl' ? 'nl_NL' : 'en_US')) },
+    { property: 'og:image', content: `${SITE_URL}/og-image.png` },
+    { property: 'og:image:width', content: '1200' },
+    { property: 'og:image:height', content: '627' },
+  ],
+  link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+})
 const { openIntakeModal } = useIntakeModal()
 const { trackEvent } = useAnalytics()
 

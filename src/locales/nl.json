@@ -642,5 +642,17 @@
       "training": "Gebruikerstraining gegeven",
       "sign_off": "Formele sign-off ontvangen (handtekening of schriftelijke bevestiging)"
     }
+  },
+  "watKostHandmatigWerk": {
+    "meta": {
+      "title": "Wat kost handmatig werk jou? | Gratis AI-calculator — AIntern",
+      "description": "Bereken in 30 seconden hoeveel jouw bedrijf kwijt is aan herhaalwerk. Voer uren, uurtarief en aantal processen in — zie direct je potentiële besparing met AI."
+    }
+  },
+  "workflowScan": {
+    "meta": {
+      "title": "Gratis AI Workflow Scan — Ontdek je top-3 knelpunten | AIntern",
+      "description": "Doe de gratis AI Workflow Scan in 3 minuten. Beantwoord 5 vragen en ontvang direct je top-3 knelpunten plus concrete AI-aanbevelingen voor jouw bedrijf."
+    }
   }
 }

@@ -84,6 +84,8 @@ useUnhead({
       description: post.value.metaDescription,
       url: articleUrl,
       datePublished: post.value.publishedAt,
+      dateModified: post.value.publishedAt,
+      inLanguage: 'nl',
       author: { '@type': 'Person', name: 'Bill Middelbosch' },
       publisher: {
         '@type': 'Organization',
