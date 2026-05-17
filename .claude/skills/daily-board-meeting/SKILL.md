@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.4
+version: 0.4.5
 ---
 
 # Daily Board Meeting
@@ -593,6 +593,12 @@ At the end of every meeting, review the session and propose improvements to this
 Do **not** pause here. Present these at the End-of-Meeting Approval Gate.
 
 3. On approval: edit this `SKILL.md` or the relevant `references/` file directly as the **last post-approval action** — after LinkedIn outreach, Kennisbank publish, and LinkedIn posts. This ensures any Human Board feedback during the gate is incorporated before the skill is updated. Increment the version number in frontmatter (patch bump: 0.1.0 → 0.1.1).
+
+**Windows-specific fixes (learned 2026-05-16):**
+
+- **Temp task-prompt files:** Always use the Write tool to create `$env:TEMP/board-task-*.txt` files. Never use bash heredoc (`<< 'EOF'`) or PowerShell here-strings (`@'...'@`) for multi-line prompt content on Windows — both fail silently or with encoding errors. The Write tool is reliable and produces UTF-8 output.
+- **Terminal socket errors:** If a `claude -p` terminal dispatch fails with "socket connection was closed unexpectedly", retry once before falling back to inline execution. Add explicit retry note in the terminal's status reporting.
+- **Ghostwriter episode detection:** Always detect episode number by counting files in `.claude/cmo/ghostwriter_drafts/episode-*.md` first — this is the primary source. DynamoDB query is validation-only and may be unavailable (AWS_UNAVAILABLE). File-based detection is authoritative for episode numbering.
 
 ---
 
