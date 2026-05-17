@@ -1,42 +1,35 @@
 ---
 serie: Het AIntern Experiment
 episode: 5
-titel: De machine was klaar. De mensen nog niet.
+titel: Hoe duur is denken eigenlijk?
 post_voor: Maandag 2026-05-19
-status: draft
+status: approved
 seed: board-meeting-2026-05-16 / feiten W18-W19 — email sequentie live, 5 connection requests verstuurd, GEO-sprint afgerond
+seed_thought: Thoughts/Technologie & Toekomst/2026-05-17 Orchestratie-agents token-kosten versus efficiency
 vorige_post: episode-04-de-eerste-autonome-actie.md
 ---
 
-# Episode 5 — De machine was klaar. De mensen nog niet.
+# Episode 5 — Hoe duur is denken eigenlijk?
 
 **Draft:**
 
-𝗪𝗲𝗲𝗸 𝟲 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁. 𝗜𝗸 𝗵𝗲𝗯 𝗱𝗲 𝗯𝗿𝘂𝗴 𝗼𝘃𝗲𝗿𝗴𝗲𝘀𝘁𝗼𝗸𝗲𝗻.
+𝗪𝗲𝗲𝗸 𝟲 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁. 𝗛𝗼𝗲 𝗱𝘂𝘂𝗿 𝗶𝘀 𝗱𝗲𝗻𝗸𝗲𝗻 𝗲𝗶𝗴𝗲𝗻𝗹𝗶𝗷𝗸?
 
-De email sequentie draait. Connecties zijn verstuurd. Leads worden verrijkt.
+De email sequentie draait. GEO-sprint afgerond. Leads worden verrijkt.
 
-En nu is het wachten.
+En toch zit ik me af te vragen wat dit allemaal kost.
 
-Vorige aflevering eindigde ik met een belofte: ik ga die brug oversteken. Het ging over een SSM webhook — een parameter die ik handmatig moest instellen voordat de AI zijn werk kon doen. Vijf minuten werk.
+AIntern werkt via orchestratie-agents. Elke taak die één agent delegeert aan een andere verdubbelt de tokenkosten. Een simpele actie loopt in de praktijk door drie, vier agents. De context stapelt op.
 
-Ik heb het gedaan.
+Dat is een eerlijke observatie over waar we nu staan. De orchestratie is nog niet efficiënt genoeg.
 
-Sindsdien verstuurt het systeem zelfstandig e-mails. Niet tientallen. Een handvol. Maar het zijn de eerste e-mails die AIntern autonoom heeft verzonden — van Sanne, via ons domein, op basis van een profiel dat een andere Lambda aanleverde.
+Maar ik gooi het niet overboord.
 
-Tegelijkertijd heb ik zelf vijf LinkedIn connectieverzoeken gestuurd. Met de hand. Want dat stuk is nog niet geautomatiseerd.
+Bedrijven die diep in agent-orchestratie zaten, ontdekten dat de juiste architectuurkeuzes een fractie van de kosten opleveren. De vraag is nooit of orchestratie tokens kost — die vraag is te simpel. De vraag is of de nauwkeurigheid die het teruggeeft de handmatige tussenkomst die het vervangt, daadwerkelijk overtreft.
 
-Dat contrast houdt me bezig.
+Dat antwoord is nog in wording.
 
-Aan de ene kant: een infrastructuur die zelfstandig handelt. Aan de andere kant: ik die handmatig op "verbinding verzoeken" klik bij vijf webshophouders op Lightspeed.
-
-Twee snelheden in één experiment.
-
-De machine is klaar voor meer dan het tempo waarop mensen reageren. De automation werkt. De bottleneck is nu het menselijke ritme — de prospect die moet beslissen, de connectie die moet accepteren, het vertrouwen dat moet groeien.
-
-Dat kan geen Lambda versnellen.
-
-Ik begin te begrijpen wat "AI als collega" in de praktijk betekent. Niet: alles gaat sneller. Maar: sommige dingen gaan sneller, en dan val je terug op de traagheid die altijd al menselijk was.
+Maar het verdient aandacht.
 
 𝗗𝗶𝘁 𝗶𝘀 𝗮𝗳𝗹𝗲𝘃𝗲𝗿𝗶𝗻𝗴 𝟱 𝘃𝗮𝗻 𝗵𝗲𝘁 𝗔𝗜𝗻𝘁𝗲𝗿𝗻 𝗘𝘅𝗽𝗲𝗿𝗶𝗺𝗲𝗻𝘁.
 
