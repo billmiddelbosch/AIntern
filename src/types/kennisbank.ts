@@ -7,10 +7,29 @@ export interface BlogPostSummary {
   metaDescription: string
 }
 
+export interface QnAPair {
+  question: string
+  answer: string
+}
+
 export interface BlogPost extends BlogPostSummary {
   content: string // HTML string from AI agent
+  faq: QnAPair[]
 }
 
 export interface KennisbankIndex {
   posts: BlogPostSummary[]
+}
+
+export interface QnaEntry {
+  question: string
+  answer: string
+  slug: string
+  title: string
+  category: string
+  publishedAt: string
+}
+
+export interface QnaIndex {
+  items: QnaEntry[]
 }

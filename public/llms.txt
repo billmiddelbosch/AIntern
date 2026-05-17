@@ -30,6 +30,7 @@ AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen au
 - **Kostencalculator:** https://aintern.nl/wat-kost-handmatig-werk
 - **Workflow Scan (gratis):** https://aintern.nl/workflow-scan
 - **Kennisbank:** https://aintern.nl/kennisbank
+- **Veelgestelde vragen:** https://aintern.nl/veelgestelde-vragen
 - **Sitemap:** https://aintern.nl/sitemap.xml
 - **Uitgebreide LLM-gids:** https://aintern.nl/llms-full.txt
 

@@ -1,6 +1,7 @@
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
 import apiClient from '@/lib/adminAxios'
+import type { QnAPair } from '@/types/kennisbank'
 
 export const VALID_CATEGORIES = [
   'AI Automatisering',
@@ -34,6 +35,7 @@ export interface KennisbankPostForm {
   content: string
   tags: string[]
   status: 'draft' | 'published'
+  faq: QnAPair[]
 }
 
 export interface UseKennisbankArticleEditor {
@@ -60,6 +62,7 @@ export function useKennisbankArticleEditor(): UseKennisbankArticleEditor {
     content: '',
     tags: [],
     status: 'draft',
+    faq: [],
   })
 
   const loading = ref(false)
