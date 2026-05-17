@@ -6,9 +6,9 @@ type: project
 
 # Serie State — AIntern Experiment
 
-_Last updated: 2026-04-25_
+_Last updated: 2026-05-17_
 
-## Volgende episode: #3
+## Volgende episode: #6
 
 ## Serie concept
 
@@ -32,6 +32,9 @@ Dit is de kern van het experiment: kan een bedrijf draaien met twee menselijke o
 |---|-------|---------|--------|-----------|
 | 1 | Startups van de toekomst bestaan uit twee operators. | episode-01-introductie.md | approved | Ma 2026-04-27 |
 | 2 | We benoemden een directie. | episode-02-de-directie.md | approved | Do 2026-05-01 |
+| 3 | Het eerste lek. | episode-03-het-eerste-lek.md | draft | — |
+| 4 | De eerste autonome actie. | episode-04-de-eerste-autonome-actie.md | draft | — |
+| 5 | Hoe duur is denken eigenlijk? | episode-05-twee-snelheden.md | approved | Ma 2026-05-19 |
 
 ## Retrospectief-waardige momenten (board agenda)
 
