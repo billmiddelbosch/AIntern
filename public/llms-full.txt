@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-05-17
+> Laatste update: 2026-05-18
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
