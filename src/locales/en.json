@@ -5,6 +5,7 @@
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Knowledge Base",
+    "faq": "FAQ",
     "kostencalculator": "What does manual work cost you?",
     "cta": "Free consultation",
     "menu": "Open menu"
@@ -367,8 +368,36 @@
         "edit": "Edit",
         "save": "Save",
         "cancel": "Cancel"
+      },
+      "faqPanel": {
+        "title": "Frequently Asked Questions (FAQ)",
+        "empty": "No Q&A pairs yet. Add one to help visitors find answers instantly.",
+        "addButton": "Add question & answer",
+        "add": "Add",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete",
+        "moveUp": "Move up",
+        "moveDown": "Move down",
+        "questionPlaceholder": "E.g. What does no-cure-no-pay mean exactly?",
+        "answerPlaceholder": "Give a clear, concise answer…"
       }
     }
+  },
+  "faq": {
+    "sectionLabel": "FAQ",
+    "overviewTitle": "Frequently Asked Questions about AI for SMEs",
+    "overviewSubtitle": "Answers to the most common questions — straightforward, honest and jargon-free.",
+    "metaTitle": "FAQ — AI for SMEs | AIntern",
+    "metaDescription": "Answers to the most frequently asked questions about AI automation for SMEs: costs, implementation, security and no-cure-no-pay.",
+    "allCategories": "All categories",
+    "categoryFilter": "Filter by category",
+    "emptyState": "No FAQs available yet. Check back later.",
+    "errorState": "Could not load questions. Please try again later.",
+    "readFullArticle": "Read the full article",
+    "ctaText": "Want to learn more about AI for your business? Explore all knowledge base articles.",
+    "ctaLink": "Go to the knowledge base"
   },
   "leads": {
     "board": {

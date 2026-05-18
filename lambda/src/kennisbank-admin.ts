@@ -14,7 +14,7 @@ const s3 = new S3Client({ region: 'eu-west-2' })
 
 const KENNISBANK_BUCKET = 'aintern-kennisbank'
 const HOSTNAME = 'https://aintern.nl'
-const STATIC_ROUTES = ['/', '/kennisbank']
+const STATIC_ROUTES = ['/', '/kennisbank', '/veelgestelde-vragen']
 
 const VALID_CATEGORIES = new Set([
   'AI Automatisering',
@@ -115,6 +115,24 @@ interface KennisbankIndex {
   posts: IndexEntry[]
 }
 
+interface QnaPair {
+  question: string
+  answer: string
+}
+
+interface QnaEntry {
+  question: string
+  answer: string
+  slug: string
+  title: string
+  category: string
+  publishedAt: string
+}
+
+interface QnaIndex {
+  items: QnaEntry[]
+}
+
 interface KennisbankPost {
   slug: string
   title: string
@@ -125,6 +143,7 @@ interface KennisbankPost {
   content: string
   tags: string[]
   status: 'draft' | 'published'
+  faq: QnaPair[]
 }
 
 // ── GEO helpers ───────────────────────────────────────────────────────────────
@@ -151,6 +170,14 @@ function buildLlmsFullContent(posts: KennisbankPost[]): string {
 
   const articleBlocks = sorted.map((article) => {
     const plainBody = htmlToPlainText(article.content)
+    const faqBlock =
+      article.faq && article.faq.length > 0
+        ? [
+            ``,
+            `**Veelgestelde vragen over dit artikel:**`,
+            ...article.faq.map((qa) => [``, `Q: ${qa.question}`, `A: ${qa.answer}`].join('\n')),
+          ].join('\n')
+        : ''
     return [
       `### ${article.title}`,
       ``,
@@ -161,6 +188,7 @@ function buildLlmsFullContent(posts: KennisbankPost[]): string {
       article.excerpt,
       ``,
       plainBody,
+      faqBlock,
       ``,
       `---`,
     ].join('\n')
@@ -273,6 +301,9 @@ Gratis diagnose-tool in 3 minuten: beantwoord vragen over herhaalprocessen, krij
 **Kennisbank** — ${HOSTNAME}/kennisbank
 Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op categorie: AI Automatisering, MKB Praktijkcases, Implementatietips, AI Tools & Technologie.
 
+**Veelgestelde vragen** — ${HOSTNAME}/veelgestelde-vragen
+Alle Q&A-paren uit de kennisbank op één pagina. Gefilterd op categorie, met accordion-stijl antwoorden en links naar de bijbehorende artikelen.
+
 ---`
 
   const articleSection = [
@@ -283,21 +314,75 @@ Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op catego
     ...articleBlocks,
   ].join('\n')
 
+  const allFaq = sorted.flatMap((article) =>
+    (article.faq ?? []).map((qa) => ({
+      question: qa.question,
+      answer: qa.answer,
+      articleTitle: article.title,
+      articleUrl: `${HOSTNAME}/kennisbank/${article.slug}`,
+    })),
+  )
+
+  const qnaSection =
+    allFaq.length > 0
+      ? [
+          `## Veelgestelde vragen (geaggregeerd)`,
+          ``,
+          `Overzichtspagina: ${HOSTNAME}/veelgestelde-vragen`,
+          ``,
+          ...allFaq.map((qa) =>
+            [
+              `**Q: ${qa.question}**`,
+              `A: ${qa.answer}`,
+              `_(Bron: [${qa.articleTitle}](${qa.articleUrl}))_`,
+              ``,
+            ].join('\n'),
+          ),
+        ].join('\n')
+      : ''
+
   const footer = [
     `## Contact`,
     ``,
     `- **Website:** ${HOSTNAME}`,
     `- **E-mail:** info@aintern.nl`,
     `- **Kennisbank:** ${HOSTNAME}/kennisbank`,
+    `- **Veelgestelde vragen:** ${HOSTNAME}/veelgestelde-vragen`,
     `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
     `- **llms.txt:** ${HOSTNAME}/llms.txt`,
     ``,
   ].join('\n')
 
-  return [header, ``, articleSection, ``, footer].join('\n')
+  return [header, ``, articleSection, ``, qnaSection, ``, footer].join('\n')
 }
 
 // ── S3 helpers ────────────────────────────────────────────────────────────────
+
+async function readQnaIndex(): Promise<QnaEntry[]> {
+  try {
+    const resp = await s3.send(
+      new GetObjectCommand({ Bucket: KENNISBANK_BUCKET, Key: 'qa.json' }),
+    )
+    const raw = (await resp.Body?.transformToString('utf-8')) ?? '{}'
+    const index = JSON.parse(raw) as QnaIndex
+    return index.items ?? []
+  } catch {
+    return []
+  }
+}
+
+async function writeQnaIndex(items: QnaEntry[]): Promise<void> {
+  const index: QnaIndex = { items }
+  await s3.send(
+    new PutObjectCommand({
+      Bucket: KENNISBANK_BUCKET,
+      Key: 'qa.json',
+      Body: JSON.stringify(index),
+      ContentType: 'application/json',
+    }),
+  )
+  console.log('[kennisbank-admin] writeQnaIndex | wrote %d entries', items.length)
+}
 
 async function readIndex(): Promise<Map<string, IndexEntry>> {
   console.log('[kennisbank-admin] readIndex | fetching s3://%s/index.json', KENNISBANK_BUCKET)
@@ -365,7 +450,12 @@ async function writeSitemap(): Promise<void> {
   const today = new Date().toISOString().split('T')[0]
   const urls = routes
     .map((route) => {
-      const priority = route === '/' ? '1.0' : route === '/kennisbank' ? '0.9' : '0.8'
+      const priority =
+        route === '/'
+          ? '1.0'
+          : route === '/kennisbank' || route === '/veelgestelde-vragen'
+            ? '0.9'
+            : '0.8'
       const changefreq = route === '/' ? 'weekly' : 'monthly'
       return `  <url>
     <loc>${HOSTNAME}${route}</loc>
@@ -557,9 +647,22 @@ async function handlePublish(
   indexMap.set(slug, entry)
   await writeIndex(indexMap)
 
+  // Update qa.json: replace all entries for this slug, then append new ones
+  const existingQna = await readQnaIndex()
+  const filteredQna = existingQna.filter((e) => e.slug !== slug)
+  const newQnaEntries: QnaEntry[] = (post.faq ?? []).map((qa) => ({
+    question: qa.question,
+    answer: qa.answer,
+    slug,
+    title: post.title,
+    category: post.category,
+    publishedAt: post.publishedAt,
+  }))
+  await writeQnaIndex([...filteredQna, ...newQnaEntries])
+
   await Promise.all([writeSitemap(), writeLlmsFullTxt(indexMap)])
 
-  console.log('[kennisbank-admin] handlePublish | published slug=%s', slug)
+  console.log('[kennisbank-admin] handlePublish | published slug=%s faq=%d', slug, newQnaEntries.length)
   return respond(200, { slug, publishedAt: post.publishedAt }, alias, requestOrigin)
 }
 
@@ -578,6 +681,8 @@ async function handleDelete(
   if (indexMap.has(slug)) {
     indexMap.delete(slug)
     await writeIndex(indexMap)
+    const existingQna = await readQnaIndex()
+    await writeQnaIndex(existingQna.filter((e) => e.slug !== slug))
     await Promise.all([writeSitemap(), writeLlmsFullTxt(indexMap)])
   }
 

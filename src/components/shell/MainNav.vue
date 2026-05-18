@@ -19,6 +19,7 @@ const navItems = [
 
 const routeNavItems = [
   { labelKey: 'nav.kennisbank', to: '/kennisbank' },
+  { labelKey: 'nav.faq', to: '/veelgestelde-vragen' },
   { labelKey: 'nav.kostencalculator', to: '/wat-kost-handmatig-werk' },
 ]
 
