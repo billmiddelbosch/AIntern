@@ -6,6 +6,7 @@ import ArticleFormHeader from '@/components/admin/ArticleFormHeader.vue'
 import ArticleMetaPanel from '@/components/admin/ArticleMetaPanel.vue'
 import ArticleLinksPanel from '@/components/admin/ArticleLinksPanel.vue'
 import ArticleRichTextEditor from '@/components/admin/ArticleRichTextEditor.vue'
+import ArticleFaqPanel from '@/components/admin/ArticleFaqPanel.vue'
 import { useKennisbankArticleEditor } from '@/composables/useKennisbankArticleEditor'
 import apiClient from '@/lib/adminAxios'
 
@@ -211,6 +212,12 @@ function handleRemoveLink(href: string, anchorText: string) {
           @update-link="handleUpdateLink"
           @remove-link="handleRemoveLink"
         />
+        <div class="bg-white rounded-2xl border border-slate-200 p-5">
+          <ArticleFaqPanel
+            :faq="form.faq"
+            @update:faq="(v) => (form.faq = v)"
+          />
+        </div>
       </div>
     </div>
   </div>

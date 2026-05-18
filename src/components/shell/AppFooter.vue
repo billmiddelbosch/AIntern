@@ -11,7 +11,10 @@ const navItems = [
   { labelKey: 'nav.contact', anchor: '#contact' },
 ]
 
-const routeNavItems = [{ labelKey: 'nav.kennisbank', to: '/kennisbank' }]
+const routeNavItems = [
+  { labelKey: 'nav.kennisbank', to: '/kennisbank' },
+  { labelKey: 'nav.faq', to: '/veelgestelde-vragen' },
+]
 
 function scrollTo(anchor: string) {
   if (typeof document === 'undefined') return

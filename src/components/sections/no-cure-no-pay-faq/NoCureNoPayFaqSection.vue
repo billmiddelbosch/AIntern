@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import type { NoCureNoPayFaqSectionProps } from '@/../product/sections/no-cure-no-pay-faq/types'
 import NoCureNoPayProposition from './NoCureNoPayProposition.vue'
@@ -41,6 +42,13 @@ function toggle(index: number) {
             :is-open="openIndex === index"
             @toggle="toggle(index)"
           />
+          <RouterLink
+            to="/veelgestelde-vragen"
+            class="inline-flex items-center gap-1.5 text-sm font-medium text-indigo-400 hover:text-indigo-300 transition-colors mt-2"
+          >
+            {{ t('faq.ctaText') }}
+            <span aria-hidden="true">→</span>
+          </RouterLink>
         </div>
       </div>
 

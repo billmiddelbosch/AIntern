@@ -5,6 +5,7 @@
     "nocurenopay": "No-Cure-No-Pay",
     "contact": "Contact",
     "kennisbank": "Kennisbank",
+    "faq": "FAQ",
     "kostencalculator": "Wat kost handmatig werk jou?",
     "cta": "Gratis kennismaking",
     "menu": "Menu openen"
@@ -367,8 +368,36 @@
         "edit": "Bewerken",
         "save": "Opslaan",
         "cancel": "Annuleren"
+      },
+      "faqPanel": {
+        "title": "Veelgestelde vragen (FAQ)",
+        "empty": "Nog geen Q&A-paren. Voeg er een toe om bezoekers direct te helpen.",
+        "addButton": "Vraag & antwoord toevoegen",
+        "add": "Toevoegen",
+        "save": "Opslaan",
+        "cancel": "Annuleren",
+        "edit": "Bewerken",
+        "delete": "Verwijderen",
+        "moveUp": "Omhoog",
+        "moveDown": "Omlaag",
+        "questionPlaceholder": "Bijv. Wat betekent no-cure-no-pay precies?",
+        "answerPlaceholder": "Geef een duidelijk, beknopt antwoord…"
       }
     }
+  },
+  "faq": {
+    "sectionLabel": "Veelgestelde vragen",
+    "overviewTitle": "Veelgestelde vragen over AI voor het MKB",
+    "overviewSubtitle": "Antwoorden op de meest gestelde vragen — direct, eerlijk en zonder technisch jargon.",
+    "metaTitle": "Veelgestelde vragen over AI voor het MKB | AIntern",
+    "metaDescription": "Antwoorden op de meestgestelde vragen over AI-automatisering voor het MKB: kosten, implementatie, veiligheid en no-cure-no-pay.",
+    "allCategories": "Alle categorieën",
+    "categoryFilter": "Filter op categorie",
+    "emptyState": "Er zijn nog geen veelgestelde vragen beschikbaar. Kom later terug.",
+    "errorState": "Vragen konden niet geladen worden. Probeer het later opnieuw.",
+    "readFullArticle": "Lees het volledige artikel",
+    "ctaText": "Meer weten over AI voor jouw bedrijf? Bekijk alle kennisbankartikelen.",
+    "ctaLink": "Naar de kennisbank"
   },
   "leads": {
     "board": {

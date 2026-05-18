@@ -106,6 +106,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/veelgestelde-vragen',
+    name: 'veelgestelde-vragen',
+    component: () => import('@/views/VeelgesteldeVragenView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/admin/onboarding',
     name: 'admin-onboarding',
     component: () => import('@/views/admin/OnboardingListView.vue'),

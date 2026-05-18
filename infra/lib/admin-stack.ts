@@ -252,6 +252,7 @@ export class AdminStack extends cdk.Stack {
         actions: ['s3:GetObject'],
         resources: [
           'arn:aws:s3:::aintern-kennisbank/index.json',
+          'arn:aws:s3:::aintern-kennisbank/qa.json',
           'arn:aws:s3:::aintern-kennisbank/posts/*',
         ],
       }),
@@ -263,6 +264,7 @@ export class AdminStack extends cdk.Stack {
         resources: [
           'arn:aws:s3:::aintern-kennisbank/posts/*',
           'arn:aws:s3:::aintern-kennisbank/index.json',
+          'arn:aws:s3:::aintern-kennisbank/qa.json',
           'arn:aws:s3:::aintern-kennisbank/sitemap.xml',
         ],
       }),
