@@ -1,36 +1,17 @@
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const HOSTNAME = 'https://aintern.nl'
-const BUCKET = 'aintern-kennisbank'
-const REGION = 'eu-west-2'
-const SLUG_PATTERN = /^posts\/([a-z0-9-]+)\.json$/
+const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com'
 
 const STATIC_ROUTES = ['/', '/kennisbank', '/ai-agent-mkb', '/wat-kost-handmatig-werk', '/workflow-scan']
 
 export async function getSlugsFromS3(): Promise<string[]> {
-  const client = new S3Client({ region: REGION })
-  const slugs: string[] = []
-  let continuationToken: string | undefined
-
-  do {
-    const response = await client.send(
-      new ListObjectsV2Command({
-        Bucket: BUCKET,
-        Prefix: 'posts/',
-        ContinuationToken: continuationToken,
-      }),
-    )
-    for (const obj of response.Contents ?? []) {
-      const match = (obj.Key ?? '').match(SLUG_PATTERN)
-      if (match) slugs.push(match[1])
-    }
-    continuationToken = response.NextContinuationToken
-  } while (continuationToken)
-
-  return slugs
+  const response = await fetch(`${S3_BASE}/index.json`)
+  if (!response.ok) throw new Error(`Failed to fetch index.json: ${response.status}`)
+  const data = (await response.json()) as { posts: Array<{ slug: string }> }
+  return data.posts.map((p) => p.slug)
 }
 
 function buildXml(routes: string[]): string {
