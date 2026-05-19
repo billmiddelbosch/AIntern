@@ -1,12 +1,10 @@
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getSlugsFromS3 } from './generate-sitemap'
 
 const HOSTNAME = 'https://aintern.nl'
-const BUCKET = 'aintern-kennisbank'
-const REGION = 'eu-west-2'
+const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com'
 
 interface BlogPost {
   slug: string
@@ -35,13 +33,10 @@ function htmlToPlainText(html: string): string {
 }
 
 async function fetchArticle(slug: string): Promise<BlogPost | null> {
-  const client = new S3Client({ region: REGION })
   try {
-    const response = await client.send(
-      new GetObjectCommand({ Bucket: BUCKET, Key: `posts/${slug}.json` }),
-    )
-    const body = await response.Body!.transformToString('utf-8')
-    return JSON.parse(body) as BlogPost
+    const response = await fetch(`${S3_BASE}/posts/${slug}.json`)
+    if (!response.ok) return null
+    return (await response.json()) as BlogPost
   } catch {
     return null
   }

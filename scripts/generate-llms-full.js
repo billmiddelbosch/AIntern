@@ -1,11 +1,9 @@
-import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3';
 import { writeFileSync, mkdirSync } from 'node:fs';
 import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getSlugsFromS3 } from './generate-sitemap';
 const HOSTNAME = 'https://aintern.nl';
-const BUCKET = 'aintern-kennisbank';
-const REGION = 'eu-west-2';
+const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com';
 function htmlToPlainText(html) {
     return html
         .replace(/<\/(h[1-6]|p|li|blockquote|br|div|tr)[^>]*>/gi, '\n')
@@ -22,11 +20,11 @@ function htmlToPlainText(html) {
         .trim();
 }
 async function fetchArticle(slug) {
-    const client = new S3Client({ region: REGION });
     try {
-        const response = await client.send(new GetObjectCommand({ Bucket: BUCKET, Key: `posts/${slug}.json` }));
-        const body = await response.Body.transformToString('utf-8');
-        return JSON.parse(body);
+        const response = await fetch(`${S3_BASE}/posts/${slug}.json`);
+        if (!response.ok)
+            return null;
+        return (await response.json());
     }
     catch {
         return null;

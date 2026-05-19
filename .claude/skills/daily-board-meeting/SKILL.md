@@ -598,6 +598,7 @@ Do **not** pause here. Present these at the End-of-Meeting Approval Gate.
 
 - **Temp task-prompt files:** Always use the Write tool to create `$env:TEMP/board-task-*.txt` files. Never use bash heredoc (`<< 'EOF'`) or PowerShell here-strings (`@'...'@`) for multi-line prompt content on Windows — both fail silently or with encoding errors. The Write tool is reliable and produces UTF-8 output.
 - **Terminal socket errors:** If a `claude -p` terminal dispatch fails with "socket connection was closed unexpectedly", retry once before falling back to inline execution. Add explicit retry note in the terminal's status reporting.
+- **PowerShell `claude -p (Get-Content ...)` stdin failure (observed 2026-05-19):** When dispatching via PowerShell with `run_in_background: true`, the terminal may produce only `Warning: no stdin data received in 3s` and exit immediately (exit code 0, 0 bytes of Claude output). This is a PowerShell stdin-pipe timing failure, not an encoding issue. **Do not retry** — fall back immediately to implementing the task inline in the main session. The task is small enough for inline execution when this pattern occurs.
 - **Ghostwriter episode detection:** Always detect episode number by counting files in `.claude/cmo/ghostwriter_drafts/episode-*.md` first — this is the primary source. DynamoDB query is validation-only and may be unavailable (AWS_UNAVAILABLE). File-based detection is authoritative for episode numbering.
 
 ---
