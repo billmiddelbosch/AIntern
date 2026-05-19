@@ -910,6 +910,47 @@ Te strenge guardrails maken je AI onbruikbaar. Te losse guardrails leiden tot da
 Bij AIntern bouwen we guardrails in elk AI-systeem dat we implementeren. We brengen in kaart welke data gevoelig is, welke acties riskant zijn, en hoe je de balans vindt tussen veiligheid en bruikbaarheid. Benieuwd hoe dat eruitziet voor jouw organisatie? Plan een gratis kennismakingsgesprek via aintern.nl.
 
 ---
+### MKB en AI: waarom 93% van de ondernemers de eerste stap niet zet
+
+**Categorie:** AI Automatisering
+**URL:** https://aintern.nl/kennisbank/mkb-ai-drempel-hulp-vragen
+**Gepubliceerd:** 2026-05-19
+
+Slechts 7% van kleine ondernemers vraagt actief om hulp bij uitdagingen. Bij AI speelt dit nog sterker. Drie concrete redenen waarom MKB-ers de drempel niet nemen en hoe je die drempel verlaagt.
+
+Er is een opvallend onderzoeksresultaat dat ik niet meer kwijt kan: slechts 7% van kleine ondernemers vraagt actief om hulp bij een uitdaging. Bij 93% van de gevallen moet de aanstoot van buiten komen.
+
+Bij AI speelt dit nog sterker dan bij welk ander onderwerp ook.
+
+Je weet niet wat je niet weet
+
+De kern van het probleem is een dubbele onwetendheid. MKB-ers zien de waarde van AI niet, omdat ze de technologie niet begrijpen. En ze begrijpen haar niet, omdat ze de eerste stap nooit hebben gezet. Het is een gesloten cirkel.
+
+Daniel Boorstin omschreef het precies: `De grootste barri&egrave;re voor ontdekking is niet onwetendheid &mdash; het is de illusie van kennis.'' Je denkt dat je het al begrijpt. Je denkt dat het niet voor jou is. En dus vraag je niet.
+
+Drie redenen waarom de drempel zo hoog is
+
+1. De ROI is onduidelijk. Wat levert AI concreet op voor een slagerij, een webshop, een installatiebedrijf? Abstracte beloftes over &ldquo;efficiency&rdquo; overtuigen niemand. Zonder een concreet getal blijft de investering onverantwoordbaar.
+
+2. Angst voor controleverlies. Wie zijn eigen bedrijf heeft opgebouwd, wil begrijpen hoe alles werkt. AI voelt als een black box. Wat als het fout gaat? Wat als de klantgegevens ergens terechtkomen waar ze niet horen? Die angst is rationeel en wordt zelden serieus genomen in het AI-discours.
+
+3. Er is geen vertrouwd aanspreekpunt. Een accountant, een leverancier, een branchegenoot &mdash; die ken je. Een AI-adviseur? Dat is een vreemde in een pak met een PowerPoint. De drempel om te bellen is hoog als je niet weet of je terecht kunt vertrouwen op wat je hoort.
+
+Wat laagdrempelige AI-adoptie er in de praktijk uitziet
+
+De ondernemers die de stap wel zetten, beginnen niet met een groot project. Ze beginnen met &eacute;&eacute;n proces dat hen elke week tijd kost en laten zien wat er mogelijk is als dat proces geautomatiseerd wordt.
+
+Een Lightspeed-webshop die productinvoer van 60 naar 5 minuten per batch terugbrengt. Een installatiebedrijf dat klantemails automatisch laat samenvatten. Dat zijn geen futuristische beloftes &mdash; dat zijn concrete resultaten die vandaag haalbaar zijn, zonder IT-kennis en zonder grote investering vooraf.
+
+De sleutel is niet de technologie. De sleutel is de eerste stap klein genoeg maken dat het risico beheersbaar voelt.
+
+Wat jij nu kunt doen
+
+Als je jezelf herkent in bovenstaande &mdash; niet omdat je niet wilt, maar omdat je niet weet waar te beginnen &mdash; begin dan met een gratis procesanalyse. Geen verplichtingen, geen technisch jargon. Gewoon een eerlijk gesprek over welk herhaalproces in jouw bedrijf het meeste tijd kost.
+
+Doe de gratis Workflow Scan in 3 minuten &rarr;
+
+---
 
 ## Contact
 
