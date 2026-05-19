@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-05-18
+> Laatste update: 2026-05-19
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
@@ -710,6 +710,84 @@ Eerste stap die je vandaag kunt zetten
 Begin met een simpele audit: welke AI-tools gebruiken medewerkers, en welke klantgegevens verwerken ze daarin? Dat geeft je een helder beeld van je risicoprofiel.
 Wil je weten hoe je PII Filtering implementeert als onderdeel van een breder AI-implementatietraject voor het MKB? Neem contact op — we helpen je de juiste beveiligingslagen opzetten zonder dat het ten koste gaat van de snelheid van je processen.
 Bekijk hoe AIntern jouw organisatie helpt met veilig AI-gebruik →
+
+---
+### AI automatisering zonder hype — eenvoud wint
+
+**Categorie:** AI Automatisering
+**URL:** https://aintern.nl/kennisbank/ai-automatisering-zonder-hype-eenvoud-wint
+**Gepubliceerd:** 2026-05-11
+
+Meer automatiseren is niet beter. Ontdek waarom selectieve AI-automatisering meer oplevert dan 100% AI — en hoe je bepaalt welke processen ervoor in aanmerking komen.
+
+"Automatisering toegepast op een efficiënte operatie vergroot de efficiëntie. Toegepast op een inefficiënte operatie vergroot het de inefficiëntie."
+— Bill Gates
+
+Die uitspraak is decennia oud, maar precies van toepassing op hoe veel bedrijven vandaag met AI omgaan. Ze proberen alles te automatiseren — en vragen zich daarna af waarom de beloofde tijdsbesparing uitblijft.
+
+De 100%-val: waarom meer automatiseren niet beter is
+
+De belofte klinkt aantrekkelijk: AI automatiseert alle processen, bespaart alle tijd, en lost alle problemen op. In de praktijk lopen bedrijven die alles proberen te automatiseren vast op de weerbarstigheid van hun eigen bedrijfsvoering: uitzonderingen, context die moeilijk te vangen is in regels, en menselijk oordeel dat niet zomaar te vervangen is door een algoritme.
+
+Harvard Business School-onderzoekers Karim Lakhani en Iavor Bojinov onderzochten het verschil tussen bedrijven die AI inzetten als vervanging versus als aanvulling. Hun conclusie is helder: augmentatie — waarbij AI menselijk oordeel ondersteunt in plaats van vervangt — levert op lange termijn betere resultaten op. AI-winnaars onderscheiden zich niet door hoeveel ze automatiseren, maar door de scherpte van hun keuze: waar wél en waar níet.
+
+Eenvoud als strategie — welke processen komen in aanmerking
+
+Niet elk onderdeel van een bedrijfsproces wint bij automatisering. De processen die het meeste opleveren zijn herhaalbaar, voorspelbaar en regelgebaseerd. Denk aan:
+
+Facturen verwerken en controleren op afwijkingen
+
+Leads kwalificeren op basis van vaste criteria
+
+Standaardvragen beantwoorden via e-mail of chat
+
+Voorraadwaarschuwingen genereren op basis van drempelwaarden
+
+Rapporten samenstellen uit data die al beschikbaar is
+
+Processen waarbij context, nuance of menselijk oordeel cruciaal zijn — klachtenafhandeling, strategische beslissingen, relatiebeheer — zijn juist wél geschikt voor AI-ondersteuning, maar niet voor AI-vervanging.
+
+Drie criteria voor succesvolle AI-automatisering
+
+Stel jezelf bij elk proces drie vragen:
+
+Is het herhaalbaar? Voer je deze taak minstens wekelijks uit op dezelfde manier?
+
+Is het regelgebaseerd? Kun je de stappen opschrijven zonder een reeks uitzonderingen te beschrijven?
+
+Is het meetbaar? Weet je wat een goed resultaat eruitziet?
+
+Drie keer ja? Dan is dit proces rijp voor automatisering. Één keer nee? Automatiseer ondersteunend, niet vervangend.
+
+Wat je technisch goed moet regelen
+
+Eenvoudige automatisering is geen synoniem voor slordigheid. Wie AI inzet voor herhaalbare taken heeft vijf bouwstenen nodig:
+
+Doelen en meting. Zonder duidelijke KPI's weet een AI niet of ze goed bezig is — en jij ook niet. Stel meetbare doelen en monitor regelmatig. Kies twee of drie metrics die er écht toe doen; te veel metrics leiden tot ruis en verwarring.
+
+Kwaliteitscontrole. Test je automatisering periodiek met bekende scenario's. Zo ontdek je tijdig of de AI begint te driften — afwijkt van het gewenste gedrag zonder dat je het merkt.
+
+Herstel bij fouten. AI gaat soms onderuit: een API-koppeling hapert, een invoer is onverwacht. Zorg dat je automatisering slim herstelt — een alternatief pad, een melding — in plaats van stil te crashen. Logging is daarbij onmisbaar om fouten later te kunnen analyseren.
+
+Veiligheid en grenzen. AI mag geen persoonsgegevens lekken, geen acties uitvoeren buiten de afgesproken grenzen, en niet manipuleerbaar zijn via onverwachte invoer. Stel harde grenzen in — maar niet zo streng dat de automatisering onbruikbaar wordt. De balans is cruciaal.
+
+Menselijke validatie. Gebruik AI ook om patronen te ontdekken die je zelf had gemist: trends in klantgedrag, terugkerende knelpunten in je proces, nieuwe inzichten uit bestaande data. Maar laat mensen de conclusies valideren. AI vindt opties — mensen maken keuzes.
+
+De kloof tussen weten en doen
+
+Elke MKB-ondernemer weet dat AI zijn werkzaamheden kan vereenvoudigen. De reden dat het er toch niet van komt is niet onwil, maar tijdgebrek en het ontbreken van een concreet implementatiepad. De knowing-doing gap is in het MKB bijzonder sterk aanwezig: je weet wat je zou moeten doen, maar de dagelijkse operationele druk laat geen ruimte voor strategische inrichting.
+
+De democratisering van AI maakt dat nu wél bereikbaar. Andrej Karpathy, mede-oprichter van OpenAI, verwoordde het zo: "De nieuwste programmeertaal is Engels." AI-tools begrijpen tegenwoordig gewone mensentaal. De drempel om deelprocessen te automatiseren is nooit zo laag geweest — ook niet voor bedrijven zonder IT-afdeling of technische achtergrond.
+
+Wat vroeger een dedicated ontwikkelteam vereiste, bouw je nu in dagen. De vraag is niet meer kán ik automatiseren — maar wat automatiseer ik als eerste?
+
+Hoe AIntern dit voor MKB realiseert
+
+AIntern helpt MKB-bedrijven bij selectieve AI-automatisering. Niet alles automatiseren, maar het juiste. We beginnen met een analyse van je huidige processen, identificeren waar automatisering écht tijd en geld bespaart, en richten dat in — met de juiste doelen, monitoring en veiligheidsgrenzen die je beschermen zonder je te beperken.
+
+Geen hype. Geen beloftes van 100% automatisering. Wel concrete resultaten op de taken die daar klaar voor zijn.
+
+Benieuwd welke processen bij jouw bedrijf in aanmerking komen? Neem contact op met AIntern of lees meer over AI automatisering voor het MKB.
 
 ---
 ### AI automatisering voor MKB: waarom eenvoud wint
