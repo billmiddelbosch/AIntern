@@ -4,6 +4,7 @@ import { KennisbankStack } from '../lib/kennisbank-stack'
 import { IntakeStack } from '../lib/intake-stack'
 import { AdminStack } from '../lib/admin-stack'
 import { AInternLoopStack } from '../lib/ainternloop-stack'
+import { NewsFlowStack } from '../lib/newsflow-stack'
 
 const app = new cdk.App()
 
@@ -30,5 +31,10 @@ new AdminStack(app, 'AInternAdminStack', {
 new AInternLoopStack(app, 'AInternLoopStack', {
   env,
   description: 'AIntern Loop — DynamoDB table + IAM governance for agent orchestration system',
+})
+
+new NewsFlowStack(app, 'AInternNewsFlowStack', {
+  env,
+  description: 'AIntern NewsFlow — DynamoDB landing_pages table + S3 content bucket (I-10)',
 })
 

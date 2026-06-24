@@ -41,7 +41,8 @@
     "@google-analytics/data": "^5.2.1",
     "bcryptjs": "^2",
     "fast-xml-parser": "^4.4.0",
-    "jsonwebtoken": "^9"
+    "jsonwebtoken": "^9",
+    "simple-git": "^3.36.0"
   },
   "devDependencies": {
     "@aws-sdk/client-ses": "^3.1041.0",
