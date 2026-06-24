@@ -21,6 +21,12 @@ export class AdminStack extends cdk.Stack {
       grantIndexPermissions: true,
     })
 
+    // ── DynamoDB — import aintern-loop table (owned by AInternLoopStack) ─────
+    const loopTable = dynamodb.Table.fromTableAttributes(this, 'LoopTableRef', {
+      tableName: 'aintern-loop',
+      grantIndexPermissions: true,
+    })
+
     // SSM parameters /aintern/{dev|prod}/dynamodb/table-name already exist in SSM
     // (pre-provisioned by the staging deploy). Not managed here to avoid CloudFormation
     // "already exists" conflicts. Create manually if deploying to a fresh environment:
@@ -901,6 +907,60 @@ export class AdminStack extends cdk.Stack {
 
     onboardingTable.grantReadWriteData(onboardingFn)
 
+    // ── ainternloop-admin Lambda (A-19) ──────────────────────────────────────
+    const ainternloopAdminFn = new lambda.Function(this, 'AInternLoopAdminFunction', {
+      functionName: 'aintern-ainternloop-admin',
+      handler: 'ainternloop-admin.handler',
+      description: 'JWT-protected CRUD API for AInternLoop issues, agents, and actions (A-19)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+        LOOP_TABLE_SSM_PATH: '/aintern/loop/table-name',
+      },
+    })
+
+    // SSM: JWT secret (dev + prod) + loop table name (single param, not alias-scoped)
+    ainternloopAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/loop/table-name`,
+        ],
+      }),
+    )
+
+    // KMS: decrypt SecureString (JWT secret)
+    ainternloopAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // DynamoDB: full read access (GetItem, Query, etc.) on aintern-loop + its GSIs
+    loopTable.grantReadData(ainternloopAdminFn)
+
+    // DynamoDB: UpdateItem on ISSUE#* and AGENT#* only (PATCH issue status, PUT agent instruction)
+    // ForAnyValue (not ForAllValues) — ForAllValues evaluates to true when condition key is absent,
+    // which would bypass the restriction and allow writes to any partition key prefix.
+    ainternloopAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:UpdateItem'],
+        resources: [loopTable.tableArn],
+        conditions: {
+          'ForAnyValue:StringLike': {
+            'dynamodb:LeadingKeys': ['ISSUE#*', 'AGENT#*'],
+          },
+        },
+      }),
+    )
+
     // ── Lambda aliases ───────────────────────────────────────────────────────
     adminAuthFn.addAlias('dev')
     adminAuthFn.addAlias('prod')
@@ -925,6 +985,9 @@ export class AdminStack extends cdk.Stack {
 
     onboardingFn.addAlias('dev')
     onboardingFn.addAlias('prod')
+
+    ainternloopAdminFn.addAlias('dev')
+    ainternloopAdminFn.addAlias('prod')
 
     // Groei Systeem aliases already created inline above
     // (signaaldetectie, insightExtractie, contentEngine, softOutreach,
@@ -1094,6 +1157,34 @@ export class AdminStack extends cdk.Stack {
     const onboardingItemsResource = onboardingByClientResource.addResource('items')
     const onboardingItemResource = onboardingItemsResource.addResource('{itemId}')
     onboardingItemResource.addMethod('PATCH', aliasIntegration(onboardingFn))
+
+    // GET /admin/ainternloop/issues
+    // GET + PATCH /admin/ainternloop/issues/{id}
+    // GET /admin/ainternloop/agents
+    // GET + PUT /admin/ainternloop/agents/{name}
+    // GET /admin/ainternloop/actions
+    // GET /admin/ainternloop/actions/{id}
+    const ainternloopResource = adminResource.addResource('ainternloop')
+
+    const ainternloopIssuesResource = ainternloopResource.addResource('issues')
+    ainternloopIssuesResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+
+    const ainternloopIssueByIdResource = ainternloopIssuesResource.addResource('{id}')
+    ainternloopIssueByIdResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+    ainternloopIssueByIdResource.addMethod('PATCH', aliasIntegration(ainternloopAdminFn))
+
+    const ainternloopAgentsResource = ainternloopResource.addResource('agents')
+    ainternloopAgentsResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+
+    const ainternloopAgentByNameResource = ainternloopAgentsResource.addResource('{name}')
+    ainternloopAgentByNameResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+    ainternloopAgentByNameResource.addMethod('PUT', aliasIntegration(ainternloopAdminFn))
+
+    const ainternloopActionsResource = ainternloopResource.addResource('actions')
+    ainternloopActionsResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+
+    const ainternloopActionByIdResource = ainternloopActionsResource.addResource('{id}')
+    ainternloopActionByIdResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
 
     // POST /workflow-scan (public — no JWT required)
     const workflowScanResource = api.root.addResource('workflow-scan')

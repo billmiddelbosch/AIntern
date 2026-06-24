@@ -290,7 +290,50 @@
       "pageTitle": "Organisatie"
     },
     "ainternloop": {
-      "pageTitle": "AInternLoop"
+      "pageTitle": "AInternLoop",
+      "heading": "AInternLoop",
+      "subheading": "Agent orkestratie — issues, agents en acties",
+      "loading": "Laden…",
+      "tabs": {
+        "issues": "Issues",
+        "agents": "Agents",
+        "acties": "Acties"
+      },
+      "issues": {
+        "empty": "Geen issues gevonden.",
+        "close": "Sluit issue",
+        "closing": "Sluiten…",
+        "cols": {
+          "status": "Status",
+          "agent": "Agent",
+          "description": "Omschrijving",
+          "created": "Aangemaakt"
+        },
+        "detail": {
+          "errorContext": "Foutcontext",
+          "resolution": "Oplossingsaanpak",
+          "instruction": "Instructie aan agent"
+        }
+      },
+      "agents": {
+        "empty": "Geen agents gevonden.",
+        "edit": "Bewerk instructie",
+        "save": "Opslaan",
+        "saving": "Opslaan…",
+        "cancel": "Annuleer",
+        "modifiedBy": "Bijgewerkt door"
+      },
+      "actions": {
+        "empty": "Geen acties gevonden.",
+        "cols": {
+          "type": "Type",
+          "status": "Status",
+          "urgency": "Urgentie",
+          "source": "Van agent",
+          "target": "Naar agent",
+          "created": "Aangemaakt"
+        }
+      }
     },
     "nieuws": {
       "pageTitle": "NewsFlow"
