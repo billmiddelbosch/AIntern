@@ -3,6 +3,7 @@ import * as cdk from 'aws-cdk-lib'
 import { KennisbankStack } from '../lib/kennisbank-stack'
 import { IntakeStack } from '../lib/intake-stack'
 import { AdminStack } from '../lib/admin-stack'
+import { AInternLoopStack } from '../lib/ainternloop-stack'
 
 const app = new cdk.App()
 
@@ -24,5 +25,10 @@ new IntakeStack(app, 'AInternIntakeStack', {
 new AdminStack(app, 'AInternAdminStack', {
   env,
   description: 'AIntern Admin — API Gateway → Lambda login + register with JWT and SSM',
+})
+
+new AInternLoopStack(app, 'AInternLoopStack', {
+  env,
+  description: 'AIntern Loop — DynamoDB table + IAM governance for agent orchestration system',
 })
 
