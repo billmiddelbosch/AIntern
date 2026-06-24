@@ -147,4 +147,16 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/admin/AdminLinkedInPostFormView.vue'),
     meta: { layout: 'admin', requiresAuth: true, title: 'linkedinPosts.titleEdit' },
   },
+  {
+    path: '/admin/ainternloop',
+    name: 'admin-ainternloop',
+    component: () => import('@/views/admin/AdminAInternLoopView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.ainternloop.pageTitle' },
+  },
+  {
+    path: '/admin/nieuws',
+    name: 'admin-nieuws',
+    component: () => import('@/views/admin/AdminNieuwsView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.nieuws.pageTitle' },
+  },
 ]

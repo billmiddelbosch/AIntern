@@ -229,7 +229,9 @@
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
       "groeiSysteem": "Groei Systeem",
-      "onboarding": "Onboarding"
+      "onboarding": "Onboarding",
+      "ainternloop": "AInternLoop",
+      "nieuws": "Nieuws"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -286,6 +288,12 @@
     },
     "organisation": {
       "pageTitle": "Organisatie"
+    },
+    "ainternloop": {
+      "pageTitle": "AInternLoop"
+    },
+    "nieuws": {
+      "pageTitle": "NewsFlow"
     },
     "kennisbank": {
       "pageTitle": "Kennisbank Beheer",

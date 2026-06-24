@@ -31,3 +31,15 @@ Beveiligd intern beheerpaneel achter `/admin`. Lazy-loaded `AdminView.vue` gewra
 
 ### 9. SEO & Meta Tags (feature/l06-seo-meta-tags — in progress 2026-03-28)
 Dynamische page title, meta description en Open Graph tags via een `useHead` composable die per route de juiste NL/EN-teksten injecteert in de `<head>`. Canonical URL afgeleid van `window.location.origin + route.path`. Structured data (JSON-LD Organization schema) als static script-tag in `index.html`. Zorgt voor correcte previews bij delen op sociale media en verbeterde vindbaarheid in zoekmachines. Geen externe dependency — puur DOM-manipulatie via Vue watchers. Tweetalig NL/EN.
+
+### 11. AInternLoop — Agent Orkestratie Fundament
+Herbruikbare DynamoDB-infrastructuur (`actions`, `issues`, `agents` tabellen) plus twee centrale agents: IssueResolver (analyseert elke 30 min open issues, lost op of escaleert) en LearningAgent (verwerkt afgehandelde issues terug naar verbeterde agent-instructies). Vormt het gedeelde fundament voor alle huidige en toekomstige AIntern agent-systemen. Governance: alleen LearningAgent en human mogen agent-instructies aanpassen.
+
+### 12. AInternLoop Admin — /admin/AInternLoop
+Intern beheerscherm met twee panelen: (1) Issues-paneel met alle open issues, human-in-the-loop feedbackmogelijkheid per issue en handmatige statuscontrole; (2) Agents-paneel met alle geregistreerde agents, hun huidige instructie en versiehistorie — bewerkbaar door human met dezelfde rechten als LearningAgent. Nieuwe tab in het bestaande `/admin`-dashboard.
+
+### 13. NewsFlow — Nieuws-naar-Landingspagina Flywheel
+Dagelijks zelf-lerend flywheel gebouwd op AInternLoop: NewsAnalyzer haalt NOS/NU.nl RSS op en schrijft gerangschikte `newsflow/content`-acties op urgentie; ContentBuilder pakt de hoogste prioriteit op, genereert een Vue-landingspagina via een feature branch en publiceert naar master/test/production via Amplify; SEOOptimizer analyseert traffic continu en verbetert gepubliceerde pagina's via dezelfde branch-workflow. Doel: 1 nieuwe hoogwaardige SEO-landingspagina per dag. Agents kunnen onderling acties aanmaken (bijv. SEOOptimizer → ContentBuilder voor aanvullende content).
+
+### 14. NewsFlow Admin — /admin/nieuws
+Dagelijks bijgewerkt overzicht per NewsFlow-agent: naam, huidige instructie (bewerkbaar door human of LearningAgent), aantal acties opgepakt, succes/faal-ratio. Historisch overzicht van trending pagina's, optimalisatierondes en leercurve per agent. Nieuwe tab in het bestaande `/admin`-dashboard.

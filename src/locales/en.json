@@ -229,7 +229,9 @@
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
       "groeiSysteem": "Growth System",
-      "onboarding": "Onboarding"
+      "onboarding": "Onboarding",
+      "ainternloop": "AInternLoop",
+      "nieuws": "NewsFlow"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -286,6 +288,12 @@
     },
     "organisation": {
       "pageTitle": "Organisation"
+    },
+    "ainternloop": {
+      "pageTitle": "AInternLoop"
+    },
+    "nieuws": {
+      "pageTitle": "NewsFlow"
     },
     "kennisbank": {
       "pageTitle": "Kennisbank Admin",
