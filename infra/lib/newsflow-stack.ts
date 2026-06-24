@@ -186,6 +186,97 @@ export class NewsFlowStack extends cdk.Stack {
       targets: [new targets.LambdaFunction(newsAnalyzerProdAlias)],
     })
 
+    // ── Lambda — ContentBuilder (I-12) ────────────────────────────────────────
+    const contentBuilderFn = new lambda.Function(this, 'ContentBuilderFunction', {
+      functionName: 'aintern-contentbuilder',
+      handler: 'contentbuilder.handler',
+      description: 'Claims newsflow/content actions, generates MKB landing pages via Claude Sonnet (I-12)',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(300), // Sonnet generation ~30-60s + git clone + S3
+      environment: {
+        LOOP_TABLE_NAME: loopTable.tableName,
+        NEWSFLOW_TABLE_NAME: newsflowTable.tableName,
+        NEWSFLOW_BUCKET_NAME: newsflowBucket.bucketName,
+        GITHUB_REPO: 'billmiddelbosch/AIntern',
+      },
+    })
+
+    // IAM — DynamoDB read + update on aintern-loop (claimNextAction, completeAction, logIssue)
+    loopTable.grantReadData(contentBuilderFn)
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:UpdateItem'],
+        resources: [loopTable.tableArn],
+      }),
+    )
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:PutItem'],
+        resources: [loopTable.tableArn],
+        conditions: {
+          'ForAnyValue:StringLike': { 'dynamodb:LeadingKeys': ['ISSUE#*'] },
+        },
+      }),
+    )
+
+    // IAM — DynamoDB write on aintern-newsflow (LANDING_PAGE# items only)
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:PutItem'],
+        resources: [newsflowTable.tableArn],
+        conditions: {
+          'ForAnyValue:StringLike': { 'dynamodb:LeadingKeys': ['LANDING_PAGE#*'] },
+        },
+      }),
+    )
+
+    // IAM — S3: write posts/<slug>.json and index.json to newsflow bucket
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject'],
+        resources: [
+          `${newsflowBucket.bucketArn}/posts/*`,
+          `${newsflowBucket.bucketArn}/index.json`,
+        ],
+      }),
+    )
+
+    // IAM — SSM: Anthropic API key + GitHub token for both aliases
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/github/token`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/github/token`,
+        ],
+      }),
+    )
+
+    // IAM — KMS: decrypt SecureStrings (Anthropic key + GitHub token)
+    contentBuilderFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Lambda alias — prod only (EventBridge-triggered)
+    const contentBuilderProdAlias = contentBuilderFn.addAlias('prod')
+
+    // EventBridge rule — 12:00 UTC daily (6 h after NewsAnalyzer)
+    new events.Rule(this, 'ContentBuilderSchedule', {
+      ruleName: 'aintern-contentbuilder-schedule',
+      description: 'Triggers ContentBuilder at 12:00 UTC daily to publish highest-urgency landing page',
+      schedule: events.Schedule.cron({ hour: '12', minute: '0' }),
+      targets: [new targets.LambdaFunction(contentBuilderProdAlias)],
+    })
+
     // ── Tags ─────────────────────────────────────────────────────────────────
     cdk.Tags.of(this).add('Project', 'aintern')
     cdk.Tags.of(this).add('ManagedBy', 'cdk')
