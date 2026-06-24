@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher && npm run bundle:editorial-crud && npm run bundle:sequence-crud && npm run bundle:seed-ainternloop-agents && npm run bundle:issueresolver && npm run bundle:learningagent && npm run bundle:ainternloop-admin",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher && npm run bundle:editorial-crud && npm run bundle:sequence-crud && npm run bundle:seed-ainternloop-agents && npm run bundle:issueresolver && npm run bundle:learningagent && npm run bundle:ainternloop-admin && npm run bundle:newsanalyzer",
     "test": "vitest run",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
@@ -30,7 +30,8 @@
     "bundle:seed-ainternloop-agents": "esbuild src/seed-ainternloop-agents.ts --bundle --platform=node --target=node22 --outfile=dist/seed-ainternloop-agents.js --external:@aws-sdk/*",
     "bundle:issueresolver": "esbuild src/issueresolver.ts --bundle --platform=node --target=node22 --outfile=dist/issueresolver.js --external:@aws-sdk/*",
     "bundle:learningagent": "esbuild src/learningagent.ts --bundle --platform=node --target=node22 --outfile=dist/learningagent.js --external:@aws-sdk/*",
-    "bundle:ainternloop-admin": "esbuild src/ainternloop-admin.ts --bundle --platform=node --target=node22 --outfile=dist/ainternloop-admin.js --external:@aws-sdk/*"
+    "bundle:ainternloop-admin": "esbuild src/ainternloop-admin.ts --bundle --platform=node --target=node22 --outfile=dist/ainternloop-admin.js --external:@aws-sdk/*",
+    "bundle:newsanalyzer": "esbuild src/newsanalyzer.ts --bundle --platform=node --target=node22 --outfile=dist/newsanalyzer.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
