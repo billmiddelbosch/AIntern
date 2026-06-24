@@ -186,6 +186,79 @@ export class AInternLoopStack extends cdk.Stack {
       targets: [new targets.LambdaFunction(issueResolverProdAlias)],
     })
 
+    // ── LearningAgent Lambda (I-08) ──────────────────────────────────────────
+    // Triggered daily at 04:00 UTC by EventBridge.
+    // Reads recent issues per agent, calls Claude Sonnet to analyse patterns,
+    // and updates AGENT# CONFIG instructions when confidence is high or medium.
+    const learningAgentFn = new lambda.Function(this, 'LearningAgentFunction', {
+      functionName: 'aintern-learningagent',
+      handler: 'learningagent.handler',
+      description: 'Daily agent-instruction tuner — analyses resolved issues and updates AGENT# CONFIG via Claude Sonnet',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(300),   // 5 agents × 5 issues × Sonnet = up to 4 min
+      environment: {
+        LOOP_TABLE_NAME: loopTable.tableName,
+      },
+    })
+
+    // DynamoDB: Query-only on GSI1 (agent discovery) and GSI2 (issue lookup).
+    // grantReadData is intentionally NOT used — it also grants GetItem, BatchGetItem,
+    // and Scan across the entire table, which would expose ACTION# and ISSUE# items
+    // (including errorContext fields) that LearningAgent has no business reading.
+    learningAgentFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:Query'],
+        resources: [
+          loopTable.tableArn,
+          `${loopTable.tableArn}/index/GSI1`,
+          `${loopTable.tableArn}/index/GSI2`,
+        ],
+      }),
+    )
+
+    // DynamoDB: PutItem/UpdateItem on AGENT# items ONLY — governed by the pre-created
+    // managed policy from I-06. LearningAgent must NOT write ACTION# or ISSUE# items.
+    const learningAgentWritePolicy = iam.ManagedPolicy.fromManagedPolicyName(
+      this,
+      'LearningAgentWritePolicyRef',
+      'aintern-loop-learning-agent-write',
+    )
+    learningAgentFn.role!.addManagedPolicy(learningAgentWritePolicy)
+
+    // SSM: Anthropic API key (both aliases)
+    learningAgentFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+        ],
+      }),
+    )
+
+    // KMS: decrypt SecureString (Anthropic key)
+    learningAgentFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Lambda alias — prod only (EventBridge-triggered)
+    const learningAgentProdAlias = learningAgentFn.addAlias('prod')
+
+    // EventBridge rule — 04:00 UTC daily
+    new events.Rule(this, 'LearningAgentSchedule', {
+      ruleName: 'aintern-learningagent-schedule',
+      description: 'Triggers LearningAgent at 04:00 UTC daily',
+      schedule: events.Schedule.cron({ hour: '4', minute: '0' }),
+      targets: [new targets.LambdaFunction(learningAgentProdAlias)],
+    })
+
     // ── Outputs ───────────────────────────────────────────────────────────────
     new cdk.CfnOutput(this, 'LoopTableArn', {
       value: loopTable.tableArn,
