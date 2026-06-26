@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher && npm run bundle:editorial-crud && npm run bundle:sequence-crud",
+    "build": "npm run bundle:intake && npm run bundle:calendly && npm run bundle:admin-auth && npm run bundle:kpi-actuals && npm run bundle:meeting-actions && npm run bundle:kpi-integrations && npm run bundle:kennisbank-admin && npm run bundle:lead-crud && npm run bundle:linkedin-posts && npm run bundle:signaaldetectie && npm run bundle:subreddit-config && npm run bundle:insight-extractie && npm run bundle:content-engine && npm run bundle:soft-outreach-monitor && npm run bundle:workflow-scan && npm run bundle:sequence-scheduler && npm run bundle:flywheel-metrics && npm run bundle:onboarding && npm run bundle:lead-matcher && npm run bundle:editorial-crud && npm run bundle:sequence-crud && npm run bundle:seed-ainternloop-agents && npm run bundle:issueresolver && npm run bundle:learningagent && npm run bundle:ainternloop-admin && npm run bundle:newsanalyzer && npm run bundle:contentbuilder && npm run bundle:seooptimizer",
+    "test": "vitest run",
     "bundle:intake": "esbuild src/intake.ts --bundle --platform=node --target=node22 --outfile=dist/intake.js --external:@aws-sdk/*",
     "bundle:calendly": "esbuild src/calendly-webhook.ts --bundle --platform=node --target=node22 --outfile=dist/calendly-webhook.js --external:@aws-sdk/*",
     "bundle:admin-auth": "esbuild src/admin-auth.ts --bundle --platform=node --target=node22 --outfile=dist/admin-auth.js --external:@aws-sdk/*",
@@ -25,7 +26,14 @@
     "bundle:onboarding": "esbuild src/onboarding.ts --bundle --platform=node --target=node22 --outfile=dist/onboarding.js --external:@aws-sdk/*",
     "bundle:lead-matcher": "esbuild src/lead-matcher.ts --bundle --platform=node --target=node22 --outfile=dist/lead-matcher.js --external:@aws-sdk/*",
     "bundle:editorial-crud": "esbuild src/editorial-crud.ts --bundle --platform=node --target=node22 --outfile=dist/editorial-crud.js --external:@aws-sdk/*",
-    "bundle:sequence-crud": "esbuild src/sequence-crud.ts --bundle --platform=node --target=node22 --outfile=dist/sequence-crud.js --external:@aws-sdk/*"
+    "bundle:sequence-crud": "esbuild src/sequence-crud.ts --bundle --platform=node --target=node22 --outfile=dist/sequence-crud.js --external:@aws-sdk/*",
+    "bundle:seed-ainternloop-agents": "esbuild src/seed-ainternloop-agents.ts --bundle --platform=node --target=node22 --outfile=dist/seed-ainternloop-agents.js --external:@aws-sdk/*",
+    "bundle:issueresolver": "esbuild src/issueresolver.ts --bundle --platform=node --target=node22 --outfile=dist/issueresolver.js --external:@aws-sdk/*",
+    "bundle:learningagent": "esbuild src/learningagent.ts --bundle --platform=node --target=node22 --outfile=dist/learningagent.js --external:@aws-sdk/*",
+    "bundle:ainternloop-admin": "esbuild src/ainternloop-admin.ts --bundle --platform=node --target=node22 --outfile=dist/ainternloop-admin.js --external:@aws-sdk/*",
+    "bundle:newsanalyzer": "esbuild src/newsanalyzer.ts --bundle --platform=node --target=node22 --outfile=dist/newsanalyzer.js --external:@aws-sdk/*",
+    "bundle:contentbuilder": "esbuild src/contentbuilder.ts --bundle --platform=node --target=node22 --outfile=dist/contentbuilder.js --external:@aws-sdk/*",
+    "bundle:seooptimizer": "esbuild src/seooptimizer.ts --bundle --platform=node --target=node22 --outfile=dist/seooptimizer.js --external:@aws-sdk/*"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.39.0",
@@ -36,7 +44,8 @@
     "@google-analytics/data": "^5.2.1",
     "bcryptjs": "^2",
     "fast-xml-parser": "^4.4.0",
-    "jsonwebtoken": "^9"
+    "jsonwebtoken": "^9",
+    "simple-git": "^3.36.0"
   },
   "devDependencies": {
     "@aws-sdk/client-ses": "^3.1041.0",
@@ -44,6 +53,7 @@
     "@types/bcryptjs": "^2",
     "@types/jsonwebtoken": "^9",
     "esbuild": "^0.24",
-    "typescript": "~5.7"
+    "typescript": "~5.7",
+    "vitest": "^2.1.9"
   }
 }

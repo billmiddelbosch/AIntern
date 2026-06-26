@@ -229,7 +229,9 @@
       "leads": "Pipeline",
       "linkedin": "LinkedIn Posts",
       "groeiSysteem": "Growth System",
-      "onboarding": "Onboarding"
+      "onboarding": "Onboarding",
+      "ainternloop": "AInternLoop",
+      "nieuws": "NewsFlow"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -286,6 +288,55 @@
     },
     "organisation": {
       "pageTitle": "Organisation"
+    },
+    "ainternloop": {
+      "pageTitle": "AInternLoop",
+      "heading": "AInternLoop",
+      "subheading": "Agent orchestration — issues, agents, and actions",
+      "loading": "Loading…",
+      "tabs": {
+        "issues": "Issues",
+        "agents": "Agents",
+        "acties": "Actions"
+      },
+      "issues": {
+        "empty": "No issues found.",
+        "close": "Close issue",
+        "closing": "Closing…",
+        "cols": {
+          "status": "Status",
+          "agent": "Agent",
+          "description": "Description",
+          "created": "Created"
+        },
+        "detail": {
+          "errorContext": "Error context",
+          "resolution": "Resolution approach",
+          "instruction": "Instruction to agent"
+        }
+      },
+      "agents": {
+        "empty": "No agents found.",
+        "edit": "Edit instruction",
+        "save": "Save",
+        "saving": "Saving…",
+        "cancel": "Cancel",
+        "modifiedBy": "Modified by"
+      },
+      "actions": {
+        "empty": "No actions found.",
+        "cols": {
+          "type": "Type",
+          "status": "Status",
+          "urgency": "Urgency",
+          "source": "From agent",
+          "target": "To agent",
+          "created": "Created"
+        }
+      }
+    },
+    "nieuws": {
+      "pageTitle": "NewsFlow"
     },
     "kennisbank": {
       "pageTitle": "Kennisbank Admin",
