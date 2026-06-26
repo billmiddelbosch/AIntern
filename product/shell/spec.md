@@ -21,6 +21,33 @@ Sticky top navigation (64px height) with logo on the left, nav links centered, a
 ## Footer
 Logo + tagline, nav links (same as header), language toggle, copyright line.
 
+---
+
+## Admin Shell
+
+Separate layout behind `/admin` — no public footer or marketing nav.
+
+### Layout Pattern
+Fixed left sidebar (256px / `w-64`) + scrollable main area. Header 64px tall with page title (from `route.meta.title`) and logout button.
+
+### Admin Navigation Structure
+- **Dashboard** → `/admin`
+- **KPI Dashboard** → `/admin/kpi`
+- **Kennisbank** → `/admin/kennisbank`
+- **LinkedIn Posts** → `/admin/linkedin`
+- **Pipeline** → `/admin/leads`
+- **Onboarding** → `/admin/onboarding`
+- **Groei Systeem** → `/admin/groei-systeem`
+- **Organisatie** → `/admin/organisation`
+- **AInternLoop** → `/admin/ainternloop` _(agent orkestratie: issues / agents / acties)_
+- **Nieuws** → `/admin/nieuws` _(NewsFlow flywheel: agents / pagina's / acties)_
+
+### Active State
+`active-class="bg-indigo-50 text-indigo-600"` via Vue Router `RouterLink`.
+
+### Responsive Behavior
+Admin is desktop-only for now; no mobile breakpoint designed yet.
+
 ## Design Tokens Applied
 - Primary color: indigo (CTA button, active nav state, hover accents)
 - Secondary color: violet (subtle highlights)
