@@ -52,7 +52,8 @@ export class NewsFlowStack extends cdk.Stack {
     new ssm.StringParameter(this, 'NewsFlowTableNameParam', {
       parameterName: '/aintern/newsflow/table-name',
       stringValue: newsflowTable.tableName,
-      description: 'aintern-newsflow DynamoDB table name — consumed by ContentBuilder, SEOOptimizer',
+      description:
+        'aintern-newsflow DynamoDB table name — consumed by ContentBuilder, SEOOptimizer',
     })
 
     // ── S3 — aintern-newsflow content bucket ──────────────────────────────────
@@ -129,7 +130,7 @@ export class NewsFlowStack extends cdk.Stack {
       description: 'Daily RSS → Claude Haiku → newsflow/content actions in AInternLoop (I-11)',
       runtime: lambda.Runtime.NODEJS_22_X,
       code: lambdaCode,
-      timeout: cdk.Duration.seconds(300),   // 40 items × ~3s Haiku = up to 2 min
+      timeout: cdk.Duration.seconds(300), // 40 items × ~3s Haiku = up to 2 min
       environment: {
         LOOP_TABLE_NAME: loopTable.tableName,
       },
@@ -190,7 +191,8 @@ export class NewsFlowStack extends cdk.Stack {
     const contentBuilderFn = new lambda.Function(this, 'ContentBuilderFunction', {
       functionName: 'aintern-contentbuilder',
       handler: 'contentbuilder.handler',
-      description: 'Claims newsflow/content actions, generates MKB landing pages via Claude Sonnet (I-12)',
+      description:
+        'Claims newsflow/content actions, generates MKB landing pages via Claude Sonnet (I-12)',
       runtime: lambda.Runtime.NODEJS_22_X,
       code: lambdaCode,
       timeout: cdk.Duration.seconds(300), // Sonnet generation ~30-60s + git clone + S3
@@ -272,9 +274,90 @@ export class NewsFlowStack extends cdk.Stack {
     // EventBridge rule — 12:00 UTC daily (6 h after NewsAnalyzer)
     new events.Rule(this, 'ContentBuilderSchedule', {
       ruleName: 'aintern-contentbuilder-schedule',
-      description: 'Triggers ContentBuilder at 12:00 UTC daily to publish highest-urgency landing page',
+      description:
+        'Triggers ContentBuilder at 12:00 UTC daily to publish highest-urgency landing page',
       schedule: events.Schedule.cron({ hour: '12', minute: '0' }),
       targets: [new targets.LambdaFunction(contentBuilderProdAlias)],
+    })
+
+    // ── SEOOptimizer Lambda ───────────────────────────────────────────────────
+    // Triggered 18:00 UTC — selects oldest unoptimized published page,
+    // fetches Plausible stats, regenerates with Claude Sonnet, updates S3 + DynamoDB.
+    const seoOptimizerFn = new lambda.Function(this, 'SEOOptimizerFunction', {
+      functionName: 'aintern-seooptimizer',
+      handler: 'seooptimizer.handler',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(300),
+      environment: {
+        NEWSFLOW_TABLE_NAME: newsflowTable.tableName,
+        NEWSFLOW_BUCKET_NAME: newsflowBucket.bucketName,
+        GITHUB_REPO: 'billmiddelbosch/AIntern',
+      },
+    })
+
+    // IAM — DynamoDB: Query on GSI1 only (no Scan) + UpdateItem on LANDING_PAGE# items
+    seoOptimizerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:Query'],
+        resources: [newsflowTable.tableArn, `${newsflowTable.tableArn}/index/GSI1`],
+      }),
+    )
+    seoOptimizerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:UpdateItem'],
+        resources: [newsflowTable.tableArn],
+        conditions: {
+          StringLike: { 'dynamodb:LeadingKeys': 'LANDING_PAGE#*' },
+        },
+      }),
+    )
+
+    // IAM — S3: read + write posts/<slug>.json (updated optimized content)
+    seoOptimizerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['s3:PutObject'],
+        resources: [`${newsflowBucket.bucketArn}/posts/*`],
+      }),
+    )
+
+    // IAM — SSM: shared GA4 params (same as kpi-integrations) + Anthropic + GitHub token
+    seoOptimizerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/ga4/service-account-json`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/ga4/service-account-json`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/ga4/property-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/ga4/property-id`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/github/token`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/github/token`,
+        ],
+      }),
+    )
+
+    // IAM — KMS: decrypt SecureString parameters
+    seoOptimizerFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Lambda alias — prod only (EventBridge-triggered)
+    const seoOptimizerProdAlias = seoOptimizerFn.addAlias('prod')
+
+    // EventBridge rule — 18:00 UTC daily (6 h after ContentBuilder)
+    new events.Rule(this, 'SEOOptimizerSchedule', {
+      ruleName: 'aintern-seooptimizer-schedule',
+      description: 'Triggers SEOOptimizer at 18:00 UTC daily to improve oldest unoptimized page',
+      schedule: events.Schedule.cron({ hour: '18', minute: '0' }),
+      targets: [new targets.LambdaFunction(seoOptimizerProdAlias)],
     })
 
     // ── Tags ─────────────────────────────────────────────────────────────────
