@@ -39,3 +39,22 @@ export interface ActionItem {
   updatedAt: string
   payload?: Record<string, unknown>
 }
+
+export interface NewsFlowPageTraffic {
+  pageviews: number
+  bounceRate: number
+  avgSessionDuration: number
+  lastUpdated: string
+}
+
+export interface NewsFlowPage {
+  slug: string
+  title: string
+  lezersvraag: string
+  publishedAt: string
+  lastOptimizedAt?: string
+  optimizationCount: number
+  traffic?: NewsFlowPageTraffic
+  recentChanges: string[]
+  recentChangesAt?: string
+}

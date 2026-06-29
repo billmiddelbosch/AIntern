@@ -1,15 +1,17 @@
 import { ref } from 'vue'
 import apiClient from '@/lib/adminAxios'
-import type { IssueItem, AgentItem, ActionItem } from '@/types/ainternloop'
+import type { IssueItem, AgentItem, ActionItem, NewsFlowPage } from '@/types/ainternloop'
 
 export function useAInternLoopApi() {
   const loadingIssues = ref(false)
   const loadingAgents = ref(false)
   const loadingActions = ref(false)
+  const loadingNewsFlowPages = ref(false)
   const error = ref<string | null>(null)
   const issues = ref<IssueItem[]>([])
   const agents = ref<AgentItem[]>([])
   const actions = ref<ActionItem[]>([])
+  const newsFlowPages = ref<NewsFlowPage[]>([])
 
   async function fetchIssues(status?: string): Promise<void> {
     loadingIssues.value = true
@@ -59,18 +61,34 @@ export function useAInternLoopApi() {
     }
   }
 
+  async function fetchNewsFlowPages(): Promise<void> {
+    loadingNewsFlowPages.value = true
+    error.value = null
+    try {
+      const res = await apiClient.get<{ items: NewsFlowPage[] }>('/admin/ainternloop/newsflow-pages')
+      newsFlowPages.value = res.data.items
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Onbekende fout'
+    } finally {
+      loadingNewsFlowPages.value = false
+    }
+  }
+
   return {
     loadingIssues,
     loadingAgents,
     loadingActions,
+    loadingNewsFlowPages,
     error,
     issues,
     agents,
     actions,
+    newsFlowPages,
     fetchIssues,
     closeIssue,
     fetchAgents,
     updateAgentInstruction,
     fetchActions,
+    fetchNewsFlowPages,
   }
 }

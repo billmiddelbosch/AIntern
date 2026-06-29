@@ -14,6 +14,7 @@ const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2'
 
 let cachedJwtSecret: { alias: string; value: string } | null = null
 let cachedLoopTableName: string | null = null
+let cachedNewsflowTableName: string | null = null
 
 const PROD_ORIGINS = new Set(['https://aintern.nl', 'https://www.aintern.nl'])
 
@@ -68,6 +69,16 @@ async function getLoopTableName(): Promise<string> {
   const name = result.Parameter?.Value
   if (!name) throw new Error(`Loop table name not found at ${path}`)
   cachedLoopTableName = name
+  return name
+}
+
+async function getNewsflowTableName(): Promise<string> {
+  if (cachedNewsflowTableName) return cachedNewsflowTableName
+  const path = process.env.NEWSFLOW_TABLE_SSM_PATH ?? '/aintern/newsflow/table-name'
+  const result = await ssm.send(new GetParameterCommand({ Name: path, WithDecryption: false }))
+  const name = result.Parameter?.Value
+  if (!name) throw new Error(`Newsflow table name not found at ${path}`)
+  cachedNewsflowTableName = name
   return name
 }
 
@@ -277,8 +288,9 @@ async function handleListAgents(
     )
 
     for (const raw of result.Items ?? []) {
-      const { versionHistory: _vh, pk: _pk, sk: _sk, GSI1pk: _g1pk, GSI1sk: _g1sk, GSI2pk: _g2pk, GSI2sk: _g2sk, ...item } = raw as Record<string, unknown>
-      allItems.push(item as Omit<AgentItem, 'versionHistory'>)
+      const { versionHistory: _vh, pk, sk: _sk, GSI1pk: _g1pk, GSI1sk: _g1sk, GSI2pk: _g2pk, GSI2sk: _g2sk, ...item } = raw as Record<string, unknown>
+      const agentName = (pk as string).replace('AGENT#', '')
+      allItems.push({ agentName, ...item } as Omit<AgentItem, 'versionHistory'>)
     }
   }
 
@@ -312,8 +324,9 @@ async function handleGetAgent(
     return respond(404, { error: `Agent ${name} not found` }, alias, requestOrigin)
   }
 
-  const { pk: _pk, sk: _sk, GSI1pk: _g1pk, GSI1sk: _g1sk, GSI2pk: _g2pk, GSI2sk: _g2sk, ...item } = result.Item as Record<string, unknown>
-  return respond(200, item, alias, requestOrigin)
+  const { pk, sk: _sk, GSI1pk: _g1pk, GSI1sk: _g1sk, GSI2pk: _g2pk, GSI2sk: _g2sk, ...item } = result.Item as Record<string, unknown>
+  const agentName = (pk as string).replace('AGENT#', '')
+  return respond(200, { agentName, ...item }, alias, requestOrigin)
 }
 
 async function handlePutAgent(
@@ -489,6 +502,54 @@ async function handleGetAction(
   return respond(200, item, alias, requestOrigin)
 }
 
+// ── NewsFlow Pages ────────────────────────────────────────────────────────────
+
+async function handleListNewsFlowPages(
+  tableName: string,
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  const results: unknown[] = []
+  let lastKey: Record<string, unknown> | undefined
+
+  do {
+    const res = await ddb.send(
+      new QueryCommand({
+        TableName: tableName,
+        IndexName: 'GSI1',
+        KeyConditionExpression: 'GSI1pk = :pk',
+        ExpressionAttributeValues: { ':pk': 'STATUS#published' },
+        ScanIndexForward: false,
+        Limit: 50,
+        ExclusiveStartKey: lastKey,
+      }),
+    )
+
+    for (const raw of res.Items ?? []) {
+      const pk = raw['pk'] as string
+      const slug = pk.replace('LANDING_PAGE#', '')
+      if (!/^[a-z0-9-]{3,80}$/.test(slug)) continue
+
+      const log = raw['optimizationLog'] as Array<{ at: string; agent: string; changes: string[] }> | undefined
+      const lastLog = log && log.length > 0 ? log[log.length - 1] : undefined
+
+      const { pk: _pk, sk: _sk, GSI1pk: _g1pk, GSI1sk: _g1sk, GSI2pk: _g2pk, GSI2sk: _g2sk, optimizationLog: _log, contentS3Key: _key, ...rest } = raw as Record<string, unknown>
+
+      results.push({
+        slug,
+        ...rest,
+        recentChanges: lastLog?.changes ?? [],
+        recentChangesAt: lastLog?.at,
+      })
+    }
+
+    lastKey = res.LastEvaluatedKey as Record<string, unknown> | undefined
+  } while (lastKey && results.length < 100)
+
+  console.log('[ainternloop-admin] handleListNewsFlowPages | returning %d items', results.length)
+  return respond(200, { items: results }, alias, requestOrigin)
+}
+
 // ── Handler ──────────────────────────────────────────────────────────────────
 
 export async function handler(
@@ -554,6 +615,12 @@ export async function handler(
     if (httpMethod === 'GET' && resource === '/admin/ainternloop/actions/{id}') {
       const id = pathParameters?.['id'] ?? ''
       return await handleGetAction(id, tableName, alias, requestOrigin)
+    }
+
+    // NewsFlow Pages
+    if (httpMethod === 'GET' && resource === '/admin/ainternloop/newsflow-pages') {
+      const newsflowTableName = await getNewsflowTableName()
+      return await handleListNewsFlowPages(newsflowTableName, alias, requestOrigin)
     }
 
     return respond(405, { error: 'Method not allowed' }, alias, requestOrigin)

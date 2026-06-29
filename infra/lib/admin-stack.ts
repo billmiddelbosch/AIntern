@@ -27,6 +27,12 @@ export class AdminStack extends cdk.Stack {
       grantIndexPermissions: true,
     })
 
+    // ── DynamoDB — import aintern-newsflow table (owned by NewsFlowStack) ────
+    const newsflowTable = dynamodb.Table.fromTableAttributes(this, 'NewsFlowTableRef', {
+      tableName: 'aintern-newsflow',
+      grantIndexPermissions: true,
+    })
+
     // SSM parameters /aintern/{dev|prod}/dynamodb/table-name already exist in SSM
     // (pre-provisioned by the staging deploy). Not managed here to avoid CloudFormation
     // "already exists" conflicts. Create manually if deploying to a fresh environment:
@@ -918,16 +924,18 @@ export class AdminStack extends cdk.Stack {
       environment: {
         JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
         LOOP_TABLE_SSM_PATH: '/aintern/loop/table-name',
+        NEWSFLOW_TABLE_SSM_PATH: '/aintern/newsflow/table-name',
       },
     })
 
-    // SSM: JWT secret (dev + prod) + loop table name (single param, not alias-scoped)
+    // SSM: JWT secret (dev + prod) + loop table name + newsflow table name
     ainternloopAdminFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ssm:GetParameter'],
         resources: [
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/loop/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/newsflow/table-name`,
         ],
       }),
     )
@@ -945,6 +953,9 @@ export class AdminStack extends cdk.Stack {
 
     // DynamoDB: full read access (GetItem, Query, etc.) on aintern-loop + its GSIs
     loopTable.grantReadData(ainternloopAdminFn)
+
+    // DynamoDB: read access on aintern-newsflow + its GSIs (for newsflow-pages endpoint)
+    newsflowTable.grantReadData(ainternloopAdminFn)
 
     // DynamoDB: UpdateItem on ISSUE#* and AGENT#* only (PATCH issue status, PUT agent instruction)
     // ForAnyValue (not ForAllValues) — ForAllValues evaluates to true when condition key is absent,
@@ -1185,6 +1196,10 @@ export class AdminStack extends cdk.Stack {
 
     const ainternloopActionByIdResource = ainternloopActionsResource.addResource('{id}')
     ainternloopActionByIdResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+
+    // GET /admin/ainternloop/newsflow-pages
+    const ainternloopNewsflowPagesResource = ainternloopResource.addResource('newsflow-pages')
+    ainternloopNewsflowPagesResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
 
     // POST /workflow-scan (public — no JWT required)
     const workflowScanResource = api.root.addResource('workflow-scan')

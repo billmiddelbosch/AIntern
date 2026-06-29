@@ -1,10 +1,11 @@
 import { writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { getSlugsFromS3 } from './generate-sitemap'
+import { getSlugsFromS3, getNewsflowSlugsFromS3 } from './generate-sitemap'
 
 const HOSTNAME = 'https://aintern.nl'
 const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com'
+const NEWSFLOW_S3_BASE = 'https://aintern-newsflow.s3.eu-west-2.amazonaws.com'
 
 interface BlogPost {
   slug: string
@@ -14,6 +15,22 @@ interface BlogPost {
   excerpt: string
   metaDescription: string
   content: string
+}
+
+interface NewsFlowArticle {
+  slug: string
+  title: string
+  metaDescription: string
+  lezersvraag: string
+  publishedAt: string
+  sections: {
+    intro: string
+    context: string
+    mkbRelevantie: string
+    ainternAngle: string
+    bronnen: Array<{ title: string; url: string }>
+  }
+  faq: Array<{ question: string; answer: string }>
 }
 
 function htmlToPlainText(html: string): string {
@@ -37,6 +54,16 @@ async function fetchArticle(slug: string): Promise<BlogPost | null> {
     const response = await fetch(`${S3_BASE}/posts/${slug}.json`)
     if (!response.ok) return null
     return (await response.json()) as BlogPost
+  } catch {
+    return null
+  }
+}
+
+async function fetchNewsflowArticle(slug: string): Promise<NewsFlowArticle | null> {
+  try {
+    const response = await fetch(`${NEWSFLOW_S3_BASE}/posts/${slug}.json`)
+    if (!response.ok) return null
+    return (await response.json()) as NewsFlowArticle
   } catch {
     return null
   }
@@ -150,6 +177,9 @@ Gratis diagnose-tool in 3 minuten: beantwoord vragen over herhaalprocessen, krij
 **Kennisbank** — ${HOSTNAME}/kennisbank
 Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op categorie: AI Automatisering, MKB Praktijkcases, Implementatietips, AI Tools & Technologie.
 
+**NewsFlow** — ${HOSTNAME}/newsflow/
+Dagelijkse landingspagina's over actueel nieuws met directe vertaling naar AI-kansen voor MKB-ondernemers.
+
 ---`
 }
 
@@ -182,23 +212,76 @@ function buildArticleSection(articles: BlogPost[]): string {
   ].join('\n')
 }
 
+function buildNewsflowSection(articles: NewsFlowArticle[]): string {
+  if (articles.length === 0) return ''
+
+  const sorted = [...articles].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
+
+  const blocks = sorted.map((article) => {
+    const intro = htmlToPlainText(article.sections.intro)
+    const context = htmlToPlainText(article.sections.context)
+    const mkbRelevantie = htmlToPlainText(article.sections.mkbRelevantie)
+    const faqLines = article.faq
+      .map((f) => `**V: ${f.question}**\nA: ${f.answer}`)
+      .join('\n\n')
+    return [
+      `### ${article.title}`,
+      ``,
+      `**URL:** ${HOSTNAME}/newsflow/${article.slug}`,
+      `**Gepubliceerd:** ${article.publishedAt.slice(0, 10)}`,
+      `**Lezersvraag:** ${article.lezersvraag}`,
+      ``,
+      intro,
+      ``,
+      context,
+      ``,
+      mkbRelevantie,
+      ``,
+      faqLines,
+      ``,
+      `---`,
+    ].join('\n')
+  })
+
+  return [
+    `## NewsFlow — Dagelijks MKB-nieuws`,
+    ``,
+    `Dagelijkse landingspagina's over actueel nieuws met AI-automatiseringsadvies voor MKB-ondernemers.`,
+    ``,
+    ...blocks,
+  ].join('\n')
+}
+
 export async function generateLlmsFullTxt(outDir: string): Promise<void> {
   const today = new Date().toISOString().split('T')[0]
   let articles: BlogPost[] = []
+  let newsflowArticles: NewsFlowArticle[] = []
 
   try {
     const slugs = await getSlugsFromS3()
     const results = await Promise.all(slugs.map((slug) => fetchArticle(slug)))
     articles = results.filter((a): a is BlogPost => a !== null)
-    console.log(`[llms-full] ${articles.length}/${slugs.length} artikelen opgehaald uit S3`)
+    console.log(`[llms-full] ${articles.length}/${slugs.length} kennisbank artikelen opgehaald uit S3`)
   } catch (err) {
-    console.warn('[llms-full] S3 ophalen mislukt — statische header wordt geschreven zonder artikelen:', err)
+    console.warn('[llms-full] Kennisbank S3 ophalen mislukt:', err)
   }
+
+  try {
+    const slugs = await getNewsflowSlugsFromS3()
+    const results = await Promise.all(slugs.map((slug) => fetchNewsflowArticle(slug)))
+    newsflowArticles = results.filter((a): a is NewsFlowArticle => a !== null)
+    console.log(`[llms-full] ${newsflowArticles.length}/${slugs.length} newsflow pagina's opgehaald uit S3`)
+  } catch (err) {
+    console.warn('[llms-full] Newsflow S3 ophalen mislukt:', err)
+  }
+
+  const newsflowSection = buildNewsflowSection(newsflowArticles)
 
   const content = [
     buildStaticHeader(today),
     ``,
     buildArticleSection(articles),
+    ...(newsflowSection ? [``, newsflowSection] : []),
     ``,
     `## Contact`,
     ``,
