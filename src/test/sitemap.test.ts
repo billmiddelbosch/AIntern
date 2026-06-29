@@ -50,6 +50,13 @@ describe('sitemap.xml', () => {
     }
   })
 
+  it('every newsflow URL matches the expected slug pattern', () => {
+    const newsflow = locs.filter((l) => l.includes('/newsflow/'))
+    for (const url of newsflow) {
+      expect(url).toMatch(/^https:\/\/aintern\.nl\/newsflow\/[a-z0-9-]+$/)
+    }
+  })
+
   it('sitemap counts match S3 article count (11 total URLs: homepage + kennisbank + 9 articles)', () => {
     // This guards against BUG-04 regression: new articles added to S3 but missing from sitemap
     expect(locs.length).toBeGreaterThanOrEqual(3) // at minimum: /, /kennisbank, 1 article
