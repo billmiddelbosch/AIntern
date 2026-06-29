@@ -339,7 +339,7 @@ async function generateImprovedContent(
   for (let attempt = 1; attempt <= 2; attempt++) {
     const msg = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
-      max_tokens: 4096,
+      max_tokens: 8192,
       system: SEO_SYSTEM,
       messages: [{ role: 'user', content: buildSeoUserMessage(current, stats) }],
     })
