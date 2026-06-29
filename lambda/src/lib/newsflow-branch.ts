@@ -5,19 +5,15 @@
  *
  * Used by ContentBuilder and SEOOptimizer to publish changes via a
  * GitHub feature branch → PR → auto-merge flow, without direct commits
- * to master.
+ * to main. Uses the GitHub Git Data API (pure REST) — no git binary required.
  *
  * NOT a Lambda handler — imported by agent handlers as a shared library.
  *
  * Environment variables expected by the importing Lambda:
  *   GITHUB_REPO   — owner/repo, e.g. 'billmiddelbosch/AIntern'
- *   LOOP_TABLE_NAME — for logIssue calls (optional; callers can pass null)
  */
 
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
-import { promises as fs } from 'fs'
-import * as nodePath from 'path'
-import simpleGit from 'simple-git'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -62,7 +58,16 @@ async function getGithubToken(alias: string): Promise<string> {
   return value
 }
 
-// ── GitHub REST API helpers ───────────────────────────────────────────────────
+// ── GitHub Git Data API helpers ───────────────────────────────────────────────
+
+function ghHeaders(token: string): Record<string, string> {
+  return {
+    Authorization: `Bearer ${token}`,
+    Accept: 'application/vnd.github+json',
+    'Content-Type': 'application/json',
+    'X-GitHub-Api-Version': '2022-11-28',
+  }
+}
 
 interface GithubPRResponse {
   number: number
@@ -74,6 +79,91 @@ interface GithubMergeResponse {
   message: string
 }
 
+async function getMainRef(
+  token: string,
+  repo: string,
+): Promise<{ commitSha: string; treeSha: string }> {
+  const refRes = await fetch(`https://api.github.com/repos/${repo}/git/ref/heads/main`, {
+    headers: ghHeaders(token),
+  })
+  if (!refRes.ok) throw new Error(`Get main ref failed (${refRes.status}): ${await refRes.text()}`)
+  const refData = (await refRes.json()) as { object: { sha: string } }
+  const commitSha = refData.object.sha
+
+  const commitRes = await fetch(
+    `https://api.github.com/repos/${repo}/git/commits/${commitSha}`,
+    { headers: ghHeaders(token) },
+  )
+  if (!commitRes.ok)
+    throw new Error(`Get commit failed (${commitRes.status}): ${await commitRes.text()}`)
+  const commitData = (await commitRes.json()) as { tree: { sha: string } }
+
+  return { commitSha, treeSha: commitData.tree.sha }
+}
+
+async function createBlob(token: string, repo: string, content: string): Promise<string> {
+  const res = await fetch(`https://api.github.com/repos/${repo}/git/blobs`, {
+    method: 'POST',
+    headers: ghHeaders(token),
+    body: JSON.stringify({ content: Buffer.from(content).toString('base64'), encoding: 'base64' }),
+  })
+  if (!res.ok) throw new Error(`Create blob failed (${res.status}): ${await res.text()}`)
+  return ((await res.json()) as { sha: string }).sha
+}
+
+async function createTree(
+  token: string,
+  repo: string,
+  baseTreeSha: string,
+  files: Array<{ path: string; blobSha: string }>,
+): Promise<string> {
+  const res = await fetch(`https://api.github.com/repos/${repo}/git/trees`, {
+    method: 'POST',
+    headers: ghHeaders(token),
+    body: JSON.stringify({
+      base_tree: baseTreeSha,
+      tree: files.map((f) => ({ path: f.path, mode: '100644', type: 'blob', sha: f.blobSha })),
+    }),
+  })
+  if (!res.ok) throw new Error(`Create tree failed (${res.status}): ${await res.text()}`)
+  return ((await res.json()) as { sha: string }).sha
+}
+
+async function createCommit(
+  token: string,
+  repo: string,
+  message: string,
+  treeSha: string,
+  parentSha: string,
+): Promise<string> {
+  const res = await fetch(`https://api.github.com/repos/${repo}/git/commits`, {
+    method: 'POST',
+    headers: ghHeaders(token),
+    body: JSON.stringify({
+      message,
+      tree: treeSha,
+      parents: [parentSha],
+      author: { name: 'AIntern Bot', email: 'bot@aintern.nl' },
+    }),
+  })
+  if (!res.ok) throw new Error(`Create commit failed (${res.status}): ${await res.text()}`)
+  return ((await res.json()) as { sha: string }).sha
+}
+
+async function createBranchRef(
+  token: string,
+  repo: string,
+  branchName: string,
+  commitSha: string,
+): Promise<void> {
+  const res = await fetch(`https://api.github.com/repos/${repo}/git/refs`, {
+    method: 'POST',
+    headers: ghHeaders(token),
+    body: JSON.stringify({ ref: `refs/heads/${branchName}`, sha: commitSha }),
+  })
+  if (!res.ok) throw new Error(`Create branch ref failed (${res.status}): ${await res.text()}`)
+}
+
 async function createPR(
   token: string,
   repo: string,
@@ -82,11 +172,7 @@ async function createPR(
 ): Promise<GithubPRResponse> {
   const res = await fetch(`https://api.github.com/repos/${repo}/pulls`, {
     method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'Content-Type': 'application/json',
-    },
+    headers: ghHeaders(token),
     body: JSON.stringify({
       title,
       head,
@@ -94,26 +180,15 @@ async function createPR(
       body: `Automated NewsFlow publish via branch-workflow (I-14).\n\nBranch: \`${head}\``,
     }),
   })
-
-  if (!res.ok) {
-    const text = await res.text()
-    throw new Error(`GitHub PR creation failed (${res.status}): ${text}`)
-  }
-
+  if (!res.ok) throw new Error(`GitHub PR creation failed (${res.status}): ${await res.text()}`)
   return res.json() as Promise<GithubPRResponse>
 }
 
 async function mergePR(token: string, repo: string, prNumber: number): Promise<void> {
   const res = await fetch(`https://api.github.com/repos/${repo}/pulls/${prNumber}/merge`, {
     method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      merge_method: 'squash',
-    }),
+    headers: ghHeaders(token),
+    body: JSON.stringify({ merge_method: 'squash' }),
   })
 
   if (!res.ok) {
@@ -130,8 +205,8 @@ async function mergePR(token: string, repo: string, prNumber: number): Promise<v
 // ── publishViaBranch ──────────────────────────────────────────────────────────
 
 /**
- * Clone master, create feature branch, write files, commit, push, and
- * create + merge a GitHub PR.
+ * Create a feature branch via the GitHub Git Data API, write files as blobs,
+ * commit, open a PR, and squash-merge it — no git binary required.
  *
  * @param options   Branch name, files to write, commit message, build-check flag
  * @param alias     Lambda alias ('dev' | 'prod') — used for SSM path resolution
@@ -146,83 +221,69 @@ export async function publishViaBranch(
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) {
     throw new Error(`GITHUB_REPO has unexpected format: ${repo}`)
   }
-
-  // MED-3: validate branchName before passing to git and REST API
+  // MED-3: validate branchName before passing to REST API
   if (!/^[\w/.-]{1,200}$/.test(options.branchName)) {
     throw new Error(`Invalid branchName: ${options.branchName}`)
   }
 
-  const workDir = `/tmp/${crypto.randomUUID()}`
-
   try {
-    // 1. Get GitHub token from SSM
     const token = await getGithubToken(alias)
-    const repoUrl = `https://x-access-token:${token}@github.com/${repo}.git`
 
-    // 2. Shallow clone master
-    const git = simpleGit()
-    await git.clone(repoUrl, workDir, ['--depth=1', '--branch=main'])
-
-    const repoGit = simpleGit(workDir)
-    await repoGit.addConfig('user.name', 'AIntern Bot')
-    await repoGit.addConfig('user.email', 'bot@aintern.nl')
-
-    // 3. Create feature branch
-    await repoGit.checkoutLocalBranch(options.branchName)
-
-    // 4. Write files — HIGH-2: resolve and assert prefix to prevent path traversal
-    for (const file of options.filesToWrite) {
-      const filePath = nodePath.resolve(workDir, file.path)
-      if (!filePath.startsWith(workDir + nodePath.sep) && filePath !== workDir) {
-        throw new Error(`Path traversal rejected: ${file.path}`)
-      }
-      await fs.mkdir(nodePath.dirname(filePath), { recursive: true })
-      await fs.writeFile(filePath, file.content, 'utf-8')
-    }
-
-    // 5. Build check — phase 2: full tsc run inside cloned repo (requires npm ci)
-    // Currently a no-op; ContentBuilder and SEOOptimizer only write non-TypeScript
-    // files (sitemap.xml, llms.txt), so runBuildCheck is false for all phase-1 use cases.
-    if (options.runBuildCheck) {
-      console.log(JSON.stringify({
-        level: 'INFO',
-        fn: 'publishViaBranch',
-        message: 'runBuildCheck=true is not yet implemented — skipping type check',
-      }))
-    }
-
-    // 6. Commit and push
     // LOW-3: normalize LLM-generated commit message (strip newlines, cap length)
     const safeCommitMessage = options.commitMessage.replace(/[\r\n]+/g, ' ').trim().slice(0, 256)
-    await repoGit.add('.')
-    await repoGit.commit(safeCommitMessage)
-    await repoGit.push('origin', options.branchName)
 
-    // 7. Create PR (use same sanitized message as PR title)
+    // 1. Get main branch's latest commit SHA + tree SHA
+    const { commitSha, treeSha } = await getMainRef(token, repo)
+
+    // 2. Create blobs for each file
+    const blobs = await Promise.all(
+      options.filesToWrite.map(async (f) => ({
+        path: f.path,
+        blobSha: await createBlob(token, repo, f.content),
+      })),
+    )
+
+    // 3. Create a new tree on top of main's tree
+    const newTreeSha = await createTree(token, repo, treeSha, blobs)
+
+    // 4. Create a commit pointing at the new tree
+    const newCommitSha = await createCommit(token, repo, safeCommitMessage, newTreeSha, commitSha)
+
+    // 5. Create the feature branch ref
+    await createBranchRef(token, repo, options.branchName, newCommitSha)
+
+    // 6. runBuildCheck is a no-op for phase 1 (non-TypeScript files only)
+    if (options.runBuildCheck) {
+      console.log(
+        JSON.stringify({
+          level: 'INFO',
+          fn: 'publishViaBranch',
+          message: 'runBuildCheck=true is not yet implemented — skipping type check',
+        }),
+      )
+    }
+
+    // 7. Open PR
     const pr = await createPR(token, repo, options.branchName, safeCommitMessage)
 
-    // 8. Merge PR — squash merge so master stays linear
+    // 8. Squash-merge so main stays linear
     await mergePR(token, repo, pr.number)
 
     const mergedAt = new Date().toISOString()
-
-    console.log(JSON.stringify({
-      level: 'INFO',
-      fn: 'publishViaBranch',
-      branch: options.branchName,
-      prUrl: pr.html_url,
-      mergedAt,
-    }))
+    console.log(
+      JSON.stringify({
+        level: 'INFO',
+        fn: 'publishViaBranch',
+        branch: options.branchName,
+        prUrl: pr.html_url,
+        mergedAt,
+      }),
+    )
 
     return { success: true, prUrl: pr.html_url, mergedAt }
   } catch (err) {
-    const raw = err instanceof Error ? err.message : String(err)
-    // HIGH-1: scrub GitHub token from error messages (simple-git surfaces the clone URL on failure)
-    const error = raw.replace(/x-access-token:[^@]+@/g, 'x-access-token:[REDACTED]@')
+    const error = err instanceof Error ? err.message : String(err)
     console.log(JSON.stringify({ level: 'ERROR', fn: 'publishViaBranch', error }))
     return { success: false, error }
-  } finally {
-    // Always clean up /tmp to avoid Lambda ephemeral storage pressure
-    await fs.rm(workDir, { recursive: true, force: true }).catch(() => {})
   }
 }

@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-06-24
+> Laatste update: 2026-06-29
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
@@ -104,6 +104,9 @@ Gratis diagnose-tool in 3 minuten: beantwoord vragen over herhaalprocessen, krij
 
 **Kennisbank** — https://aintern.nl/kennisbank
 Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op categorie: AI Automatisering, MKB Praktijkcases, Implementatietips, AI Tools & Technologie.
+
+**NewsFlow** — https://aintern.nl/newsflow/
+Dagelijkse landingspagina's over actueel nieuws met directe vertaling naar AI-kansen voor MKB-ondernemers.
 
 ---
 
@@ -949,6 +952,325 @@ Wat jij nu kunt doen
 Als je jezelf herkent in bovenstaande &mdash; niet omdat je niet wilt, maar omdat je niet weet waar te beginnen &mdash; begin dan met een gratis procesanalyse. Geen verplichtingen, geen technisch jargon. Gewoon een eerlijk gesprek over welk herhaalproces in jouw bedrijf het meeste tijd kost.
 
 Doe de gratis Workflow Scan in 3 minuten &rarr;
+
+---
+
+## NewsFlow — Dagelijks MKB-nieuws
+
+Dagelijkse landingspagina's over actueel nieuws met AI-automatiseringsadvies voor MKB-ondernemers.
+
+### Hoe profiteert uw MKB-bedrijf van simpelere Europese belastingregels?
+
+**URL:** https://aintern.nl/newsflow/hoe-kunnen-nederlandse-mkb-bedrijven-de-vereenvoudigde-europese-belastingregels-
+**Gepubliceerd:** 2026-06-29
+**Lezersvraag:** Hoe kunnen Nederlandse MKB-bedrijven de vereenvoudigde Europese belastingregels direct toepassen en besparen?
+
+De Europese Unie heeft vandaag een pakket aan vereenvoudigde belastingregels aangekondigd dat bedrijven in de EU gezamenlijk 8 miljard euro aan administratieve lasten moet besparen. Voor Nederlandse MKB-ondernemers is dit geen abstract Brusselse maatregel, maar een concrete kans om tijd en geld te besparen op fiscale verplichtingen die jarenlang onnodig complex waren.
+Veel kleine en middelgrote bedrijven besteden disproportioneel veel tijd aan belastingadministratie — uren die beter in de core business gestoken kunnen worden. De nieuwe Europese regels mikken specifiek op het verlagen van de nalevingsdrempel voor kleinere ondernemingen die grensoverschrijdend zakendoen of te maken hebben met meerdere EU-belastingregimes. Dit is het moment om uw administratieve processen kritisch te bekijken en te moderniseren.
+
+De Europese Commissie werkt al enkele jaren aan het vereenvoudigen van het fiscale landschap binnen de interne markt. Eerder resulteerde dit in initiatieven zoals de OSS-regeling (One Stop Shop) voor btw bij e-commerce. Het huidige pakket gaat verder en richt zich op bredere fiscale rapportageverplichtingen, harmonisatie van drempelwaarden en het terugdringen van dubbele administratieve handelingen voor bedrijven die in meerdere lidstaten actief zijn.
+Het bedrag van 8 miljard euro is een schatting van de gecombineerde besparing op nalevingskosten — denk aan accountantsuren, juridisch advies en interne verwerkingstijd. Voor individuele MKB-bedrijven vertaalt dit zich naar gemiddeld honderden tot duizenden euro's per jaar, afhankelijk van de omvang en internationale activiteiten.
+Nederland heeft als handelsnatie relatief veel MKB-bedrijven die grensoverschrijdend opereren, waardoor de impact hier groter kan zijn dan in landen met een meer binnenlandse oriëntatie. De exacte implementatiedeadlines per lidstaat worden de komende maanden bekend.
+
+Voor Nederlandse MKB-ondernemers zijn er drie concrete gebieden waar de vereenvoudiging direct voelbaar wordt:
+1. Minder dubbele rapportage: Bedrijven die in meerdere EU-landen actief zijn, hoeven straks minder afzonderlijke aangiften in te dienen. Dit scheelt directe accountantskosten en interne verwerkingstijd.
+2. Hogere drempelwaarden: Kleinere bedrijven komen mogelijk in aanmerking voor vereenvoudigde regelingen waarbij volledige btw-registratie in andere lidstaten niet meer verplicht is tot een bepaald omzetdrempel.
+3. Gestandaardiseerde formats: Harmonisatie van rapportageformaten betekent dat boekhoudpakketten en ERP-systemen straks met één standaard toe kunnen, wat integraties goedkoper maakt.
+Bedrijven in de e-commerce, logistiek, zakelijke dienstverlening en productie met Europese afzetmarkten profiteren het meest. Maar ook lokale bedrijven die toeleveranciers hebben in andere EU-landen kunnen indirect voordeel ondervinden van een efficiënter fiscaal systeem in de keten.
+
+**V: Welke Nederlandse MKB-bedrijven profiteren het meest van deze belastingvereenvoudiging?**
+A: Bedrijven die het meest profiteren zijn ondernemers die grensoverschrijdend actief zijn binnen de EU, zoals e-commerce bedrijven, exporteurs, zakelijke dienstverleners met Europese klanten en productiebedrijven met buitenlandse toeleveranciers. Zij hadden te maken met meerdere nationale belastingregistraties en rapportageverplichtingen. De vereenvoudiging verlaagt met name voor hen de administratieve druk aanzienlijk. Maar ook bedrijven die nu nog geen EU-export doen, kunnen profiteren: lagere nalevingskosten maken internationaal ondernemen aantrekkelijker.
+
+**V: Hoe kunnen we als klein bedrijf de 8 miljard euro besparing concreet benutten?**
+A: De 8 miljard euro is een Europees totaalbedrag. Voor uw bedrijf vertaalt dit zich naar minder uren voor uw accountant of administratief medewerker, lagere kosten voor buitenlandse btw-registraties en minder juridisch advies bij grensoverschrijdende transacties. Concreet: controleer met uw boekhouder welke nieuwe drempelwaarden voor u gelden, vraag na of u in aanmerking komt voor vereenvoudigde regelingen en zorg dat uw boekhoudpakket tijdig is bijgewerkt naar de nieuwe EU-standaarden.
+
+**V: Wat zijn de praktische eerste stappen om van deze nieuwe Europese regels te profiteren?**
+A: Stap 1: Informeer bij uw accountant of belastingadviseur welke specifieke maatregelen op uw bedrijfssituatie van toepassing zijn. Stap 2: Breng in kaart in welke EU-landen u momenteel omzet genereert of inkopen doet. Stap 3: Controleer of uw boekhoudsoftware klaar is voor nieuwe Europese rapportageformaten. Stap 4: Overweeg het automatiseren van transactieclassificatie en drempelmonitoring, zodat u altijd compliant bent zonder handmatige controles. AIntern kan helpen bij stap 3 en 4.
+
+**V: Wanneer gaan deze nieuwe Europese belastingregels in voor Nederlandse bedrijven?**
+A: De exacte inwerkingtredingsdatum per maatregel en per lidstaat wordt de komende maanden gepubliceerd nadat de EU-wetgeving formeel is vastgesteld. Implementatie verloopt doorgaans gefaseerd: na publicatie in het EU-staatsblad hebben lidstaten een omzettingstermijn van één tot twee jaar. Het is verstandig om nu alvast uw processen voor te bereiden, zodat u direct kunt profiteren zodra de regels van kracht worden.
+
+**V: Kan AI-automatisering helpen bij het implementeren van nieuwe belastingregels?**
+A: Ja. AI-automatisering kan uw administratieve processen klaarmaken voor nieuwe regelgeving. Denk aan automatische drempelmonitoring per EU-land, slimme transactieclassificatie, geautomatiseerde rapportagegeneratie in gestandaardiseerde EU-formats en real-time signalering als u een belastingdrempel nadert. Dit voorkomt fouten, bespaart uren en zorgt dat u altijd compliant bent — ook als regels wijzigen. AIntern helpt MKB-bedrijven om dit praktisch en betaalbaar te implementeren.
+
+---
+### Welke veiligheidssystemen moet een kinderopvang implementeren?
+
+**URL:** https://aintern.nl/newsflow/welke-veiligheids-en-controlsystemen-moeten-kinderopvangcentra-implementeren-om-
+**Gepubliceerd:** 2026-06-29
+**Lezersvraag:** Welke veiligheids- en controlsystemen moeten kinderopvangcentra implementeren om dit soort incidenten te voorkomen?
+
+Op vrijdag 26 juni 2026 werd een peuter van één jaar achtergelaten in een gesloten kinderopvanglocatie in Schiedam. Het personeel werd op non-actief gesteld en er loopt een onderzoek. Dit incident schokt niet alleen ouders, maar stelt ook kinderopvangondernemers door heel Nederland voor een urgente vraag: zijn onze sluitingsprocedures en controlesystemen wel goed genoeg?
+Voor MKB-ondernemers in de kinderopvangsector is dit een wake-up call. Menselijke fouten in sluitingsprocedures zijn zeldzaam, maar de gevolgen kunnen catastrofaal zijn — voor het kind, voor het personeel én voor de continuïteit van de organisatie. Gelukkig biedt technologie steeds meer mogelijkheden om dit soort incidenten structureel te voorkomen, zonder de menselijke maat uit het oog te verliezen.
+
+Kinderopvangcentra in Nederland vallen onder strenge regelgeving via de Wet kinderopvang en het Besluit kwaliteit kinderopvang. De GGD houdt toezicht en inspecteert jaarlijks op veiligheid, pedagogisch beleid en administratie. Toch zijn sluitingsprocedures — het moment waarop een locatie fysiek wordt afgesloten — in veel organisaties nog sterk afhankelijk van handmatige controles door individuele medewerkers.
+Het incident in Schiedam laat zien dat zelfs bij goedbedoelende professionals een fatale fout in de procedure kan optreden. In de branche is bekend dat piekmomenten (ziek personeel, onderbezetting, hectische eindedagmomenten) extra risico met zich meebrengen. De Inspectie van het Onderwijs en gemeenten kunnen na incidenten handhavend optreden, wat kan leiden tot tijdelijke sluiting of intrekking van de vergunning. Reputatieschade en aansprakelijkstelling zijn voor kleinere kinderopvangorganisaties existentieel bedreigend. Automatisering van controle- en sluitingsprocedures staat in de sector nog in de kinderschoenen, terwijl de technologie er al lang klaar voor is.
+
+Voor kinderopvangondernemers met meerdere medewerkers en locaties zijn de risico's direct voelbaar. Een incident als in Schiedam kan leiden tot:
+Tijdelijke sluiting door de GGD of gemeente, met directe omzetderving
+Juridische aansprakelijkheid richting ouders en toezichthouders
+Reputatieschade die moeilijk te herstellen is in een sector die draait op vertrouwen
+Personeelsconsequenties inclusief non-actiefstelling en ziekteverzuim door stress
+Tegelijkertijd biedt dit incident een kans: ondernemers die proactief investeren in veiligheidssystemen en geautomatiseerde controles onderscheiden zich van de concurrentie en bouwen aan een duurzaam vertrouwenskapitaal bij ouders. Denk aan digitale check-out systemen waarbij elk kind actief wordt uitgeschreven, geautomatiseerde eindedagchecklist die pas groen gaat als alle stappen zijn bevestigd, en slimme sensortechnologie die detecteert of ruimtes leeg zijn voor sluiting. Dit zijn geen luxe-investeringen meer — voor MKB-kinderopvang worden ze snel een basisvereiste.
+
+**V: Welke regelgeving en veiligheidsprotocollen gelden voor kinderopvangcentra na dit incident?**
+A: Kinderopvangcentra vallen onder de Wet kinderopvang en het Besluit kwaliteit kinderopvang. De GGD inspecteert jaarlijks op veiligheid en pedagogisch beleid. Na een ernstig incident kan de GGD een verscherpt toezichttraject opstarten en de gemeente kan handhavend optreden, inclusief tijdelijke sluiting. Organisaties zijn verplicht een veiligheids- en gezondheidsbeleid te voeren. Na het incident in Schiedam is te verwachten dat toezichthouders extra nadruk leggen op sluitingsprocedures en kindvolgsystemen. Ondernemers doen er goed aan hun eigen protocollen direct te toetsen en te documenteren.
+
+**V: Welke gevolgen heeft dit incident voor de bedrijfsvoering en aansprakelijkheid van kinderopvangcentra?**
+A: Een incident waarbij een kind wordt achtergelaten kan leiden tot tijdelijke sluiting, intrekking van de vergunning en civielrechtelijke aansprakelijkstelling door ouders. Voor MKB-kinderopvang betekent sluiting directe omzetderving en mogelijk faillissement. Daarnaast is er het risico op reputatieschade in een sector die volledig draait op oudervertrouwen. Aansprakelijkheidsverzekeringen dekken niet altijd alle gevolgschade. Het is daarom essentieel dat procedures aantoonbaar zijn vastgelegd en nageleefd, zodat u kunt aantonen dat u alle redelijke voorzorgsmaatregelen heeft genomen.
+
+**V: Hoe kunnen kinderopvangcentra personeelsmanagement en sluitingsprocedures beter automatiseren?**
+A: Automatisering biedt concrete oplossingen: digitale check-out systemen registreren elk kind bij vertrek en geven een melding als een kind nog niet is opgehaald. Geautomatiseerde sluitingschecklist begeleiden medewerkers stap voor stap en blokkeren de digitale afmelding zolang niet alle stappen zijn bevestigd. AI-gestuurde roostersystemen signaleren onderbezetting vroegtijdig. Sensortechnologie kan detecteren of ruimtes echt leeg zijn. AIntern implementeert dergelijke systemen betaalbaar en passend voor MKB-organisaties, zonder grote IT-investeringen vooraf.
+
+**V: Welke veiligheids- en controlsystemen moeten kinderopvangcentra implementeren om dit soort incidenten te voorkomen?**
+A: Minimaal aan te raden zijn: (1) een digitaal kindvolgsysteem waarbij elk kind actief wordt in- en uitgeschreven, (2) een verplichte eindedagchecklist die alleen digitaal kan worden afgesloten als alle kinderen zijn opgehaald, (3) een dubbele controle door twee medewerkers bij het sluiten van een locatie, (4) automatische notificaties aan de leidinggevende als de sluitingsprocedure niet op tijd is afgerond, en (5) periodieke veiligheidstraining voor personeel. Technologie ondersteunt mensen — ze vervangt de menselijke controle niet, maar maakt vergissingen zichtbaar vóórdat ze gevolgen hebben.
+
+---
+### Minimumloon stijgt per 1 juli: wat betekent dit voor uw personeelsbudget?
+
+**URL:** https://aintern.nl/newsflow/hoeveel-stijgt-het-minimumloon-per-1-juli-en-wat-zijn-de-gevolgen-voor-mijn-pers
+**Gepubliceerd:** 2026-06-29
+**Lezersvraag:** Hoeveel stijgt het minimumloon per 1 juli en wat zijn de gevolgen voor mijn personeelsbudget?
+
+Per 1 juli 2026 treden er een reeks kostenstijgingen in werking die direct van invloed zijn op uw bedrijfsvoering. Het meest ingrijpend voor veel MKB-ondernemers is de verhoging van het wettelijk minimumloon. Dit raakt niet alleen medewerkers die op of nabij het minimumloon werken, maar heeft via cao-koppelingen ook een domino-effect op bredere loonschalen binnen uw organisatie. Wie zijn personeelsplanning en loonkostenraming nog niet heeft bijgesteld, moet dat nu urgent doen.
+Maar de minimumloonverhoging staat niet op zichzelf. Tegelijkertijd worden ook pakketbezorging, huurindexaties en diverse belastingtarieven duurder. Voor een MKB-ondernemer met 5 tot 250 medewerkers kunnen deze cumulatieve kostenverhogingen snel oplopen tot duizenden euro's per maand. De vraag is niet alleen hoeveel het stijgt, maar ook: hoe houdt u uw marges gezond en uw bedrijfsvoering efficiënt in een omgeving van stijgende vaste lasten?
+
+Het wettelijk minimumloon in Nederland wordt twee keer per jaar aangepast, op 1 januari en 1 juli, op basis van de gemiddelde contractloonontwikkeling. De verhoging per 1 juli 2026 volgt op een periode van aanhoudende loonstijgingen in Nederland, mede gedreven door krapte op de arbeidsmarkt en inflatie in voorgaande jaren.
+Naast het minimumloon treden er per 1 juli ook andere wijzigingen in werking. Pakketdiensten zoals PostNL verhogen hun tarieven voor zakelijke verzendingen, wat met name e-commerce ondernemers en bedrijven met een hoge verzendfrequentie raakt. Daarnaast kunnen huurindexaties voor bedrijfspanden — die vaak gebaseerd zijn op de CPI van het voorafgaande jaar — per kwartaal worden doorgevoerd.
+Voor cao-sectoren geldt bovendien dat een stijging van het wettelijk minimumloon automatisch doorwerkt in de onderste loonschalen, waardoor ook medewerkers die formeel al boven het minimumloon verdienen, recht kunnen krijgen op een loonsverhoging. Dit maakt de daadwerkelijke kostenstijging voor veel werkgevers groter dan de nominale verhoging van het minimumloon suggereert.
+
+Voor MKB-ondernemers zijn de gevolgen concreet en direct voelbaar. Hogere loonkosten zijn de meest zichtbare impact: bij een bedrijf met tien medewerkers op of nabij het minimumloon kan de maandelijkse loonkostenstijging al snel enkele honderden tot duizenden euro's bedragen, afhankelijk van contracturen en eventuele cao-koppelingen.
+Daar bovenop komen stijgende verzendkosten, die met name voor webshops en bedrijven met fysieke goederenstroom de marge verder onder druk zetten. Een verhoging van pakketprijzen met een paar procent lijkt klein, maar bij honderden zendingen per maand telt dit snel op.
+Ook ondernemers die bedrijfsruimte huren, kunnen te maken krijgen met een huurindexatie per 1 juli, afhankelijk van de contractvorm. Dit zijn allemaal vaste lasten die moeilijk op korte termijn te verlagen zijn.
+De sleutel voor MKB-ondernemers is nu: inzicht krijgen in de totale kostenstijging en pro-actief keuzes maken. Denk aan het herzien van prijsstellingen, het optimaliseren van personeelsinzet en het automatiseren van tijdrovende processen om de productiviteit per euro loonkosten te verhogen.
+
+**V: Hoeveel stijgt het minimumloon per 1 juli 2026 en hoe beïnvloedt dit mijn loonkosten?**
+A: Het wettelijk minimumloon stijgt per 1 juli 2026 op basis van de gemiddelde contractloonontwikkeling. De exacte verhoging wordt gepubliceerd door de Rijksoverheid. Voor MKB-ondernemers betekent dit hogere directe loonkosten voor medewerkers op het minimumloon, maar via cao-koppelingen kan de verhoging ook doorwerken naar hogere loonschalen. Bereken uw totale impact door alle contracturen te vermenigvuldigen met de nieuwe loonbedragen en vergelijk dit met uw huidige loonsom.
+
+**V: Welke andere bedrijfskosten stijgen per 1 juli naast het minimumloon?**
+A: Naast het minimumloon stijgen per 1 juli ook de tarieven voor pakketbezorging (relevant voor e-commerce en bedrijven met veel verzendingen), kunnen huurindexaties voor bedrijfspanden worden doorgevoerd op basis van de CPI, en gelden er mogelijk wijzigingen in belasting- en premietarieven. De cumulatieve impact van deze kostenstijgingen kan voor een gemiddeld MKB-bedrijf oplopen tot duizenden euro's per maand, afhankelijk van de omvang van uw operatie.
+
+**V: Hoe kan ik mijn bedrijfsvoering aanpassen aan deze tariefverhogingen?**
+A: Er zijn meerdere manieren om uw marges te beschermen. Ten eerste kunt u uw verkoopprijzen herzien om hogere loon- en operationele kosten door te berekenen. Ten tweede kunt u de productiviteit verhogen door repetitieve taken te automatiseren met AI, zodat medewerkers meer waarde produceren per gewerkt uur. Ten derde kunt u uw verzendstrategie optimaliseren, bijvoorbeeld door te bundelen of over te stappen op goedkopere vervoerders. Begin met een gedetailleerde kostendoorlichting om te zien waar de grootste hefbomen zitten.
+
+**V: Heeft de minimumloonverhoging ook effect op medewerkers die al meer verdienen?**
+A: Ja, dat kan. In veel cao's zijn de loonschalen gekoppeld aan het wettelijk minimumloon of aan een minimumschaal. Als het minimumloon stijgt, worden ook de hogere schalen automatisch meegetrokken. Dit betekent dat de werkelijke kostenstijging voor uw bedrijf groter kan zijn dan alleen de verhoging voor medewerkers op het absolute minimum. Controleer uw cao of arbeidscontracten om te bepalen in hoeverre dit op uw situatie van toepassing is.
+
+**V: Wat kan AI automatiseren om de hogere loonkosten te compenseren?**
+A: AI kan veel tijdrovende, repetitieve taken overnemen die nu handmatig worden uitgevoerd. Denk aan het beantwoorden van standaard klantvragen via een AI-chatbot, het automatisch verwerken van facturen en bestellingen, het opstellen van offertes of rapportages, en het plannen van medewerkers. Hierdoor kunnen uw medewerkers zich richten op taken met hogere toegevoegde waarde, wat de productiviteit per loon-euro verhoogt. AIntern helpt MKB-bedrijven om deze kansen in kaart te brengen en te implementeren.
+
+---
+### Hoeveel extra loonkosten krijg ik door de minimumloonverhoging per 1 juli?
+
+**URL:** https://aintern.nl/newsflow/hoeveel-extra-loonkosten-krijg-ik-door-de-minimumloonverhoging-van-1471-naar-149
+**Gepubliceerd:** 2026-06-29
+**Lezersvraag:** Hoeveel extra loonkosten krijg ik door de minimumloonverhoging van 14,71 naar 14,99 euro per uur?
+
+Per 1 juli 2026 gaat het wettelijk minimumloon omhoog van €14,71 naar €14,99 per uur — een stijging van €0,28 per uur. Klinkt bescheiden, maar voor MKB-ondernemers met meerdere medewerkers op of rond het minimumloon telt dit al snel op tot honderden of zelfs duizenden euro's aan extra loonkosten per maand. Bovenop het bruto uurloon komen ook de werkgeverslasten: denk aan pensioenpremies, WW- en WIA-afdrachten die evenredig meestijgen.
+Naast de loonverhoging treden per dezelfde datum ook andere belangrijke regelingen in werking: een belverbod voor bedrijven dat koudwatervrees oproept bij ondernemers die gebruik maken van telefonische klantcontacten, en hogere importkosten voor pakketjes uit China. Kortom: 1 juli 2026 is geen gewone dag op de kalender. Voor MKB-bedrijven die nu nog niet hebben berekend wat dit betekent voor hun begroting, is het vijf voor twaalf.
+
+De jaarlijkse aanpassing van het wettelijk minimumloon is gekoppeld aan de contractloonontwikkeling in Nederland. De verhoging per 1 juli 2026 — van €14,71 naar €14,99 bruto per uur — vloeit voort uit de reguliere halfjaarlijkse indexering die de overheid toepast om de koopkracht van werknemers bij te houden met de loonontwikkeling in de markt.
+Tegelijkertijd introduceert de overheid per 1 juli een belverbod voor commerciële bedrijven. Dit verbod beperkt de mogelijkheid om consumenten telefonisch te benaderen voor verkoop- of marketingdoeleinden zonder voorafgaande expliciete toestemming. Voor sectoren als verzekeringen, energie, telecom en abonnementsdiensten heeft dit directe gevolgen voor outbound salesprocessen.
+Daarnaast worden pakketjes uit China duurder als gevolg van nieuwe EU-importregels die de btw-vrijstelling op kleine zendingen (onder €150) verder inperken. Dit raakt webshops en inkopers die goedkope consumentenproducten uit Azië betrekken. Al deze veranderingen samen maken 1 juli 2026 tot een kantelpunt voor de bedrijfsvoering van veel Nederlandse MKB-ondernemers.
+
+Laten we de rekening concreet maken. Stel je hebt 10 medewerkers die volledig op minimumloon werken en elk 160 uur per maand draaien:
+Extra bruto loonkosten per maand: 10 × 160 × €0,28 = €448 per maand, oftewel ruim €5.300 per jaar. Tel daarbij de werkgeverslasten op (gemiddeld 20–25% bovenop het bruto loon) en je zit al snel op €6.000–€6.600 extra per jaar voor deze groep alleen.
+Voor grotere MKB-bedrijven met 50+ medewerkers op minimumloonniveau loopt dit op tot tientallen duizenden euro's extra per jaar. Dit vraagt om scherpe personeelsplanning en efficiëntere inzet van medewerkers.
+Het belverbod raakt ondernemers die gebruikmaken van telefonische acquisitie of klantenservice via cold calling. Zonder adequate aanpassing riskeer je boetes en reputatieschade. Processen moeten worden herzien: van outbound bellen naar inbound marketing, e-mail of chat.
+De hogere importkosten voor Chinese pakketjes treffen webshops en inkopers direct in de marges. Wie zijn inkoopmix niet heroverweegt, ziet de winstgevendheid per product slinken.
+
+**V: Hoeveel extra kosten brengt de minimumloonverhoging voor mijn bedrijf met zich mee?**
+A: De stijging van €14,71 naar €14,99 per uur betekent €0,28 extra per gewerkt uur. Bij één fulltime medewerker op minimumloon (160 uur/maand) is dat €44,80 bruto extra per maand. Met werkgeverslasten erbij (ca. 20–25%) loopt dit op naar ruim €55 per medewerker per maand. Heb je 10 minimumloners in dienst, dan betaal je circa €550 per maand — bijna €6.600 per jaar — extra. Reken dit door op jouw eigen personeelsbestand om de precieze impact te kennen.
+
+**V: Wat is het belverbod voor bedrijven en hoe impact het mijn operaties?**
+A: Het belverbod dat per 1 juli 2026 ingaat, beperkt de mogelijkheid voor bedrijven om consumenten telefonisch te benaderen voor commerciële doeleinden zonder voorafgaande expliciete toestemming. Dit betekent dat cold calling naar particulieren in principe niet meer is toegestaan. Bedrijven die sterk leunen op telefonische acquisitie of outbound sales moeten hun strategie herzien. Alternatieven zijn inbound marketing, e-mailcampagnes, chatbots of het werken met een opt-in database van klanten die wél gebeld willen worden. De Autoriteit Consument & Markt (ACM) handhaaft dit verbod en kan boetes opleggen.
+
+**V: Welke andere regelingen veranderen op 1 juli en waar moet ik voorzien?**
+A: Naast de minimumloonverhoging en het belverbod worden per 1 juli 2026 ook de importregels voor pakketjes uit China aangescherpt. De btw-vrijstelling op kleine zendingen wordt verder beperkt, waardoor importkosten voor goedkope consumentengoederen stijgen. Dit raakt webshophouders en inkopers direct in hun marges. Het is verstandig om je inkoopstrategie te heroverwegen, alternatieve leveranciers te verkennen of je verkoopprijzen aan te passen. Controleer ook of er sectorspecifieke cao-wijzigingen per 1 juli gelden die boven het wettelijk minimum uitkomen.
+
+**V: Kan ik de extra loonkosten compenseren zonder mensen te ontslaan?**
+A: Ja, er zijn meerdere manieren om de extra loonkosten op te vangen zonder te snijden in je personeel. Ten eerste kun je kijken naar procesoptimalisatie: welke taken kosten onnodig veel tijd en kunnen worden geautomatiseerd? Ten tweede kun je roostering slimmer inrichten zodat piekuren efficiënter worden gedekt. Ten derde biedt AI-automatisering kansen om administratieve lasten te verlichten, waardoor medewerkers meer productieve uren maken. Tot slot is het verstandig om je prijsstelling te heroverwegen: hogere loonkosten zijn een legitieme reden om tarieven of verkoopprijzen te herzien.
+
+**V: Hoe helpt AI-automatisering bij stijgende loonkosten?**
+A: AI-automatisering helpt doordat het repetitieve, tijdrovende taken overneemt die anders door medewerkers worden gedaan. Denk aan het automatisch verwerken van facturen, het beantwoorden van veelgestelde klantvragen via een chatbot, het plannen van afspraken of het genereren van rapporten. Hierdoor kunnen medewerkers zich richten op taken met meer toegevoegde waarde. Het resultaat: meer output per arbeidsuur, wat de impact van de loonkostenstijging direct vermindert. Voor MKB-bedrijven is de terugverdientijd van AI-automatisering vaak korter dan verwacht, zeker nu de arbeidskosten stijgen.
+
+---
+### Code rood hitte: wat zijn uw verplichtingen als werkgever?
+
+**URL:** https://aintern.nl/newsflow/welke-verplichtingen-hebben-werkgevers-voor-hun-medewerkers-tijdens-code-rood-36
+**Gepubliceerd:** 2026-06-28
+**Lezersvraag:** Welke verplichtingen hebben werkgevers voor hun medewerkers tijdens code rood (36-40°C)?
+
+Vandaag, 26 juni 2026, geldt code rood in een groot deel van Nederland. Temperaturen lopen op tot 36-40°C, wat niet alleen oncomfortabel is, maar ook directe arbeidsrechtelijke verplichtingen voor werkgevers met zich meebrengt. Als MKB-ondernemer bent u wettelijk verplicht een veilige en gezonde werkomgeving te garanderen — en extreme hitte valt daar expliciet onder.
+Veel ondernemers weten niet precies waar ze aan toe zijn bij een hittegolf. Wat mag u van medewerkers verwachten? Welke aanpassingen moet u doorvoeren? En hoe documenteert u dat u uw zorgplicht nakomt? In dit artikel zetten we de concrete verplichtingen én praktische maatregelen voor u op een rij, zodat u vandaag direct actie kunt ondernemen.
+
+In Nederland is de werkgever op basis van de Arbeidsomstandighedenwet (Arbowet) verplicht risico's voor medewerkers te inventariseren en te beheersen. Hitte is een erkend arbeidsrisico. De Inspectie SZW (Nederlandse Arbeidsinspectie) kan handhaven als werkgevers onvoldoende maatregelen treffen bij extreme temperaturen.
+Er bestaat in Nederland geen wettelijke maximumtemperatuur voor werkplekken, maar de Arbocatalogus geeft wel richtlijnen. Voor kantoorwerk wordt een maximale werktemperatuur van 25°C als grens gehanteerd; bij zwaar fysiek werk ligt die grens lager. Bij code rood — waarbij KNMI temperaturen van 36 tot 40°C verwacht — worden deze grenzen ruimschoots overschreden, zowel buiten als in slecht geventileerde ruimtes.
+De KNMI code rood-waarschuwing is niet vrijblijvend: zij signaleert een situatie met aanzienlijke gevaren voor de volksgezondheid. Werkgevers die aantoonbaar geen maatregelen hebben genomen, kunnen bij een arbeidsongeval of hittegerelateerde ziekte aansprakelijk worden gesteld. Documentatie van genomen maatregelen is daarom essentieel.
+
+Voor MKB-bedrijven heeft code rood directe operationele gevolgen. Denk aan:
+Verplichte maatregelen voor werkgevers: Zorg voor voldoende koud drinkwater (minimaal 0,5 liter per uur per medewerker bij zware inspanning), bied schaduwrijke rustmogelijkheden, pas werktijden aan (vroeg beginnen, pauze in de warmste uren), zorg voor ventilatie of airconditioning, en informeer medewerkers actief over hitterisico's en symptomen van hittestress.
+Medewerkers mogen werk weigeren als de werkplek aantoonbaar onveilig is door extreme hitte. Als werkgever kunt u dit voorkomen door tijdig in gesprek te gaan en maatregelen zichtbaar te maken.
+Sectoren met verhoogd risico: bouw, transport, horeca, productie en detailhandel zonder airco lopen extra risico. In deze sectoren is het verstandig om werkzaamheden in de buitenlucht of warme ruimtes te beperken tussen 12:00 en 16:00 uur.
+Verzuimrisico: Hitte verhoogt de kans op uitval. MKB-bedrijven met beperkte personeelsbezetting voelen dit direct. Proactief beleid bespaart niet alleen ellende, maar ook kosten.
+
+**V: Welke verplichtingen hebben werkgevers voor hun medewerkers tijdens code rood (36-40°C)?**
+A: Werkgevers zijn op basis van de Arbeidsomstandighedenwet verplicht een veilige werkplek te bieden. Bij code rood betekent dit minimaal: voldoende koud drinkwater beschikbaar stellen, zorgen voor ventilatie of airconditioning, werktijden aanpassen (vermijd zware inspanning tussen 12:00-16:00), schaduw of koele ruimtes beschikbaar stellen, en medewerkers informeren over symptomen van hittestress. Leg genomen maatregelen schriftelijk vast om uw zorgplicht aan te kunnen tonen bij de Arbeidsinspectie.
+
+**V: Welke maatregelen moeten MKB-bedrijven nemen vanwege code rood en extreme hitte?**
+A: Concrete maatregelen zijn: begin de werkdag eerder en sluit vroeger, beperk zware fysieke arbeid in de middag, zorg voor minimaal 0,5 liter koud water per medewerker per uur bij inspanning, ventileer ruimtes actief, stel koele rustruimtes beschikbaar en pas kleding- of beschermingsmiddelenvereisten aan waar mogelijk. Informeer medewerkers schriftelijk (e-mail of app) over de maatregelen en hitterisico's. Bij buitenwerk: overweeg tijdelijk te stoppen tussen 12:00 en 16:00.
+
+**V: Hoe gaat code rood uitvoeringspraktisch uit voor werkgevers en werknemers?**
+A: Praktisch betekent code rood dat u als werkgever vandaag actie moet ondernemen: stuur een bericht naar alle medewerkers met de geldende maatregelen, pas roosterd indien nodig aan, zorg dat leidinggevenden weten hoe zij moeten handelen bij een medewerker met hitteklachten (koelen, rust, arts bellen bij ernstige klachten). Medewerkers hebben het recht gevaarlijk werk te weigeren. Goede communicatie voorkomt conflicten en beschermt zowel medewerker als werkgever.
+
+**V: Welke arbeidsomstandigheden gelden tijdens code rood en wat zijn de verplichtingen?**
+A: Er is geen wettelijke maximumtemperatuur in Nederland, maar de Arbocatalogus stelt dat bij kantoorwerk boven de 25°C maatregelen vereist zijn. Bij code rood (36-40°C) is altijd ingrijpen noodzakelijk. De werkgever is aansprakelijk als door aantoonbaar nalaten een medewerker hittegerelateerd letsel oploopt. De Arbeidsinspectie kan inspecteren en boetes opleggen. Documenteer altijd welke maatregelen u heeft genomen.
+
+**V: Kan een medewerker thuis blijven of werk weigeren bij extreme hitte?**
+A: Een medewerker mag werk weigeren als de werkplek aantoonbaar gevaarlijk is — dit is vastgelegd in de Arbowet (artikel 29). Bij code rood kan dit van toepassing zijn in ruimtes zonder ventilatie of bij zwaar buitenwerk. Als werkgever kunt u dit voorkomen door tijdig maatregelen te nemen en thuiswerken aan te bieden waar mogelijk. Overleg altijd met de medewerker en leg afspraken vast.
+
+---
+### Vrachtwagenheffing 2026: hoe vangt uw MKB-transportbedrijf de kosten op?
+
+**URL:** https://aintern.nl/newsflow/hoe-kunnen-mkb-transportbedrijven-de-extra-kosten-van-vrachtwagenheffing-opvange
+**Gepubliceerd:** 2026-06-28
+**Lezersvraag:** Hoe kunnen MKB-transportbedrijven de extra kosten van vrachtwagenheffing opvangen of doorberekenen?
+
+Per 1 juli 2026 treedt de vrachtwagenheffing in Nederland in werking. Vrachtvoertuigers betalen voortaan per gereden kilometer op het hoofdwegennet, wat voor individuele transportbedrijven kan oplopen tot enkele duizenden euro's per jaar aan extra lasten. Voor MKB-transporteurs en logistieke dienstverleners met een eigen wagenpark is dit geen abstracte maatregel, maar een directe aanslag op de marge.
+De overheid positioneert de heffing als een instrument voor verduurzaming: de opbrengsten worden deels teruggesluisd naar de sector via subsidies voor schonere voertuigen. Maar zoals brancheorganisaties al aangeven: 'de kosten gaan wel omhoog', en niet elk MKB-bedrijf heeft de financiële buffer om die klap direct op te vangen. De vraag is dan ook niet óf u actie moet ondernemen, maar hoe u dat het slimst doet — of u de kosten doorberekent, efficiënter rijdt, of gebruik maakt van beschikbare compensatieregelingen.
+
+De vrachtwagenheffing is een kilometerheffing die geldt voor vrachtwagens zwaarder dan 3,5 ton op rijkswegen, snelwegen en een deel van het onderliggend wegennet. Nederland volgt hiermee een Europese trend: landen als Duitsland (LKW-Maut) en België (viapass) kennen vergelijkbare systemen al jaren.
+Het tarief is afhankelijk van het gewicht van het voertuig en de Euro-emissieklasse. Schonere en lichtere vrachtwagens betalen minder; oudere, zware dieselvoertuigen worden harder geraakt. De overheid heeft aangekondigd dat een deel van de heffingsopbrengsten wordt teruggesluisd naar de transportsector via een verlaging van de motorrijtuigenbelasting (MRB) voor vrachtauto's en via subsidieregelingen voor zero-emissie voertuigen.
+Voor MKB-transporteurs die rijden voor derden (beroepsvervoer) bestaat de mogelijkheid om de heffing door te berekenen aan opdrachtgevers via zogeheten brandstof- en heffingstoeslagen. Voor bedrijven met eigen transport (eigen vervoer) — denk aan bouwbedrijven, groothandels of producenten met eigen bezorgdienst — ligt dat lastiger: zij kunnen de kosten niet altijd eenvoudig doorschuiven.
+
+De impact verschilt sterk per type MKB-ondernemer:
+Transporteurs en logistieke dienstverleners worden het directst geraakt. Een ondernemer met vijf vrachtauto's die dagelijks rijden, kan rekenen op een jaarlijkse kostenstijging van tienduizenden euro's. Marges in transport zijn al smal — elke extra kostenpost telt.
+MKB-bedrijven met eigen wagenpark — zoals aannemers, groothandels en voedingsproducenten — worden indirect geraakt. Hun transportkosten stijgen, maar ze kunnen dit niet altijd doorberekenen aan eindklanten zonder concurrentiepositie te verliezen.
+Kleine zelfstandige chauffeurs (ZZP) rijdend met eigen voertuig voelen de heffing direct in hun portemonnee, zonder de schaalvoordelen van grotere organisaties.
+Concreet betekent dit dat MKB-ondernemers nu al moeten nadenken over: ritoptimalisatie (minder kilometers = minder heffing), contractheronderhandeling met klanten, vlootvernieuwing naar schonere voertuigen voor een lager tarief, en het in kaart brengen van beschikbare subsidies. Wie wacht tot 1 juli 2026, loopt achter de feiten aan.
+
+**V: Hoe kunnen MKB-transportbedrijven de extra kosten van de vrachtwagenheffing opvangen of doorberekenen?**
+A: Er zijn meerdere strategieën: (1) Doorberekening via heffingstoeslagen in tarieven en contracten — dit is gebruikelijk in beroepsvervoer. (2) Ritoptimalisatie: minder gereden kilometers betekent minder heffing. AI-tools kunnen helpen routes efficiënter te plannen. (3) Vlootvernieuwing: schonere voertuigen (hogere Euro-emissieklasse) betalen een lager tarief. (4) Gebruik maken van teruggaven via de verlaging van de motorrijtuigenbelasting (MRB). Het is verstandig deze maatregelen combineren en nu al te implementeren, vóór 1 juli 2026.
+
+**V: Welke MKB-bedrijven met vrachtwagens worden hardst geraakt door de vrachtwagenheffing?**
+A: Bedrijven die worden hardst geraakt zijn: transporteurs en logistieke dienstverleners die dagelijks veel kilometers maken op het hoofdwegennet, bedrijven met een verouderd wagenpark (lagere Euro-emissieklasse betalen hogere tarieven), en MKB-bedrijven met eigen vervoer die kosten niet kunnen doorberekenen aan klanten — zoals bouwbedrijven, groothandels en producenten. ZZP-chauffeurs met eigen voertuig ondervinden relatief de grootste druk op hun marge.
+
+**V: Hoe kunnen logistieke bedrijven hun transportkosten compenseren zonder hun prijzen te verhogen?**
+A: De meest effectieve manier is het reduceren van het aantal gereden kilometers via slimme routeplanning en ritbundeling. Daarnaast helpt investeren in efficiëntere voertuigen (die ook een lager heffingstarief kennen). Intern kunnen bedrijven ook administratieve processen automatiseren om overhead te verlagen en zo ruimte te creëren op de marge zonder prijsverhoging aan klanten. AI-tools voor ritoptimalisatie en kostprijsberekening bieden hier concrete besparingen.
+
+**V: Zijn er subsidies of teruggaven beschikbaar voor kleine transportbedrijven?**
+A: Ja. De overheid heeft aangekondigd dat een deel van de heffingsopbrengsten wordt teruggesluisd via: (1) verlaging van de motorrijtuigenbelasting (MRB) voor vrachtauto's, wat alle transporteurs ten goede komt, en (2) subsidies voor de aanschaf van zero-emissie vrachtvoertuigen. Kleine transportbedrijven kunnen daarnaast gebruikmaken van ISDE-subsidies en MIA/VAMIL-regelingen voor duurzame bedrijfsmiddelen. Het is aan te raden een subsidieadviseur of de RVO te raadplegen voor uw specifieke situatie.
+
+**V: Vanaf wanneer geldt de vrachtwagenheffing en voor welke voertuigen?**
+A: De vrachtwagenheffing gaat in per 1 juli 2026. De heffing geldt voor vrachtvoertuigen zwaarder dan 3,5 ton die rijden op het Nederlandse hoofdwegennet (rijkswegen en snelwegen, en deels onderliggend wegennet). Het tarief per kilometer is afhankelijk van het gewicht van het voertuig en de Euro-emissieklasse. Schonere, lichtere voertuigen betalen minder. Buitenlandse vrachtwagens die door Nederland rijden vallen ook onder de heffing.
+
+---
+### Vinted-onderzoek: welke compliance-maatregelen beschermen uw platform?
+
+**URL:** https://aintern.nl/newsflow/welke-compliance-en-detectiemaatregelen-moeten-online-platforms-implementeren-om
+**Gepubliceerd:** 2026-06-27
+**Lezersvraag:** Welke compliance- en detectiemaatregelen moeten online platforms implementeren om kinderhandel te voorkomen?
+
+Frankrijk is een officieel strafrechtelijk onderzoek gestart naar het populaire tweedehandsplatform Vinted, vanwege vermoedens dat het platform is misbruikt voor kinderhandel. Dit nieuws schokt de e-commercewereld en werpt een indringende vraag op die ook voor Nederlandse MKB-ondernemers met een online marktplaats of verkoopplatform urgent is: bent u als platformbeheerder voldoende beschermd tegen misbruik door criminelen?
+De zaak rond Vinted is geen incident dat alleen grote platforms treft. Elke ondernemer die een online omgeving beheert waar gebruikers met elkaar kunnen communiceren of handelen — van kleine webshops met een gebruikersforum tot lokale marktplaatsen — valt potentieel onder dezelfde regelgevende druk. De Europese Digital Services Act (DSA) legt platforms steeds strengere verplichtingen op het gebied van moderatie, transparantie en detectie van illegale inhoud. Niet-naleving kan leiden tot forse boetes en reputatieschade. Voor MKB-ondernemers is het daarom geen luxe maar een noodzaak om te begrijpen welke maatregelen zij moeten treffen — en hoe AI-automatisering daarbij een sleutelrol kan spelen.
+
+Het Franse onderzoek naar Vinted is onderdeel van een bredere Europese trend waarbij toezichthouders online platforms steeds actiever aansprakelijk stellen voor illegale activiteiten die via hun diensten plaatsvinden. De Digital Services Act (DSA), die in 2024 volledig van kracht is geworden voor alle EU-platforms, verplicht aanbieders van online tussenhandeldiensten om proactieve maatregelen te nemen tegen illegale inhoud en activiteiten.
+Dit geldt niet alleen voor techgiganten als Meta of Amazon. Ook kleinere platforms met een beperkt aantal gebruikers vallen onder de basisbeginselen van de DSA: meldingsmechanismen voor illegale content, transparante moderatieprocedures en samenwerking met opsporingsinstanties. Lidstaten zoals Frankrijk, maar ook Nederland via de Autoriteit Consument & Markt (ACM), intensiveren hun handhaving.
+Daarnaast signaleert Europol al jaren dat criminelen bewust kleinere, minder bewaakte platforms opzoeken omdat grote spelers steeds beter beveiligd zijn. Dit betekent dat juist MKB-platforms een aantrekkelijk doelwit kunnen worden als zij geen adequate detectie- en rapportagesystemen hebben ingericht. De vraag is dus niet óf u hiermee te maken krijgt, maar wanneer — en of u er klaar voor bent.
+
+Voor MKB-ondernemers die een online marktplaats, community of handelsplatform beheren, heeft de Vinted-casus directe en concrete gevolgen. Ten eerste vergroot dit de kans op verscherpt toezicht vanuit Nederlandse en Europese autoriteiten op alle platforms, ongeacht omvang. Ten tweede worden investeerders, partners en klanten kritischer op de compliance-status van platforms waarmee zij samenwerken.
+Concreet moeten MKB-platformbeheerders nadenken over:
+• Gebruikersverificatie: Heeft u een procedure om de identiteit van verkopers en kopers te valideren, zeker bij kwetsbare categorieën?
+• Contentmoderatie: Beschikt u over automatische én handmatige processen om verdachte advertenties of berichten te detecteren en te verwijderen?
+• Meldmechanismen: Kunnen gebruikers eenvoudig illegale inhoud rapporteren, en heeft u een intern escalatieproces?
+• Dataretentie en samenwerking: Bewaart u de juiste gegevens om bij een juridisch onderzoek te kunnen samenwerken met autoriteiten?
+• Privacy vs. veiligheid: Hoe balanceert u AVG-verplichtingen met de noodzaak tot monitoring?
+Bedrijven die deze zaken niet op orde hebben, lopen niet alleen juridisch risico maar ook reputatierisico dat klanten en omzet kan kosten.
+
+**V: Welke compliance- en detectiemaatregelen moeten online platforms implementeren om kinderhandel te voorkomen?**
+A: Platforms zijn op grond van de Digital Services Act verplicht om proactieve maatregelen te nemen. In de praktijk betekent dit: geautomatiseerde contentmoderatie die verdachte berichten en advertenties detecteert, een gebruiksvriendelijk meldmechanisme voor gebruikers, identiteitsverificatie van verkopers in risicocategorieën, en een intern escalatieproces dat meldingen aantoonbaar opvolgt. Samenwerking met instanties zoals het Nederlandse Meldpunt Kinderporno (Offlimits) en het bewaren van relevante gebruiksdata voor justitieel onderzoek zijn eveneens aanbevolen best practices.
+
+**V: Wat zijn de risico's voor online marktplaatsen zoals Vinted met betrekking tot regelgeving en compliance?**
+A: Online marktplaatsen riskeren strafrechtelijk en bestuursrechtelijk onderzoek als zij onvoldoende maatregelen treffen tegen illegaal gebruik van hun platform. De DSA legt expliciete verplichtingen op voor moderatie en transparantie. Bij niet-naleving kunnen nationale toezichthouders zoals de ACM boetes opleggen. Daarnaast is er aanzienlijk reputatierisico: klanten en partners haken af als een platform in verband wordt gebracht met criminele activiteiten, ook als het platform zelf geen directe schuld heeft.
+
+**V: Hoe kunnen MKB-bedrijven in e-commerce hun platform beschermen tegen misbruik en illegale activiteiten?**
+A: MKB-ondernemers kunnen starten met een risicoanalyse van hun platform: welke gebruikersinteracties vinden plaats, welke categorieën content worden geplaatst, en waar zitten de kwetsbare punten? Vervolgens helpt een combinatie van technische maatregelen (geautomatiseerde screening, identiteitsverificatie) en procedurele maatregelen (moderatiebeleid, escalatieprotocol, samenwerking met meldpunten) om het risico structureel te verlagen. AI-automatisering kan dit schaalbaar en betaalbaar maken voor kleinere teams.
+
+**V: Welke moderatie- en AI-automatiseringstools zijn nodig om criminele activiteiten op marktplaatsen te detecteren?**
+A: Effectieve detectie combineert meerdere lagen: geautomatiseerde tekstanalyse die verdachte patronen en sleutelwoorden herkent, beeldherkenning voor verdachte foto's, gedragsanalyse die afwijkende gebruikerspatronen signaleert, en een flagging-systeem dat verdachte meldingen doorstuurt naar menselijke moderators. Voor MKB-platforms hoeft dit niet kostbaar te zijn: via API-koppelingen met bestaande AI-diensten en slimme workflows kunnen ook kleinere teams een robuust moderatiesysteem opzetten dat voldoet aan DSA-vereisten.
+
+**V: Geldt de Digital Services Act ook voor kleine Nederlandse MKB-platforms?**
+A: Ja. Hoewel de strengste verplichtingen van de DSA gelden voor 'zeer grote online platforms' (meer dan 45 miljoen maandelijkse gebruikers in de EU), zijn de basisverplichtingen van toepassing op alle aanbieders van online tussenhandeldiensten in de EU. Dit omvat meldmechanismen voor illegale inhoud, transparantie over moderatiebeleid en samenwerking met autoriteiten. MKB-platformbeheerders doen er verstandig aan hun beleid hierop te toetsen en waar nodig aan te passen.
+
+---
+### Code rood hitte: hoe pas jij je bedrijfsvoering aan?
+
+**URL:** https://aintern.nl/newsflow/hoe-moeten-mkb-ondernemers-hun-bedrijfsvoering-aanpassen-en-werknemers-inzetten-
+**Gepubliceerd:** 2026-06-26
+**Lezersvraag:** Hoe moeten MKB-ondernemers hun bedrijfsvoering aanpassen en werknemers inzetten tijdens code rood hitte?
+
+Nederland staat morgen voor een uitzonderlijke dag: het KNMI heeft code rood afgekondigd vanwege extreme hitte. Scholen sluiten hun deuren, rechtszaken worden afgelast en grote delen van het land kiezen ervoor de normale dagelijkse gang van zaken te staken. Voor MKB-ondernemers is dit geen abstract nieuws — het raakt direct aan personeelsplanning, productiviteit en aansprakelijkheid.
+Als ondernemer met 5 tot 250 medewerkers sta je voor concrete beslissingen: stuur je mensen naar huis, pas je werktijden aan, of schakel je over op een noodrooster? Tegelijk lopen kosten door, verwachten klanten service en moet je voldoen aan de Arbowet. De komende 24 uur zijn cruciaal. In dit artikel zetten we op een rij wat je mag verwachten, wat de wet zegt en hoe je je bedrijfsvoering zo slim mogelijk inricht tijdens code rood.
+
+Code rood betekent dat het KNMI verwacht dat de extreme weersomstandigheden gevaarlijk zijn voor mensen en de samenleving. Temperaturen kunnen morgen oplopen tot boven de 40 graden Celsius in delen van Nederland. Dat is niet alleen ongemakkelijk — het is een gezondheidsrisico, zeker voor mensen die fysiek werk verrichten of werken in slecht geventileerde ruimtes.
+De overheid en werkgeversorganisaties als VNO-NCW en MKB-Nederland roepen werkgevers op om rekening te houden met de veiligheid van medewerkers. De Arbowet verplicht werkgevers om een gezonde en veilige werkomgeving te garanderen, ook bij extreme hitte. Dat betekent dat 'gewoon doorwerken' juridisch en moreel niet altijd een optie is.
+Sectoren als de bouw, transport, landbouw, horeca en detailhandel worden het hardst geraakt. Maar ook kantooromgevingen zonder airconditioning kunnen problematisch zijn. Tegelijkertijd zijn er sectoren — zoals online dienstverlening en thuiswerken-vriendelijke bedrijven — die relatief normaal kunnen doordraaien. Het verschil zit in de aard van het werk én de beschikbare faciliteiten.
+
+Voor MKB-ondernemers zijn er drie directe aandachtsgebieden:
+1. Personeel en arbeidsomstandigheden
+De Arbowet vereist dat je als werkgever maatregelen neemt bij extreme hitte. Denk aan het aanpassen van werktijden (vroeg beginnen, vroeg stoppen), extra pauzes, voldoende drinkwater en het thuiswerken waar mogelijk. Stuur je mensen toch naar een te warme werkplek, loop je risico op een boete van de Nederlandse Arbeidsinspectie én aansprakelijkheid bij gezondheidsschade.
+2. Operationele continuïteit
+Afhankelijk van je sector kan morgen een gedeeltelijk of volledig verloren werkdag zijn. Fysieke winkels, bouwbedrijven en transportbedrijven kunnen te maken krijgen met verminderde capaciteit of tijdelijke sluiting. Plan nu al je communicatie naar klanten en leveranciers, zodat verwachtingen realistisch zijn.
+3. Financiële impact
+Verloren omzet, doorbetaald loon aan thuiszittende medewerkers en eventuele extra kosten (koeling, ijswater, aangepaste roosters) tellen op. Voor sectoren met dunne marges kan één verloren dag gevoelig zijn. Het loont om dit soort scenario's structureel in te plannen — extreme hittedagen worden vaker, niet zeldzamer.
+
+**V: Welke bedrijven kunnen morgen normaal opereren en welke moeten dicht vanwege code rood?**
+A: Bedrijven die volledig thuiswerken mogelijk maken — zoals IT-dienstverleners, online retailers en consultancybureaus — kunnen grotendeels normaal doordraaien. Bedrijven waarbij fysieke aanwezigheid vereist is én de werkomgeving niet gekoeld kan worden, zoals bouwbedrijven, buitendienstmedewerkers, bepaalde winkels en horecazaken, zullen hun activiteiten moeten aanpassen of tijdelijk staken. Er is geen wettelijke verplichting om volledig te sluiten bij code rood, maar de Arbowet verplicht wél tot een veilige werkomgeving. De afweging is dus afhankelijk van jouw sector en werkplek.
+
+**V: Hoe organiseer ik mijn bedrijfsvoering en werknemers tijdens extreme hitte?**
+A: Pas werktijden aan: vroeg beginnen (voor 07:00 uur) en vroeg stoppen vermijdt de heetste uren. Zorg voor voldoende koude dranken en schaduwplekken. Geef thuiswerkmogelijkheden waar het kan. Plan zware fysieke taken niet in de middaguren. Communiceer tijdig en duidelijk naar je medewerkers wat het plan voor morgen is. Maak gebruik van een noodrooster of minimale bezetting voor essentiële taken. Controleer ook of je bedrijfspand voldoende geventileerd of gekoeld is — zo niet, overweeg tijdelijke sluiting.
+
+**V: Welke kosten en verliezen kunnen MKB-bedrijven verwachten door deze hittewaarschuwing?**
+A: De directe kosten bestaan uit doorbetaald loon bij verminderde of geen productie, eventuele extra uitgaven aan koeling of drinkwater en mogelijke boetes bij onveilige arbeidsomstandigheden. Indirecte kosten zijn omzetverlies door sluitingen of lagere klantenstromen, verstoringen in de toeleveringsketen en reputatieschade als je klanten niet goed informeert. Voor sectoren met krappe marges zoals horeca, retail en bouw kan één hitte-dag een merkbaar financieel effect hebben. Documenteer je maatregelen goed — dit kan relevant zijn voor verzekeringen of eventuele claims.
+
+**V: Ben ik als werkgever verplicht om maatregelen te nemen bij code rood?**
+A: Ja. De Arbowet verplicht iedere werkgever om te zorgen voor een veilige en gezonde werkomgeving, ongeacht het weer. Bij extreme hitte betekent dit concreet: het beperken van blootstelling aan hitte, het bieden van voldoende pauzes, drinkwater beschikbaar stellen en zwaar fysiek werk in de buitenlucht vermijden of aanpassen. De Nederlandse Arbeidsinspectie kan handhaven als jij als werkgever nalatig handelt. Er bestaat geen wettelijke verplichting om te sluiten, maar als je werkomgeving aantoonbaar onveilig is, kan de inspectie ingrijpen.
+
+**V: Hoe informeer ik mijn klanten snel over gewijzigde openingstijden of dienstverlening?**
+A: Communiceer zo vroeg mogelijk via e-mail, WhatsApp Business, social media en je website. Zet een automatisch antwoord in op je telefoon en mail met uitleg over de aangepaste situatie. Geef duidelijk aan wanneer je weer normaal bereikbaar bent. Met AI-tools kun je dit soort communicatie versneld en geautomatiseerd uitsturen — zodat je team zich kan focussen op wat écht nodig is. AIntern helpt MKB-bedrijven bij het opzetten van dit soort geautomatiseerde communicatiestromen.
+
+---
+### Recordhitte op de werkvloer: hoe bescherm je jouw medewerkers?
+
+**URL:** https://aintern.nl/newsflow/hoe-kunnen-mkb-ondernemers-hun-bedrijfsvoering-en-werknemers-aanpassen-aan-recor
+**Gepubliceerd:** 2026-06-25
+**Lezersvraag:** Hoe kunnen MKB-ondernemers hun bedrijfsvoering en werknemers aanpassen aan recordhitte en slechte nachtrust?
+
+Het KNMI waarschuwt voor een recordwarme nacht waarbij temperaturen nauwelijks dalen. Voor werkgevers betekent dit dat medewerkers vermoeid en oververhit op de werkvloer verschijnen — met alle gevolgen voor veiligheid en productiviteit van dien. Vooral voor MKB-ondernemers met fysiek werk, productieomgevingen of beperkte klimaatbeheersing is dit een serieus aandachtspunt.
+Hitte is niet alleen oncomfortabel: hittestress verhoogt het risico op fouten, uitval en zelfs gezondheidsincidenten. Als werkgever ben je verplicht een veilige werkomgeving te bieden, ook bij extreme temperaturen. Gelukkig zijn er concrete maatregelen die je snel kunt doorvoeren — en steeds vaker helpt slimme AI-technologie om roosters, communicatie en risicomonitoring efficiënter te organiseren, zodat jij je kunt richten op je mensen.
+
+Het KNMI heeft voor 25 en 26 juni 2026 gewaarschuwd voor uitzonderlijk hoge nachttemperaturen in grote delen van Nederland. Wanneer de temperatuur 's nachts onvoldoende daalt, kan het menselijk lichaam niet adequaat herstellen. Dit leidt tot slaaptekort, verminderde concentratie en een hoger risico op hittegerelateerde aandoeningen zoals uitdroging en hitteberoerte.
+Voor werkgevers is dit geen nieuw fenomeen, maar hitteperiodes worden door klimaatverandering frequenter en intensiever. De Arbowet verplicht werkgevers om een risico-inventarisatie en -evaluatie (RI&E) uit te voeren waarin hitte als arbeidsrisico is opgenomen. De Inspectie SZW kan handhaven als werkgevers onvoldoende maatregelen treffen bij extreme weersomstandigheden.
+Sectoren als de bouw, logistiek, horeca, productie en de zorg zijn extra kwetsbaar. Maar ook kantooromgevingen zonder airconditioning kunnen tijdens een hittegolf problematisch worden. Bewustwording en voorbereiding zijn essentieel — en die begint bij de werkgever.
+
+Voor MKB-ondernemers heeft extreme hitte directe financiële en operationele gevolgen. Productiviteitsverlies door hittestress kan oplopen tot 20–30% op de heetste dagen, blijkt uit onderzoek van TNO. Daar komen bij: hogere kans op verzuim, meer werkfouten en een groter risico op bedrijfsongevallen.
+Praktische maatregelen die je als werkgever kunt nemen:
+1. Werktijden aanpassen — Plan zware werkzaamheden in de vroege ochtend of late middag, vermijd de warmste uren (12:00–16:00).
+2. Hydratatie faciliteren — Zorg voor voldoende koud drinkwater op de werkvloer, gratis en gemakkelijk bereikbaar.
+3. Koeling organiseren — Ventilators, zonwering, koele rustruimtes en eventueel mobiele airco's kunnen het verschil maken.
+4. Communiceer proactief — Informeer medewerkers over hitteprotocol, wie zij kunnen aanspreken en wat de spelregels zijn.
+5. Kwetsbare medewerkers in kaart brengen — Ouderen, zwangere werknemers en mensen met bepaalde aandoeningen zijn extra risicovol.
+6. Thuiswerken mogelijk maken — Als de functie het toelaat, biedt thuiswerken tijdens een hittegolf uitkomst.
+Een heldere aanpak beschermt niet alleen je mensen, maar ook je bedrijfscontinuïteit.
+
+**V: Hoe kunnen kleine bedrijven en werkgevers hun medewerkers beschermen tegen extreme hitte?**
+A: Werkgevers kunnen medewerkers beschermen door werktijden te verschuiven naar koelere dagdelen, voldoende koud drinkwater beschikbaar te stellen, koele rustruimtes in te richten en zonwering of ventilatie toe te passen. Proactieve communicatie over een duidelijk hitteprotocol is essentieel. Kwetsbare medewerkers — zoals ouderen of zwangere collega's — verdienen extra aandacht. Thuiswerken is een goede optie als de functie het toelaat. Een RI&E met hitte als risicofactor helpt je structureel voorbereid te zijn.
+
+**V: Welke maatregelen kunnen MKB-bedrijven nemen om productiviteitsverlies door hittestress te voorkomen?**
+A: Plan zware of fysieke taken in de vroegste uren van de dag. Geef medewerkers extra pauzes in een koele omgeving. Overweeg flexibele werktijden of thuiswerken. Investeer in tijdelijke koelingsoplossingen zoals mobiele airco's of extra ventilators. Communiceer helder wat de verwachtingen zijn en wat medewerkers kunnen doen als zij klachten ervaren. Slimme roosterplanning met AI kan hierbij helpen door automatisch rekening te houden met weersomstandigheden en persoonlijke omstandigheden van medewerkers.
+
+**V: Zijn er arbowetgeving en richtlijnen voor werkgevers bij extreme temperaturen?**
+A: Ja. De Nederlandse Arbowet verplicht werkgevers een veilige en gezonde werkomgeving te garanderen, ook bij hitte. Dit betekent dat hitte als risico moet zijn opgenomen in de Risico-Inventarisatie en -Evaluatie (RI&E). Er is geen wettelijk vastgelegde maximumtemperatuur, maar de Arbocatalogus per sector geeft richtlijnen. De Inspectie SZW kan handhaven als een werkgever aantoonbaar onvoldoende maatregelen treft. Raadpleeg de Arbocatalogus van jouw sector voor specifieke normen en aanbevelingen.
 
 ---
 

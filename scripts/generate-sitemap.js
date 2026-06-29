@@ -3,6 +3,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 const HOSTNAME = 'https://aintern.nl';
 const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com';
+const NEWSFLOW_S3_BASE = 'https://aintern-newsflow.s3.eu-west-2.amazonaws.com';
 const STATIC_ROUTES = ['/', '/kennisbank', '/ai-agent-mkb', '/wat-kost-handmatig-werk', '/workflow-scan'];
 export async function getSlugsFromS3() {
     const response = await fetch(`${S3_BASE}/index.json`);
@@ -10,6 +11,13 @@ export async function getSlugsFromS3() {
         throw new Error(`Failed to fetch index.json: ${response.status}`);
     const data = (await response.json());
     return data.posts.map((p) => p.slug);
+}
+export async function getNewsflowSlugsFromS3() {
+    const response = await fetch(`${NEWSFLOW_S3_BASE}/index.json`);
+    if (!response.ok)
+        throw new Error(`Failed to fetch newsflow index.json: ${response.status}`);
+    const data = (await response.json());
+    return data.map((p) => p.slug);
 }
 function buildXml(routes) {
     const today = new Date().toISOString().split('T')[0];
@@ -21,8 +29,10 @@ function buildXml(routes) {
                 ? '0.9'
                 : route === '/wat-kost-handmatig-werk' || route === '/workflow-scan'
                     ? '0.7'
-                    : '0.8';
-        const changefreq = route === '/' ? 'weekly' : 'monthly';
+                    : route.startsWith('/newsflow/')
+                        ? '0.7'
+                        : '0.8';
+        const changefreq = route === '/' || route.startsWith('/newsflow/') ? 'weekly' : 'monthly';
         return `  <url>
     <loc>${HOSTNAME}${route}</loc>
     <lastmod>${today}</lastmod>
@@ -41,10 +51,18 @@ export async function generateSitemapXml(outDir) {
     try {
         const slugs = await getSlugsFromS3();
         routes.push(...slugs.map((slug) => `/kennisbank/${slug}`));
-        console.log(`[sitemap] ${slugs.length} artikelen opgehaald uit S3`);
+        console.log(`[sitemap] ${slugs.length} kennisbank artikelen opgehaald uit S3`);
     }
     catch (err) {
-        console.warn('[sitemap] S3 ListObjectsV2 mislukt — alleen statische routes worden opgenomen:', err);
+        console.warn('[sitemap] Kennisbank S3 mislukt — kennisbank routes worden overgeslagen:', err);
+    }
+    try {
+        const slugs = await getNewsflowSlugsFromS3();
+        routes.push(...slugs.map((slug) => `/newsflow/${slug}`));
+        console.log(`[sitemap] ${slugs.length} newsflow pagina's opgehaald uit S3`);
+    }
+    catch (err) {
+        console.warn('[sitemap] Newsflow S3 mislukt — newsflow routes worden overgeslagen:', err);
     }
     const dest = resolve(outDir, 'sitemap.xml');
     mkdirSync(dirname(dest), { recursive: true });
