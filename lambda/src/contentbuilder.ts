@@ -21,7 +21,7 @@ import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
 import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
-import Anthropic from '@anthropic-ai/sdk'
+import Anthropic, { APIError } from '@anthropic-ai/sdk'
 import { createAInternLoopSDK } from './lib/ainternloop'
 import { publishViaBranch } from './lib/newsflow-branch'
 
@@ -39,6 +39,16 @@ const s3 = new S3Client({ region: REGION })
 const KEY_TTL_MS = 15 * 60 * 1000
 const keyCache = new Map<string, { key: string; fetchedAt: number }>()
 
+// Logs enough of the secret's shape to diagnose wrong-key-type issues (oat=OAuth/setup-token
+// vs api=Console API key) without ever printing the secret itself.
+function describeKeyShape(key: string): { prefix: string; length: number; looksLikeOAuthToken: boolean } {
+  return {
+    prefix: key.slice(0, 13), // e.g. 'sk-ant-oat01-' or 'sk-ant-api03-'
+    length: key.length,
+    looksLikeOAuthToken: key.startsWith('sk-ant-oat'),
+  }
+}
+
 async function getAnthropicKey(alias: string): Promise<string> {
   const cached = keyCache.get(alias)
   if (cached && Date.now() - cached.fetchedAt < KEY_TTL_MS) return cached.key
@@ -50,6 +60,15 @@ async function getAnthropicKey(alias: string): Promise<string> {
   )
   const key = res.Parameter?.Value ?? ''
   if (!key) throw new Error('[ContentBuilder] Anthropic API key missing in SSM')
+  console.log(
+    JSON.stringify({
+      level: 'INFO',
+      fn: 'getAnthropicKey',
+      alias,
+      message: 'Fetched Anthropic credential from SSM',
+      keyShape: describeKeyShape(key),
+    }),
+  )
   keyCache.set(alias, { key, fetchedAt: Date.now() })
   return key
 }
@@ -77,6 +96,56 @@ interface NewsFlowIndexEntry {
   lezersvraag: string
   publishedAt: string
   urgencyScore: number
+}
+
+// ── Rate-limit retry ─────────────────────────────────────────────────────────
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+// Dumps every header the SDK actually received (rather than a fixed whitelist) — the
+// whitelist approach previously logged an empty {} because the OAuth/setup-token 429
+// response doesn't necessarily use the same header names as standard API-key 429s.
+function logRateLimitHeaders(fn: string, err: APIError): void {
+  const h = err.headers as Record<string, string | undefined> | undefined
+  const allHeaders = h ? { ...h } : null
+  console.log(
+    JSON.stringify({
+      level: 'WARN',
+      fn,
+      status: err.status,
+      name: err.name,
+      requestId: err.request_id ?? null,
+      errorBody: err.error,
+      errorMessage: err.message,
+      allHeaders,
+      headerKeys: allHeaders ? Object.keys(allHeaders) : [],
+    }),
+  )
+}
+
+async function withRateLimitRetry<T>(fn: () => Promise<T>, attempts = 2, waitMs = 65_000): Promise<T> {
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      return await fn()
+    } catch (err) {
+      const is429 = err instanceof APIError && err.status === 429
+      if (!is429 || i === attempts) throw err
+      logRateLimitHeaders('withRateLimitRetry', err as APIError)
+      console.log(
+        JSON.stringify({
+          level: 'WARN',
+          fn: 'withRateLimitRetry',
+          attempt: i,
+          waitMs,
+          message: `Rate limit (429) — sleeping ${waitMs / 1000}s before retry`,
+        }),
+      )
+      await sleep(waitMs)
+    }
+  }
+  throw new Error('[ContentBuilder] withRateLimitRetry: unreachable')
 }
 
 // ── Content generation ────────────────────────────────────────────────────────
@@ -172,12 +241,56 @@ async function generateContent(
   payload: Record<string, unknown>,
 ): Promise<GeneratedContent> {
   for (let attempt = 1; attempt <= 2; attempt++) {
-    const msg = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 4096,
-      system: CONTENT_SYSTEM,
-      messages: [{ role: 'user', content: buildContentUserMessage(payload) }],
-    })
+    const userMessage = buildContentUserMessage(payload)
+    const requestStartedAt = Date.now()
+    console.log(
+      JSON.stringify({
+        level: 'INFO',
+        fn: 'generateContent',
+        attempt,
+        message: 'Sending Anthropic messages.create request',
+        model: 'claude-sonnet-4-6',
+        maxTokens: 4096,
+        systemChars: CONTENT_SYSTEM.length,
+        userMessageChars: userMessage.length,
+        startedAt: new Date(requestStartedAt).toISOString(),
+      }),
+    )
+    let msg
+    try {
+      msg = await anthropic.messages.create({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 4096,
+        system: CONTENT_SYSTEM,
+        messages: [{ role: 'user', content: userMessage }],
+      })
+      console.log(
+        JSON.stringify({
+          level: 'INFO',
+          fn: 'generateContent',
+          attempt,
+          message: 'Anthropic messages.create succeeded',
+          durationMs: Date.now() - requestStartedAt,
+          usage: msg.usage,
+        }),
+      )
+    } catch (err) {
+      console.log(
+        JSON.stringify({
+          level: 'ERROR',
+          fn: 'generateContent',
+          attempt,
+          message: 'Anthropic messages.create threw',
+          durationMs: Date.now() - requestStartedAt,
+          isAPIError: err instanceof APIError,
+          status: err instanceof APIError ? err.status : null,
+          errorName: err instanceof Error ? err.name : null,
+          errorMessage: err instanceof Error ? err.message : String(err),
+        }),
+      )
+      if (err instanceof APIError) logRateLimitHeaders('generateContent', err)
+      throw err
+    }
     const text = msg.content[0]?.type === 'text' ? msg.content[0].text.trim() : ''
     const clean = text.replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/i, '').trim()
     try {
@@ -328,7 +441,22 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
 
   const sdk = createAInternLoopSDK(loopTableName, ddb)
   const anthropicKey = await getAnthropicKey(alias)
-  const anthropic = new Anthropic({ apiKey: anthropicKey })
+  const betaHeader = 'oauth-2025-04-20'
+  console.log(
+    JSON.stringify({
+      level: 'INFO',
+      fn: 'handler',
+      message: 'Anthropic client configured',
+      alias,
+      authMode: 'authToken (Authorization: Bearer)',
+      betaHeader,
+      keyShape: describeKeyShape(anthropicKey),
+    }),
+  )
+  const anthropic = new Anthropic({
+    authToken: anthropicKey,
+    defaultHeaders: { 'anthropic-beta': betaHeader },
+  })
 
   // 1. Claim next action
   const action = await sdk.claimNextAction('ContentBuilder', 'newsflow/content')
@@ -355,8 +483,8 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
   )
 
   try {
-    // 2. Generate content
-    const content = await generateContent(anthropic, action.payload)
+    // 2. Generate content (with 65-second rate-limit retry)
+    const content = await withRateLimitRetry(() => generateContent(anthropic, action.payload))
 
     // 3. Derive slug + validate (prevents S3 path traversal)
     const topLezersvraag = String(action.payload.topLezersvraag ?? '')
@@ -482,24 +610,50 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
       }),
     )
   } catch (err) {
+    const is429 = err instanceof APIError && err.status === 429
     const message = err instanceof Error ? err.message : String(err)
     console.log(
       JSON.stringify({ level: 'ERROR', fn: 'handler', actionId, error: message }),
     )
-    try {
-      await sdk.logIssue(actionId, 'ContentBuilder', message.slice(0, 500), {
-        urgency: action.urgency,
-        topLezersvraag: String(action.payload.topLezersvraag ?? '').slice(0, 100),
-      })
-    } catch (logErr) {
-      console.log(
-        JSON.stringify({
-          level: 'ERROR',
-          fn: 'handler',
-          message: 'logIssue also failed',
-          error: logErr instanceof Error ? logErr.message : String(logErr),
-        }),
-      )
+    if (is429) {
+      logRateLimitHeaders('handler', err as APIError)
+      // Rate limit exhausted — release the action back to open so tomorrow's run retries it
+      try {
+        await sdk.updateActionStatus(actionId, 'open')
+        console.log(
+          JSON.stringify({
+            level: 'WARN',
+            fn: 'handler',
+            actionId,
+            message: '[ContentBuilder] Rate limit persistent — action released to open for next run',
+          }),
+        )
+      } catch (releaseErr) {
+        console.log(
+          JSON.stringify({
+            level: 'ERROR',
+            fn: 'handler',
+            message: 'Failed to release action after rate limit',
+            error: releaseErr instanceof Error ? releaseErr.message : String(releaseErr),
+          }),
+        )
+      }
+    } else {
+      try {
+        await sdk.logIssue(actionId, 'ContentBuilder', message.slice(0, 500), {
+          urgency: action.urgency,
+          topLezersvraag: String(action.payload.topLezersvraag ?? '').slice(0, 100),
+        })
+      } catch (logErr) {
+        console.log(
+          JSON.stringify({
+            level: 'ERROR',
+            fn: 'handler',
+            message: 'logIssue also failed',
+            error: logErr instanceof Error ? logErr.message : String(logErr),
+          }),
+        )
+      }
     }
   }
 }
