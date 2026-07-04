@@ -8,6 +8,7 @@ import {
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb'
 import jwt from 'jsonwebtoken'
+import { urgencyDesc } from './lib/ainternloop'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
@@ -502,6 +503,249 @@ async function handleGetAction(
   return respond(200, item, alias, requestOrigin)
 }
 
+const MAX_LEZERSVRAAG_LENGTH = 500
+const MAX_LEZERSVRAGEN_ENTRIES = 5
+
+async function handlePatchAction(
+  id: string,
+  event: APIGatewayProxyEvent,
+  tableName: string,
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(event.body ?? '{}')
+  } catch {
+    throw Object.assign(new Error('Invalid JSON body'), { statusCode: 400 })
+  }
+
+  const body = parsed as Record<string, unknown>
+  const rawUrgency = body['urgency']
+  const rawPayload = body['payload']
+  const rawStatus = body['status']
+
+  if (rawUrgency === undefined && rawPayload === undefined && rawStatus === undefined) {
+    throw Object.assign(
+      new Error('At least one of urgency, payload, status must be provided'),
+      { statusCode: 400 },
+    )
+  }
+
+  let newUrgency: number | undefined
+  if (rawUrgency !== undefined) {
+    if (
+      typeof rawUrgency !== 'number' ||
+      !Number.isInteger(rawUrgency) ||
+      rawUrgency < 1 ||
+      rawUrgency > 100
+    ) {
+      throw Object.assign(new Error('urgency must be an integer between 1 and 100'), {
+        statusCode: 400,
+      })
+    }
+    newUrgency = rawUrgency
+  }
+
+  let newStatus: string | undefined
+  if (rawStatus !== undefined) {
+    if (rawStatus !== 'cancelled') {
+      throw Object.assign(
+        new Error('Only status "cancelled" is allowed from this endpoint'),
+        { statusCode: 400 },
+      )
+    }
+    newStatus = rawStatus
+  }
+
+  let payloadPatch: Record<string, unknown> | undefined
+  if (rawPayload !== undefined) {
+    if (typeof rawPayload !== 'object' || rawPayload === null || Array.isArray(rawPayload)) {
+      throw Object.assign(new Error('payload must be an object'), { statusCode: 400 })
+    }
+    const p = rawPayload as Record<string, unknown>
+    payloadPatch = {}
+
+    if (p['topLezersvraag'] !== undefined) {
+      const v = p['topLezersvraag']
+      if (
+        typeof v !== 'string' ||
+        v.trim().length === 0 ||
+        v.trim().length > MAX_LEZERSVRAAG_LENGTH
+      ) {
+        throw Object.assign(
+          new Error(
+            `payload.topLezersvraag must be a non-empty string of ${MAX_LEZERSVRAAG_LENGTH} characters or fewer`,
+          ),
+          { statusCode: 400 },
+        )
+      }
+      payloadPatch['topLezersvraag'] = v.trim()
+    }
+
+    if (p['lezersvragen'] !== undefined) {
+      const v = p['lezersvragen']
+      if (
+        !Array.isArray(v) ||
+        v.length > MAX_LEZERSVRAGEN_ENTRIES ||
+        !v.every((entry) => typeof entry === 'string' && entry.length <= MAX_LEZERSVRAAG_LENGTH)
+      ) {
+        throw Object.assign(
+          new Error(
+            `payload.lezersvragen must be an array of at most ${MAX_LEZERSVRAGEN_ENTRIES} strings, each ${MAX_LEZERSVRAAG_LENGTH} characters or fewer`,
+          ),
+          { statusCode: 400 },
+        )
+      }
+      payloadPatch['lezersvragen'] = v
+    }
+  }
+
+  const existing = await ddb.send(
+    new GetCommand({
+      TableName: tableName,
+      Key: { pk: `ACTION#${id}`, sk: 'META' },
+    }),
+  )
+
+  if (!existing.Item) {
+    return respond(404, { error: `Action ${id} not found` }, alias, requestOrigin)
+  }
+
+  const current = existing.Item as Record<string, unknown>
+  const finalUrgency = newUrgency ?? (current['urgency'] as number)
+  const finalStatus = newStatus ?? (current['status'] as string)
+  const createdAt = current['createdAt'] as string
+  const desc = urgencyDesc(finalUrgency)
+  const now = new Date().toISOString()
+
+  const mergedPayload = {
+    ...((current['payload'] as Record<string, unknown> | undefined) ?? {}),
+    ...(payloadPatch ?? {}),
+  }
+
+  try {
+    const result = await ddb.send(
+      new UpdateCommand({
+        TableName: tableName,
+        Key: { pk: `ACTION#${id}`, sk: 'META' },
+        UpdateExpression:
+          'SET #status = :status, urgency = :urgency, payload = :payload, updatedAt = :now, GSI1sk = :gsi1sk, GSI2sk = :gsi2sk',
+        ConditionExpression: 'attribute_exists(pk) AND #status = :openStatus',
+        ExpressionAttributeNames: { '#status': 'status' },
+        ExpressionAttributeValues: {
+          ':status': finalStatus,
+          ':urgency': finalUrgency,
+          ':payload': mergedPayload,
+          ':now': now,
+          ':gsi1sk': `STATUS#${finalStatus}#${desc}#${createdAt}`,
+          ':gsi2sk': `STATUS#${finalStatus}#${createdAt}`,
+          ':openStatus': 'open',
+        },
+        ReturnValues: 'ALL_NEW',
+      }),
+    )
+
+    const {
+      pk: _pk,
+      sk: _sk,
+      GSI1pk: _g1pk,
+      GSI1sk: _g1sk,
+      GSI2pk: _g2pk,
+      GSI2sk: _g2sk,
+      ...updated
+    } = (result.Attributes ?? {}) as Record<string, unknown>
+    console.log(
+      '[ainternloop-admin] handlePatchAction | updated action=%s status=%s urgency=%d',
+      id,
+      finalStatus,
+      finalUrgency,
+    )
+    return respond(200, updated, alias, requestOrigin)
+  } catch (err: unknown) {
+    if ((err as { name?: string }).name === 'ConditionalCheckFailedException') {
+      return respond(409, { error: 'Action already claimed or modified' }, alias, requestOrigin)
+    }
+    throw err
+  }
+}
+
+// ── Priority Topics ──────────────────────────────────────────────────────────
+
+const MAX_PRIORITY_TOPICS = 50
+const MAX_TOPIC_LENGTH = 100
+
+async function handleGetPriorityTopics(
+  tableName: string,
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  const result = await ddb.send(
+    new GetCommand({
+      TableName: tableName,
+      Key: { pk: 'CONFIG#priority-topics', sk: 'META' },
+    }),
+  )
+
+  const topics = (result.Item?.['topics'] as string[] | undefined) ?? []
+  return respond(200, { topics }, alias, requestOrigin)
+}
+
+async function handlePutPriorityTopics(
+  event: APIGatewayProxyEvent,
+  tableName: string,
+  alias: string,
+  requestOrigin?: string,
+): Promise<APIGatewayProxyResult> {
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(event.body ?? '{}')
+  } catch {
+    throw Object.assign(new Error('Invalid JSON body'), { statusCode: 400 })
+  }
+
+  const body = parsed as Record<string, unknown>
+  const rawTopics = body['topics']
+
+  if (!Array.isArray(rawTopics) || !rawTopics.every((t) => typeof t === 'string')) {
+    throw Object.assign(new Error('topics must be an array of strings'), { statusCode: 400 })
+  }
+
+  const trimmed = rawTopics.map((t) => t.trim()).filter((t) => t.length > 0)
+  const topics = Array.from(new Set(trimmed))
+
+  if (topics.length > MAX_PRIORITY_TOPICS) {
+    throw Object.assign(
+      new Error(`topics must contain at most ${MAX_PRIORITY_TOPICS} entries`),
+      { statusCode: 400 },
+    )
+  }
+  if (topics.some((t) => t.length > MAX_TOPIC_LENGTH)) {
+    throw Object.assign(
+      new Error(`each topic must be ${MAX_TOPIC_LENGTH} characters or fewer`),
+      { statusCode: 400 },
+    )
+  }
+
+  const now = new Date().toISOString()
+
+  await ddb.send(
+    new UpdateCommand({
+      TableName: tableName,
+      Key: { pk: 'CONFIG#priority-topics', sk: 'META' },
+      UpdateExpression: 'SET topics = :topics, updatedAt = :now, updatedBy = :by',
+      ExpressionAttributeValues: {
+        ':topics': topics,
+        ':now': now,
+        ':by': 'human',
+      },
+    }),
+  )
+
+  console.log('[ainternloop-admin] handlePutPriorityTopics | saved %d topics', topics.length)
+  return respond(200, { topics, updatedAt: now }, alias, requestOrigin)
+}
+
 // ── NewsFlow Pages ────────────────────────────────────────────────────────────
 
 async function handleListNewsFlowPages(
@@ -615,6 +859,20 @@ export async function handler(
     if (httpMethod === 'GET' && resource === '/admin/ainternloop/actions/{id}') {
       const id = pathParameters?.['id'] ?? ''
       return await handleGetAction(id, tableName, alias, requestOrigin)
+    }
+
+    if (httpMethod === 'PATCH' && resource === '/admin/ainternloop/actions/{id}') {
+      const id = pathParameters?.['id'] ?? ''
+      return await handlePatchAction(id, event, tableName, alias, requestOrigin)
+    }
+
+    // Priority Topics
+    if (httpMethod === 'GET' && resource === '/admin/ainternloop/priority-topics') {
+      return await handleGetPriorityTopics(tableName, alias, requestOrigin)
+    }
+
+    if (httpMethod === 'PUT' && resource === '/admin/ainternloop/priority-topics') {
+      return await handlePutPriorityTopics(event, tableName, alias, requestOrigin)
     }
 
     // NewsFlow Pages

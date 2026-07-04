@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-06-29
+> Laatste update: 2026-07-04
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
@@ -959,6 +959,73 @@ Doe de gratis Workflow Scan in 3 minuten &rarr;
 
 Dagelijkse landingspagina's over actueel nieuws met AI-automatiseringsadvies voor MKB-ondernemers.
 
+### Hoe voorkom je als kinderopvang dat een kind achterblijft?
+
+**URL:** https://aintern.nl/newsflow/hoe-kunnen-kinderopvangbedrijven-met-digitale-automatisering-en-checklisten-erns
+**Gepubliceerd:** 2026-07-04
+**Lezersvraag:** Hoe kunnen kinderopvangbedrijven met (digitale) automatisering en checklisten ernstige fouten zoals kinderen achterlaten voorkomen?
+
+Op 26 juni 2026 bleef een 1-jarige jongen alleen achter in een kinderopvanglocatie, waarna het betrokken personeel op non-actief werd gesteld. Het incident schokt de sector en roept een urgente vraag op voor iedere kinderopvangondernemer: hoe zeker weet jij dat jouw processen waterdicht zijn?
+Incidenten als dit zijn zelden het gevolg van kwade wil — ze ontstaan door opgestapelde kleine menselijke fouten: een vergeten handtekening, een niet-afgevinkte checklist, een mondelinge overdracht die niet goed aankomt. Juist in een drukke operationele omgeving, waar medewerkers tegelijkertijd meerdere kinderen begeleiden, is de kans op zo'n fout reëel. Digitale automatisering en slimme checklisten kunnen die kans structureel verkleinen — niet als vervanging van betrokken medewerkers, maar als vangnet dat altijd meekijkt.
+
+De kinderopvangsector in Nederland valt onder strenge regelgeving. De Wet kinderopvang verplicht houders tot het voeren van een actueel risico-inventarisatie- en -evaluatiebeleid (RI&E), inclusief een veiligheids- en gezondheidsbeleid. De GGD inspecteert jaarlijks op naleving van de Beleidsregels kwaliteit kinderopvang, waarbij aanwezigheidsregistratie en vier-ogenprincipe centrale toetspunten zijn.
+Toch blijkt de praktijk weerbarstig. Kinderopvanglocaties werken met wisselende bezetting, stagiaires, en piekmomenten bij halen en brengen. Papieren presentielijsten worden niet altijd direct bijgehouden, en mondelinge overdrachten tussen medewerkers zijn foutgevoelig. Digitale aanwezigheidssystemen — waarbij ouders zelf in- en uitchecken via een app en het systeem automatisch een alert geeft bij afwijkingen — bestaan al, maar zijn lang niet overal geïmplementeerd.
+Na elk groot incident in de sector volgt doorgaans een golf van inspectieverscherpingen en brancherichtlijnen. Voor MKB-kinderopvangondernemers is het verstandig niet te wachten op die golf, maar nu proactief de eigen processen te screenen en te versterken met beschikbare technologie.
+
+Voor kinderopvangbedrijven met meerdere groepen of locaties zijn de gevolgen van een incident als dit verwoestend: reputatieschade, intrekking van de vergunning, civielrechtelijke aansprakelijkheid van de houder en mogelijk strafrechtelijk onderzoek naar betrokken medewerkers. De ondernemer is als houder eindverantwoordelijk, ook als de fout op de werkvloer is gemaakt.
+Concreet zijn dit de kwetsbare momenten in uw dagelijkse operatie:
+Aankomst en vertrek: is elk kind expliciet in- en uitgecheckt, ook bij vroeg of laat ophalen?
+Ruimtewissels: wie verifieert dat alle kinderen de slaapkamer of buitenruimte verlaten hebben?
+Overdracht tussen medewerkers: is er een digitaal logboek of gaat dit mondeling?
+Eindcontrole van de dag: checkt een tweede medewerker actief alle ruimtes?
+Automatisering helpt op elk van deze punten: van een app die pas sluit als álle kinderen zijn uitgeschreven, tot een automatische melding aan een leidinggevende als een kind langer aanwezig is dan verwacht. De investering is laag vergeleken met de risico's.
+
+**V: Welke kwaliteitsstandaarden en controles zijn er voor kinderopvangbedrijven?**
+A: Kinderopvangbedrijven in Nederland zijn wettelijk verplicht te voldoen aan de Wet kinderopvang en de Beleidsregels kwaliteit kinderopvang. De GGD inspecteert jaarlijks op onder andere aanwezigheidsregistratie, het vier-ogenprincipe, risico-inventarisatie (RI&E) en overdrachtsprotocollen. Houders zijn eindverantwoordelijk voor de naleving, ook als de uitvoering bij medewerkers ligt. Niet voldoen kan leiden tot een herstelplan, openbare inspectierapporten of intrekking van de vergunning.
+
+**V: Hoe kunnen kinderopvangbedrijven menselijke fouten voorkomen met automatisering?**
+A: Digitale aanwezigheidssystemen laten ouders zelf in- en uitchecken via een app, waardoor de administratie real-time bijgehouden wordt. Geautomatiseerde alerts waarschuwen medewerkers of leidinggevenden als een kind langer aanwezig is dan gepland of als de eindcontrole niet is afgerond. Digitale checklisten — die pas als 'compleet' worden gemarkeerd als alle stappen zijn uitgevoerd — vervangen foutgevoelige papieren lijsten. Zo wordt elk kritiek moment in de dag verplicht bewust doorlopen en vastgelegd.
+
+**V: Wat zijn de gevolgen voor het bedrijf en wat is de juridische aansprakelijkheid?**
+A: Als houder van een kinderopvanglocatie bent u civielrechtelijk aansprakelijk voor schade die ontstaat door een onveilige situatie, ook als u zelf niet aanwezig was. Naast civiele claims kan de GGD een aanwijzing opleggen of de vergunning intrekken. Bij ernstige nalatigheid is strafrechtelijk onderzoek mogelijk. Reputatieschade is vaak minstens zo ingrijpend: negatieve publiciteit kan leiden tot massale uitschrijvingen en financiële schade die moeilijk te herstellen is. Proactief investeren in veilige processen beperkt dit risico aanzienlijk.
+
+**V: Wat is het vier-ogenprincipe en hoe pas ik het digitaal toe?**
+A: Het vier-ogenprincipe houdt in dat er bij interacties met kinderen altijd een tweede persoon kan meekijken of -luisteren, om misstanden te voorkomen. Digitaal kan dit worden ondersteund door cameratoezicht in gemeenschappelijke ruimtes, digitale logboeken die door twee medewerkers moeten worden geparafeerd, en automatische meldingen wanneer één medewerker langer dan een ingestelde tijd alleen op een groep staat. Dit verankert het principe in het systeem, zodat het niet afhankelijk is van individuele discipline.
+
+**V: Hoe begin ik met het verbeteren van mijn veiligheidsprocessen zonder groot IT-project?**
+A: Start met een procesanalyse: breng alle momenten in kaart waarop kinderen worden overgedragen, verplaatst of achtergelaten, en identificeer waar nu op papier of mondeling wordt gewerkt. Vervolgens kunt u stap voor stap digitaliseren, te beginnen bij de hoogste risicomomenten zoals de dagafsluiting. Tools als digitale checklisten-apps of koppeling met uw bestaande planningssoftware zijn vaak snel te implementeren. Een AI-automatiseringspartner zoals AIntern kan helpen dit snel en praktisch in te richten, afgestemd op uw specifieke locatie en werkwijze.
+
+---
+### Box 3-chaos: wat betekent dit voor jouw MKB-belastingplanning?
+
+**URL:** https://aintern.nl/newsflow/wat-zijn-de-concrete-gevolgen-van-box-3-chaos-voor-mkb-ondernemers-en-hun-belast
+**Gepubliceerd:** 2026-07-04
+**Lezersvraag:** Wat zijn de concrete gevolgen van Box 3-chaos voor MKB-ondernemers en hun belastingplanning?
+
+De Box 3-discussie is inmiddels ook de Eerste Kamer bereikt, maar concrete duidelijkheid over de nieuwe regelgeving laat nog op zich wachten tot het najaar van 2026. Voor MKB-ondernemers die nu moeten nadenken over hun vermogensbelasting en financiële planning, is dit een vervelende situatie. De onzekerheid maakt het lastig om weloverwogen beslissingen te nemen over investeringen, spaargelden en zakelijk vermogen.
+Wat staat er op het spel? Het huidige Box 3-stelsel is al jaren onderwerp van rechtszaken en politieke debatten. De overheid is verplicht een nieuw, rechtvaardig systeem in te voeren na uitspraken van de Hoge Raad, maar de uitwerking blijft stroperig. Voor ondernemers met privévermogen, spaargelden of beleggingen buiten de onderneming betekent dit dat de belastingdruk en de berekeningswijze nog kunnen veranderen — en dat je als ondernemer nu al rekening moet houden met meerdere scenario's tegelijk.
+
+Box 3 belast het inkomen uit vermogen, zoals spaargeld, beleggingen en vastgoed dat niet tot het ondernemingsvermogen behoort. De Hoge Raad oordeelde in 2021 dat het oude stelsel met forfaitaire rendementen in strijd was met Europees recht, omdat het werkelijk behaalde rendement vaak veel lager lag dan de fictieve berekening suggereerde. Sindsdien worstelt de politiek met een houdbaar alternatief.
+Het meest recente voorstel gaat richting een systeem gebaseerd op werkelijk rendement. Maar over de precieze invulling, het overgangsrecht en de terugwerkende kracht bestaat nog steeds geen overeenstemming. De Eerste Kamer heeft nu ook zorgen geuit, waardoor de definitieve besluitvorming verschoven is naar het najaar van 2026. Lopende belastingaanslagen en bezwaarprocedures liggen ondertussen stil of worden aangehouden in afwachting van nieuwe wetgeving. Dit creëert een juridisch en fiscaal vacuüm dat ondernemers direct raakt in hun planning.
+
+Voor MKB-ondernemers zijn de gevolgen concreet en veelzijdig. Ten eerste is er de onzekerheid over de belastingdruk op privévermogen: wie spaargeld, een tweede woning of beleggingen heeft, weet niet welk tarief of welke berekeningsmethode straks van toepassing is. Dit maakt het moeilijk om te beslissen of je vermogen liquide houdt, investeert of omzet in andere vermogenscategorieën.
+Ten tweede speelt de aangifte een rol. Ondernemers die bezwaar hebben aangetekend tegen oude Box 3-aanslagen, wachten op uitsluitsel. Wie dit nog niet heeft gedaan, loopt mogelijk rechten mis. Ten derde zijn er liquiditeitsoverwegingen: als de belastingdruk achteraf hoger uitvalt dan verwacht, kan dat een directe impact hebben op de cashflow van je onderneming of je privésituatie.
+Concrete aandachtspunten voor MKB-ondernemers:
+Controleer of je bezwaar hebt aangetekend of nog kunt aantekenen tegen oude aanslagen
+Bespreek met je accountant welke scenario's er zijn voor jouw specifieke vermogenspositie
+Houd rekening met meerdere uitkomsten in je financiële prognoses voor 2026 en 2027
+Monitor de politieke ontwikkelingen, want het najaar van 2026 brengt waarschijnlijk meer duidelijkheid
+
+**V: Wat zijn de gevolgen van Box 3-wijzigingen voor mijn MKB-vermogen en belastingen?**
+A: De exacte gevolgen zijn nog onzeker, maar het nieuwe Box 3-stelsel zal waarschijnlijk gebaseerd zijn op werkelijk behaald rendement in plaats van een forfaitair percentage. Voor ondernemers met spaargeld kan dit voordeliger uitpakken, maar voor beleggers of bezitters van vastgoed in Box 3 kunnen de regels anders uitwerken. Bespreek jouw specifieke situatie met een fiscalist om te weten wat dit voor jou betekent.
+
+**V: Wanneer krijgen ondernemers duidelijkheid over de nieuwe Box 3-regelgeving?**
+A: Op basis van de huidige politieke stand van zaken wordt duidelijkheid verwacht in het najaar van 2026. De Eerste Kamer heeft nog zorgen geuit over de plannen, waardoor definitieve besluitvorming vertraging heeft opgelopen. Het is verstandig om deze datum in de gaten te houden en alvast verschillende scenario's door te rekenen met je accountant, zodat je snel kunt handelen zodra de wetgeving bekend is.
+
+**V: Hoe moet ik mijn vermogensbelasting aangifte voorbereiden met deze onzekerheid?**
+A: Zorg allereerst dat je aangifte volledig en correct is op basis van de huidige regels. Controleer of je in aanmerking komt voor bezwaar tegen eerdere Box 3-aanslagen, want deadlines hiervoor kunnen gelden. Houd je vermogensoverzicht actueel en bespreek meerdere fiscale scenario's met je accountant. Vermijd grote, onomkeerbare financiële beslissingen puur op basis van de verwachte nieuwe regelgeving totdat er meer zekerheid is.
+
+---
 ### Hoe profiteert uw MKB-bedrijf van simpelere Europese belastingregels?
 
 **URL:** https://aintern.nl/newsflow/hoe-kunnen-nederlandse-mkb-bedrijven-de-vereenvoudigde-europese-belastingregels-

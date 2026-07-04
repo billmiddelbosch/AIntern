@@ -62,6 +62,7 @@ export interface AInternLoopSDK {
   ): Promise<string>
   claimNextAction(targetAgent: string, type: string): Promise<ActionItem | null>
   getAgentInstruction(agentName: string): Promise<string | null>
+  getPriorityTopics(): Promise<string[]>
 }
 
 // ── Validation helpers (H-1, H-2, H-3) ───────────────────────────────────────
@@ -126,7 +127,7 @@ function sanitiseRecord(obj: Record<string, unknown>): Record<string, unknown> {
 // ── Internal helpers ──────────────────────────────────────────────────────────
 
 /** Convert urgency (1–100) to a zero-padded inverted descriptor so high urgency sorts first lexicographically. */
-function urgencyDesc(urgency: number): string {
+export function urgencyDesc(urgency: number): string {
   return String(100 - urgency).padStart(3, '0')
 }
 
@@ -512,6 +513,23 @@ export function createAInternLoopSDK(
     return (result.Item as { instruction: string }).instruction
   }
 
+  // ── getPriorityTopics ───────────────────────────────────────────────────────
+
+  async function getPriorityTopics(): Promise<string[]> {
+    const result = await ddb.send(
+      new GetCommand({
+        TableName: table,
+        Key: { pk: 'CONFIG#priority-topics', sk: 'META' },
+      }),
+    )
+
+    const found = result.Item !== undefined
+    log('getPriorityTopics', { found })
+
+    if (!found) return []
+    return (result.Item as { topics: string[] }).topics ?? []
+  }
+
   // ── Return SDK ──────────────────────────────────────────────────────────────
 
   return {
@@ -521,5 +539,6 @@ export function createAInternLoopSDK(
     completeAction,
     logIssue,
     getAgentInstruction,
+    getPriorityTopics,
   }
 }
