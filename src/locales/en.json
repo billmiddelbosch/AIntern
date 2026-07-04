@@ -734,5 +734,52 @@
       "title": "Free AI Workflow Scan — Discover Your Top 3 Bottlenecks | AIntern",
       "description": "Take the free AI Workflow Scan in 3 minutes. Answer 5 questions and receive your top-3 bottlenecks plus concrete AI recommendations for your business."
     }
+  },
+  "pokerOdds": {
+    "meta": {
+      "title": "Poker Odds Calculator — Real-Time Equity | AIntern PoC",
+      "description": "A proof-of-concept poker equity calculator. Enter your hole cards and the community cards street-by-street to see your live win probability via Monte Carlo simulation."
+    },
+    "eyebrow": "AIntern PoC",
+    "headline": "Poker Odds Calculator",
+    "subtext": "Enter your hole cards, then the flop, turn and river — your win probability updates live after every street.",
+    "hand": {
+      "label": "Your hand"
+    },
+    "community": {
+      "label": "Community cards"
+    },
+    "opponents": {
+      "label": "Opponents",
+      "decrease": "Decrease number of opponents",
+      "increase": "Increase number of opponents",
+      "shortcutHint": "Keys: / removes one, ° adds one"
+    },
+    "newGame": "New game",
+    "picker": {
+      "heading": "Pick a card",
+      "hint": "Click a card, or type its rank + suit (e.g. \"Ah\" for Ace of hearts).",
+      "editingHint": "Re-selecting — pick a card to replace the highlighted one."
+    },
+    "handComplete": "Hand complete. Start a new game to deal again.",
+    "card": {
+      "emptySlot": "Empty card slot",
+      "of": "of",
+      "alreadyInPlay": "already in play"
+    },
+    "suits": {
+      "spades": "spades",
+      "hearts": "hearts",
+      "diamonds": "diamonds",
+      "clubs": "clubs"
+    },
+    "results": {
+      "calculating": "Calculating…",
+      "win": "Win",
+      "tie": "Tie",
+      "lose": "Lose",
+      "simulatedHands": "Based on {count} simulated hands",
+      "emptyState": "Enter your hole cards to see your win probability"
+    }
   }
 }

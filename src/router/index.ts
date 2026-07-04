@@ -165,4 +165,10 @@ export const routes: RouteRecordRaw[] = [
     component: () => import('@/views/NewsFlowView.vue'),
     meta: { layout: 'public' },
   },
+  {
+    path: '/poker-odds-calculator',
+    name: 'poker-odds-calculator',
+    component: () => import('@/views/PokerOddsCalculatorView.vue'),
+    meta: { layout: 'public' },
+  },
 ]

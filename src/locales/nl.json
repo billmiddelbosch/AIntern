@@ -734,5 +734,52 @@
       "title": "Gratis AI Workflow Scan — Ontdek je top-3 knelpunten | AIntern",
       "description": "Doe de gratis AI Workflow Scan in 3 minuten. Beantwoord 5 vragen en ontvang direct je top-3 knelpunten plus concrete AI-aanbevelingen voor jouw bedrijf."
     }
+  },
+  "pokerOdds": {
+    "meta": {
+      "title": "Poker Odds Calculator — Live Winkans | AIntern PoC",
+      "description": "Een proof-of-concept poker equity calculator. Voer je hole cards en de community cards stap voor stap in en zie je live winkans via Monte Carlo-simulatie."
+    },
+    "eyebrow": "AIntern PoC",
+    "headline": "Poker Odds Calculator",
+    "subtext": "Voer je hole cards in, gevolgd door de flop, turn en river — je winkans wordt na elke straat live bijgewerkt.",
+    "hand": {
+      "label": "Jouw hand"
+    },
+    "community": {
+      "label": "Community cards"
+    },
+    "opponents": {
+      "label": "Tegenstanders",
+      "decrease": "Aantal tegenstanders verlagen",
+      "increase": "Aantal tegenstanders verhogen",
+      "shortcutHint": "Toetsen: / verlaagt, ° verhoogt"
+    },
+    "newGame": "Nieuw spel",
+    "picker": {
+      "heading": "Kies een kaart",
+      "hint": "Klik op een kaart, of typ rang + kleur (bijv. \"Ah\" voor Aas harten).",
+      "editingHint": "Opnieuw kiezen — kies een kaart om de gemarkeerde te vervangen."
+    },
+    "handComplete": "Hand compleet. Start een nieuw spel om opnieuw te delen.",
+    "card": {
+      "emptySlot": "Lege kaartplek",
+      "of": "van",
+      "alreadyInPlay": "al in gebruik"
+    },
+    "suits": {
+      "spades": "schoppen",
+      "hearts": "harten",
+      "diamonds": "ruiten",
+      "clubs": "klaveren"
+    },
+    "results": {
+      "calculating": "Berekenen…",
+      "win": "Winst",
+      "tie": "Gelijkspel",
+      "lose": "Verlies",
+      "simulatedHands": "Gebaseerd op {count} gesimuleerde handen",
+      "emptyState": "Voer je hole cards in om je winkans te zien"
+    }
   }
 }
