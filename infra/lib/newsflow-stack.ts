@@ -64,11 +64,11 @@ export class NewsFlowStack extends cdk.Stack {
     // SSM params to create manually before first deploy:
     //   (none — bucket name is static 'aintern-newsflow')
     //
-    // GitHub token (for I-14 branch-workflow) — create manually:
-    //   aws ssm put-parameter --name /aintern/dev/github/token \
-    //     --value "<PAT with repo scope>" --type SecureString --region eu-west-2
-    //   aws ssm put-parameter --name /aintern/prod/github/token \
-    //     --value "<PAT with repo scope>" --type SecureString --region eu-west-2
+    // Amplify build webhook (sitemap/llms refresh) — create manually:
+    //   aws amplify create-webhook --region eu-west-1 --app-id <app-id> --branch-name production
+    //   aws ssm put-parameter --name /aintern/prod/amplify/build-webhook-url \
+    //     --value "<webhookUrl>" --type SecureString --region eu-west-2
+    //   (same for the staging branch → /aintern/dev/amplify/build-webhook-url)
     const newsflowBucket = new s3.Bucket(this, 'NewsFlowBucket', {
       bucketName: 'aintern-newsflow',
       blockPublicAccess: new s3.BlockPublicAccess({
@@ -195,12 +195,11 @@ export class NewsFlowStack extends cdk.Stack {
         'Claims newsflow/content actions, generates MKB landing pages via Claude Sonnet (I-12)',
       runtime: lambda.Runtime.NODEJS_22_X,
       code: lambdaCode,
-      timeout: cdk.Duration.seconds(300), // Sonnet generation ~30-60s + git clone + S3
+      timeout: cdk.Duration.seconds(300), // Sonnet generation ~30-60s + S3 + webhook
       environment: {
         LOOP_TABLE_NAME: loopTable.tableName,
         NEWSFLOW_TABLE_NAME: newsflowTable.tableName,
         NEWSFLOW_BUCKET_NAME: newsflowBucket.bucketName,
-        GITHUB_REPO: 'billmiddelbosch/AIntern',
       },
     })
 
@@ -244,20 +243,20 @@ export class NewsFlowStack extends cdk.Stack {
       }),
     )
 
-    // IAM — SSM: Anthropic API key + GitHub token for both aliases
+    // IAM — SSM: Anthropic API key + Amplify build webhook for both aliases
     contentBuilderFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ssm:GetParameter'],
         resources: [
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/anthropic/api-key`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/anthropic/api-key`,
-          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/github/token`,
-          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/github/token`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/amplify/build-webhook-url`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/amplify/build-webhook-url`,
         ],
       }),
     )
 
-    // IAM — KMS: decrypt SecureStrings (Anthropic key + GitHub token)
+    // IAM — KMS: decrypt SecureStrings (Anthropic key + webhook URL)
     contentBuilderFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['kms:Decrypt'],
@@ -292,7 +291,6 @@ export class NewsFlowStack extends cdk.Stack {
       environment: {
         NEWSFLOW_TABLE_NAME: newsflowTable.tableName,
         NEWSFLOW_BUCKET_NAME: newsflowBucket.bucketName,
-        GITHUB_REPO: 'billmiddelbosch/AIntern',
       },
     })
 
@@ -321,7 +319,7 @@ export class NewsFlowStack extends cdk.Stack {
       }),
     )
 
-    // IAM — SSM: shared GA4 params (same as kpi-integrations) + Anthropic + GitHub token
+    // IAM — SSM: shared GA4 params (same as kpi-integrations) + Anthropic + Amplify webhook
     seoOptimizerFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['ssm:GetParameter'],
@@ -332,8 +330,8 @@ export class NewsFlowStack extends cdk.Stack {
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/ga4/service-account-json`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/ga4/property-id`,
           `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/ga4/property-id`,
-          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/github/token`,
-          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/github/token`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/amplify/build-webhook-url`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/amplify/build-webhook-url`,
         ],
       }),
     )
