@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useAInternLoopApi } from '@/composables/useAInternLoopApi'
+import type { ActionItem } from '@/types/ainternloop'
 
-type Tab = 'issues' | 'agents' | 'acties'
+type Tab = 'issues' | 'agents' | 'acties' | 'topics'
 
 const { t } = useI18n()
 const activeTab = ref<Tab>('issues')
@@ -12,15 +13,21 @@ const {
   loadingIssues,
   loadingAgents,
   loadingActions,
+  loadingPriorityTopics,
   error,
   issues,
   agents,
   actions,
+  priorityTopics,
   fetchIssues,
   closeIssue,
   fetchAgents,
   updateAgentInstruction,
   fetchActions,
+  fetchActionDetail,
+  updateAction,
+  fetchPriorityTopics,
+  updatePriorityTopics,
 } = useAInternLoopApi()
 
 const expandedIssue = ref<string | null>(null)
@@ -28,6 +35,42 @@ const closingIssue = ref<string | null>(null)
 const editingAgent = ref<string | null>(null)
 const editInstruction = ref('')
 const savingAgent = ref<string | null>(null)
+
+// artikelUrl originates from RSS <link> and is stored/rendered verbatim — validate scheme before use as href.
+function isSafeUrl(url: string): boolean {
+  try {
+    const u = new URL(url)
+    return u.protocol === 'https:' || u.protocol === 'http:'
+  } catch {
+    return false
+  }
+}
+
+const ACTION_STATUSES = ['open', 'in_progress', 'on_hold', 'completed'] as const
+const filterStatus = ref('')
+const filterAgent = ref('')
+const expandedAction = ref<string | null>(null)
+const loadingActionDetail = ref<string | null>(null)
+const actionDetails = ref<Record<string, ActionItem>>({})
+const editingAction = ref<string | null>(null)
+const editUrgency = ref(1)
+const editTopLezersvraag = ref('')
+const savingAction = ref<string | null>(null)
+const cancellingAction = ref<string | null>(null)
+
+const agentOptions = computed(() => {
+  const names = new Set<string>()
+  for (const a of agents.value) names.add(a.agentName)
+  for (const act of actions.value) {
+    names.add(act.sourceAgent)
+    names.add(act.targetAgent)
+  }
+  return Array.from(names).sort()
+})
+
+const newTopicText = ref('')
+const editableTopics = ref<string[]>([])
+const savingTopics = ref(false)
 
 function toggleIssue(issueId: string) {
   expandedIssue.value = expandedIssue.value === issueId ? null : issueId
@@ -65,11 +108,112 @@ async function handleSaveAgent(agentName: string) {
   }
 }
 
+function currentActionFilters(): { status?: string; agent?: string } {
+  const filters: { status?: string; agent?: string } = {}
+  if (filterStatus.value) filters.status = filterStatus.value
+  if (filterAgent.value) filters.agent = filterAgent.value
+  return filters
+}
+
+async function handleFilterChange() {
+  expandedAction.value = null
+  await fetchActions(currentActionFilters())
+}
+
+async function toggleAction(actionId: string) {
+  if (expandedAction.value === actionId) {
+    expandedAction.value = null
+    return
+  }
+  expandedAction.value = actionId
+  if (!actionDetails.value[actionId]) {
+    loadingActionDetail.value = actionId
+    try {
+      actionDetails.value[actionId] = await fetchActionDetail(actionId)
+    } finally {
+      loadingActionDetail.value = null
+    }
+  }
+}
+
+function startEditAction(action: ActionItem) {
+  editingAction.value = action.actionId
+  editUrgency.value = action.urgency
+  const detail = actionDetails.value[action.actionId]
+  editTopLezersvraag.value = (detail?.payload?.['topLezersvraag'] as string | undefined) ?? ''
+}
+
+function cancelEditAction() {
+  editingAction.value = null
+}
+
+async function handleSaveAction(actionId: string) {
+  savingAction.value = actionId
+  try {
+    await updateAction(actionId, {
+      urgency: editUrgency.value,
+      payload: editTopLezersvraag.value.trim()
+        ? { topLezersvraag: editTopLezersvraag.value.trim() }
+        : undefined,
+    })
+    delete actionDetails.value[actionId]
+    await fetchActions(currentActionFilters())
+    if (expandedAction.value === actionId) {
+      actionDetails.value[actionId] = await fetchActionDetail(actionId)
+    }
+    editingAction.value = null
+  } finally {
+    savingAction.value = null
+  }
+}
+
+async function handleCancelAction(actionId: string) {
+  cancellingAction.value = actionId
+  try {
+    await updateAction(actionId, { status: 'cancelled' })
+    await fetchActions(currentActionFilters())
+  } finally {
+    cancellingAction.value = null
+    if (expandedAction.value === actionId) expandedAction.value = null
+    if (editingAction.value === actionId) editingAction.value = null
+  }
+}
+
+async function loadTopics() {
+  await fetchPriorityTopics()
+  editableTopics.value = [...priorityTopics.value]
+}
+
+function addTopic() {
+  const value = newTopicText.value.trim()
+  if (!value) return
+  if (!editableTopics.value.includes(value)) editableTopics.value.push(value)
+  newTopicText.value = ''
+}
+
+function removeTopic(topic: string) {
+  editableTopics.value = editableTopics.value.filter((t) => t !== topic)
+}
+
+async function handleSaveTopics() {
+  savingTopics.value = true
+  try {
+    await updatePriorityTopics(editableTopics.value)
+    editableTopics.value = [...priorityTopics.value]
+  } finally {
+    savingTopics.value = false
+  }
+}
+
 function selectTab(tab: Tab) {
   activeTab.value = tab
   if (tab === 'issues' && issues.value.length === 0) fetchIssues()
   if (tab === 'agents' && agents.value.length === 0) fetchAgents()
-  if (tab === 'acties' && actions.value.length === 0) fetchActions()
+  if (tab === 'acties') {
+    if (actions.value.length === 0) fetchActions(currentActionFilters())
+    if (agents.value.length === 0) fetchAgents()
+  }
+  if (tab === 'topics' && priorityTopics.value.length === 0) loadTopics()
 }
 
 function statusBadgeClass(status: string): string {
@@ -119,7 +263,7 @@ onMounted(() => fetchIssues())
     <!-- Tabs -->
     <div class="flex border-b border-slate-200 gap-1">
       <button
-        v-for="tab in (['issues', 'agents', 'acties'] as const)"
+        v-for="tab in (['issues', 'agents', 'acties', 'topics'] as const)"
         :key="tab"
         class="px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors"
         :class="activeTab === tab
@@ -268,7 +412,32 @@ onMounted(() => fetchIssues())
     </div>
 
     <!-- ── Acties tab ──────────────────────────────────────────────────── -->
-    <div v-else-if="activeTab === 'acties'">
+    <div v-else-if="activeTab === 'acties'" class="space-y-4">
+      <div class="flex flex-wrap gap-3">
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-medium text-slate-500">{{ t('admin.ainternloop.actions.filters.status') }}</label>
+          <select
+            v-model="filterStatus"
+            class="rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            @change="handleFilterChange"
+          >
+            <option value="">{{ t('admin.ainternloop.actions.filters.all') }}</option>
+            <option v-for="s in ACTION_STATUSES" :key="s" :value="s">{{ s }}</option>
+          </select>
+        </div>
+        <div class="flex items-center gap-2">
+          <label class="text-xs font-medium text-slate-500">{{ t('admin.ainternloop.actions.filters.agent') }}</label>
+          <select
+            v-model="filterAgent"
+            class="rounded-lg border border-slate-300 px-2 py-1.5 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            @change="handleFilterChange"
+          >
+            <option value="">{{ t('admin.ainternloop.actions.filters.all') }}</option>
+            <option v-for="a in agentOptions" :key="a" :value="a">{{ a }}</option>
+          </select>
+        </div>
+      </div>
+
       <div v-if="loadingActions" class="py-12 text-center text-slate-400 text-sm">
         {{ t('admin.ainternloop.loading') }}
       </div>
@@ -285,28 +454,182 @@ onMounted(() => fetchIssues())
               <th class="px-4 py-3">{{ t('admin.ainternloop.actions.cols.source') }}</th>
               <th class="px-4 py-3">{{ t('admin.ainternloop.actions.cols.target') }}</th>
               <th class="px-4 py-3">{{ t('admin.ainternloop.actions.cols.created') }}</th>
+              <th class="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody class="divide-y divide-slate-100">
-            <tr
-              v-for="action in actions"
-              :key="action.actionId"
-              class="hover:bg-slate-50 transition-colors"
-            >
-              <td class="px-4 py-3 text-slate-700 font-mono text-xs">{{ action.type }}</td>
-              <td class="px-4 py-3">
-                <span
-                  class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
-                  :class="actionStatusBadgeClass(action.status)"
-                >{{ action.status }}</span>
-              </td>
-              <td class="px-4 py-3 text-slate-600">{{ action.urgency }}</td>
-              <td class="px-4 py-3 text-slate-500">{{ action.sourceAgent }}</td>
-              <td class="px-4 py-3 text-slate-500">{{ action.targetAgent }}</td>
-              <td class="px-4 py-3 text-slate-400 whitespace-nowrap">{{ formatDate(action.createdAt) }}</td>
-            </tr>
+            <template v-for="action in actions" :key="action.actionId">
+              <tr
+                class="hover:bg-slate-50 cursor-pointer transition-colors"
+                @click="toggleAction(action.actionId)"
+              >
+                <td class="px-4 py-3 text-slate-700 font-mono text-xs">{{ action.type }}</td>
+                <td class="px-4 py-3">
+                  <span
+                    class="inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium"
+                    :class="actionStatusBadgeClass(action.status)"
+                  >{{ action.status }}</span>
+                </td>
+                <td class="px-4 py-3 text-slate-600">{{ action.urgency }}</td>
+                <td class="px-4 py-3 text-slate-500">{{ action.sourceAgent }}</td>
+                <td class="px-4 py-3 text-slate-500">{{ action.targetAgent }}</td>
+                <td class="px-4 py-3 text-slate-400 whitespace-nowrap">{{ formatDate(action.createdAt) }}</td>
+                <td class="px-4 py-3 text-right">
+                  <span class="text-slate-300 text-xs">{{ expandedAction === action.actionId ? '▲' : '▼' }}</span>
+                </td>
+              </tr>
+              <tr v-if="expandedAction === action.actionId" :key="`${action.actionId}-detail`">
+                <td colspan="7" class="px-4 pb-4 bg-slate-50">
+                  <div v-if="loadingActionDetail === action.actionId" class="pt-3 text-xs text-slate-400">
+                    {{ t('admin.ainternloop.loading') }}
+                  </div>
+                  <div v-else class="space-y-3 pt-2">
+                    <template v-if="editingAction === action.actionId">
+                      <div>
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.cols.urgency') }}</p>
+                        <input
+                          v-model.number="editUrgency"
+                          type="number"
+                          min="1"
+                          max="100"
+                          class="w-24 rounded-lg border border-slate-300 px-2 py-1 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        />
+                      </div>
+                      <div>
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.topLezersvraag') }}</p>
+                        <textarea
+                          v-model="editTopLezersvraag"
+                          rows="3"
+                          class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-y"
+                        />
+                      </div>
+                      <div class="flex gap-2">
+                        <button
+                          class="rounded-lg px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+                          :disabled="savingAction === action.actionId"
+                          @click.stop="handleSaveAction(action.actionId)"
+                        >
+                          {{ savingAction === action.actionId ? t('admin.ainternloop.actions.saving') : t('admin.ainternloop.actions.save') }}
+                        </button>
+                        <button
+                          class="rounded-lg px-3 py-1.5 text-xs font-medium border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors"
+                          @click.stop="cancelEditAction"
+                        >
+                          {{ t('admin.ainternloop.actions.cancel') }}
+                        </button>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['topLezersvraag']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.topLezersvraag') }}</p>
+                        <p class="text-sm text-slate-700">{{ actionDetails[action.actionId]?.payload?.['topLezersvraag'] }}</p>
+                      </div>
+                      <div v-if="(actionDetails[action.actionId]?.payload?.['lezersvragen'] as string[] | undefined)?.length">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.lezersvragen') }}</p>
+                        <ul class="text-sm text-slate-700 list-disc list-inside space-y-0.5">
+                          <li v-for="(vraag, idx) in (actionDetails[action.actionId]?.payload?.['lezersvragen'] as string[])" :key="idx">{{ vraag }}</li>
+                        </ul>
+                      </div>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['artikelTitel']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.artikelTitel') }}</p>
+                        <p class="text-sm text-slate-700">{{ actionDetails[action.actionId]?.payload?.['artikelTitel'] }}</p>
+                      </div>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['artikelUrl']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.artikelUrl') }}</p>
+                        <a
+                          v-if="isSafeUrl(actionDetails[action.actionId]?.payload?.['artikelUrl'] as string)"
+                          :href="actionDetails[action.actionId]?.payload?.['artikelUrl'] as string"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          class="text-sm text-indigo-600 hover:text-indigo-800 break-all"
+                          @click.stop
+                        >{{ actionDetails[action.actionId]?.payload?.['artikelUrl'] }}</a>
+                        <span v-else class="text-sm text-slate-500 break-all">{{ actionDetails[action.actionId]?.payload?.['artikelUrl'] }}</span>
+                      </div>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['urgencyReason']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.urgencyReason') }}</p>
+                        <p class="text-sm text-slate-700">{{ actionDetails[action.actionId]?.payload?.['urgencyReason'] }}</p>
+                      </div>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['rssSource']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.rssSource') }}</p>
+                        <p class="text-sm text-slate-700">{{ actionDetails[action.actionId]?.payload?.['rssSource'] }}</p>
+                      </div>
+                      <div v-if="actionDetails[action.actionId]?.payload?.['publishedAt']">
+                        <p class="text-xs font-medium text-slate-500 mb-1">{{ t('admin.ainternloop.actions.detail.publishedAt') }}</p>
+                        <p class="text-sm text-slate-700">{{ formatDate(actionDetails[action.actionId]?.payload?.['publishedAt'] as string) }}</p>
+                      </div>
+                      <div v-if="action.status === 'open'" class="flex gap-2 pt-1">
+                        <button
+                          class="rounded-lg px-3 py-1.5 text-xs font-medium bg-indigo-600 text-white hover:bg-indigo-700 transition-colors"
+                          @click.stop="startEditAction(action)"
+                        >
+                          {{ t('admin.ainternloop.actions.edit') }}
+                        </button>
+                        <button
+                          class="rounded-lg px-3 py-1.5 text-xs font-medium bg-red-600 text-white hover:bg-red-700 disabled:opacity-50 transition-colors"
+                          :disabled="cancellingAction === action.actionId"
+                          @click.stop="handleCancelAction(action.actionId)"
+                        >
+                          {{ cancellingAction === action.actionId ? t('admin.ainternloop.actions.cancelling') : t('admin.ainternloop.actions.cancelAction') }}
+                        </button>
+                      </div>
+                    </template>
+                  </div>
+                </td>
+              </tr>
+            </template>
           </tbody>
         </table>
+      </div>
+    </div>
+
+    <!-- ── Onderwerpen tab ─────────────────────────────────────────────── -->
+    <div v-else-if="activeTab === 'topics'" class="space-y-4">
+      <div v-if="loadingPriorityTopics" class="py-12 text-center text-slate-400 text-sm">
+        {{ t('admin.ainternloop.loading') }}
+      </div>
+      <div v-else class="space-y-4">
+        <div v-if="editableTopics.length === 0" class="py-12 text-center text-slate-400 text-sm border border-dashed border-slate-200 rounded-xl">
+          {{ t('admin.ainternloop.topics.empty') }}
+        </div>
+        <div v-else class="flex flex-wrap gap-2">
+          <span
+            v-for="topic in editableTopics"
+            :key="topic"
+            class="inline-flex items-center gap-1.5 rounded-full bg-indigo-50 text-indigo-700 px-3 py-1 text-sm"
+          >
+            {{ topic }}
+            <button
+              class="text-indigo-400 hover:text-indigo-700"
+              :aria-label="t('admin.ainternloop.topics.remove')"
+              @click="removeTopic(topic)"
+            >×</button>
+          </span>
+        </div>
+
+        <div class="flex gap-2">
+          <input
+            v-model="newTopicText"
+            type="text"
+            :placeholder="t('admin.ainternloop.topics.addPlaceholder')"
+            class="flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+            @keyup.enter="addTopic"
+          />
+          <button
+            class="rounded-lg px-3 py-2 text-sm font-medium border border-slate-300 text-slate-600 hover:bg-slate-50 transition-colors"
+            @click="addTopic"
+          >
+            {{ t('admin.ainternloop.topics.add') }}
+          </button>
+        </div>
+
+        <button
+          class="rounded-lg px-4 py-2 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700 disabled:opacity-50 transition-colors"
+          :disabled="savingTopics"
+          @click="handleSaveTopics"
+        >
+          {{ savingTopics ? t('admin.ainternloop.topics.saving') : t('admin.ainternloop.topics.save') }}
+        </button>
       </div>
     </div>
   </div>

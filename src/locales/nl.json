@@ -297,7 +297,8 @@
       "tabs": {
         "issues": "Issues",
         "agents": "Agents",
-        "acties": "Acties"
+        "acties": "Acties",
+        "topics": "Prioriteitsonderwerpen"
       },
       "issues": {
         "empty": "Geen issues gevonden.",
@@ -332,7 +333,35 @@
           "source": "Van agent",
           "target": "Naar agent",
           "created": "Aangemaakt"
-        }
+        },
+        "filters": {
+          "status": "Status",
+          "agent": "Agent",
+          "all": "Alle"
+        },
+        "detail": {
+          "topLezersvraag": "Belangrijkste lezersvraag",
+          "lezersvragen": "Lezersvragen",
+          "artikelTitel": "Artikeltitel",
+          "artikelUrl": "Artikel-URL",
+          "urgencyReason": "Reden urgentie",
+          "rssSource": "RSS-bron",
+          "publishedAt": "Gepubliceerd op"
+        },
+        "edit": "Bewerk",
+        "save": "Opslaan",
+        "saving": "Opslaan…",
+        "cancel": "Annuleer",
+        "cancelAction": "Annuleer actie",
+        "cancelling": "Annuleren…"
+      },
+      "topics": {
+        "empty": "Geen prioriteitsonderwerpen gedefinieerd.",
+        "addPlaceholder": "Nieuw onderwerp…",
+        "add": "Toevoegen",
+        "remove": "Verwijderen",
+        "save": "Opslaan",
+        "saving": "Opslaan…"
       }
     },
     "nieuws": {

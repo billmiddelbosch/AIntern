@@ -5,21 +5,21 @@
  * Daily: selects the published NewsFlow landing page most due for optimization
  * (oldest not recently optimized), fetches Plausible traffic data, generates
  * improvements via Claude Sonnet, writes updated content to S3, logs the
- * optimization in DynamoDB, and updates the sitemap lastmod via branch-workflow.
+ * optimization in DynamoDB, and triggers an Amplify build so the sitemap
+ * lastmod and llms-full.txt reflect the update.
  *
  * Trigger: EventBridge daily at 18:00 UTC (after ContentBuilder at 12:00 UTC).
  *
  * Environment variables:
  *   NEWSFLOW_TABLE_NAME   — aintern-newsflow DynamoDB table name
  *   NEWSFLOW_BUCKET_NAME  — aintern-newsflow S3 bucket name
- *   GITHUB_REPO           — owner/repo, e.g. 'billmiddelbosch/AIntern'
  *   AWS_REGION            — set automatically by the Lambda runtime
  *
  * SSM (shared with kpi-integrations):
  *   /aintern/{alias}/anthropic/api-key
  *   /aintern/{alias}/ga4/service-account-json   — service account credentials JSON
  *   /aintern/{alias}/ga4/property-id             — numeric GA4 property ID
- *   /aintern/{alias}/github/token
+ *   /aintern/{alias}/amplify/build-webhook-url
  */
 
 import type { ScheduledEvent, Context } from 'aws-lambda'
@@ -29,7 +29,7 @@ import { DynamoDBDocumentClient, QueryCommand, UpdateCommand } from '@aws-sdk/li
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import Anthropic from '@anthropic-ai/sdk'
 import { BetaAnalyticsDataClient } from '@google-analytics/data'
-import { publishViaBranch } from './lib/newsflow-branch'
+import { triggerAmplifyBuild } from './lib/amplify-webhook'
 
 // ── Module-level clients ──────────────────────────────────────────────────────
 
@@ -357,39 +357,6 @@ async function generateImprovedContent(
   throw new Error('[SEOOptimizer] generateImprovedContent: unreachable')
 }
 
-// ── Sitemap lastmod update ────────────────────────────────────────────────────
-
-async function fetchGitHubRaw(repo: string, filePath: string): Promise<string | null> {
-  const url = `https://raw.githubusercontent.com/${repo}/main/${filePath}`
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(8_000) })
-    if (res.status === 404) return null
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return await res.text()
-  } catch (err) {
-    console.log(JSON.stringify({ level: 'WARN', fn: 'fetchGitHubRaw', error: String(err) }))
-    return null
-  }
-}
-
-function updateSitemapLastmod(xml: string, slug: string, date: string): string {
-  // Fix 7: assert date format — only ISO YYYY-MM-DD is safe to embed in XML
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error(`updateSitemapLastmod: invalid date '${date}'`)
-  // Use string concatenation for angle brackets to avoid SFC parser pitfalls
-  const locOpen = '<loc>'
-  const locClose = '</loc>'
-  const lastmodOpen = '<lastmod>'
-  const lastmodClose = '</lastmod>'
-  const loc = 'https://aintern.nl/newsflow/' + slug
-  const locTag = locOpen + loc + locClose
-  if (!xml.includes(locTag)) return xml
-  const locIdx = xml.indexOf(locTag)
-  const startIdx = xml.indexOf(lastmodOpen, locIdx)
-  const endIdx = xml.indexOf(lastmodClose, startIdx)
-  if (startIdx === -1 || endIdx === -1) return xml
-  return xml.slice(0, startIdx + lastmodOpen.length) + date + xml.slice(endIdx)
-}
-
 // ── DynamoDB: update page record ──────────────────────────────────────────────
 
 async function updatePageRecord(
@@ -437,13 +404,9 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
   const alias = context.invokedFunctionArn.split(':').pop() ?? 'dev'
   const newsflowTableName = process.env.NEWSFLOW_TABLE_NAME
   const bucketName = process.env.NEWSFLOW_BUCKET_NAME
-  const githubRepo = process.env.GITHUB_REPO ?? ''
 
   if (!newsflowTableName) throw new Error('[SEOOptimizer] NEWSFLOW_TABLE_NAME env var required')
   if (!bucketName) throw new Error('[SEOOptimizer] NEWSFLOW_BUCKET_NAME env var required')
-  if (!/^[\w.-]+\/[\w.-]+$/.test(githubRepo)) {
-    throw new Error('[SEOOptimizer] GITHUB_REPO invalid or missing')
-  }
   // Fix 3: validate bucket name and region formats before URL construction
   if (!/^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$/.test(bucketName)) {
     throw new Error('[SEOOptimizer] NEWSFLOW_BUCKET_NAME format invalid')
@@ -539,33 +502,13 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
   await updatePageRecord(newsflowTableName, slug, stats, improved.changesSummary, now)
   console.log(JSON.stringify({ level: 'INFO', fn: 'handler', message: 'DynamoDB record updated', slug, changes: improved.changesSummary }))
 
-  // 9. Update sitemap lastmod via branch-workflow (non-fatal)
-  try {
-    const existingSitemap = await fetchGitHubRaw(githubRepo, 'public/newsflow-sitemap.xml')
-    if (existingSitemap) {
-      const updatedSitemap = updateSitemapLastmod(existingSitemap, slug, now.slice(0, 10))
-      if (updatedSitemap !== existingSitemap) {
-        const safeTitle = improved.title.replace(/[^a-zA-Z0-9\s\-_.,!?]/g, '').slice(0, 50)
-        const branchName = `newsflow/seo-${slug}-${now.slice(0, 10)}`
-        const publishResult = await publishViaBranch(
-          {
-            branchName,
-            filesToWrite: [{ path: 'public/newsflow-sitemap.xml', content: updatedSitemap }],
-            commitMessage: `chore(newsflow): update sitemap lastmod for '${safeTitle}'`,
-            runBuildCheck: false,
-          },
-          alias,
-        )
-        if (publishResult.success) {
-          console.log(JSON.stringify({ level: 'INFO', fn: 'handler', message: 'Sitemap lastmod updated', slug, prUrl: publishResult.prUrl }))
-        } else {
-          console.log(JSON.stringify({ level: 'WARN', fn: 'handler', message: 'Sitemap update failed', slug, error: publishResult.error }))
-        }
-      }
-    }
-  } catch (err) {
+  // 9. Trigger Amplify build so sitemap lastmod + llms-full.txt reflect the update (non-fatal)
+  const buildResult = await triggerAmplifyBuild(alias)
+  if (buildResult.success) {
+    console.log(JSON.stringify({ level: 'INFO', fn: 'handler', message: 'Amplify build triggered', slug }))
+  } else {
     // Non-fatal — the core optimization (S3 + DynamoDB) already succeeded
-    console.log(JSON.stringify({ level: 'WARN', fn: 'handler', message: 'Sitemap branch-workflow error', slug, error: String(err) }))
+    console.log(JSON.stringify({ level: 'WARN', fn: 'handler', message: 'Amplify build trigger failed', slug, error: buildResult.error }))
   }
 
   console.log(JSON.stringify({

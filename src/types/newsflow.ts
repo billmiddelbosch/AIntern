@@ -39,6 +39,15 @@ export interface LandingPageItem {
   GSI2sk: string                // <publishedAt>
 }
 
+// S3 index.json entry — written by ContentBuilder, read by the NewsFlow overview page
+export interface NewsFlowIndexEntry {
+  slug: string
+  title: string
+  lezersvraag: string
+  publishedAt: string
+  urgencyScore: number
+}
+
 // S3 content JSON — written by ContentBuilder, read by Vue NewsFlowPageView
 export interface NewsFlowPageContent {
   slug: string

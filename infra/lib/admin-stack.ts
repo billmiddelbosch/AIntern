@@ -957,7 +957,12 @@ export class AdminStack extends cdk.Stack {
     // DynamoDB: read access on aintern-newsflow + its GSIs (for newsflow-pages endpoint)
     newsflowTable.grantReadData(ainternloopAdminFn)
 
-    // DynamoDB: UpdateItem on ISSUE#* and AGENT#* only (PATCH issue status, PUT agent instruction)
+    // DynamoDB: UpdateItem on ISSUE#*, AGENT#*, ACTION#*, and the single literal
+    // CONFIG#priority-topics key only (PATCH issue status, PUT agent instruction,
+    // PATCH action urgency/payload/status, PUT priority-topics config).
+    // CONFIG# is scoped to the exact key rather than CONFIG#* — unlike ISSUE#/AGENT#/ACTION#,
+    // this handler doesn't write dynamically-suffixed CONFIG# items, so a wildcard here would
+    // over-grant standing write access to any future CONFIG# item other agents might add.
     // ForAnyValue (not ForAllValues) — ForAllValues evaluates to true when condition key is absent,
     // which would bypass the restriction and allow writes to any partition key prefix.
     ainternloopAdminFn.addToRolePolicy(
@@ -966,7 +971,12 @@ export class AdminStack extends cdk.Stack {
         resources: [loopTable.tableArn],
         conditions: {
           'ForAnyValue:StringLike': {
-            'dynamodb:LeadingKeys': ['ISSUE#*', 'AGENT#*'],
+            'dynamodb:LeadingKeys': [
+              'ISSUE#*',
+              'AGENT#*',
+              'ACTION#*',
+              'CONFIG#priority-topics',
+            ],
           },
         },
       }),
@@ -1174,7 +1184,8 @@ export class AdminStack extends cdk.Stack {
     // GET /admin/ainternloop/agents
     // GET + PUT /admin/ainternloop/agents/{name}
     // GET /admin/ainternloop/actions
-    // GET /admin/ainternloop/actions/{id}
+    // GET + PATCH /admin/ainternloop/actions/{id}
+    // GET + PUT /admin/ainternloop/priority-topics
     const ainternloopResource = adminResource.addResource('ainternloop')
 
     const ainternloopIssuesResource = ainternloopResource.addResource('issues')
@@ -1196,6 +1207,12 @@ export class AdminStack extends cdk.Stack {
 
     const ainternloopActionByIdResource = ainternloopActionsResource.addResource('{id}')
     ainternloopActionByIdResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+    ainternloopActionByIdResource.addMethod('PATCH', aliasIntegration(ainternloopAdminFn))
+
+    // GET + PUT /admin/ainternloop/priority-topics
+    const ainternloopPriorityTopicsResource = ainternloopResource.addResource('priority-topics')
+    ainternloopPriorityTopicsResource.addMethod('GET', aliasIntegration(ainternloopAdminFn))
+    ainternloopPriorityTopicsResource.addMethod('PUT', aliasIntegration(ainternloopAdminFn))
 
     // GET /admin/ainternloop/newsflow-pages
     const ainternloopNewsflowPagesResource = ainternloopResource.addResource('newsflow-pages')
