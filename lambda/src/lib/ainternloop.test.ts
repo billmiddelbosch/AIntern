@@ -257,4 +257,34 @@ describe('AInternLoop SDK', () => {
     // status must be set to 'done' (default terminal status)
     expect(updateCall.input.ExpressionAttributeValues[':status']).toBe('done')
   })
+
+  // 10. getPriorityTopics — returns topics when item exists
+  it('getPriorityTopics returns the topics array when item exists', async () => {
+    mockSend.mockResolvedValueOnce({
+      Item: {
+        pk: 'CONFIG#priority-topics',
+        sk: 'META',
+        topics: ['AI-regulering', 'Lightspeed'],
+      },
+    })
+
+    const sdk = createAInternLoopSDK(TABLE)
+    const topics = await sdk.getPriorityTopics()
+
+    expect(topics).toEqual(['AI-regulering', 'Lightspeed'])
+
+    const call = mockSend.mock.calls[0][0]
+    expect(call.__type).toBe('GetCommand')
+    expect(call.input.Key).toEqual({ pk: 'CONFIG#priority-topics', sk: 'META' })
+  })
+
+  // 11. getPriorityTopics — returns [] when item does not exist
+  it('getPriorityTopics returns an empty array when item does not exist', async () => {
+    mockSend.mockResolvedValueOnce({ Item: undefined })
+
+    const sdk = createAInternLoopSDK(TABLE)
+    const topics = await sdk.getPriorityTopics()
+
+    expect(topics).toEqual([])
+  })
 })

@@ -166,7 +166,7 @@ NewsFlowStack
 | Lambda              | SSM-parameters                                                         |
 |---------------------|------------------------------------------------------------------------|
 | NewsAnalyzer        | `anthropic/api-key` (dev + prod)                                       |
-| ContentBuilder      | `anthropic/api-key`, `github/token` (dev + prod)                       |
-| SEOOptimizer        | `anthropic/api-key`, `github/token`, `ga4/service-account-json`, `ga4/property-id` (dev + prod) |
+| ContentBuilder      | `anthropic/api-key`, `amplify/build-webhook-url` (dev + prod)          |
+| SEOOptimizer        | `anthropic/api-key`, `amplify/build-webhook-url`, `ga4/service-account-json`, `ga4/property-id` (dev + prod) |
 | IssueResolver       | `anthropic/api-key` (dev + prod)                                       |
 | LearningAgent       | `anthropic/api-key` (dev + prod)                                       |

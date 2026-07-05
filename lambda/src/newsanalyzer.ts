@@ -7,9 +7,10 @@
  * Flow:
  *   1. Fetch RSS feeds: NOS.nl + NU.nl (max 20 items per feed)
  *   2. Filter: skip articles > 48 h old (before Haiku calls)
- *   3. Classify via Claude Haiku: MKB-relevance + lezersvraag + urgency
- *   4. Deduplication: skip if topLezersvraag already registered within 72 h
- *   5. Register new actions via AInternLoop SDK
+ *   3. Classify via Claude Haiku: hoofdnieuws-relevance + lezersvraag + urgency
+ *   4. Boost urgency when the article matches an admin-managed priority topic
+ *   5. Deduplication: skip if topLezersvraag already registered within 72 h
+ *   6. Register new actions via AInternLoop SDK
  *
  * Environment variables:
  *   LOOP_TABLE_NAME   — aintern-loop DynamoDB table name (CDK-injected)
@@ -63,6 +64,7 @@ const MAX_ITEMS_PER_FEED = 20
 const MAX_AGE_HOURS = 48
 const MIN_URGENCY = 40
 const DEDUP_WINDOW_HOURS = 72
+const PRIORITY_TOPIC_BOOST = 20
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -75,7 +77,7 @@ interface RssItem {
 }
 
 interface HaikuClassification {
-  isMkbRelevant: boolean
+  isMainNews: boolean
   lezersvragen: string[]
   topLezersvraag: string
   urgency: number
@@ -147,12 +149,12 @@ function isWithinHours(pubDateStr: string, hours: number): boolean {
 
 // MED-1: system prompt carries rules; user message wraps untrusted article data
 // in <article> delimiters so RSS content cannot override instructions.
-const HAIKU_SYSTEM = `Je analyseert een Nederlands nieuwsartikel voor het MKB-platform AIntern (aintern.nl).
-AIntern helpt MKB-ondernemers met AI-automatisering.
+const HAIKU_SYSTEM = `Je analyseert een Nederlands nieuwsartikel voor de nieuwsrubriek van AIntern (aintern.nl).
+Deze rubriek volgt het landelijke hoofdnieuws — niet alleen nieuws met een direct MKB-raakvlak.
 
 Retourneer ONLY valid JSON zonder markdown:
 {
-  "isMkbRelevant": true|false,
+  "isMainNews": true|false,
   "lezersvragen": ["<vraag 1>", "<vraag 2>"],
   "topLezersvraag": "<de meest urgente en zoekwaardige vraag>",
   "urgency": <getal 1-100>,
@@ -160,8 +162,9 @@ Retourneer ONLY valid JSON zonder markdown:
 }
 
 Regels:
-- isMkbRelevant = true als het artikel raakvlak heeft met ondernemen, AI, automatisering,
-  arbeidsmarkt, digitalisering, kosten, of MKB-thema's
+- isMainNews = true als het artikel belangrijk landelijk of internationaal hoofdnieuws betreft
+  met brede maatschappelijke relevantie (politiek, economie, veiligheid, gezondheid,
+  technologie, grote incidenten) — ongeacht of het specifiek over MKB of ondernemen gaat
 - lezersvragen: max 3 vragen die echte nieuwsconsumenten stellen na het lezen
 - topLezersvraag: de vraag met het hoogste search-volume potentieel + tijdsgevoeligheid
 - urgency 80-100: breaking nieuws, tijdsgevoelig (< 24u), hoog zoekvolume verwacht
@@ -186,7 +189,7 @@ function isValidClassification(obj: unknown): obj is HaikuClassification {
   if (typeof obj !== 'object' || obj === null) return false
   const o = obj as Record<string, unknown>
   return (
-    typeof o.isMkbRelevant === 'boolean' &&
+    typeof o.isMainNews === 'boolean' &&
     typeof o.topLezersvraag === 'string' &&
     o.topLezersvraag.length > 0 &&
     typeof o.urgency === 'number' &&
@@ -280,6 +283,31 @@ function normaliseQuestion(q: string): string {
   return q.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
 }
 
+// ── Priority topics ───────────────────────────────────────────────────────────
+
+/** Case-insensitive substring match of admin-managed priority topics against article text. */
+export function matchesPriorityTopic(text: string, topics: string[]): string | null {
+  const haystack = text.toLowerCase()
+  for (const topic of topics) {
+    const needle = topic.trim().toLowerCase()
+    if (needle.length > 0 && haystack.includes(needle)) return topic
+  }
+  return null
+}
+
+/** Boosts urgency (capped at 100) and annotates the reason when a priority topic matched. */
+export function applyPriorityTopicBoost(
+  urgency: number,
+  urgencyReason: string,
+  matchedTopic: string | null,
+): { urgency: number; urgencyReason: string } {
+  if (!matchedTopic) return { urgency, urgencyReason }
+  return {
+    urgency: Math.min(100, urgency + PRIORITY_TOPIC_BOOST),
+    urgencyReason: `${urgencyReason} [Prioriteit: "${matchedTopic}" +${PRIORITY_TOPIC_BOOST}]`,
+  }
+}
+
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 export const handler = async (_event: ScheduledEvent, context: Context): Promise<void> => {
@@ -297,6 +325,9 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
 
   // Get current agent instruction (used for logging / future adaptive prompting)
   const agentInstruction = await sdk.getAgentInstruction('NewsAnalyzer')
+
+  // Admin-managed topics that boost urgency when matched (see AdminAInternLoopView "Onderwerpen" tab)
+  const priorityTopics = await sdk.getPriorityTopics()
 
   let totalFeedItems = 0
   let skippedOld = 0
@@ -333,19 +364,27 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
         continue
       }
 
-      // 3. Filter by MKB relevance
-      if (!classification.isMkbRelevant) {
+      // 3. Filter by main-news relevance
+      if (!classification.isMainNews) {
         skippedIrrelevant++
         continue
       }
 
-      // 4. Filter by minimum urgency (matches agent instruction threshold)
-      if (classification.urgency < MIN_URGENCY) {
+      // 4. Priority-topic urgency boost (admin-managed, see "Onderwerpen" tab)
+      const matchedTopic = matchesPriorityTopic(
+        `${item.title} ${classification.topLezersvraag}`,
+        priorityTopics,
+      )
+      const { urgency: effectiveUrgency, urgencyReason: effectiveUrgencyReason } =
+        applyPriorityTopicBoost(classification.urgency, classification.urgencyReason, matchedTopic)
+
+      // 5. Filter by minimum urgency (matches agent instruction threshold)
+      if (effectiveUrgency < MIN_URGENCY) {
         skippedLowUrgency++
         continue
       }
 
-      // 5. Deduplication check
+      // 6. Deduplication check
       const normQuestion = normaliseQuestion(classification.topLezersvraag)
       if (existingQuestions.has(normQuestion)) {
         duplicates++
@@ -353,13 +392,13 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
         continue
       }
 
-      // 6. Register action
+      // 7. Register action
       try {
         await sdk.registerAction({
           type: 'newsflow/content',
           sourceAgent: 'NewsAnalyzer',
           targetAgent: 'ContentBuilder',
-          urgency: Math.min(100, Math.max(1, Math.round(classification.urgency))),
+          urgency: Math.min(100, Math.max(1, Math.round(effectiveUrgency))),
           payload: {
             topLezersvraag: classification.topLezersvraag,
             lezersvragen: classification.lezersvragen,
@@ -367,7 +406,7 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
             artikelUrl: item.link,
             rssSource: item.source,
             publishedAt: item.pubDate,
-            urgencyReason: classification.urgencyReason,
+            urgencyReason: effectiveUrgencyReason,
           },
           supplementaryInstruction: agentInstruction ?? undefined,
         })

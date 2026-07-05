@@ -4,7 +4,8 @@
  * ContentBuilder agent Lambda.
  * Claims the highest-urgency newsflow/content action from AInternLoop, generates
  * Dutch MKB landing-page content via Claude Sonnet, writes to S3 + DynamoDB,
- * then updates the NewsFlow sitemap and llms.txt via the branch-workflow utility.
+ * then triggers an Amplify build via incoming webhook so sitemap.xml and
+ * llms-full.txt are regenerated from the S3 indexes at build time.
  *
  * Trigger: EventBridge daily at 12:00 UTC (after NewsAnalyzer runs at 06:00 UTC).
  *
@@ -12,8 +13,11 @@
  *   LOOP_TABLE_NAME       — aintern-loop DynamoDB table name (action queue)
  *   NEWSFLOW_TABLE_NAME   — aintern-newsflow DynamoDB table name (landing pages)
  *   NEWSFLOW_BUCKET_NAME  — aintern-newsflow S3 bucket name
- *   GITHUB_REPO           — owner/repo, e.g. 'billmiddelbosch/AIntern'
  *   AWS_REGION            — set automatically by the Lambda runtime
+ *
+ * SSM:
+ *   /aintern/{alias}/anthropic/api-key
+ *   /aintern/{alias}/amplify/build-webhook-url
  */
 
 import type { ScheduledEvent, Context } from 'aws-lambda'
@@ -23,7 +27,7 @@ import { DynamoDBDocumentClient, PutCommand } from '@aws-sdk/lib-dynamodb'
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import Anthropic from '@anthropic-ai/sdk'
 import { createAInternLoopSDK } from './lib/ainternloop'
-import { publishViaBranch } from './lib/newsflow-branch'
+import { triggerAmplifyBuild } from './lib/amplify-webhook'
 
 // ── Module-level clients ──────────────────────────────────────────────────────
 
@@ -253,63 +257,6 @@ async function writeS3Json(
   )
 }
 
-// ── GitHub raw fetch (for sitemap / llms.txt merge) ──────────────────────────
-
-async function fetchGitHubRaw(repo: string, filePath: string): Promise<string | null> {
-  const url = `https://raw.githubusercontent.com/${repo}/main/${filePath}`
-  try {
-    const res = await fetch(url, { signal: AbortSignal.timeout(8_000) })
-    if (res.status === 404) return null
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    return await res.text()
-  } catch (err) {
-    console.log(
-      JSON.stringify({
-        level: 'WARN',
-        fn: 'fetchGitHubRaw',
-        url,
-        error: err instanceof Error ? err.message : String(err),
-      }),
-    )
-    return null
-  }
-}
-
-function buildNewsflowSitemap(
-  existing: string | null,
-  slug: string,
-  publishedAt: string,
-): string {
-  const loc = `https://aintern.nl/newsflow/${slug}`
-  if (existing?.includes(loc)) return existing
-  // MED-2: validate date format before XML interpolation to prevent tag injection
-  const rawDate = publishedAt.slice(0, 10)
-  const lastmod = /^\d{4}-\d{2}-\d{2}$/.test(rawDate) ? rawDate : new Date().toISOString().slice(0, 10)
-  const entry = `  <url>\n    <loc>${loc}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>`
-  if (!existing) {
-    return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entry}\n</urlset>\n`
-  }
-  return existing.replace('</urlset>', `${entry}\n</urlset>`)
-}
-
-function buildNewsflowLlms(
-  existing: string | null,
-  title: string,
-  slug: string,
-  lezersvraag: string,
-): string {
-  const url = `https://aintern.nl/newsflow/${slug}`
-  if (existing?.includes(url)) return existing
-  // MED-4: strip Markdown link-breaking characters to prevent URL injection via LLM-controlled fields
-  const safeTitle = title.replace(/[\[\]()]/g, '').slice(0, 100)
-  const safeLezersvraag = lezersvraag.replace(/[\[\]()]/g, '').slice(0, 200)
-  const line = `- [${safeTitle}](${url}): ${safeLezersvraag}`
-  if (!existing) {
-    return `# NewsFlow — Dagelijks MKB-nieuws\n> AIntern: AI-automatisering voor MKB-ondernemers\n\n${line}\n`
-  }
-  return `${existing.trimEnd()}\n${line}\n`
-}
-
 // ── Handler ───────────────────────────────────────────────────────────────────
 
 export const handler = async (_event: ScheduledEvent, context: Context): Promise<void> => {
@@ -317,14 +264,10 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
   const loopTableName = process.env.LOOP_TABLE_NAME
   const newsflowTableName = process.env.NEWSFLOW_TABLE_NAME
   const bucketName = process.env.NEWSFLOW_BUCKET_NAME
-  const githubRepo = process.env.GITHUB_REPO ?? ''
 
   if (!loopTableName) throw new Error('[ContentBuilder] LOOP_TABLE_NAME env var required')
   if (!newsflowTableName) throw new Error('[ContentBuilder] NEWSFLOW_TABLE_NAME env var required')
   if (!bucketName) throw new Error('[ContentBuilder] NEWSFLOW_BUCKET_NAME env var required')
-  if (!/^[\w.-]+\/[\w.-]+$/.test(githubRepo)) {
-    throw new Error(`[ContentBuilder] GITHUB_REPO invalid or missing: '${githubRepo}'`)
-  }
 
   const sdk = createAInternLoopSDK(loopTableName, ddb)
   const anthropicKey = await getAnthropicKey(alias)
@@ -397,42 +340,37 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
       )
     }
 
-    // 6. Update newsflow-sitemap.xml and newsflow-llms.txt via branch-workflow
-    const [existingSitemap, existingLlms] = await Promise.all([
-      fetchGitHubRaw(githubRepo, 'public/newsflow-sitemap.xml'),
-      fetchGitHubRaw(githubRepo, 'public/newsflow-llms.txt'),
-    ])
-
-    const updatedSitemap = buildNewsflowSitemap(existingSitemap, slug, publishedAt)
-    const updatedLlms = buildNewsflowLlms(existingLlms, content.title, slug, topLezersvraag)
-
-    const branchName = `newsflow/${slug}-${publishedAt.slice(0, 10)}`
-    // LOW-3: strip non-printable and shell-special chars from LLM-generated title
-    const safeCommitTitle = content.title.replace(/[^a-zA-Z0-9\s\-_.,!?]/g, '').slice(0, 50)
-    const commitMessage = `feat(newsflow): add landing page '${safeCommitTitle}'`
-
-    const publishResult = await publishViaBranch(
-      {
-        branchName,
-        filesToWrite: [
-          { path: 'public/newsflow-sitemap.xml', content: updatedSitemap },
-          { path: 'public/newsflow-llms.txt', content: updatedLlms },
-        ],
-        commitMessage,
-        runBuildCheck: false,
-      },
-      alias,
-    )
-
-    if (!publishResult.success) {
+    // 6. Trigger Amplify build — regenerates sitemap.xml + llms-full.txt from the S3 indexes
+    const buildResult = await triggerAmplifyBuild(alias)
+    if (!buildResult.success) {
       console.log(
         JSON.stringify({
           level: 'WARN',
           fn: 'handler',
-          message: '[ContentBuilder] Branch-workflow failed — sitemap/llms not updated',
-          error: publishResult.error,
+          message:
+            '[ContentBuilder] Amplify build trigger failed — sitemap/llms stale until next deploy',
+          error: buildResult.error,
         }),
       )
+      // Escalate so the failure is visible in AInternLoop instead of only in logs;
+      // non-fatal — the page itself is already live in S3
+      try {
+        await sdk.logIssue(
+          actionId,
+          'ContentBuilder',
+          `Amplify build trigger failed: ${buildResult.error ?? 'unknown'}`.slice(0, 500),
+          { slug },
+        )
+      } catch (logErr) {
+        console.log(
+          JSON.stringify({
+            level: 'ERROR',
+            fn: 'handler',
+            message: 'logIssue for failed build trigger also failed',
+            error: logErr instanceof Error ? logErr.message : String(logErr),
+          }),
+        )
+      }
     }
 
     // 7. Write DynamoDB record to aintern-newsflow
@@ -453,8 +391,8 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
           status: 'published',
           traffic: { pageviews: 0, bounceRate: 0, avgSessionDuration: 0, lastUpdated: now },
           optimizationLog: [],
-          sitemapAdded: publishResult.success,
-          llmFileAdded: publishResult.success,
+          sitemapAdded: buildResult.success,
+          llmFileAdded: buildResult.success,
           contentS3Key: s3Key,
           createdAt: now,
           updatedAt: now,
@@ -477,7 +415,7 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
         message: '[ContentBuilder] Landing page published',
         slug,
         url: `https://aintern.nl/newsflow/${slug}`,
-        prUrl: publishResult.prUrl,
+        buildTriggered: buildResult.success,
         urgencyBucket: bucket,
       }),
     )
