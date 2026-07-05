@@ -7,11 +7,13 @@ export function useAInternLoopApi() {
   const loadingAgents = ref(false)
   const loadingActions = ref(false)
   const loadingNewsFlowPages = ref(false)
+  const loadingPriorityTopics = ref(false)
   const error = ref<string | null>(null)
   const issues = ref<IssueItem[]>([])
   const agents = ref<AgentItem[]>([])
   const actions = ref<ActionItem[]>([])
   const newsFlowPages = ref<NewsFlowPage[]>([])
+  const priorityTopics = ref<string[]>([])
 
   async function fetchIssues(status?: string): Promise<void> {
     loadingIssues.value = true
@@ -48,17 +50,57 @@ export function useAInternLoopApi() {
     await apiClient.put(`/admin/ainternloop/agents/${encodeURIComponent(agentName)}`, { instruction })
   }
 
-  async function fetchActions(): Promise<void> {
+  async function fetchActions(filters?: { status?: string; agent?: string }): Promise<void> {
     loadingActions.value = true
     error.value = null
     try {
-      const res = await apiClient.get<{ items: ActionItem[] }>('/admin/ainternloop/actions')
+      const res = await apiClient.get<{ items: ActionItem[] }>('/admin/ainternloop/actions', {
+        params: filters,
+      })
       actions.value = res.data.items
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Onbekende fout'
     } finally {
       loadingActions.value = false
     }
+  }
+
+  async function fetchActionDetail(actionId: string): Promise<ActionItem> {
+    const res = await apiClient.get<ActionItem>(
+      `/admin/ainternloop/actions/${encodeURIComponent(actionId)}`,
+    )
+    return res.data
+  }
+
+  async function updateAction(
+    actionId: string,
+    updates: {
+      urgency?: number
+      payload?: { topLezersvraag?: string; lezersvragen?: string[] }
+      status?: 'cancelled'
+    },
+  ): Promise<void> {
+    await apiClient.patch(`/admin/ainternloop/actions/${encodeURIComponent(actionId)}`, updates)
+  }
+
+  async function fetchPriorityTopics(): Promise<void> {
+    loadingPriorityTopics.value = true
+    error.value = null
+    try {
+      const res = await apiClient.get<{ topics: string[] }>('/admin/ainternloop/priority-topics')
+      priorityTopics.value = res.data.topics
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Onbekende fout'
+    } finally {
+      loadingPriorityTopics.value = false
+    }
+  }
+
+  async function updatePriorityTopics(topics: string[]): Promise<void> {
+    const res = await apiClient.put<{ topics: string[] }>('/admin/ainternloop/priority-topics', {
+      topics,
+    })
+    priorityTopics.value = res.data.topics
   }
 
   async function fetchNewsFlowPages(): Promise<void> {
@@ -79,16 +121,22 @@ export function useAInternLoopApi() {
     loadingAgents,
     loadingActions,
     loadingNewsFlowPages,
+    loadingPriorityTopics,
     error,
     issues,
     agents,
     actions,
     newsFlowPages,
+    priorityTopics,
     fetchIssues,
     closeIssue,
     fetchAgents,
     updateAgentInstruction,
     fetchActions,
+    fetchActionDetail,
+    updateAction,
+    fetchPriorityTopics,
+    updatePriorityTopics,
     fetchNewsFlowPages,
   }
 }

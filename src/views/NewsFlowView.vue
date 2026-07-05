@@ -3,6 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { useHead as useUnhead } from '@unhead/vue'
 import DOMPurify from 'dompurify'
+import { AppShell } from '@/components/shell'
 import type { NewsFlowPageContent } from '@/types/newsflow'
 
 const route = useRoute()
@@ -101,6 +102,7 @@ onMounted(async () => {
 </script>
 
 <template>
+  <AppShell>
   <div class="min-h-screen bg-white">
     <!-- Loading -->
     <div v-if="loading" class="flex items-center justify-center py-32">
@@ -209,4 +211,5 @@ onMounted(async () => {
       </aside>
     </article>
   </div>
+  </AppShell>
 </template>

@@ -160,6 +160,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'admin', requiresAuth: true, title: 'admin.nieuws.pageTitle' },
   },
   {
+    path: '/newsflow',
+    name: 'newsflow-overview',
+    component: () => import('@/views/NewsFlowOverviewView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/newsflow/:slug',
     name: 'newsflow-artikel',
     component: () => import('@/views/NewsFlowView.vue'),
