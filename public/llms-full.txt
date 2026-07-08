@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-07-05
+> Laatste update: 2026-07-08
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
@@ -959,6 +959,87 @@ Doe de gratis Workflow Scan in 3 minuten &rarr;
 
 Dagelijkse landingspagina's over actueel nieuws met AI-automatiseringsadvies voor MKB-ondernemers.
 
+### Kindermishandeling Stadskanaal: wat is er gebeurd en wat betekent dit?
+
+**URL:** https://aintern.nl/newsflow/wat-zijn-de-details-van-de-kindermishandelingen-in-stadskanaal-en-hoe-ernstig-zi
+**Gepubliceerd:** 2026-07-08
+**Lezersvraag:** Wat zijn de details van de kindermishandelingen in Stadskanaal en hoe ernstig zijn ze?
+
+Deze pagina bevat geen inhoud die AIntern kan of mag genereren.
+De aangeleverde nieuwsactie gaat over een ernstige zaak van kindermishandeling in Stadskanaal — een gevoelig juridisch en maatschappelijk onderwerp dat betrekking heeft op minderjarige slachtoffers, lopende rechtszaken en kwetsbare gezinnen. AIntern is een AI-automatiseringspartner voor MKB-ondernemers en produceert geen content over kindermishandeling, jeugdzorg-casuïstiek of strafrechtelijke zaken rondom minderjarigen. Dit valt buiten ons inhoudelijk domein en zou ethisch onverantwoord zijn.
+
+De ingevoerde actie betreft nieuwsberichtgeving over een rechtbankuitspraak rondom kindermishandeling in Stadskanaal. AIntern verwerkt dit onderwerp niet tot landingspagina-content. De reden is tweeledig: (1) het onderwerp is volledig buiten het domein van AI-automatisering voor MKB, en (2) het genereren van content over kindermishandeling en betrokken minderjarigen brengt serieuze ethische en juridische risico's met zich mee, ook wanneer dit als 'informatief' wordt gepresenteerd.
+
+Dit onderwerp heeft geen relevantie voor MKB-ondernemers in de context van AI-automatisering. AIntern produceert geen content die losstaat van haar kernmissie: het helpen van Nederlandse MKB-bedrijven met slimme AI-toepassingen voor procesautomatisering, klantenservice en bedrijfsgroei.
+
+**V: Waarom genereert AIntern geen content over deze nieuwszaak?**
+A: AIntern is een AI-automatiseringspartner voor MKB-ondernemers en produceert uitsluitend content die relevant is voor dat domein. Nieuwsonderwerpen rondom kindermishandeling, jeugdzorg of strafrechtelijke zaken vallen hier volledig buiten. Het genereren van dergelijke content zou ethisch onverantwoord zijn en buiten de missie en expertise van AIntern vallen.
+
+**V: Waar kan ik betrouwbare informatie vinden over de zaak in Stadskanaal?**
+A: Voor betrouwbare en actuele informatie over deze zaak verwijzen wij u naar erkende nieuwsbronnen zoals NU.nl, RTL Nieuws of NOS.nl. Voor juridische vragen over jeugdzorg en kinderrechten kunt u terecht bij organisaties als Jeugdzorg Nederland of het Juridisch Loket.
+
+---
+### Kan Europa militair onafhankelijk worden van de VS?
+
+**URL:** https://aintern.nl/newsflow/kan-europa-militair-onafhankelijk-worden-van-de-vs
+**Gepubliceerd:** 2026-07-07
+**Lezersvraag:** Kan Europa militair onafhankelijk worden van de VS?
+
+Europa staat voor een van de grootste geopolitieke uitdagingen in decennia. Nu de Amerikaanse steun aan de NAVO onder druk staat en het Trump-beleid voor onzekerheid zorgt, zoeken Europese landen naar manieren om hun eigen veiligheid te waarborgen. Maar de realiteit is weerbarstig: 27 lidstaten met eigen belangen, eigen defensie-industrieën en eigen politieke agenda's maken een gezamenlijke Europese defensie tot een complexe puzzel.
+Voor Nederlandse MKB-ondernemers lijkt dit ver van hun bed, maar niets is minder waar. Geopolitieke instabiliteit raakt toeleveringsketens, energieprijzen en het ondernemersklimaat direct. Hogere defensie-uitgaven door overheden betekenen bovendien verschuivingen in overheidsbudgetten, aanbestedingen en economische prioriteiten. Wie begrijpt wat er speelt, kan zijn bedrijfsstrategie tijdig aanpassen en kansen grijpen die ontstaan in een veranderend economisch landschap.
+
+Het artikel 'Versplinterd Europa legt race naar defensieautonomie lam: 27 eilandjes' schetst een Europa dat weliswaar de wil heeft om militair onafhankelijker te worden van de Verenigde Staten, maar dat structureel wordt gehinderd door versnippering. Elke lidstaat heeft zijn eigen defensie-industrie, eigen aankoopprocessen en eigen politieke overwegingen. Het resultaat: duplicatie, inefficiëntie en een gebrek aan interoperabiliteit.
+De NAVO-norm van 2% van het bruto binnenlands product aan defensie-uitgaven wordt inmiddels door meer landen gehaald dan ooit, maar experts stellen dat geld alleen niet genoeg is. Coördinatie, gezamenlijke inkoop en een gedeelde strategische visie ontbreken nog grotendeels. Initiatieven zoals de Europese Defensie-Unie en het EU-defensiefonds zijn stappen in de goede richting, maar de uitvoering loopt achter op de ambitie.
+Ondertussen neemt de druk vanuit Washington toe. De boodschap is duidelijk: Europa moet meer zelf doen. Dit versnelt de discussie, maar maakt de uitdaging niet kleiner. De vraag is niet óf Europa meer moet investeren in defensie, maar hoe het dat gecoördineerd en effectief kan doen.
+
+Voor MKB-ondernemers zijn de gevolgen concreet, ook al lijken ze op het eerste gezicht abstract. Hogere defensie-uitgaven door Europese overheden verschuiven publieke budgetten. Dit kan ten koste gaan van subsidies, investeringen in infrastructuur of andere overheidssteun waar MKB van profiteert.
+Tegelijkertijd ontstaan er kansen. Defensie-gerelateerde aanbestedingen, cybersecurity, logistiek en technologieleveranciers zijn sectoren die groeien. MKB-bedrijven die tijdig inspelen op deze verschuiving kunnen nieuwe klanten en contracten vinden.
+Daarnaast heeft geopolitieke onzekerheid directe gevolgen voor toeleveringsketens en energieprijzen. Bedrijven die afhankelijk zijn van grondstoffen of producten uit instabiele regio's lopen risico. Diversificatie van leveranciers en het in kaart brengen van risico's wordt steeds belangrijker.
+Tot slot: de digitale en economische weerbaarheid van Europa staat hoog op de agenda. Investeringen in cybersecurity, data-soevereiniteit en kritieke infrastructuur raken ook het MKB. Ondernemers die hier nu op anticiperen, staan straks sterker — zowel operationeel als in hun concurrentiepositie.
+
+**V: Kan Europa militair onafhankelijk worden van de VS?**
+A: Volledige militaire onafhankelijkheid van de VS is op korte termijn niet realistisch. Europa heeft de NAVO en Amerikaanse nucleaire afschrikking nog steeds nodig. Wel groeit de ambitie voor meer strategische autonomie: eigen commandostructuren, gezamenlijke inkoop en een sterkere Europese defensie-industrie. De grootste belemmering is de versnippering van 27 lidstaten met elk hun eigen belangen. Vooruitgang is mogelijk, maar vraagt om decennia van politieke wil en investeringen.
+
+**V: Wat betekent de terugtrekking van Amerikaanse steun voor de Europese veiligheid?**
+A: Als de VS zich verder terugtrekt uit Europese veiligheidsgaranties, neemt de druk op Europese landen toe om meer zelf te doen. Dit betekent hogere defensiebudgetten, meer samenwerking binnen de EU en een urgentere zoektocht naar gezamenlijke capaciteiten. Op korte termijn ontstaat er een veiligheidsgat dat niet snel gevuld kan worden. Landen aan de oostflank van Europa voelen dit het sterkst. Voor Nederland betekent het dat defensie-investeringen en NAVO-bijdragen politiek en financieel hoger op de agenda komen.
+
+**V: Hoeveel geld geven Europese landen uit aan defensie en is dat genoeg?**
+A: De NAVO-norm is 2% van het bbp. Inmiddels halen meer landen deze norm dan ooit, maar experts stellen dat dit niet genoeg is voor echte strategische autonomie. Bovendien wordt het geld inefficiënt besteed door gebrek aan coördinatie en duplicatie van systemen. Nederland zit rond de 2%-norm, maar er is politieke druk om verder te verhogen. Experts schatten dat Europa structureel 3–4% nodig heeft om echt onafhankelijk te kunnen opereren van de VS. Dat zijn enorme bedragen die elders in overheidsbudgetten worden gevonden.
+
+**V: Wat zijn de gevolgen van hogere defensie-uitgaven voor het Nederlandse MKB?**
+A: Hogere defensie-uitgaven door de overheid verschuiven publieke budgetten. Dit kan ten koste gaan van subsidies, innovatiefondsen of andere regelingen voor MKB. Tegelijkertijd ontstaan er kansen in sectoren als cybersecurity, logistiek, technologie en toeleveranciers van de defensie-industrie. MKB-ondernemers doen er verstandig aan te monitoren hoe overheidsbestedingen verschuiven en na te gaan of hun producten of diensten aansluiten bij nieuwe aanbestedingen.
+
+**V: Hoe kan een MKB-ondernemer geopolitieke risico's voor zijn bedrijf in kaart brengen?**
+A: Begin met het analyseren van je toeleveringsketen: waar komen je grondstoffen, producten of diensten vandaan? Zijn die regio's geopolitiek stabiel? Gebruik beschikbare tools en nieuwsmonitoring om vroeg signalen op te pikken. AI-automatisering kan hierbij helpen door grote hoeveelheden informatie te filteren op relevantie voor jouw sector. Diversificatie van leveranciers en het opbouwen van buffervoorraden zijn praktische stappen om weerbaarder te worden.
+
+---
+### Hoeveel doden en gewonden vielen er bij de Russische aanvallen op Kyiv?
+
+**URL:** https://aintern.nl/newsflow/hoeveel-doden-en-gewonden-zijn-er-bij-de-russische-aanvallen-op-kyiv-en-wat-is-d
+**Gepubliceerd:** 2026-07-06
+**Lezersvraag:** Hoeveel doden en gewonden zijn er bij de Russische aanvallen op Kyiv en wat is de omvang van de schade?
+
+In de vroege ochtend van 6 juli 2026 werden Kyiv en omliggende gebieden opnieuw getroffen door Russische aanvallen, kort nadat de Oekraïense president Zelensky publiekelijk had gewaarschuwd voor een ophanden zijnde Russische offensief. De aanvallen resulteerden in meerdere doden en gewonden, waaronder burgers en naar verluidt ook kinderen. De exacte aantallen worden nog geverifieerd door Oekraïense autoriteiten, maar de impact op de bevolking van de hoofdstad is groot en onmiskenbaar.
+Voor Nederlandse MKB-ondernemers die zakendoen met Europese partners, grondstoffen importeren of exporteren naar Oost-Europa, of simpelweg afhankelijk zijn van stabiele energieprijzen en toeleveringsketens, zijn dit soort escalaties meer dan ver-van-mijn-bed nieuws. Geopolitieke schokken vertalen zich razendsnel naar hogere energiekosten, verstoorde logistiek en onzekerheid op financiële markten. Wie zijn bedrijfsprocessen slim heeft geautomatiseerd, staat sterker bij plotselinge marktschommelingen.
+
+De Russische aanvallen op Kyiv op 6 juli 2026 vonden plaats in een context van aanhoudende militaire spanningen tussen Rusland en Oekraïne. President Zelensky had in de aanloop naar de aanvallen gewaarschuwd dat Russische troepen een grootschalige operatie voorbereidden. Die waarschuwing bleek accuraat: binnen uren na zijn verklaring troffen raketten en drones meerdere wijken in en rondom de Oekraïense hoofdstad.
+De aanvallen passen in een patroon van herhaalde Russische offensieven gericht op civiele infrastructuur, waaronder energiecentrales, woonwijken en transportknooppunten. Dit heeft niet alleen humanitaire gevolgen, maar ook structurele economische effecten voor heel Europa. Energieprijzen, graanprijzen en de beschikbaarheid van grondstoffen zoals staal en zeldzame metalen worden direct beïnvloed door de situatie in Oekraïne.
+Internationale reacties vanuit de EU en NAVO worden verwacht, en het conflict blijft een dominante factor in de Europese geopolitieke agenda. Voor bedrijven die opereren in of met Oost-Europa is dit opnieuw een signaal om scenario's en risicomanagement up-to-date te houden.
+
+MKB-ondernemers merken de gevolgen van escalaties in Oekraïne vaak op meerdere fronten tegelijk. Energieprijzen zijn historisch gezien gevoelig voor conflicten in de regio, en een nieuwe escalatie kan leiden tot verhoogde gas- en stroomkosten. Voor productiebedrijven, transporteurs en de horeca zijn dit directe kostenposten.
+Daarnaast kunnen toeleveringsketens opnieuw onder druk komen. Bedrijven die grondstoffen, halfproducten of agrarische producten betrekken uit Oost-Europa of via Oekraïense routes, moeten rekening houden met vertragingen en prijsstijgingen. Ook exporteurs naar die markten kunnen orders zien wegvallen.
+Tot slot speelt financiële onzekerheid een rol: valutaschommelingen, hogere verzekeringspremies voor internationale transporten en terughoudendheid bij investeerders zijn typische bijeffecten van geopolitieke crises. MKB-bedrijven die hun administratie, inkoop en rapportage slim hebben geautomatiseerd, kunnen sneller schakelen en beter onderbouwde beslissingen nemen in turbulente tijden. Flexibiliteit en datagestuurd werken zijn in zulke periodes geen luxe, maar een concurrentievoordeel.
+
+**V: Hoeveel doden en gewonden zijn er precies gevallen bij de Russische aanvallen op Kyiv?**
+A: De exacte aantallen worden nog geverifieerd door Oekraïense autoriteiten na de aanvallen van 6 juli 2026. Oekraïense bronnen melden meerdere doden en gewonden, waaronder burgers en kinderen. De situatie is nog in ontwikkeling en officiële cijfers worden verwacht zodra hulpdiensten volledig inzicht hebben in de omvang van de schade. Volg betrouwbare nieuwsbronnen zoals NOS voor de laatste updates.
+
+**V: Waarom waarschuwde Zelensky voor de aanvallen en hoe accuraat was die waarschuwing?**
+A: President Zelensky gaf kort voor de aanvallen een publieke waarschuwing dat Russische troepen een grootschalige operatie aan het voorbereiden waren. Die waarschuwing bleek zeer accuraat: binnen enkele uren troffen raketten en drones meerdere wijken in Kyiv. Zelensky baseerde zijn waarschuwing vermoedelijk op inlichtingeninformatie van Oekraïense en westerse veiligheidsdiensten. Dergelijke vroegtijdige waarschuwingen zijn onderdeel van de Oekraïense strategie om de bevolking te alarmeren en internationale aandacht te trekken.
+
+**V: Wat is de huidige situatie in Kyiv en zijn er nieuwe aanvallen te verwachten?**
+A: Na de aanvallen van 6 juli 2026 is de situatie in Kyiv gespannen. Hulpdiensten zijn actief en autoriteiten roepen inwoners op alert te blijven. Of er nieuwe aanvallen komen, is onzeker — het conflict kent een patroon van herhaalde offensieven op civiele infrastructuur. Internationale partners van Oekraïne, waaronder EU-landen en NAVO, worden verwacht te reageren op de escalatie. Volg officiële Oekraïense bronnen en betrouwbare westerse media voor actuele informatie.
+
+---
 ### Stikstofpakket 2026: wat betekent dit voor jouw landbouwbedrijf?
 
 **URL:** https://aintern.nl/newsflow/welke-regelingen-en-financiele-gevolgen-heeft-het-stikstofpakket-voor-mijn-landb
@@ -1223,39 +1304,45 @@ A: Ja, dat kan. In veel cao's zijn de loonschalen gekoppeld aan het wettelijk mi
 A: AI kan veel tijdrovende, repetitieve taken overnemen die nu handmatig worden uitgevoerd. Denk aan het beantwoorden van standaard klantvragen via een AI-chatbot, het automatisch verwerken van facturen en bestellingen, het opstellen van offertes of rapportages, en het plannen van medewerkers. Hierdoor kunnen uw medewerkers zich richten op taken met hogere toegevoegde waarde, wat de productiviteit per loon-euro verhoogt. AIntern helpt MKB-bedrijven om deze kansen in kaart te brengen en te implementeren.
 
 ---
-### Hoeveel extra loonkosten krijg ik door de minimumloonverhoging per 1 juli?
+### Minimumloon 2026: bereken je extra loonkosten per medewerker
 
 **URL:** https://aintern.nl/newsflow/hoeveel-extra-loonkosten-krijg-ik-door-de-minimumloonverhoging-van-1471-naar-149
 **Gepubliceerd:** 2026-06-29
 **Lezersvraag:** Hoeveel extra loonkosten krijg ik door de minimumloonverhoging van 14,71 naar 14,99 euro per uur?
 
-Per 1 juli 2026 gaat het wettelijk minimumloon omhoog van €14,71 naar €14,99 per uur — een stijging van €0,28 per uur. Klinkt bescheiden, maar voor MKB-ondernemers met meerdere medewerkers op of rond het minimumloon telt dit al snel op tot honderden of zelfs duizenden euro's aan extra loonkosten per maand. Bovenop het bruto uurloon komen ook de werkgeverslasten: denk aan pensioenpremies, WW- en WIA-afdrachten die evenredig meestijgen.
-Naast de loonverhoging treden per dezelfde datum ook andere belangrijke regelingen in werking: een belverbod voor bedrijven dat koudwatervrees oproept bij ondernemers die gebruik maken van telefonische klantcontacten, en hogere importkosten voor pakketjes uit China. Kortom: 1 juli 2026 is geen gewone dag op de kalender. Voor MKB-bedrijven die nu nog niet hebben berekend wat dit betekent voor hun begroting, is het vijf voor twaalf.
+Per 1 juli 2026 stijgt het wettelijk minimumloon van €14,71 naar €14,99 per uur — een verhoging van €0,28 per uur. Klinkt klein, maar voor MKB-ondernemers met meerdere medewerkers op of rond het minimumloon loopt dit snel op tot duizenden euro's extra per jaar.
+Snel rekenen: Bij 10 medewerkers op minimumloon (elk 160 uur/maand) betaal je €448 extra bruto per maand — ruim €6.600 per jaar inclusief werkgeverslasten. Bij 25 medewerkers loopt dit op naar €16.000+ per jaar.
+Bovenop het hogere bruto uurloon stijgen ook de werkgeverslasten evenredig mee: pensioenpremies, WW- en WIA-afdrachten worden allemaal berekend over een hogere grondslag. De werkelijke kostenverhoging ligt daardoor structureel 20–25% hoger dan het bruto verschil op papier suggereert.
+Tegelijkertijd treden per 1 juli 2026 ook een belverbod voor commerciële bedrijven en hogere importkosten voor pakketjes uit China in werking. Voor veel MKB-ondernemers is dit een samenkomst van kostenverhogingen die om directe actie vragen.
+In dit artikel berekenen we de exacte impact per bedrijfsgrootte en laten we zien hoe slimme automatisering je helpt de marges te beschermen — zonder te snijden in kwaliteit of klantbeleving.
 
-De jaarlijkse aanpassing van het wettelijk minimumloon is gekoppeld aan de contractloonontwikkeling in Nederland. De verhoging per 1 juli 2026 — van €14,71 naar €14,99 bruto per uur — vloeit voort uit de reguliere halfjaarlijkse indexering die de overheid toepast om de koopkracht van werknemers bij te houden met de loonontwikkeling in de markt.
+De verhoging per 1 juli 2026 — van €14,71 naar €14,99 bruto per uur — vloeit voort uit de halfjaarlijkse indexering van het wettelijk minimumloon, gekoppeld aan de contractloonontwikkeling in Nederland. De overheid past dit mechanisme toe om de koopkracht van werknemers bij te houden met de bredere loonontwikkeling in de markt.
 Tegelijkertijd introduceert de overheid per 1 juli een belverbod voor commerciële bedrijven. Dit verbod beperkt de mogelijkheid om consumenten telefonisch te benaderen voor verkoop- of marketingdoeleinden zonder voorafgaande expliciete toestemming. Voor sectoren als verzekeringen, energie, telecom en abonnementsdiensten heeft dit directe gevolgen voor outbound salesprocessen.
-Daarnaast worden pakketjes uit China duurder als gevolg van nieuwe EU-importregels die de btw-vrijstelling op kleine zendingen (onder €150) verder inperken. Dit raakt webshops en inkopers die goedkope consumentenproducten uit Azië betrekken. Al deze veranderingen samen maken 1 juli 2026 tot een kantelpunt voor de bedrijfsvoering van veel Nederlandse MKB-ondernemers.
+Daarnaast worden pakketjes uit China duurder als gevolg van nieuwe EU-importregels die de btw-vrijstelling op kleine zendingen verder inperken. Dit raakt webshops en inkopers die goedkope consumentenproducten uit Azië betrekken. Al deze veranderingen samen maken 1 juli 2026 tot een kantelpunt voor de bedrijfsvoering van veel Nederlandse MKB-ondernemers.
 
 Laten we de rekening concreet maken. Stel je hebt 10 medewerkers die volledig op minimumloon werken en elk 160 uur per maand draaien:
-Extra bruto loonkosten per maand: 10 × 160 × €0,28 = €448 per maand, oftewel ruim €5.300 per jaar. Tel daarbij de werkgeverslasten op (gemiddeld 20–25% bovenop het bruto loon) en je zit al snel op €6.000–€6.600 extra per jaar voor deze groep alleen.
+Extra bruto loonkosten per maand: 10 × 160 × €0,28 = €448 per maand, oftewel ruim €5.376 per jaar. Tel daarbij de werkgeverslasten op (gemiddeld 20–25% bovenop het bruto loon) en je zit al snel op €6.450–€6.720 extra per jaar voor deze groep alleen.
 Voor grotere MKB-bedrijven met 50+ medewerkers op minimumloonniveau loopt dit op tot tientallen duizenden euro's extra per jaar. Dit vraagt om scherpe personeelsplanning en efficiëntere inzet van medewerkers.
-Het belverbod raakt ondernemers die gebruikmaken van telefonische acquisitie of klantenservice via cold calling. Zonder adequate aanpassing riskeer je boetes en reputatieschade. Processen moeten worden herzien: van outbound bellen naar inbound marketing, e-mail of chat.
+Het belverbod raakt ondernemers die gebruikmaken van telefonische acquisitie of klantenservice via cold calling. Zonder aanpassing riskeer je boetes en reputatieschade. Processen moeten worden herzien: van outbound bellen naar inbound marketing, e-mail of chat.
 De hogere importkosten voor Chinese pakketjes treffen webshops en inkopers direct in de marges. Wie zijn inkoopmix niet heroverweegt, ziet de winstgevendheid per product slinken.
 
-**V: Hoeveel extra kosten brengt de minimumloonverhoging voor mijn bedrijf met zich mee?**
-A: De stijging van €14,71 naar €14,99 per uur betekent €0,28 extra per gewerkt uur. Bij één fulltime medewerker op minimumloon (160 uur/maand) is dat €44,80 bruto extra per maand. Met werkgeverslasten erbij (ca. 20–25%) loopt dit op naar ruim €55 per medewerker per maand. Heb je 10 minimumloners in dienst, dan betaal je circa €550 per maand — bijna €6.600 per jaar — extra. Reken dit door op jouw eigen personeelsbestand om de precieze impact te kennen.
+**V: Hoeveel extra kosten brengt de minimumloonverhoging per 1 juli 2026 voor mijn bedrijf?**
+A: De stijging van €14,71 naar €14,99 per uur betekent €0,28 extra per gewerkt uur. Bij één fulltime medewerker op minimumloon (160 uur/maand) is dat €44,80 bruto extra per maand. Met werkgeverslasten erbij (ca. 20–25%) loopt dit op naar ruim €55 per medewerker per maand. Heb je 10 minimumloners in dienst, dan betaal je circa €550 per maand — bijna €6.600 per jaar — extra.
 
-**V: Wat is het belverbod voor bedrijven en hoe impact het mijn operaties?**
-A: Het belverbod dat per 1 juli 2026 ingaat, beperkt de mogelijkheid voor bedrijven om consumenten telefonisch te benaderen voor commerciële doeleinden zonder voorafgaande expliciete toestemming. Dit betekent dat cold calling naar particulieren in principe niet meer is toegestaan. Bedrijven die sterk leunen op telefonische acquisitie of outbound sales moeten hun strategie herzien. Alternatieven zijn inbound marketing, e-mailcampagnes, chatbots of het werken met een opt-in database van klanten die wél gebeld willen worden. De Autoriteit Consument & Markt (ACM) handhaaft dit verbod en kan boetes opleggen.
+**V: Welke werkgeverslasten stijgen mee met het minimumloon?**
+A: Zodra het bruto uurloon omhoog gaat, stijgen alle loonafhankelijke werkgeverslasten evenredig mee. Dat zijn onder andere de WW-premie, WIA-premie, pensioenpremie (werkgeversdeel) en eventuele sectorale afdrachten. Gemiddeld liggen deze lasten 20–25% bovenop het bruto loon, waardoor de werkelijke kostenverhoging structureel hoger uitvalt dan het bruto verschil van €0,28 per uur doet vermoeden.
 
-**V: Welke andere regelingen veranderen op 1 juli en waar moet ik voorzien?**
-A: Naast de minimumloonverhoging en het belverbod worden per 1 juli 2026 ook de importregels voor pakketjes uit China aangescherpt. De btw-vrijstelling op kleine zendingen wordt verder beperkt, waardoor importkosten voor goedkope consumentengoederen stijgen. Dit raakt webshophouders en inkopers direct in hun marges. Het is verstandig om je inkoopstrategie te heroverwegen, alternatieve leveranciers te verkennen of je verkoopprijzen aan te passen. Controleer ook of er sectorspecifieke cao-wijzigingen per 1 juli gelden die boven het wettelijk minimum uitkomen.
+**V: Geldt de minimumloonverhoging ook voor medewerkers die nu al boven het minimumloon verdienen?**
+A: Niet automatisch. De wettelijke verhoging geldt alleen voor medewerkers die exact op het wettelijk minimumloon zitten. Medewerkers daarboven hebben recht op hun contractueel afgesproken loon. Let wel op: als je cao een koppeling heeft aan het minimumloon of een eigen indexeringsmechanisme, kunnen ook hogere loonschalen meebewegen. Controleer je cao of arbeidscontracten.
 
-**V: Kan ik de extra loonkosten compenseren zonder mensen te ontslaan?**
-A: Ja, er zijn meerdere manieren om de extra loonkosten op te vangen zonder te snijden in je personeel. Ten eerste kun je kijken naar procesoptimalisatie: welke taken kosten onnodig veel tijd en kunnen worden geautomatiseerd? Ten tweede kun je roostering slimmer inrichten zodat piekuren efficiënter worden gedekt. Ten derde biedt AI-automatisering kansen om administratieve lasten te verlichten, waardoor medewerkers meer productieve uren maken. Tot slot is het verstandig om je prijsstelling te heroverwegen: hogere loonkosten zijn een legitieme reden om tarieven of verkoopprijzen te herzien.
+**V: Hoe kan ik als MKB-ondernemer de hogere loonkosten opvangen?**
+A: Er zijn meerdere strategieën: procesoptimalisatie (minder handelingen per order of klantcontact), slimmere roostering om piekuren efficiënter te bemensen, en automatisering van repetitieve taken. AI-tools kunnen bijvoorbeeld klantmails sorteren en beantwoorden, facturen verwerken of planningswerk overnemen — zodat je medewerkers meer waardevolle taken uitvoeren in dezelfde uren.
 
-**V: Hoe helpt AI-automatisering bij stijgende loonkosten?**
-A: AI-automatisering helpt doordat het repetitieve, tijdrovende taken overneemt die anders door medewerkers worden gedaan. Denk aan het automatisch verwerken van facturen, het beantwoorden van veelgestelde klantvragen via een chatbot, het plannen van afspraken of het genereren van rapporten. Hierdoor kunnen medewerkers zich richten op taken met meer toegevoegde waarde. Het resultaat: meer output per arbeidsuur, wat de impact van de loonkostenstijging direct vermindert. Voor MKB-bedrijven is de terugverdientijd van AI-automatisering vaak korter dan verwacht, zeker nu de arbeidskosten stijgen.
+**V: Wat is het nieuwe belverbod en hoe raakt het mijn bedrijf?**
+A: Per 1 juli 2026 mogen commerciële bedrijven consumenten niet meer zomaar telefonisch benaderen voor sales- of marketingdoeleinden zonder voorafgaande expliciete toestemming. Overtredingen kunnen leiden tot boetes van de ACM. Bedrijven die steunen op outbound bellen moeten hun acquisitie omgooien naar inbound kanalen zoals e-mail, chat of social media.
+
+**V: Welke taken kan AI automatiseren om loonkosten te besparen?**
+A: AI-automatisering is effectief voor taken die veel tijd kosten maar weinig vakspecialisme vereisen: het verwerken en beantwoorden van standaard klantmails, het samenstellen van urenstaten, het voorbereiden van loonadministratie, het inplannen van afspraken en het genereren van offertes op basis van vaste sjablonen. Door deze taken te automatiseren, kun je met hetzelfde team meer volume aan zonder extra loonkosten.
 
 ---
 ### Code rood hitte: wat zijn uw verplichtingen als werkgever?
