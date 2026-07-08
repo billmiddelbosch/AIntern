@@ -1,7 +1,7 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.5
+version: 0.4.6
 ---
 
 # Daily Board Meeting
@@ -186,6 +186,8 @@ claude -p "<agent task here>" --allowedTools "Bash,Read,Write,Edit,Glob,Grep"
 The `--allowedTools` flag pre-approves file writes so the terminal never blocks waiting for an interactive permission prompt.
 
 **Windows compatibility:** On Windows, `/tmp/` does not exist — never write task prompts to `/tmp/`. Pass the prompt inline as a quoted string, or use `$env:TEMP` for temp files. If the terminal produces 0-byte output, it is a shell-encoding failure (not a timeout) — fall back to implementing the task inline in the main session rather than re-dispatching the terminal.
+
+**Killed or timed-out terminal recovery:** If a dispatched terminal is killed or times out before returning a Terminal Summary, do not assume no work happened. Run `git status` / `git diff` on the feature branch first — the terminal may have already written files (or even committed, if it reached that step) before being interrupted. Re-dispatching the same task blind can duplicate work or clobber in-progress changes. Only re-dispatch (or split into a smaller task) after confirming what state the branch is actually in.
 
 > ⛔ **NEVER use the Agent tool for terminal actions.** The Agent tool runs in a hidden sub-context that is invisible to the Human Board. Only `Bash` + `claude -p` produces a visible console terminal.
 
@@ -385,10 +387,12 @@ Sanne (CMO) drafts een batch van 4 LinkedIn posts voor Bill's persoonlijk profie
 **Steps:**
 1. **Lees het weekrapport van de vorige week als feitenbasis.** Zoek het meest recente weekrapport in `C:/Users/bmidd/OneDrive/Documents/Obsidian Vault/Bill/Aintern Meeting Minutes/` met patroon `weekrapport-YYYY-WNN.md`. Als het huidige weekrapport al gegenereerd is (maandag-verplichting stap 1), gebruik dat. Extraheer uit het rapport de **Ghostwriter Input Block** (Stap 10 van de weekly-report skill) of — als dat blok ontbreekt — handmatig: shipped items, lead/outreach aantallen, gepubliceerde artikelen, KPI-highlights en opvallende momenten. Deze feiten zijn de **verplichte grondstof** voor de post; verzin geen data.
 2. Lees `.claude/cmo/memory_storywriter_brief.md` voor stijl, serie-context en beschikbare seeds. **Serienaam — lees uit frontmatter, niet uit brief:** Gebruik de `serie:` waarde uit het meest recente bestaande episodebestand (`.claude/cmo/ghostwriter_drafts/episode-*.md` gesorteerd op hoogste episodenummer) als de gezaghebbende serienaam — niet de waarde in `memory_storywriter_brief.md`. De brief kan stale zijn na een naamswijziging mid-meeting (root cause: "Het AI-Duo Experiment" → "Het AIntern Experiment" gecorrigeerd 2026-05-04, brief werd later bijgewerkt maar al gedraaide sessies hadden de stale naam gebruikt).
-3. **Identificeer de volgende ongepubliceerde episode(s) via DynamoDB — nooit via CMO memory.** Query de actieve DynamoDB-records:
+3. **Identificeer de volgende ongepubliceerde episode(s) via DynamoDB — nooit via CMO memory.** Query de actieve DynamoDB-records. Regio is `eu-west-2` (niet eu-west-1), key-schema is lowercase `pk`/`sk`, en de tabelnaam wordt via SSM opgezocht (niet hardcoded) — zie `lambda/scripts/import-ghostwriter-drafts.mjs` voor de canonieke implementatie:
    ```bash
-   aws dynamodb query --table-name aintern-admin --key-condition-expression "PK = :pk" --expression-attribute-values '{":pk":{"S":"LINKEDIN#ghostwriter"}}' --region eu-west-1 2>/dev/null | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); (d.Items||[]).forEach(i=>console.log(i.episode?.N, i.serie?.S, i.status?.S));"
+   MSYS_NO_PATHCONV=1 TABLE=$(aws ssm get-parameter --name "/aintern/dev/dynamodb/table-name" --region eu-west-2 --query "Parameter.Value" --output text)
+   aws dynamodb scan --table-name "$TABLE" --filter-expression "begins_with(pk, :prefix) AND sk = :sk" --expression-attribute-values '{":prefix":{"S":"LINKEDIN#"},":sk":{"S":"POST"}}' --region eu-west-2 2>/dev/null | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); (d.Items||[]).forEach(i=>console.log(i.episode, i.serie, i.status));"
    ```
+   **Windows/Git-Bash:** elke `aws` (of andere CLI) call met een leading-slash argument (zoals `--name "/aintern/..."`) moet met `MSYS_NO_PATHCONV=1` geprefixt worden — anders zet Git Bash het pad om naar een Windows-pad en faalt de call stil met `ParameterNotFound`/`ValidationException` in plaats van een pad-gerelateerde fout.
    Gebruik het **hoogste episode-nummer in DynamoDB + 1** als startpunt voor de nieuwe batch. Vertrouw CMO memory (`memory_daily_context.md`) nooit als bron voor episode-nummers — memory is niet real-time en bevat stale IDs na compaction. **Rootcause:** in 2026-04-27 werd ep5 geschreven i.p.v. ep3 omdat CMO memory "ep01-04 in DynamoDB" vermeldde maar DynamoDB alleen ep1+ep2 bevatte.
 3. Draft elke post: 150–300 woorden, eerste persoon (Bill), sterke haak, geen commerciële CTA
 4. Sla op als `.claude/cmo/ghostwriter_drafts/episode-{N}-{slug}.md` met frontmatter. **Verplichte velden:** `serie`, `episode`, `titel`, `post_voor`, `status: draft`, `seed`. Controleer alle 6 velden vóór opslaan — het importscript (`lambda/scripts/import-ghostwriter-drafts.mjs`) slaat episodes stil over als `serie` of `episode` ontbreekt. Als een bestaand draft (bijv. episode-01) deze velden mist, voeg ze dan nu toe voordat je verdergaat met de batch-import in stap 4.5.
@@ -600,6 +604,8 @@ Do **not** pause here. Present these at the End-of-Meeting Approval Gate.
 - **Terminal socket errors:** If a `claude -p` terminal dispatch fails with "socket connection was closed unexpectedly", retry once before falling back to inline execution. Add explicit retry note in the terminal's status reporting.
 - **PowerShell `claude -p (Get-Content ...)` stdin failure (observed 2026-05-19):** When dispatching via PowerShell with `run_in_background: true`, the terminal may produce only `Warning: no stdin data received in 3s` and exit immediately (exit code 0, 0 bytes of Claude output). This is a PowerShell stdin-pipe timing failure, not an encoding issue. **Do not retry** — fall back immediately to implementing the task inline in the main session. The task is small enough for inline execution when this pattern occurs.
 - **Ghostwriter episode detection:** Always detect episode number by counting files in `.claude/cmo/ghostwriter_drafts/episode-*.md` first — this is the primary source. DynamoDB query is validation-only and may be unavailable (AWS_UNAVAILABLE). File-based detection is authoritative for episode numbering.
+- **Bash cwd persists across tool calls (observed 2026-07-06):** Running `cd lambda && npm audit ...` in one Bash call leaves the shell's working directory at `lambda/` for the *next* call too. A follow-up `cd lambda && npm test` then fails with "No such file or directory" because it tries to descend into `lambda/lambda`. Run `pwd` first when uncertain, or avoid a redundant `cd` prefix in sequential calls that already share a persistent shell.
+- **DynamoDB region/key-schema drift (fixed 2026-07-06):** The Phase 3.5 example query previously hardcoded `--table-name aintern-admin`, `--region eu-west-1`, and uppercase `PK` — all wrong. Actual config (per `lambda/scripts/import-ghostwriter-drafts.mjs`): region `eu-west-2`, table name resolved via SSM (`/aintern/{alias}/dynamodb/table-name`), lowercase `pk`/`sk`. Any future example command referencing DynamoDB should be copy-checked against a real script, not hand-written from memory.
 
 ---
 
