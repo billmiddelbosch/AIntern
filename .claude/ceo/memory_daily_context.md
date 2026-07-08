@@ -1,45 +1,49 @@
 # Joost — Daily Context
-_Last updated: 2026-05-16_
+_Last updated: 2026-07-06_
 
 ## Open Acties (toegewezen aan mij)
-- B-10: 1 Lightspeed-prospect contacteren via LinkedIn — handmatig door Bill 🔴 (persistent)
+- Q3 OKRs vaststellen — Q2 eindigde 2026-06-30, nog geen Q3-doelen; openstaand sinds weekrapport W27 🔴
 - B-104 deel 2: nieuwe lead toevoegen aan pipeline — Bill geeft lead op; nog open
+- B-119: get-latest-episode.mjs serie-filter bug + ep02 typo — todo, CTO, XS
 
-## KPI Status (week 20, 11–17 mei)
-- LinkedIn posts: 0/3 (week nog niet gestart)
-- Kennisbank: 1/2 ✅ (B-102 gepubliceerd 2026-05-16: ai-automatisering-eenvoud-wint-mkb)
-- Nieuwe connecties: 2 connection_sent (Jeppe Hondelink + Jeroen de Groot, 2026-05-16)
-- Security check: ✅ done (B-101, PASS, commit 0ab7297)
+## KPI Status (week 28, 6–12 juli)
+- LinkedIn posts: 0/3 (ep06 klaar voor Bill, post_voor 13 juli)
+- Kennisbank: 1/2 ✅ (B-117 gepubliceerd 2026-07-08: ai-integreren-in-bewezen-architectuur-mkb)
+- Nieuwe connecties: 0/20–25 (7 leads in pijplijn, wachten handmatige acceptatie)
+- Lambda security (HIGH): 0 open ✅ (B-114 afgerond, npm audit clean)
 
 ## Actieve Blockers
-- B-31 (deels opgelost): slijterij-jeppe + oasegroen → not_contacted; 2 leads nog needs_enrichment (topicsfashion.nl, chocoladeverpakking.nl)
+- 2 leads needs_enrichment (topicsfashion.nl, chocoladeverpakking.nl) — geen LinkedIn-URL, handmatige lookup nodig
 - B-104 deel 2: nieuwe lead van Bill nog niet opgegeven
 
-## Top 5 Dagelijkse Acties (2026-05-16)
-1. B-101 security check week 20 ✅ — PASS (3× LOW geaccepteerd); committed 0ab7297
-2. B-102 ✅ — Kennisbank artikel "AI automatisering voor MKB: waarom eenvoud wint" live op S3
-3. B-103 ✅ — Ghostwriter ep05 draft aangemaakt + DynamoDB import (post_voor 2026-05-19)
-4. B-104 (deel 1) ✅ — slijterij-jeppe + oasegroen: needs_enrichment → not_contacted in CSV
-5. B-104 (deel 2) 🔴 open — nieuwe lead nog niet opgegeven door Bill
+## Top 5 Dagelijkse Acties (2026-07-06)
+1. Weekrapport W27 (B-115) ✅ — maandag-verplichting, herstelt rapportagegat W19–W26
+2. Ghostwriter ep06 (B-116) ✅ — "Acht weken lang keek ik niet mee" gedraft + DynamoDB-import
+3. S-14 + B-118 + B-114 ✅ — NewsFlow pre-rendering, lambda tsc fixes, vitest 4 SEC-HIGH bump; commit `bf2d201`
+4. B-117 ✅ — Kennisbank artikel W28 gepubliceerd na gate-goedkeuring; commit `0557096`
+5. B-104 ✅ — outreach pipeline geverifieerd (CSV was al correct, backlog liep achter)
 
-## Backlog Correcties (2026-05-16)
-- B-101 ✅ done — security check week 20; committed 0ab7297 op feature/board-2026-05-16
-- B-102 ✅ done — Kennisbank artikel gepubliceerd
-- B-103 ✅ done — Ghostwriter ep05 draft + DynamoDB import
-- B-104 (deels) — CSV bijgewerkt; nieuwe lead nog open
-- B-105 todo — Cold email targeting prep (5 targets via Apollo)
+## Backlog Correcties (2026-07-06)
+- S-14 ✅ done — NewsFlow pre-rendering via vite-ssg
+- B-118 ✅ done — lambda tsc errors (6→0), incl. echte persona-opslagbug gefixt
+- B-114 ✅ done — vitest 4 bump, SEC-HIGH audit clean
+- B-116 ✅ done — Ghostwriter ep06 draft + DynamoDB import
+- B-117 ✅ done — Kennisbank artikel W28 gepubliceerd
+- B-104 ✅ done — outreach pipeline geverifieerd
+- B-119 todo (nieuw) — data-hygiene: get-latest-episode.mjs serie-filter + ep02 typo
 
-## Genomen Beslissingen (board 2026-05-16)
-- GEO (PR #160) afgerond onderwerp — geen B-item nodig; OKR 3.3 geadresseerd
-- ep03 + ep04 bevestigd gepubliceerd door Bill (Human Board check-in 2026-05-16)
-- B-99 pipeline review: geen connecties geaccepteerd; 2 nieuwe connection_sent (Jeppe + Jeroen)
-- Kennisbank artikel 2 ("Wie AI uitbesteedt") — kan wachten tot week 21
-- 4 nieuwe backlog items: B-102, B-103, B-104, B-105
+## Genomen Beslissingen (board 2026-07-06)
+- Bundled commit-gate: S-14 + B-118 + B-114 samen ter goedkeuring i.p.v. per-terminal — Bill akkoord ("1 - ja")
+- Kennisbank W28 goedgekeurd en gepubliceerd ("3 JA")
+- Ghostwriter ep06 draft geaccepteerd, Bill post zelf ("2 JA")
+- LinkedIn acceptatiecontrole + Q3 OKRs bevestigd als openstaand, geen actie deze sessie ("4 EN 5 OK")
+- Obsidian seed-tracking gecorrigeerd: 7 bestanden alsnog gemarkeerd GEBRUIKT (tracking was 8 weken gedreft)
+- Security-reviewer agent: S-14/B-118 diff schoon, geen bevindingen
 
 ## Lopende Context
-- Branch feature/board-2026-05-16: security rapport + CSV fix committed
-- Security rapport: .claude/cto/memory_security_check_2026-05-16.md
-- Ghostwriter ep05: .claude/cmo/ghostwriter_drafts/episode-05-twee-snelheden.md (post_voor 2026-05-19)
-- 5 connection_sent leads (2026-05-05): Franny, Denise, Ilse, Nick, Bep — nog geen acceptatie gemeld
-- 2 nieuwe connection_sent (2026-05-16): Jeppe Hondelink, Jeroen de Groot
-- Skill daily-board-meeting: v0.4.5 (Windows temp-file fix, socket retry, ghostwriter file-first)
+- Branch feature/board-2026-07-06: 2 commits (`bf2d201` code+ep06, `0557096` backlog B-117)
+- Ghostwriter ep06: `.claude/cmo/ghostwriter_drafts/episode-06-acht-weken-stilte.md` (post_voor 2026-07-13)
+- Kennisbank S3: 21 artikelen (ai-integreren-in-bewezen-architectuur-mkb toegevoegd 2026-07-08)
+- Amplify prod-build getriggerd (HTTP 202) voor sitemap/llms-refresh
+- 7 connection_sent leads wachten op acceptatie: Franny, Denise, Ilse, Nick, Bep (2026-05-05), Jeppe Hondelink, Jeroen de Groot (2026-05-16)
+- Skill daily-board-meeting: v0.4.5

@@ -1,40 +1,40 @@
 # Sanne — Daily Context
-_Last updated: 2026-05-19_
+_Last updated: 2026-07-06_
 
 ## Open Acties (toegewezen aan mij)
 - B-105: Cold email targeting prep — 5 targets identificeren via Apollo (todo)
 - B-31: 2 leads nog needs_enrichment (topicsfashion.nl, chocoladeverpakking.nl)
-- B-109: LinkedIn outreach batch week 21 — geblokkeerd (geen not_contacted leads met URL)
-- B-110: LinkedIn engagement analytics ophalen (todo)
+- Kennisbank artikel #2 week 28 — volgende meeting
 
-## KPI Status (week 21, 18–24 mei)
-- LinkedIn posts: 0 / 3
-- Nieuwe connecties: 0 / 20–25 (nog geen acceptaties week 21)
-- Kennisbank artikelen: 1 / 2 ✅ (B-108 gepubliceerd 2026-05-19: mkb-ai-drempel-hulp-vragen)
+## KPI Status (week 28, 6–12 juli)
+- LinkedIn posts: 0/3 (ep06 klaar, Bill post zelf voor 13 juli)
+- Nieuwe connecties: 0/20–25 (7 leads wachten handmatige acceptatie)
+- Kennisbank artikelen: 1/2 ✅ (B-117 gepubliceerd 2026-07-08: ai-integreren-in-bewezen-architectuur-mkb)
 
 ## Actieve Blockers
 - B-31 (deels): topicsfashion.nl + chocoladeverpakking.nl nog needs_enrichment — Apify of handmatig
-- B-109 geblokkeerd: alle leads in outreach-log.csv zijn al connection_sent of dm_sent — geen not_contacted beschikbaar
+- Geen nieuwe not_contacted leads met LinkedIn-URL — outreach batch geblokkeerd tot Bill nieuwe leads aanlevert
 
 ## Goedkeuringsregel (permanent)
 - Alles wat extern zichtbaar wordt vereist altijd Human Board goedkeuring vóór uitvoering.
+- LinkedIn persoonlijke posts: Bill post altijd zelf, ook na goedkeuring van de draft.
 
-## Genomen Beslissingen (board 2026-05-19)
-- B-106 ✅: llms-full.txt fix via HTTP fetch — 19 artikelen nu correct in llms-full.txt (commit 4d51e63)
-- B-107 ✅: security check week 21 — PASS met 4 accepted LOWs (LOW-4 nieuw: LD+JSON serialization)
-- B-108 ✅: kennisbank artikel mkb-ai-drempel-hulp-vragen gepubliceerd — 20 artikelen in S3
-- ep05 "Hoe duur is denken eigenlijk?" — approved, post_voor vandaag (2026-05-19) — Bill post zelf
+## Genomen Beslissingen (board 2026-07-06)
+- B-116 ✅: Ghostwriter ep06 "Acht weken lang keek ik niet mee" gedraft — feitenbasis weekrapport W27 (8-wekengat + stille NewsFlow-403). Geïmporteerd DynamoDB (dev, id 3f2472a9). Bill akkoord ("2 JA"), post zelf voor 2026-07-13.
+- Bijvangst: ep01 en ep03 bleken nog nooit in DynamoDB gestaan — nu alsnog geïmporteerd. Verklaart eerdere status-discrepantie CMO memory vs. DynamoDB.
+- B-117 ✅: Kennisbank "AI integreren in bewezen architectuur: de MKB-strategie die wél werkt" — gate-goedgekeurd ("3 JA"), gepubliceerd naar S3, Obsidian-seed gemarkeerd GEBRUIKT.
+- Obsidian seed-tracking gecorrigeerd: 5 seeds bleken al gepubliceerd + 2 al door ghostwriter gebruikt, nooit gemarkeerd — alle 7 nu GEBRUIKT. 10 seeds resteren echt onbenut (was 17).
+- B-119 (nieuw, CTO): get-latest-episode.mjs filtert op verkeerde serie-naam ('AIntern Experiment' i.p.v. 'Het AIntern Experiment') — meldt altijd "No episodes found". Ep02 heeft ook een serie-veld typo.
 
 ## Ghostwriter Status
-- ep01: ✅ gepubliceerd | ep02: ✅ gepubliceerd | ep03: ✅ gepubliceerd (Bill) | ep04: ✅ gepubliceerd (Bill, 2026-05-07)
-- ep05: ✅ approved | Post voor: 2026-05-19 (vandaag) — URGENT: Bill post vandaag nog
-- **Serienaam: "Het AIntern Experiment"**
-- Volgende episode: ep06 (na publicatie ep05)
+- ep01: ✅ gepubliceerd (alsnog geïmporteerd DynamoDB 2026-07-06) | ep02: ✅ gepubliceerd | ep03: ✅ gepubliceerd (alsnog geïmporteerd DynamoDB 2026-07-06) | ep04: ✅ gepubliceerd | ep05: ✅ gepubliceerd (2026-05-19)
+- ep06: draft klaar, Bill akkoord, post_voor 2026-07-13 — `.claude/cmo/ghostwriter_drafts/episode-06-acht-weken-stilte.md`
+- **Serienaam (canoniek): "Het AIntern Experiment"** — let op B-119, get-latest-episode.mjs gebruikt nog de korte vorm
+- Volgende episode: ep07 (na publicatie ep06)
 
 ## Lopende Context
 - 3 dm_sent leads wachten op reactie: Bram Hofman, Jan Bulthuis, Bob van Boekel
-- 5 connection_sent leads (2026-05-05): Franny, Denise, Ilse, Nick, Bep — nog geen acceptatie
-- 2 connection_sent (2026-05-16): Jeppe Hondelink (slijterij-jeppe.nl), Jeroen de Groot (oasegroen.nl)
-- 2 leads nog needs_enrichment: topicsfashion.nl, chocoladeverpakking.nl
-- Kennisbank S3: 20 artikelen (index bijgewerkt 2026-05-19)
-- outreach-log.csv: geen wijzigingen 2026-05-19
+- 7 connection_sent leads wachten op acceptatie: Franny, Denise, Ilse, Nick, Bep (2026-05-05), Jeppe Hondelink, Jeroen de Groot (2026-05-16)
+- 2 leads needs_enrichment: topicsfashion.nl, chocoladeverpakking.nl
+- Kennisbank S3: 21 artikelen (index bijgewerkt 2026-07-08, Amplify prod-build getriggerd voor sitemap/llms)
+- outreach-log.csv: geen wijzigingen 2026-07-06
