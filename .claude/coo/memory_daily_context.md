@@ -1,26 +1,26 @@
 # Emma — Daily Context
-_Last updated: 2026-05-05_
+_Last updated: 2026-07-06_
 
 ## Open Acties (toegewezen aan mij)
-- B-99: Pipeline review — 8 actieve leads updaten; tweede review plannen voor vrijdag 2026-05-09
-- Weekrapport W19: aanmaken maandag 2026-05-11
+- B-104 deel 2: nieuwe lead toevoegen — Bill geeft lead op; nog open
+- LinkedIn acceptatiecontrole: 7 connection_sent leads handmatig checken (Bill)
+- Weekrapport W28: aanmaken maandag 2026-07-13
 
-## KPI Status (week 19, 4–10 mei)
-- Weekrapport W18: ✅ gedaan 2026-05-04 — Obsidian vault
-- Onboarding checklist: operationeel (B-80 ✅)
-- Pipeline bijgewerkt: 1/2 (2026-05-05)
+## KPI Status (week 28, 6–12 juli)
+- Weekrapport W27: ✅ ingehaald 2026-07-06 (B-115) — herstelt rapportagegat W19–W26 (8 weken)
+- Pipeline geverifieerd: B-104 ✅ — CSV was al correct (slijterij-jeppe + oasegroen op connection_sent sinds 2026-05-16), backlog liep alleen achter
 
 ## Actieve Blockers
-- Geen
+- 2 leads needs_enrichment: topicsfashion.nl, chocoladeverpakking.nl — geen LinkedIn-URL, handmatige lookup nodig
+- Nieuwe lead voor pipeline: input-afhankelijk van Bill, geen backlog-blocker
 
-## Genomen Beslissingen (board 2026-05-05)
-- B-90 ✅ done — 5 connection requests verstuurd door Bill 2026-05-05 (Franny, Denise, Ilse, Nick, Bep)
-- outreach-log.csv bijgewerkt: alle 5 leads op connection_sent
-- B-99 aangemaakt: COO pipeline review — 8 actieve leads, tweede check vrijdag
+## Genomen Beslissingen (board 2026-07-06)
+- B-104 ✅ done — CSV-verificatie bevestigde slijterij-jeppe + oasegroen al op connection_sent; backlog-status gecorrigeerd, geen nieuwe pipeline-actie nodig
+- Acceptatiecontrole van 7 connection_sent-leads (Jeppe, Franny, Jeroen, Denise, Ilse, Nick, Bep) blijft structureel een handmatige Bill-actie — LinkedIn-acceptatiestatus is niet programmatisch op te vragen
+- Weekrapport W27 hersteld het 8-weken gat sinds de laatste boardvergadering (W18–19) — bracht bij hervatting ook de stille NewsFlow-403-bug aan het licht (gebruikt als feitenbasis voor Ghostwriter ep06)
 
 ## Lopende Context
-- Outreach-log.csv status: dm_sent:3, connection_sent:5, excluded:3, not_found:1, needs_enrichment:4, not_contacted:0
-- 3 dm_sent leads (Bram, Jan, Bob): nog geen reactie — monitor >20 dagen; eerste follow-up check na 30 dagen
-- 5 connection_sent leads (2026-05-05): Franny, Denise, Ilse, Nick, Bep — DM klaarstaan zodra connectie geaccepteerd
-- 4 needs_enrichment leads: B-31 open (Apify of handmatig)
-- B-88d: ✅ SES email sequentie actief (sanne@aintern.nl) — Zapier Gmail webhook vervalt
+- Outreach-log.csv status: connection_sent 7, dm_sent 3, needs_enrichment 2, not_contacted 0
+- 3 dm_sent leads (Bram, Jan, Bob): nog geen reactie, monitor >20 dagen
+- 7 connection_sent leads: Franny, Denise, Ilse, Nick, Bep (2026-05-05), Jeppe Hondelink, Jeroen de Groot (2026-05-16) — DM's klaar zodra geaccepteerd
+- 2 needs_enrichment leads: topicsfashion.nl, chocoladeverpakking.nl — B-31 open (Apify of handmatig)

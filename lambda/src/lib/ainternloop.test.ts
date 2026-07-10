@@ -16,8 +16,12 @@ const { mockSend } = vi.hoisted(() => ({
 }))
 
 // ── Mock @aws-sdk/client-dynamodb ─────────────────────────────────────────────
+// Vitest 4: mock implementations called with `new` must use the `function` or
+// `class` keyword — arrow functions throw "is not a constructor".
 vi.mock('@aws-sdk/client-dynamodb', () => ({
-  DynamoDBClient: vi.fn().mockImplementation(() => ({})),
+  DynamoDBClient: vi.fn(function () {
+    return {}
+  }),
 }))
 
 // ── Mock @aws-sdk/lib-dynamodb ────────────────────────────────────────────────
@@ -25,14 +29,21 @@ vi.mock('@aws-sdk/lib-dynamodb', () => ({
   DynamoDBDocumentClient: {
     from: vi.fn().mockReturnValue({ send: mockSend }),
   },
-  PutCommand: vi.fn().mockImplementation((input) => ({ __type: 'PutCommand', input })),
-  GetCommand: vi.fn().mockImplementation((input) => ({ __type: 'GetCommand', input })),
-  UpdateCommand: vi.fn().mockImplementation((input) => ({ __type: 'UpdateCommand', input })),
-  QueryCommand: vi.fn().mockImplementation((input) => ({ __type: 'QueryCommand', input })),
-  TransactWriteCommand: vi.fn().mockImplementation((input) => ({
-    __type: 'TransactWriteCommand',
-    input,
-  })),
+  PutCommand: vi.fn(function (input) {
+    return { __type: 'PutCommand', input }
+  }),
+  GetCommand: vi.fn(function (input) {
+    return { __type: 'GetCommand', input }
+  }),
+  UpdateCommand: vi.fn(function (input) {
+    return { __type: 'UpdateCommand', input }
+  }),
+  QueryCommand: vi.fn(function (input) {
+    return { __type: 'QueryCommand', input }
+  }),
+  TransactWriteCommand: vi.fn(function (input) {
+    return { __type: 'TransactWriteCommand', input }
+  }),
 }))
 
 // Import AFTER mocks are in place

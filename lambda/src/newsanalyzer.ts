@@ -121,7 +121,9 @@ async function fetchFeed(feed: { url: string; source: string }): Promise<RssItem
   }
 
   // RSS 2.0: rss.channel.item — may be array or single object
-  const channel = (parsed as Record<string, Record<string, unknown>>)?.rss?.channel
+  const channel = (parsed as Record<string, Record<string, unknown>>)?.rss?.channel as
+    | Record<string, unknown>
+    | undefined
   if (!channel) return []
 
   const rawItems = channel.item

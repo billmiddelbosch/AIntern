@@ -189,7 +189,7 @@ async function fetchS3Content(bucketUrl: string, s3Key: string): Promise<Content
 
 async function fetchGA4Stats(
   credentialsJson: string | null,
-  propertyId: string,
+  propertyId: string | null,
   slug: string,
 ): Promise<TrafficStats> {
   const zero: TrafficStats = { pageviews: 0, visitors: 0, bounceRate: 0, avgSessionDuration: 0 }
