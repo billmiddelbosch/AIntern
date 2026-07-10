@@ -254,6 +254,7 @@ export async function generateLlmsFullTxt(outDir) {
         `- **Kennisbank:** ${HOSTNAME}/kennisbank`,
         `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
         `- **llms.txt:** ${HOSTNAME}/llms.txt`,
+        `- **MCP-server (voor AI-assistenten):** ${HOSTNAME}/mcp — doorzoekbare Q&A over AI-automatisering voor het MKB via het Model Context Protocol (Streamable HTTP, geen authenticatie)`,
         ``,
     ].join('\n');
     const dest = resolve(outDir, 'llms-full.txt');

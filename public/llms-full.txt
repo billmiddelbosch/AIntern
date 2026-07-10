@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: 2026-07-08
+> Laatste update: 2026-07-10
 
 AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
 
@@ -954,11 +954,151 @@ Als je jezelf herkent in bovenstaande &mdash; niet omdat je niet wilt, maar omda
 Doe de gratis Workflow Scan in 3 minuten &rarr;
 
 ---
+### AI integreren in bewezen architectuur: de MKB-strategie die wél werkt
+
+**Categorie:** Implementatietips
+**URL:** https://aintern.nl/kennisbank/ai-integreren-in-bewezen-architectuur-mkb
+**Gepubliceerd:** 2026-07-08
+
+Het MKB hoeft niet te kiezen tussen dure maatwerksoftware en een generiek pakket. AI als laag bovenop bewezen architectuur maakt betaalbaar maatwerk mogelijk — mét security by design.
+
+Jarenlang had het MKB maar twee opties: dure maatwerksoftware laten bouwen, of genoegen nemen met een generiek pakket dat nooit helemaal paste bij de eigen processen. AI verandert die vergelijking fundamenteel — maar niet op de manier die de meeste ondernemers verwachten.
+Het is verleidelijk om te denken dat AI dé vervanger is van bestaande systemen. In de praktijk werkt het andersom het best: AI als laag bovenop bewezen technologie, niet als losstaand eiland ernaast.
+Waarom een AI-eiland de verkeerde keuze is
+Een systeem dat volledig om AI gebouwd is, mist de stabiliteit, het ecosysteem en de beveiligingsstandaarden van bewezen frameworks als Vue, React, Django of Laravel. Elke integratie met bestaande boekhouding, voorraadbeheer of CRM moet dan opnieuw uitgevonden worden. Dat is precies het soort maatwerk dat vroeger onbetaalbaar was voor een bedrijf van twintig medewerkers.
+De slimme aanpak keert dit om: bouw op een reguliere, bewezen architectuur — en zet AI in op de plekken waar het echt waarde toevoegt. Niet overal. Wel daar waar handmatig werk het meest kost.
+Wat dit in de praktijk betekent
+Voor een MKB-bedrijf van twee tot tweehonderd medewerkers ziet dat er meestal zo uit:
+Een reguliere frontend en backend, gebouwd met technologie die zich al jaren bewijst in productie.
+
+AI-componenten die specifiek datgene automatiseren waar de meeste tijd in gaat zitten — een offerte, een rapportage, een klantvraag.
+
+Eén systeem dat aansluit op de eigen processen, in plaats van processen die zich moeten plooien naar een generiek pakket.
+
+AI-ondersteunde development brengt de bouwkosten daarbij zo ver omlaag dat maatwerk — écht op maat, niet "maatwerk" met een prijskaartje van een half jaarsalaris — voor het eerst binnen bereik komt van kleinere organisaties.
+Security is geen laagje verf achteraf
+De vergissing die het vaakst gemaakt wordt: eerst het systeem bouwen, dan pas nadenken over beveiliging. Bij een architectuur die vanaf dag één rekening houdt met AI, hoort dat andersom. Toegangsbeheer, datascheiding en auditlogging zijn geen extra's die je er later bij plakt — ze zijn onderdeel van het ontwerp, precies zoals bij elk ander bedrijfskritisch systeem.
+Robert C. Martin, de bedenker van Clean Architecture, verwoordde het doel van goede architectuur treffend: het minimaliseert de menselijke inspanning die nodig is om een systeem te bouwen én te onderhouden. Dat principe verandert niet omdat er AI in het systeem zit. Het wordt er alleen belangrijker door.
+De conclusie voor MKB-ondernemers
+Kies geen AI-tool los van je systemen, en kies ook geen volledig AI-gedreven systeem zonder bewezen fundament. De winst zit in de combinatie: een stabiele, beveiligde architectuur waarin AI precies daar zit waar het verschil maakt.
+Benieuwd hoe dat er voor jouw bedrijf uitziet? Plan een gratis gesprek via de homepage en we brengen samen in kaart waar AI het meeste oplevert binnen jouw bestaande systemen.
+
+---
+### AI automatiseren in je webshop? Je hoeft geen programmeur te zijn
+
+**Categorie:** Implementatietips
+**URL:** https://aintern.nl/kennisbank/ai-automatiseren-webshop-geen-programmeur-nodig
+**Gepubliceerd:** 2026-07-09
+
+Niet technische kennis bepaalt of AI-automatisering in je webshop slaagt, maar of je helder kunt omschrijven wat je wilt bereiken.
+
+"AI is niks voor mij, ik snap er niks van." Dat hoor je veel van webshop-eigenaren die overwegen om processen te automatiseren. Ze denken dat AI-automatisering een technisch feestje is, gereserveerd voor mensen die kunnen programmeren. Dat beeld klopt niet meer — en het houdt precies de ondernemers tegen die er het meeste baat bij zouden hebben.
+Vroeger moest je een systeem begrijpen om het te kunnen sturen: databases, API's, code. Nu werkt AI met natuurlijke taal. Je hoeft niet te weten hoe een taalmodel intern werkt om er goed mee te werken — je moet kunnen omschrijven wat je wilt bereiken. Dat is een compleet andere vaardigheid, en het is er een die de meeste ondernemers al hebben: helder communiceren over wat een goed resultaat is.
+De vaardigheid die wél telt
+Wie een webshop runt, weet feilloos te vertellen wanneer een productbeschrijving goed is, wanneer een klantmail de juiste toon heeft, of wanneer een voorraadproces soepel loopt. Die kennis is precies wat een AI-systeem nodig heeft om goed werk te leveren — niet technisch inzicht in hoe het model rekent, maar een scherp beeld van het gewenste resultaat.
+De ondernemers die vastlopen bij AI-automatisering zijn zelden degenen zonder technische achtergrond. Het zijn degenen die vaag blijven over wat ze eigenlijk willen. "Automatiseer mijn productinvoer" is geen briefing, het is een wens. "Elke nieuwe leverancier-CSV moet binnen 5 minuten omgezet zijn naar Lightspeed-producten, met categorieën volgens ons bestaande schema en prijzen inclusief onze standaardmarge" — dát is een briefing waar AI mee vooruit kan.
+Concreet: van 3 uur naar 20 minuten
+Bij een webshop met zo'n 200 producten per leverancier-update kostte het handmatig herschrijven en categoriseren van productbeschrijvingen gemiddeld 3 uur per batch. Niet omdat het complexe taken waren, maar omdat elke productbeschrijving net iets anders moest worden geformuleerd — tone-of-voice, SEO-zinnen, juiste categorie.
+Door vooraf helder vast te leggen wát een goede productbeschrijving is (toon, lengte, verplichte elementen, categorie-logica), kon dat proces naar AI-automatisering worden overgezet. Resultaat: dezelfde 200 producten in 20 minuten, inclusief een korte controleronde. Niet omdat er een technisch wonder gebeurde, maar omdat de briefing scherp genoeg was om te automatiseren.
+Dat is het patroon dat je overal terugziet: hoe scherper je kunt omschrijven wat succes is, hoe beter AI het van je overneemt. Geen code, geen technische opleiding — wel een helder beeld van het eindresultaat.
+Benieuwd wat dit voor jouw webshop betekent? Plan een gratis gesprek.
+
+---
+### Waarom vage AI-instructies je meer kosten dan je denkt
+
+**Categorie:** AI Tools & Technologie
+**URL:** https://aintern.nl/kennisbank/vage-ai-instructies-kosten-meer-dan-je-denkt
+**Gepubliceerd:** 2026-07-10
+
+Vage AI-instructies kosten geen tijd, ze kosten geld — elke onnodige correctieronde stuurt de volledige context opnieuw mee en dat tikt aan in tokens.
+
+Aan het einde van de maand valt de rekening van je AI-tool hoger uit dan je had verwacht. Je hebt het niet vaker gebruikt dan normaal, maar de kosten lopen toch op. De reden zit zelden in de tool zelf — hij zit in hoe je het systeem instrueert.
+AI-modellen worden per token gefactureerd: elk stukje tekst dat je instuurt, en elk stukje tekst dat het model teruggeeft, telt mee. Een vage instructie levert zelden in één keer het juiste resultaat op. Het model gokt, jij corrigeert, het model probeert opnieuw — en elke ronde kost tokens. Een scherpe instructie doet het in één keer goed. Dat verschil tikt harder aan dan de meeste ondernemers beseffen.
+Waarom vage instructies duurder zijn
+Een AI-systeem vult ontbrekende informatie zelf in — op basis van aannames. Vraag je "maak deze productomschrijving aantrekkelijker" zonder te specificeren welke toon, welke lengte, en welke elementen verplicht zijn, dan gokt het model. Klopt de gok niet, dan moet je het resultaat afkeuren en opnieuw instrueren. Dat is geen gratis herkansing: elke correctieronde stuurt de volledige context opnieuw mee, en dat kost tokens bovenop wat de eerste poging al kostte.
+Hoe specifieker de briefing — toon, lengte, structuur, het gewenste eindresultaat — hoe kleiner de kans dat er een correctieronde nodig is. Minder rondes betekent minder tokens, en minder tokens betekent een lagere rekening.
+Concreet: 60% minder tokenverbruik per product
+Bij een webshop die AI inzette om productbeschrijvingen te herschrijven kostte de instructie "maak dit product aantrekkelijker" gemiddeld drie correctierondes per product — de toon klopte niet, de lengte was verkeerd, of verplichte SEO-zinnen ontbraken. Na het vastleggen van een scherpe briefing (exacte toon, maximale lengte, verplichte elementen, categorie-logica) daalde dat naar gemiddeld één ronde per product. Het tokenverbruik — en daarmee de AI-kosten — daalde met zo'n 60% per product, zonder dat de kwaliteit van de output achteruitging.
+Dat is het patroon: de besparing zit niet in een goedkopere tool of een ander AI-model, maar in de briefing die je vooraf geeft. Een scherpe instructie is geen technische vaardigheid — het is dezelfde helderheid die je al gebruikt als je een nieuwe medewerker instrueert.
+Veelgestelde vragen
+Hoeveel kan ik besparen door duidelijkere AI-instructies te geven? Dat verschilt per toepassing, maar besparingen van 50-60% op tokenverbruik zijn realistisch bij terugkerende taken zoals productbeschrijvingen of klantmails, waar dezelfde vage instructie steeds opnieuw tot correctierondes leidt. Hoe vaker een taak wordt herhaald, hoe groter het effect van één keer een scherpe briefing vastleggen.
+Moet ik zelf leren hoe tokens precies werken? Nee. Je hoeft niet te weten hoe een AI-model tokens telt of rekent — je hoeft alleen te weten dat vaagheid je meer correctierondes kost, en dus meer geld. Een heldere briefing betaalt zichzelf terug, ongeacht of je de techniek erachter begrijpt.
+Werkt dit ook bij een kant-en-klare AI-tool, niet alleen bij maatwerk? Ja. Ook in afgeronde tools zoals chatbots of contentgeneratoren geldt: hoe vager je invoer of instelling, hoe meer heen-en-weer nodig is om het juiste resultaat te krijgen. De besparing zit in hoe je de tool instrueert, niet in welke tool je kiest.
+Benieuwd wat dit voor jouw webshop betekent? Plan een gratis gesprek.
+
+---
 
 ## NewsFlow — Dagelijks MKB-nieuws
 
 Dagelijkse landingspagina's over actueel nieuws met AI-automatiseringsadvies voor MKB-ondernemers.
 
+### VS-Iran conflict: hoe groot is het risico op militaire escalatie?
+
+**URL:** https://aintern.nl/newsflow/hoe-groot-is-het-risico-op-een-directe-militaire-confrontatie-tussen-vs-en-iran
+**Gepubliceerd:** 2026-07-09
+**Lezersvraag:** Hoe groot is het risico op een directe militaire confrontatie tussen VS en Iran?
+
+Op 8 juli 2026 voerden de Verenigde Staten luchtaanvallen uit op Iran, na herhaalde dreigementen van president Trump. Dit is een historisch kantelpunt in de al jarenlang gespannen relatie tussen beide landen. De wereld houdt de adem in: wat betekent een directe militaire confrontatie tussen twee grote mogendheden voor de rest van de wereld?
+Voor Nederlandse MKB-ondernemers lijkt dit nieuws ver weg, maar de gevolgen zijn dichterbij dan je denkt. Energieprijzen, logistieke ketens en financiële markten reageren onmiddellijk op dit soort geopolitieke schokken. Wie zijn bedrijfsvoering een beetje bijhoudt, merkt dat onrust in het Midden-Oosten altijd doorwerkt in brandstofkosten, transporttarieven en inkoopprijzen. Het is nu meer dan ooit zaak om snel en slim te kunnen schakelen — en daar kan AI een cruciale rol in spelen.
+
+De spanningen tussen de VS en Iran hebben een lange geschiedenis, maar bereikten op 8 juli 2026 een nieuw hoogtepunt toen de Amerikaanse strijdkrachten daadwerkelijk militaire doelen op Iraans grondgebied aanvielen. Aanleiding waren nieuwe dreigementen van de Iraanse regering en vermoedelijk voortdurende onenigheid over het nucleaire programma van Iran en invloedssferen in de regio.
+Iran is een van de grootste olieproducenten ter wereld en de Straat van Hormuz — die langs de Iraanse kust loopt — is een van de belangrijkste scheepvaartroutes voor wereldwijde olietransporten. Circa 20% van de mondiale oliehandel passeert deze zeestraat. Elke verstoring daar heeft directe gevolgen voor de olieprijs op wereldschaal.
+De internationale gemeenschap reageert verdeeld: bondgenoten van de VS zoeken diplomatieke afstemming, terwijl landen als Rusland en China de aanvallen veroordelen. De VN-Veiligheidsraad is bijeengeroepen voor spoedoverleg. De situatie evolueert snel en de onzekerheid over verdere escalatie blijft vooralsnog groot.
+
+Voor MKB-ondernemers zijn er meerdere directe risico's en aandachtspunten:
+Energieprijzen: Een escalatie in het Midden-Oosten drijft de olieprijs omhoog. Dit vertaalt zich snel in hogere brandstofkosten voor transport, hogere energierekeningen en stijgende inkoopprijzen voor producten die afhankelijk zijn van fossiele grondstoffen.
+Logistieke ketens: Scheepvaartroutes via de Perzische Golf en Rode Zee kunnen verstoord raken. Bedrijven die afhankelijk zijn van import uit Azië of het Midden-Oosten kunnen te maken krijgen met langere levertijden en hogere vrachttarieven.
+Financiële markten: Onrust leidt doorgaans tot volatiliteit op aandelenbeurzen en valutamarkten. De euro-dollarkoers kan bewegen, wat import- en exportprijzen beïnvloedt.
+Consumentenvertrouwen: Aanhoudend slecht nieuws op internationaal niveau kan het consumentenvertrouwen drukken, met gevolgen voor de binnenlandse vraag.
+Kort gezegd: ook als jij niets met Iran of de VS doet, kun je als ondernemer de gevolgen voelen in je kostprijs, marges en omzet. Snel inzicht in deze ontwikkelingen is daarom geen luxe, maar noodzaak.
+
+**V: Hoe groot is het risico op een directe militaire confrontatie tussen de VS en Iran?**
+A: Na de Amerikaanse luchtaanvallen van 8 juli 2026 is het risico op verdere escalatie reëel en aanzienlijk. Beide landen hebben eerder getoond snel te kunnen reageren. Experts wijzen op het gevaar van een spiraal van vergeldingsacties. Tegelijkertijd zijn er diplomatieke kanalen actief via de VN en regionale bondgenoten. Het risico is dus aanwezig, maar een volledige oorlog is niet onvermijdelijk. De komende dagen zijn cruciaal en de situatie verandert snel.
+
+**V: Wat zijn de gevolgen van deze escalatie voor de internationale stabiliteit en energieprijzen?**
+A: Escalatie in het Midden-Oosten raakt direct aan de wereldwijde energievoorziening. Iran is een grote olieproducent en de Straat van Hormuz is een vitale doorvoerroute voor zo'n 20% van de wereldwijde oliehandel. Verstoring hiervan drijft olieprijzen omhoog, wat doorwerkt in brandstofkosten, transport en productieprijzen. Financiële markten worden volatieler en het consumentenvertrouwen kan dalen. Voor MKB-ondernemers betekent dit hogere kosten en meer onzekerheid.
+
+**V: Hoe reageert de internationale gemeenschap op de Amerikaanse luchtaanvallen op Iran?**
+A: De reacties zijn verdeeld. Traditionele Amerikaanse bondgenoten zoeken diplomatiek overleg en afstemming. Rusland en China veroordelen de aanvallen en roepen op tot de-escalatie. De VN-Veiligheidsraad is bijeengekomen voor spoedberaad. Europese landen, waaronder Nederland, bevinden zich in een lastige positie: transatlantische solidariteit afwegen tegen het risico op verdere destabilisering van de regio en de economische gevolgen voor Europa.
+
+**V: Welke verdere stappen zal Iran nemen en hoe groot is het risico op verdere escalatie?**
+A: Iran heeft historisch gezien altijd gereageerd op militaire acties, direct of via bondgenoten in de regio zoals Hezbollah of Houthi-groeperingen. Mogelijke stappen zijn vergeldingsaanvallen op Amerikaanse belangen in de regio, verstoring van scheepvaart door de Straat van Hormuz, of cyberaanvallen op westerse infrastructuur. Het risico op verdere escalatie is reëel, maar hangt sterk af van de diplomatieke inspanningen van de komende dagen en de mate waarin regionale actoren zich mengen.
+
+**V: Wat kan ik als MKB-ondernemer nu concreet doen om mijn bedrijf te beschermen?**
+A: Zorg eerst voor inzicht: breng in kaart welke onderdelen van jouw bedrijf gevoelig zijn voor energieprijzen, importkosten of valutaschommelingen. Overweeg tijdelijk voorraden aan te leggen van kritische inkoopartikelen. Spreek met je bank of financieel adviseur over hedging-mogelijkheden voor energie of valuta. En gebruik slimme tools — zoals AI-gestuurde dashboards — om relevante marktontwikkelingen continu te monitoren, zodat je snel kunt reageren als de situatie verandert.
+
+---
+### Hoe lang houdt de voetbalhype in Amerika aan na het WK 2026?
+
+**URL:** https://aintern.nl/newsflow/hoe-lang-blijft-de-voetbalhype-in-amerika-aanhouden-na-het-wk
+**Gepubliceerd:** 2026-07-08
+**Lezersvraag:** Hoe lang blijft de voetbalhype in Amerika aanhouden na het WK?
+
+Het WK 2026 heeft iets bijzonders gedaan met de Amerikaanse sportwereld: voetbal — jarenlang gezien als de 'andere' sport — trekt nu meer kijkers dan ooit tevoren. Team USA presteert sterk, stadions zitten vol en sociale media exploderen van de voetbalcontent. Voor het eerst voelt het alsof voetbal in Amerika niet langer een bijzaak is, maar een serieuze concurrent van American football, basketbal en baseball.
+Toch klinken er ook zorgen. Sportanalisten en voetbalexperts waarschuwen dat hypes rond grote evenementen vaak tijdelijk zijn. Na het WK van 1994 — ook in de VS — leek voetbal door te breken, maar de golf ebbe snel weg. De vraag die iedereen bezighoudt: is dit keer anders? En welke structurele veranderingen zijn nodig om voetbal blijvend groot te maken in de meest competitieve sportmarkt ter wereld?
+
+De VS is gastheer van het WK 2026, samen met Canada en Mexico. Dit gegeven heeft de aanloop naar het toernooi enorm versterkt: jaren van investering in jeugdvoetbal, de groeiende MLS-competitie en de komst van internationale sterren zoals Lionel Messi naar Inter Miami hebben de basis gelegd voor een breder publiek. Kijkcijferrecords werden gebroken al in de groepsfase, en naarmate Team USA verder doordrong in het toernooi, groeide de nationale betrokkenheid explosief.
+Historisch gezien heeft de VS moeite gehad om voetbalmomenten om te zetten in structurele populariteit. Na 1994 duurde het jaren voordat de Major League Soccer echt voet aan de grond kreeg. Na het WK van 2014 en 2018 was de interesse snel weggeebt, mede door tegenvallende prestaties van het nationale team. Nu, in 2026, spelen zowel het gastheerschap als betere prestaties een rol — maar experts benadrukken dat infrastructuur, jeugdopleidingen en mediadeals de échte graadmeters zijn voor blijvend succes.
+
+Voor Nederlandse MKB-ondernemers lijkt de Amerikaanse voetbalhype op het eerste gezicht ver van hun bed. Maar schijn bedriegt. Bedrijven die actief zijn in sportmarketing, merchandise, eventorganisatie, sporttechnologie of internationale e-commerce zien direct kansen. De VS is de grootste consumentenmarkt ter wereld, en een structureel groeiende interesse in voetbal betekent nieuwe afzetmarkten voor Europese — en dus ook Nederlandse — producten en diensten.
+Daarnaast speelt datagestuurd inzicht een grote rol. Trends voorspellen, doelgroepen segmenteren en campagnes optimaliseren rondom sportevenementen zijn taken waarbij AI-automatisering het verschil maakt. Ondernemers die nu snel kunnen schakelen — door slimme contentproductie, geautomatiseerde campagnes of realtime marktanalyse — pakken een voorsprong op concurrenten die handmatig blijven werken. Of de hype tijdelijk of permanent is: in beide gevallen is de window of opportunity smal en beweegt de markt snel.
+
+**V: Hoe lang blijft de voetbalhype in Amerika aanhouden na het WK?**
+A: Dat is de grote vraag. Historisch gezien ebt de interesse na een WK snel weg als er geen structurele basis is. In 2026 zijn er echter meer gunstige factoren dan ooit: een sterkere MLS, meer jeugdspelers, internationale sterren in Amerikaanse clubs en jaren van thuisland-opbouw. Experts schatten dat de hype langer aanhoudt dan na 1994, maar echte duurzaamheid hangt af van mediadeals, jeugdopleidingen en blijvende prestaties van Team USA op het internationale podium.
+
+**V: Welke structurele veranderingen zijn nodig om voetbal permanent populairder te maken in de VS?**
+A: Deskundigen wijzen op vier sleutelfactoren: ten eerste betere jeugdopleidingssystemen die talent uit alle sociale lagen aanboren. Ten tweede stevigere tv- en streamingdeals die voetbal op prime time brengen. Ten derde verdere professionalisering van de MLS, zodat de competitie aantrekkelijker wordt voor topspelers én kijkers. En ten vierde continuïteit in de prestaties van het nationale team — succes kweekt succes. Zonder deze pijlers blijft voetbal kwetsbaar voor de concurrentie van American football en basketbal.
+
+**V: Hoe presteert Team USA in de knock-outfase van het WK 2026?**
+A: Team USA heeft indruk gemaakt tijdens het WK 2026 en is doorgedrongen tot de knock-outfase, wat bijdraagt aan de uitzonderlijk hoge kijkcijfers en nationale trots. Concrete resultaten van individuele wedstrijden zijn afhankelijk van het speelschema, maar de ploeg presteert sterk genoeg om de Amerikaanse media en publiek massaal voor de tv te houden. Dit is een van de redenen waarom analisten dit WK als een potentieel kantelpunt beschouwen voor voetbal in de VS.
+
+**V: Kunnen Nederlandse bedrijven profiteren van de groeiende voetbalpopulariteit in Amerika?**
+A: Zeker. Nederland heeft een sterke reputatie in voetbal, sportdesign, sporttechnologie en evenementenorganisatie. Bedrijven in deze sectoren kunnen inspelen op de groeiende Amerikaanse vraag naar voetbalgerelateerde producten en diensten. Sleutel is snel schakelen: de interesse is nu hoog, en ondernemers die met AI-tools snel relevante content en campagnes kunnen opzetten, hebben een duidelijk voordeel op concurrenten die trager bewegen.
+
+**V: Hoe helpt AI mij als ondernemer om in te spelen op actuele trends zoals het WK?**
+A: AI-automatisering stelt je in staat om razendsnel content te produceren, doelgroepen te segmenteren en campagnes live te zetten zonder grote teams of lange doorlooptijden. Denk aan geautomatiseerde social media posts rondom wedstrijden, AI-gedreven marktanalyse om kansen te spotten, of gepersonaliseerde e-mailflows die inspelen op actuele gebeurtenissen. Tools zoals die van AIntern maken dit bereikbaar voor MKB-bedrijven van elke omvang.
+
+---
 ### Kindermishandeling Stadskanaal: wat is er gebeurd en wat betekent dit?
 
 **URL:** https://aintern.nl/newsflow/wat-zijn-de-details-van-de-kindermishandelingen-in-stadskanaal-en-hoe-ernstig-zi
@@ -1531,3 +1671,4 @@ A: Ja. De Nederlandse Arbowet verplicht werkgevers een veilige en gezonde werkom
 - **Kennisbank:** https://aintern.nl/kennisbank
 - **Sitemap:** https://aintern.nl/sitemap.xml
 - **llms.txt:** https://aintern.nl/llms.txt
+- **MCP-server (voor AI-assistenten):** https://aintern.nl/mcp — doorzoekbare Q&A over AI-automatisering voor het MKB via het Model Context Protocol (Streamable HTTP, geen authenticatie)

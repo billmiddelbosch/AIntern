@@ -30,6 +30,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import Anthropic from '@anthropic-ai/sdk'
 import { BetaAnalyticsDataClient } from '@google-analytics/data'
 import { triggerAmplifyBuild } from './lib/amplify-webhook'
+import { upsertNewsflowQa } from './lib/newsflow-qa'
 
 // ── Module-level clients ──────────────────────────────────────────────────────
 
@@ -497,6 +498,29 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
     }),
   )
   console.log(JSON.stringify({ level: 'INFO', fn: 'handler', message: 'S3 content updated', slug, contentS3Key }))
+
+  // 7b. Update qa.json — the optimizer regenerates faq, so the aggregate must follow.
+  // Non-fatal: the optimized page itself is already live.
+  try {
+    const qaTotal = await upsertNewsflowQa(
+      s3,
+      bucketName,
+      bucketUrl,
+      updatedContent.slug,
+      updatedContent.title,
+      updatedContent.publishedAt,
+      updatedContent.faq,
+    )
+    console.log(JSON.stringify({ level: 'INFO', fn: 'handler', message: 'S3 qa.json updated', slug, qaTotal }))
+  } catch (qaErr) {
+    console.log(JSON.stringify({
+      level: 'WARN',
+      fn: 'handler',
+      message: '[SEOOptimizer] qa.json update failed — Q&A index stale for this slug',
+      slug,
+      error: qaErr instanceof Error ? qaErr.message : String(qaErr),
+    }))
+  }
 
   // 8. Update DynamoDB
   await updatePageRecord(newsflowTableName, slug, stats, improved.changesSummary, now)
