@@ -1,14 +1,14 @@
 ﻿---
 name: daily-board-meeting
 description: This skill should be used when the user asks to "start the daily board meeting", "run the morning standup", "kick off the daily briefing", "start the C-suite discussion", "begin the board meeting", "start the daily sync", or "run the daily AIntern meeting". Orchestrates a structured daily session between CEO (Joost), CMO (Sanne), CTO (Lars), and COO (Emma) to align on the day's priorities, generate LinkedIn outreach proposals, create Kennisbank content from Obsidian, produce a meeting summary saved to Obsidian and emailed to Bill, update each board member's memory, and improve the skill itself at the end.
-version: 0.4.6
+version: 0.4.8
 ---
 
 # Daily Board Meeting
 
 A structured daily session that runs the AIntern C-suite through seven phases: context loading, executive discussion, LinkedIn outreach proposals, Kennisbank content proposals, meeting summary, board memory update, and skill improvement.
 
-**Execution model:** Run all phases fully automatically without stopping. **Internal actions execute immediately** (backlog updates, board memory files, SKILL.md, Obsidian meeting minutes, summary email to Bill, ghostwriter draft aanmaken + DynamoDB import) — no approval needed. **Everything that becomes externally visible always requires explicit Human Board approval** before execution: Kennisbank articles, LinkedIn brand posts, LinkedIn personal posts, LinkedIn connection requests, LinkedIn DMs, and any external emails to prospects. Present a single End-of-Meeting Approval Gate for all external items. Hard blockers (missing file, auth error) are surfaced inline and the remaining phases continue.
+**Execution model:** Run all phases fully automatically without stopping. **Internal actions execute immediately** (backlog updates, board memory files, SKILL.md, Obsidian meeting minutes, summary email to Bill, ghostwriter draft aanmaken + DynamoDB import, Kennisbank artikel schrijven + publiceren) — no approval needed. **Everything that becomes externally visible via LinkedIn or email always requires explicit Human Board approval** before execution: LinkedIn brand posts, LinkedIn personal posts, LinkedIn connection requests, LinkedIn DMs, and any external emails to prospects. Kennisbank artikelen zijn hierop de uitzondering — Fase 4 publiceert direct naar S3 zonder gate (zelfde model als NewsFlow). Present a single End-of-Meeting Approval Gate for all external LinkedIn/email items. Hard blockers (missing file, auth error) are surfaced inline and the remaining phases continue.
 
 ---
 
@@ -437,26 +437,9 @@ Only proceed with the steps below if **both** skip conditions are false.
 3. Load `marketing-super-team` skill — run a **Quick Audit** on each seed: is this the right angle for the target audience?
 
 > **⚠️ Plan mode risk:** Invoking `marketing-super-team` may trigger plan mode. If plan mode activates mid-meeting, immediately write a one-line note to the plan file at `C:\Users\bmidd\.claude\plans\<plan-id>.md` and call `ExitPlanMode` before continuing. Do not attempt to resume the meeting inside plan mode.
-4. Draft proposals internally — they will be presented at the **End-of-Meeting Approval Gate**. Use this format for the gate:
-
-```
-### Kennisbank Content Proposals
-
-**Proposal 1:**
-- Title: [Dutch title]
-- Category: [valid category — see references/kennisbank-publishing.md]
-- Angle: [1 sentence — what pain it addresses]
-- Outline:
-  1. [Section 1]
-  2. [Section 2]
-  3. [Section 3]
-
-**Proposal 2:** ...
-```
-
-Do **not** pause here. Continue directly to Phase 5.
-
-5. For each approved proposal (after End-of-Meeting gate): write the full article (Dutch, HTML, 400–700 words), format as JSON, and publish to S3 following the steps in `references/kennisbank-publishing.md`.
+4. Bepaal 1 voorstel (titel, categorie, angle, outline) op basis van het hoogst scorende seed — dit is de interne brief voor het artikel, geen item voor de Approval Gate.
+5. Schrijf het volledige artikel direct (Dutch, HTML, 500–800 words incl. verplichte FAQ-sectie met 2-3 klantvragen — zie "Article Writing Standards" in `references/kennisbank-publishing.md`), format as JSON, and publish to S3 following **all** steps in `references/kennisbank-publishing.md`, inclusief de Amplify-build-trigger (laatste publish-stap in dat bestand) die `sitemap.xml`/`llms-full.txt` ververst op dezelfde manier als NewsFlow. Er is **geen wachtstap op de End-of-Meeting Approval Gate** — schrijven en publiceren gebeurt direct binnen deze fase, net als bij NewsFlow. Een mislukte webhook-trigger is non-fatal: het artikel zelf is al gepubliceerd via de S3-schrijfactie in de vorige stap; meld het als `[BLOCKER: Amplify build trigger mislukt — sitemap/llms blijven stale tot de volgende deploy]` maar behandel Phase 4 verder als geslaagd.
+6. Neem het gepubliceerde artikel (titel, categorie, live URL `https://aintern.nl/kennisbank/{slug}`, Amplify-build status) op onder **Automatisch uitgevoerd (ter info)** in de End-of-Meeting Approval Gate — niet als goedkeuringsitem. Phase 6 legt de publicatie vast in CMO memory (Genomen Beslissingen + Lopende Context) zoals gebruikelijk.
 
 ---
 
@@ -629,21 +612,19 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 2. **LinkedIn Outreach — [Lead naam]**
    [Bericht tekst in één zin. Variant: ROI/Nieuwsgierigheid/Resultaat.]
 
-3. **Kennisbank artikel — "[Titel]"**
-   [Categorie + één zin over de angle.]
-
-4. **LinkedIn post**
+3. **LinkedIn post**
    [Eerste zin van de post + hashtags in één regel.]
 
-5. **Skill verbetering — [korte naam]**
+4. **Skill verbetering — [korte naam]**
    [Wat er wijzigt en waarom, in één zin.]
 
-6. **Skill verbetering — [korte naam]**
+5. **Skill verbetering — [korte naam]**
    [Wat er wijzigt en waarom, in één zin.]
 
 **Automatisch uitgevoerd (ter info):**
 - Backlog bijgewerkt: [N items]
 - Board memory bijgewerkt: CEO / CMO / CTO / COO
+- Kennisbank artikel gepubliceerd: "[Titel]" → https://aintern.nl/kennisbank/[slug] (of: `_Phase 4 overgeslagen — [reden]_`)
 - Vergaderverslag opgeslagen in Obsidian ✅
 - E-mail verstuurd naar w.middelbosch@gmail.com ✅
 - Branch commits: [git log --oneline output]
@@ -652,14 +633,13 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 
 **Uitvoervolgorde na goedkeuring:**
 1. Voer goedgekeurde LinkedIn outreach uit (connection requests / DMs)
-2. Publiceer goedgekeurde Kennisbank artikelen naar S3
-3. Publiceer goedgekeurde LinkedIn posts via Zapier MCP
-4. Pas goedgekeurde skill-verbeteringen toe als **laatste** stap — zodat eventuele feedback uit de gate is meegenomen in de wijzigingen
-5. Voer Phase 6 uit — update board memory met de beslissingen van de Human Board
+2. Publiceer goedgekeurde LinkedIn posts via Zapier MCP
+3. Pas goedgekeurde skill-verbeteringen toe als **laatste** stap — zodat eventuele feedback uit de gate is meegenomen in de wijzigingen
+4. Voer Phase 6 uit — update board memory met de beslissingen van de Human Board
 
 **Afgewezen of overgeslagen items:** zet backlog-status terug naar `todo` en log de reden in CMO/CEO memory.
 
-**Inline security fix → verplichte commit-actie in gate:** Wanneer een MEDIUM of HIGH security finding direct inline gefixd wordt (i.e. niet via een terminal, maar via Edit tool in de hoofdsessie), voeg dan een `[COMMIT NODIG]` item toe aan de Approval Gate — met de exacte git-commando's voor Bill om te runnen via `!`. De fix staat anders stil op de branch zonder commit. Dit item verschijnt altijd als eerste in de gate, vóór LinkedIn/Kennisbank items.
+**Inline security fix → verplichte commit-actie in gate:** Wanneer een MEDIUM of HIGH security finding direct inline gefixd wordt (i.e. niet via een terminal, maar via Edit tool in de hoofdsessie), voeg dan een `[COMMIT NODIG]` item toe aan de Approval Gate — met de exacte git-commando's voor Bill om te runnen via `!`. De fix staat anders stil op de branch zonder commit. Dit item verschijnt altijd als eerste in de gate, vóór LinkedIn items.
 
 ---
 
@@ -668,6 +648,7 @@ Reageer per nummer met "goedgekeurd", "afgewezen", of feedback. Of typ "alles go
 - **Run all phases automatically** — do not pause mid-meeting for approvals, with one exception: the Human Board Check-in after Phase 1 is a deliberate pause; wait for the Human Board's response before starting Phase 2
 - **Single approval gate** — collect all human decisions and present them at the very end
 - **Never auto-send** LinkedIn messages or emails — only send after explicit End-of-Meeting approval
+- **Kennisbank artikelen publiceren automatisch** — Fase 4 schrijft en publiceert het artikel direct naar S3 (inclusief de Amplify build-trigger voor sitemap/llms), zonder te wachten op de End-of-Meeting Approval Gate — zelfde model als NewsFlow. Alleen LinkedIn/e-mail acties wachten op expliciete goedkeuring. De skip-condities in Fase 4 blijven ongewijzigd automatisch (geen vraag aan de Human Board bij een treffer)
 - **Maandag-verplichtingen zijn niet-onderhandelbaar** — op maandag staan weekrapport (Emma/COO, vorige week) en ghostwriter LinkedIn post Het AIntern Experiment (Sanne/CMO) altijd als #1 en #2 in de Top 5 Daily Actions; niet te verplaatsen, overslaan of uitstellen; Phase 3.5 (Ghostwriter) wordt op maandag altijd uitgevoerd ongeacht de trigger-conditie
 - **LinkedIn persoonlijke posts nooit publiceren** — Bill's persoonlijk LinkedIn (`linkedin_create_share_update`) wordt nooit door AI gepubliceerd, ook niet na goedkeuring in de gate. Goedkeuring in de gate betekent: draft is geaccepteerd voor Bill's review. Bill verstuurt zelf altijd. AIntern company page posts via Zapier mogen wél na expliciete goedkeuring.
 - **Board memory is written after the approval gate** — Phase 6 runs only after the Human Board responds; include their decisions in the memory files
@@ -711,7 +692,7 @@ If `sheal` is not installed, skip and note as `[HEALTH: sheal not found]` in Pha
 
 - **`references/meeting-format.md`** — Detailed debate techniques, persona voice guides, and example exchanges
 - **`references/obsidian-vault.md`** — Vault location, folder structure, and how to extract topic seeds
-- **`references/kennisbank-publishing.md`** — Full S3 publish workflow, JSON schemas, valid categories, and AWS commands
+- **`references/kennisbank-publishing.md`** — Full S3 publish workflow, JSON schemas, valid categories, AWS commands, and the Amplify build-webhook trigger (sitemap/llms refresh)
 - **`references/outreach-format.md`** — Approved LinkedIn connection message templates and character-count rules
 
 ### Zapier MCP Actions
