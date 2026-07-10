@@ -155,6 +155,8 @@ function respond(
 
 **CEO review gate:** The CEO must verify this mapping whenever a new Lambda handler is created, a new environment/domain is added, or `corsOrigin` is modified. The API Gateway CDK preflight list (`infra/lib/admin-stack.ts` → `allowOrigins`) must also include all allowed origins.
 
+**Approved exception — `mcp-server.ts`:** the public MCP endpoint (`POST /mcp`) intentionally uses `Access-Control-Allow-Origin: *` instead of the `corsOrigin` echo pattern. It serves non-browser JSON-RPC clients (Claude, ChatGPT, MCP Inspector), carries no cookies or auth, and only exposes data that is already world-readable in the public S3 buckets. Its `/mcp` API Gateway resource has its own wildcard preflight override. Do not "fix" this back to the echo pattern; any change to this handler still goes through the CEO review gate.
+
 ## Important Notes
 
 - Tailwind CSS v4: do **not** create a `tailwind.config.ts` — all config is done via CSS theme variables if needed

@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import { useRoute, RouterLink } from 'vue-router'
+import { ref, computed } from 'vue'
+import { useRoute, RouterLink, onBeforeRouteUpdate } from 'vue-router'
 import { useHead as useUnhead } from '@unhead/vue'
 import DOMPurify from 'dompurify'
 import { AppShell } from '@/components/shell'
@@ -12,9 +12,29 @@ const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://aintern.nl'
 const NEWSFLOW_BASE_URL =
   import.meta.env.VITE_NEWSFLOW_BASE_URL ?? 'https://aintern-newsflow.s3.eu-west-2.amazonaws.com'
 
-const page = ref<NewsFlowPageContent | null>(null)
-const loading = ref(true)
-const notFound = ref(false)
+// Fetched at setup-time (awaited) so vite-ssg's renderToString captures the
+// resolved content in the pre-rendered HTML — this component is nested under
+// the <Suspense> boundary in App.vue, which is required for async setup().
+async function loadPage(slug: string): Promise<NewsFlowPageContent | null> {
+  if (!slug || !/^[a-z0-9-]{3,80}$/.test(slug)) return null
+  try {
+    const res = await fetch(`${NEWSFLOW_BASE_URL}/posts/${slug}.json`)
+    if (!res.ok) return null
+    return (await res.json()) as NewsFlowPageContent
+  } catch {
+    return null
+  }
+}
+
+const page = ref<NewsFlowPageContent | null>(await loadPage(route.params.slug as string))
+const notFound = computed(() => page.value === null)
+
+// The route component instance is reused when navigating between two
+// /newsflow/:slug articles (same matched route, only the param changes), so
+// setup() does not re-run — refetch explicitly on param change.
+onBeforeRouteUpdate(async (to) => {
+  page.value = await loadPage(to.params.slug as string)
+})
 
 useUnhead({
   title: computed(() =>
@@ -77,40 +97,13 @@ function isSafeUrl(url: string): boolean {
 function formatDate(iso: string): string {
   return new Date(iso).toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' })
 }
-
-onMounted(async () => {
-  const slug = route.params.slug as string
-  if (!slug || !/^[a-z0-9-]{3,80}$/.test(slug)) {
-    notFound.value = true
-    loading.value = false
-    return
-  }
-  try {
-    const res = await fetch(`${NEWSFLOW_BASE_URL}/posts/${slug}.json`)
-    if (res.status === 404) {
-      notFound.value = true
-      return
-    }
-    if (!res.ok) throw new Error(`HTTP ${res.status}`)
-    page.value = (await res.json()) as NewsFlowPageContent
-  } catch {
-    notFound.value = true
-  } finally {
-    loading.value = false
-  }
-})
 </script>
 
 <template>
   <AppShell>
   <div class="min-h-screen bg-white">
-    <!-- Loading -->
-    <div v-if="loading" class="flex items-center justify-center py-32">
-      <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
-    </div>
-
     <!-- Not found -->
-    <div v-else-if="notFound" class="max-w-2xl mx-auto px-4 py-32 text-center">
+    <div v-if="notFound" class="max-w-2xl mx-auto px-4 py-32 text-center">
       <h1 class="text-2xl font-bold text-slate-800 mb-4">Pagina niet gevonden</h1>
       <p class="text-slate-600 mb-8">Dit artikel bestaat niet of is verwijderd.</p>
       <RouterLink to="/" class="text-blue-600 hover:underline">← Terug naar AIntern</RouterLink>

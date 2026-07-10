@@ -2,7 +2,7 @@ import { fileURLToPath, URL } from 'node:url';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from '@tailwindcss/vite';
-import { generateSitemapXml, getSlugsFromS3 } from './scripts/generate-sitemap';
+import { generateSitemapXml, getSlugsFromS3, getNewsflowSlugsFromS3 } from './scripts/generate-sitemap';
 import { generateLlmsFullTxt } from './scripts/generate-llms-full';
 function sitemapPlugin() {
     return {
@@ -32,6 +32,9 @@ export default defineConfig({
         llmsFullPlugin(),
     ],
     ssgOptions: {
+        // NewsFlowView's SSG-fetched article content is sanitized with DOMPurify
+        // during renderToString; DOMPurify needs a `window` global to self-init.
+        mock: true,
         async includedRoutes(paths) {
             const staticPaths = paths.filter((p) => !p.includes(':') && !p.startsWith('/admin'));
             let articleRoutes = [];
@@ -42,7 +45,15 @@ export default defineConfig({
             catch {
                 // S3 unreachable — build continues without article routes
             }
-            return [...staticPaths, ...articleRoutes];
+            let newsflowRoutes = [];
+            try {
+                const slugs = await getNewsflowSlugsFromS3();
+                newsflowRoutes = slugs.map((slug) => `/newsflow/${slug}`);
+            }
+            catch (err) {
+                console.warn('[vite-ssg] Newsflow S3 onbereikbaar — newsflow routes worden overgeslagen:', err);
+            }
+            return [...staticPaths, ...articleRoutes, ...newsflowRoutes];
         },
     },
     resolve: {

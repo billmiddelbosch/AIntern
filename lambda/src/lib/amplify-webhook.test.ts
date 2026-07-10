@@ -11,12 +11,15 @@ const { mockSend } = vi.hoisted(() => ({
   mockSend: vi.fn(),
 }))
 
+// Vitest 4: mock implementations called with `new` must use the `function` or
+// `class` keyword — arrow functions throw "is not a constructor".
 vi.mock('@aws-sdk/client-ssm', () => ({
-  SSMClient: vi.fn().mockImplementation(() => ({ send: mockSend })),
-  GetParameterCommand: vi.fn().mockImplementation((input) => ({
-    __type: 'GetParameterCommand',
-    input,
-  })),
+  SSMClient: vi.fn(function () {
+    return { send: mockSend }
+  }),
+  GetParameterCommand: vi.fn(function (input) {
+    return { __type: 'GetParameterCommand', input }
+  }),
 }))
 
 // Import AFTER mocks are in place

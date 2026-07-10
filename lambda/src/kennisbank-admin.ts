@@ -350,6 +350,7 @@ Alle Q&A-paren uit de kennisbank op één pagina. Gefilterd op categorie, met ac
     `- **Veelgestelde vragen:** ${HOSTNAME}/veelgestelde-vragen`,
     `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
     `- **llms.txt:** ${HOSTNAME}/llms.txt`,
+    `- **MCP-server (voor AI-assistenten):** ${HOSTNAME}/mcp — doorzoekbare Q&A over AI-automatisering voor het MKB via het Model Context Protocol (Streamable HTTP, geen authenticatie)`,
     ``,
   ].join('\n')
 

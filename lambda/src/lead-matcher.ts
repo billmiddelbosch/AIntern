@@ -1,7 +1,13 @@
 import type { Context } from 'aws-lambda'
 import { SSMClient, GetParameterCommand } from '@aws-sdk/client-ssm'
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb'
-import { DynamoDBDocumentClient, ScanCommand, UpdateCommand, QueryCommand } from '@aws-sdk/lib-dynamodb'
+import {
+  DynamoDBDocumentClient,
+  ScanCommand,
+  UpdateCommand,
+  QueryCommand,
+  type ScanCommandOutput,
+} from '@aws-sdk/lib-dynamodb'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
@@ -52,7 +58,7 @@ export async function handler(_event: unknown, context: Context): Promise<void> 
   const leads: LeadItem[] = []
   let lastKey: Record<string, unknown> | undefined = undefined
   do {
-    const scanRes = await ddb.send(
+    const scanRes: ScanCommandOutput = await ddb.send(
       new ScanCommand({
         TableName: tableName,
         FilterExpression:

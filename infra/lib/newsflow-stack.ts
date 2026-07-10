@@ -232,13 +232,14 @@ export class NewsFlowStack extends cdk.Stack {
       }),
     )
 
-    // IAM — S3: write posts/<slug>.json and index.json to newsflow bucket
+    // IAM — S3: write posts/<slug>.json, index.json and qa.json to newsflow bucket
     contentBuilderFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['s3:PutObject'],
         resources: [
           `${newsflowBucket.bucketArn}/posts/*`,
           `${newsflowBucket.bucketArn}/index.json`,
+          `${newsflowBucket.bucketArn}/qa.json`,
         ],
       }),
     )
@@ -311,11 +312,14 @@ export class NewsFlowStack extends cdk.Stack {
       }),
     )
 
-    // IAM — S3: read + write posts/<slug>.json (updated optimized content)
+    // IAM — S3: read + write posts/<slug>.json (updated optimized content) + qa.json aggregate
     seoOptimizerFn.addToRolePolicy(
       new iam.PolicyStatement({
         actions: ['s3:PutObject'],
-        resources: [`${newsflowBucket.bucketArn}/posts/*`],
+        resources: [
+          `${newsflowBucket.bucketArn}/posts/*`,
+          `${newsflowBucket.bucketArn}/qa.json`,
+        ],
       }),
     )
 
