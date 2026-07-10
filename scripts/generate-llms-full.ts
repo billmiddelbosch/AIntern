@@ -290,6 +290,7 @@ export async function generateLlmsFullTxt(outDir: string): Promise<void> {
     `- **Kennisbank:** ${HOSTNAME}/kennisbank`,
     `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
     `- **llms.txt:** ${HOSTNAME}/llms.txt`,
+    `- **MCP-server (voor AI-assistenten):** ${HOSTNAME}/mcp — doorzoekbare Q&A over AI-automatisering voor het MKB via het Model Context Protocol (Streamable HTTP, geen authenticatie)`,
     ``,
   ].join('\n')
 

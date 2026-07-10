@@ -640,6 +640,27 @@ export class AdminStack extends cdk.Stack {
     workflowScanFn.addAlias('dev')
     workflowScanFn.addAlias('prod')
 
+    // ── MCP server Lambda (public) ────────────────────────────────────────────
+    // Stateless Model Context Protocol server over Streamable HTTP (JSON mode).
+    // Serves Kennisbank + NewsFlow Q&A to AI assistants. Reads only public S3
+    // JSON over HTTPS — no role policies needed beyond the default logs.
+    const mcpServerFn = new lambda.Function(this, 'McpServerFunction', {
+      functionName: 'aintern-mcp-server',
+      handler: 'mcp-server.handler',
+      description: 'Public POST /mcp — stateless MCP server for Kennisbank + NewsFlow Q&A',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      memorySize: 256,
+      environment: {
+        KENNISBANK_BASE_URL: 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com',
+        NEWSFLOW_BASE_URL: 'https://aintern-newsflow.s3.eu-west-2.amazonaws.com',
+      },
+    })
+
+    mcpServerFn.addAlias('dev')
+    mcpServerFn.addAlias('prod')
+
     // ── Groei Systeem — sequence-scheduler Lambda ─────────────────────────────
     const sequenceSchedulerFn = new lambda.Function(this, 'SequenceSchedulerFunction', {
       functionName: 'aintern-sequence-scheduler',
@@ -1222,12 +1243,40 @@ export class AdminStack extends cdk.Stack {
     const workflowScanResource = api.root.addResource('workflow-scan')
     workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
 
+    // /mcp (public — no JWT required). MCP clients are non-browser JSON-RPC
+    // callers, so this resource overrides the site-origin CORS default with '*'
+    // (public read-only content, no cookies/auth — CEO-gate reviewed).
+    // GET/DELETE are wired so the Lambda can answer a spec-compliant 405.
+    const mcpResource = api.root.addResource('mcp', {
+      defaultCorsPreflightOptions: {
+        allowOrigins: ['*'],
+        allowMethods: ['POST', 'GET', 'OPTIONS'],
+        allowHeaders: [
+          'Content-Type',
+          'Accept',
+          'Authorization',
+          'Mcp-Session-Id',
+          'MCP-Protocol-Version',
+        ],
+      },
+    })
+    mcpResource.addMethod('POST', aliasIntegration(mcpServerFn))
+    mcpResource.addMethod('GET', aliasIntegration(mcpServerFn))
+    mcpResource.addMethod('DELETE', aliasIntegration(mcpServerFn))
+
     // ── Deployment + stages ──────────────────────────────────────────────────
     const deployment = new apigateway.Deployment(this, 'AdminDeployment', { api })
 
     // Per-method throttling for /workflow-scan POST — public endpoint with no auth,
     // capped to prevent cost amplification from unbounded Haiku + DynamoDB calls (B-77).
     const workflowScanThrottle: apigateway.MethodDeploymentOptions = {
+      throttlingRateLimit: 10,
+      throttlingBurstLimit: 20,
+    }
+
+    // /mcp is public with no auth — same caps as /workflow-scan; the endpoint is
+    // cheap (in-memory cached S3 JSON) so these are easy to raise later.
+    const mcpThrottle: apigateway.MethodDeploymentOptions = {
       throttlingRateLimit: 10,
       throttlingBurstLimit: 20,
     }
@@ -1239,6 +1288,7 @@ export class AdminStack extends cdk.Stack {
       description: 'Development stage — routes to dev alias',
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
+        '/mcp/POST': mcpThrottle,
       },
     })
 
@@ -1249,6 +1299,7 @@ export class AdminStack extends cdk.Stack {
       description: 'Production stage — routes to prod alias',
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
+        '/mcp/POST': mcpThrottle,
       },
     })
 
@@ -1329,6 +1380,18 @@ export class AdminStack extends cdk.Stack {
       value: prodStage.urlForPath('/admin/kpi/refresh'),
       description: 'Prod POST /admin/kpi/refresh endpoint',
       exportName: 'aintern-kpi-refresh-url-prod',
+    })
+
+    new cdk.CfnOutput(this, 'McpEndpointDev', {
+      value: devStage.urlForPath('/mcp'),
+      description: 'Dev MCP endpoint (Streamable HTTP) — Kennisbank + NewsFlow Q&A',
+      exportName: 'aintern-mcp-endpoint-dev',
+    })
+
+    new cdk.CfnOutput(this, 'McpEndpointProd', {
+      value: prodStage.urlForPath('/mcp'),
+      description: 'Prod MCP endpoint (Streamable HTTP) — advertise as https://aintern.nl/mcp via Amplify rewrite',
+      exportName: 'aintern-mcp-endpoint-prod',
     })
 
     // ── Tags ─────────────────────────────────────────────────────────────────
