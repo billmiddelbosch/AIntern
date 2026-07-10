@@ -247,6 +247,12 @@ ${JSON.stringify({ title: safeTitle, text: safeText, source })}
   }
 }
 
+interface SignalClassification {
+  painCategory: string
+  urgency: 'high' | 'medium' | 'low'
+  persona?: string
+}
+
 async function saveSignal(
   tableName: string,
   opts: {
@@ -255,7 +261,7 @@ async function saveSignal(
     subreddit: string | null
     title: string
     text: string
-    classification: HaikuClassification
+    classification: SignalClassification
     hotScore: number
   },
 ): Promise<boolean> {
@@ -277,7 +283,7 @@ async function saveSignal(
           title: opts.title,
           text: opts.text.slice(0, 1000),
           painCategory: opts.classification.painCategory,
-          persona: opts.classification.persona,
+          ...(opts.classification.persona !== undefined && { persona: opts.classification.persona }),
           urgency: opts.classification.urgency,
           hotScore: opts.hotScore,
           status: 'new',

@@ -140,6 +140,7 @@ interface LeadItem {
   website?: string
   status?: string
   emailSequenceCreatedAt?: string
+  GSI1pk?: string
 }
 
 interface SequenceItem {
@@ -343,7 +344,7 @@ Retourneer ONLY valid JSON zonder markdown:
   console.log('[sequence-scheduler] enriched query raw=%d', scanRes.Items?.length ?? 0)
   const enrichedLeads = (scanRes.Items ?? []).filter(
     (item) => typeof item['email'] === 'string' && item['email'] !== '',
-  ) as LeadItem[]
+  ) as (LeadItem & { email: string })[]
   console.log('[sequence-scheduler] enriched leads found=%d', enrichedLeads.length)
 
   let newSequencesCount = 0

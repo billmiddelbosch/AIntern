@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, Suspense } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 import { useHead } from '@/composables/useHead'
 import { useAnalytics } from '@/composables/useAnalytics'
@@ -36,7 +36,25 @@ const layout = computed(() => {
 
 <template>
   <component :is="layout" v-if="layout">
-    <RouterView />
+    <RouterView v-slot="{ Component }">
+      <Suspense>
+        <component :is="Component" />
+        <template #fallback>
+          <div class="flex items-center justify-center py-32">
+            <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+          </div>
+        </template>
+      </Suspense>
+    </RouterView>
   </component>
-  <RouterView v-else />
+  <RouterView v-slot="{ Component }" v-else>
+    <Suspense>
+      <component :is="Component" />
+      <template #fallback>
+        <div class="flex items-center justify-center py-32">
+          <div class="w-8 h-8 border-4 border-blue-600 border-t-transparent rounded-full animate-spin" />
+        </div>
+      </template>
+    </Suspense>
+  </RouterView>
 </template>

@@ -28,6 +28,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import Anthropic from '@anthropic-ai/sdk'
 import { createAInternLoopSDK } from './lib/ainternloop'
 import { triggerAmplifyBuild } from './lib/amplify-webhook'
+import { upsertNewsflowQa } from './lib/newsflow-qa'
 
 // ── Module-level clients ──────────────────────────────────────────────────────
 
@@ -337,6 +338,27 @@ export const handler = async (_event: ScheduledEvent, context: Context): Promise
       await writeS3Json(bucketName, 'index.json', existingIndex)
       console.log(
         JSON.stringify({ level: 'INFO', fn: 'handler', message: 'S3 index.json updated', total: existingIndex.length }),
+      )
+    }
+
+    // 5b. Update qa.json — aggregated Q&A index consumed by the MCP server and FAQ page.
+    // Non-fatal: the page itself is already live in S3.
+    try {
+      const qaTotal = await upsertNewsflowQa(
+        s3, bucketName, bucketUrl, slug, content.title, publishedAt, content.faq,
+      )
+      console.log(
+        JSON.stringify({ level: 'INFO', fn: 'handler', message: 'S3 qa.json updated', slug, qaTotal }),
+      )
+    } catch (qaErr) {
+      console.log(
+        JSON.stringify({
+          level: 'WARN',
+          fn: 'handler',
+          message: '[ContentBuilder] qa.json update failed — Q&A index stale for this slug',
+          slug,
+          error: qaErr instanceof Error ? qaErr.message : String(qaErr),
+        }),
       )
     }
 
