@@ -1264,6 +1264,23 @@ export class AdminStack extends cdk.Stack {
     mcpResource.addMethod('GET', aliasIntegration(mcpServerFn))
     mcpResource.addMethod('DELETE', aliasIntegration(mcpServerFn))
 
+    // /ask (public — no JWT required). NLWeb-protocol-compatible REST search,
+    // served by the same mcpServerFn Lambda as /mcp (dispatched on event.resource).
+    // Reuses the exact wildcard-CORS exception approved for /mcp — see
+    // "Approved exception — mcp-server.ts" in root CLAUDE.md (CEO-gate reviewed):
+    // non-browser JSON clients, no cookies/auth, read-only public content.
+    const askResource = api.root.addResource('ask', {
+      defaultCorsPreflightOptions: {
+        allowOrigins: ['*'],
+        allowMethods: ['GET', 'POST', 'OPTIONS'],
+        // Matches ASK_HEADERS in mcp-server.ts exactly (security-reviewer
+        // flagged the prior mismatch, 2026-07-12).
+        allowHeaders: ['Content-Type', 'Accept', 'Authorization'],
+      },
+    })
+    askResource.addMethod('GET', aliasIntegration(mcpServerFn))
+    askResource.addMethod('POST', aliasIntegration(mcpServerFn))
+
     // ── Deployment + stages ──────────────────────────────────────────────────
     const deployment = new apigateway.Deployment(this, 'AdminDeployment', { api })
 
@@ -1281,6 +1298,12 @@ export class AdminStack extends cdk.Stack {
       throttlingBurstLimit: 20,
     }
 
+    // /ask is public with no auth — same caps as /mcp, same Lambda + cache.
+    const askThrottle: apigateway.MethodDeploymentOptions = {
+      throttlingRateLimit: 10,
+      throttlingBurstLimit: 20,
+    }
+
     const devStage = new apigateway.Stage(this, 'AdminDevStage', {
       deployment,
       stageName: 'dev',
@@ -1289,6 +1312,8 @@ export class AdminStack extends cdk.Stack {
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
         '/mcp/POST': mcpThrottle,
+        '/ask/GET': askThrottle,
+        '/ask/POST': askThrottle,
       },
     })
 
@@ -1300,6 +1325,8 @@ export class AdminStack extends cdk.Stack {
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
         '/mcp/POST': mcpThrottle,
+        '/ask/GET': askThrottle,
+        '/ask/POST': askThrottle,
       },
     })
 
@@ -1392,6 +1419,18 @@ export class AdminStack extends cdk.Stack {
       value: prodStage.urlForPath('/mcp'),
       description: 'Prod MCP endpoint (Streamable HTTP) — advertise as https://aintern.nl/mcp via Amplify rewrite',
       exportName: 'aintern-mcp-endpoint-prod',
+    })
+
+    new cdk.CfnOutput(this, 'AskEndpointDev', {
+      value: devStage.urlForPath('/ask'),
+      description: 'Dev NLWeb-compatible /ask endpoint (GET|POST) — Kennisbank + NewsFlow Q&A',
+      exportName: 'aintern-ask-endpoint-dev',
+    })
+
+    new cdk.CfnOutput(this, 'AskEndpointProd', {
+      value: prodStage.urlForPath('/ask'),
+      description: 'Prod NLWeb-compatible /ask endpoint (GET|POST) — advertise as https://aintern.nl/ask via Amplify rewrite',
+      exportName: 'aintern-ask-endpoint-prod',
     })
 
     // ── Tags ─────────────────────────────────────────────────────────────────
