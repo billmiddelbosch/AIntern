@@ -12,6 +12,7 @@ import {
   tokenize,
   scoreQaItem,
   searchQa,
+  searchQaScored,
   htmlToPlainText,
   renderKennisbankArticle,
   renderNewsflowArticle,
@@ -41,6 +42,27 @@ const mockContext = {
 function postEvent(body: unknown, method = 'POST'): APIGatewayProxyEvent {
   return {
     httpMethod: method,
+    body: typeof body === 'string' ? body : JSON.stringify(body),
+    headers: {},
+  } as unknown as APIGatewayProxyEvent
+}
+
+function askGetEvent(query: Record<string, string>): APIGatewayProxyEvent {
+  return {
+    httpMethod: 'GET',
+    resource: '/ask',
+    path: '/ask',
+    queryStringParameters: query,
+    body: null,
+    headers: {},
+  } as unknown as APIGatewayProxyEvent
+}
+
+function askPostEvent(body: unknown): APIGatewayProxyEvent {
+  return {
+    httpMethod: 'POST',
+    resource: '/ask',
+    path: '/ask',
     body: typeof body === 'string' ? body : JSON.stringify(body),
     headers: {},
   } as unknown as APIGatewayProxyEvent
@@ -119,6 +141,29 @@ describe('scoreQaItem / searchQa', () => {
 
   it('returns empty when nothing matches', () => {
     expect(searchQa(items, 'blockchain quantum', { limit: 5 })).toEqual([])
+  })
+})
+
+describe('searchQaScored', () => {
+  const items: QaItem[] = [
+    qa({}),
+    qa({
+      question: 'Hoe start ik met een AI-agent?',
+      answer: 'Begin met een workflow-scan.',
+      slug: 'starten-met-ai-agent',
+      title: 'Starten met AI-agents',
+      source: 'newsflow',
+      category: undefined,
+      publishedAt: '2026-07-01',
+      url: 'https://aintern.nl/newsflow/starten-met-ai-agent',
+    }),
+  ]
+
+  it('returns the same items as searchQa, each paired with a positive score', () => {
+    const scored = searchQaScored(items, 'AI-agent starten', { limit: 10 })
+    const plain = searchQa(items, 'AI-agent starten', { limit: 10 })
+    expect(scored.map((s) => s.item)).toEqual(plain)
+    expect(scored.every((s) => s.score > 0)).toBe(true)
   })
 })
 
@@ -417,5 +462,151 @@ describe('handler', () => {
     const res = await handler(postEvent(batch), mockContext)
     expect(res.statusCode).toBe(400)
     expect(JSON.parse(res.body).error.code).toBe(-32600)
+  })
+})
+
+// ── HTTP handler — /ask (NLWeb) ────────────────────────────────────────────────
+
+describe('handler — /ask', () => {
+  // loadQaItems() caches at module scope with a 10-min TTL. The earlier
+  // 'tools with stubbed fetch' suite already warms that cache for the
+  // statically-imported `handler`, so these tests reset the module registry
+  // and re-import fresh per test to get an isolated, uncached instance that
+  // actually sees this describe's fetch stub.
+  let askHandler: typeof handler
+
+  beforeEach(async () => {
+    vi.resetModules()
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (url: string) => {
+        if (String(url).includes('aintern-kennisbank') && String(url).endsWith('/qa.json')) {
+          return new Response(
+            JSON.stringify({
+              items: [
+                {
+                  question: 'Wat kost een AI-agent?',
+                  answer: 'Vanaf enkele honderden euro per maand.',
+                  slug: 'ai-agent-kosten',
+                  title: 'AI-agent kosten',
+                  category: 'AI Automatisering',
+                  publishedAt: '2026-06-01',
+                },
+              ],
+            }),
+            { status: 200 },
+          )
+        }
+        if (String(url).includes('aintern-newsflow') && String(url).endsWith('/qa.json')) {
+          return new Response(
+            JSON.stringify({
+              items: [
+                {
+                  question: 'Hoe start ik met een AI-agent?',
+                  answer: 'Begin met een workflow-scan.',
+                  slug: 'starten-met-ai-agent',
+                  title: 'Starten met AI-agents',
+                  publishedAt: '2026-07-01',
+                },
+              ],
+            }),
+            { status: 200 },
+          )
+        }
+        return new Response('not found', { status: 404 })
+      }),
+    )
+    ;({ handler: askHandler } = await import('./mcp-server'))
+  })
+
+  afterEach(() => {
+    vi.unstubAllGlobals()
+  })
+
+  it('OPTIONS returns 204 with wildcard CORS', async () => {
+    const res = await askHandler(
+      { ...askGetEvent({}), httpMethod: 'OPTIONS' } as unknown as APIGatewayProxyEvent,
+      mockContext,
+    )
+    expect(res.statusCode).toBe(204)
+    expect(res.headers?.['Access-Control-Allow-Origin']).toBe('*')
+  })
+
+  it('basic query (GET) returns results with scores and query_id', async () => {
+    const res = await askHandler(askGetEvent({ query: 'kosten AI-agent' }), mockContext)
+    expect(res.statusCode).toBe(200)
+    const body = JSON.parse(res.body)
+    expect(typeof body.query_id).toBe('string')
+    expect(body.results.length).toBeGreaterThan(0)
+    const hit = body.results[0]
+    expect(hit.url).toBe('https://aintern.nl/kennisbank/ai-agent-kosten')
+    expect(hit.name).toBe('Wat kost een AI-agent?')
+    expect(hit.site).toBe('kennisbank')
+    expect(typeof hit.score).toBe('number')
+    expect(hit.score).toBeGreaterThan(0)
+    expect(hit.description).toBe('Vanaf enkele honderden euro per maand.')
+    expect(hit.schema_object).toMatchObject({
+      '@type': 'Question',
+      name: 'Wat kost een AI-agent?',
+      url: 'https://aintern.nl/kennisbank/ai-agent-kosten',
+      acceptedAnswer: { '@type': 'Answer', text: 'Vanaf enkele honderden euro per maand.' },
+    })
+  })
+
+  it('basic query (POST JSON body) returns the same shape as GET', async () => {
+    const res = await askHandler(askPostEvent({ query: 'kosten AI-agent' }), mockContext)
+    expect(res.statusCode).toBe(200)
+    const body = JSON.parse(res.body)
+    expect(body.results.length).toBeGreaterThan(0)
+  })
+
+  it('echoes a provided query_id instead of generating one', async () => {
+    const res = await askHandler(
+      askGetEvent({ query: 'kosten AI-agent', query_id: 'client-supplied-id' }),
+      mockContext,
+    )
+    expect(JSON.parse(res.body).query_id).toBe('client-supplied-id')
+  })
+
+  it('site filter restricts results to the requested source', async () => {
+    const res = await askHandler(askGetEvent({ query: 'AI-agent', site: 'newsflow' }), mockContext)
+    expect(res.statusCode).toBe(200)
+    const body = JSON.parse(res.body)
+    expect(body.results.length).toBeGreaterThan(0)
+    expect(body.results.every((r: { site: string }) => r.site === 'newsflow')).toBe(true)
+  })
+
+  it('no matches returns 200 with an empty results array', async () => {
+    const res = await askHandler(askGetEvent({ query: 'blockchain quantum' }), mockContext)
+    expect(res.statusCode).toBe(200)
+    expect(JSON.parse(res.body).results).toEqual([])
+  })
+
+  it('decontextualized_query overrides query when present', async () => {
+    const res = await askHandler(
+      askGetEvent({ query: 'volledig irrelevante tekst', decontextualized_query: 'kosten AI-agent' }),
+      mockContext,
+    )
+    expect(res.statusCode).toBe(200)
+    const body = JSON.parse(res.body)
+    expect(body.results.length).toBeGreaterThan(0)
+    expect(body.results[0].name).toBe('Wat kost een AI-agent?')
+  })
+
+  it('mode and streaming are accepted but ignored — still returns the list shape', async () => {
+    const res = await askHandler(
+      askGetEvent({ query: 'kosten AI-agent', mode: 'summarize', streaming: 'true' }),
+      mockContext,
+    )
+    expect(res.statusCode).toBe(200)
+    const body = JSON.parse(res.body)
+    expect(Array.isArray(body.results)).toBe(true)
+    expect(body.results.length).toBeGreaterThan(0)
+  })
+
+  it('missing query returns 400', async () => {
+    const res = await askHandler(askGetEvent({}), mockContext)
+    expect(res.statusCode).toBe(400)
+    expect(JSON.parse(res.body).error).toBeDefined()
   })
 })
