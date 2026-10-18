@@ -1351,12 +1351,12 @@
           "body": "We gebruiken Google Analytics (meet-ID G-QQ7ZCNPB8B) om te zien hoe de website wordt gebruikt, zoals bezochte pagina's, apparaat, browser en globale locatie. Google Analytics wordt op elke pagina geladen en plaatst daarbij cookies. Gebeurtenissen zoals klikken op knoppen meten we alleen als je in de cookiebanner toestemming geeft. Je keuze bewaren we in je eigen browser."
         },
         "intake": {
-          "title": "Intakevragen",
-          "body": "Plan je een gesprek, dan stellen we eerst een paar vragen over je bedrijf: bedrijfsgrootte, welk proces je wilt verbeteren, hoeveel tijd het kost, wat je al hebt geprobeerd en wat het oplevert. Deze antwoorden slaan we op in een database bij Amazon Web Services in de regio Londen. We vragen daarbij geen naam of e-mailadres."
+          "title": "Besparingscalculator",
+          "body": "Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan gaat de lijst met pakketten en bedragen als notitie mee naar Calendly."
         },
         "calendly": {
           "title": "Afspraak plannen (Calendly)",
-          "body": "Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly."
+          "body": "Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, inclusief de pakketlijst uit de besparingscalculator als je die meestuurt, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly."
         },
         "email": {
           "title": "E-mail",
@@ -1368,7 +1368,7 @@
         },
         "sharing": {
           "title": "Met wie we gegevens delen",
-          "body": "Amazon Web Services (hosting en opslag van intakeantwoorden), Google (websitestatistieken) en Calendly (afspraken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
+          "body": "Amazon Web Services (hosting van de website), Google (websitestatistieken) en Calendly (afspraken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
         },
         "retention": {
           "title": "Hoe lang we gegevens bewaren",
@@ -1387,6 +1387,32 @@
           "body": "We kunnen deze verklaring aanpassen. De datum bovenaan laat zien wanneer dat voor het laatst is gebeurd."
         }
       }
+    },
+    "savings": {
+      "title": "Bereken je besparing",
+      "sub": "Vink aan welke pakketten je nu huurt en vul in wat je er per maand voor betaalt.",
+      "toolsLegend": "Welke pakketten gebruik je nu?",
+      "amountLabel": "Maandbedrag voor {tool}",
+      "amountPlaceholder": "Bedrag",
+      "perMonthShort": "/mnd",
+      "otherLegend": "Andere pakketten",
+      "otherNameLabel": "Naam van het pakket",
+      "otherNamePlaceholder": "Bijv. Exact, Teamleader, Mailchimp",
+      "otherAmountLabel": "Maandbedrag voor dit pakket",
+      "otherFallback": "Ander pakket",
+      "addOther": "Ander pakket toevoegen",
+      "removeOther": "Pakket verwijderen",
+      "empty": "Vink een pakket aan en vul het maandbedrag in. Je ziet dan direct wat je kunt besparen.",
+      "currentLabel": "Je betaalt nu",
+      "ainternLabel": "AIntern",
+      "from": "vanaf",
+      "savingLabel": "Indicatieve besparing",
+      "perYear": "Dat is {amount} per jaar.",
+      "lowTotal": "Je betaalt nu niet meer dan onze vanaf-prijs. De winst zit dan vooral in software die precies past en van jou is. Dat bespreken we graag.",
+      "disclaimer": "Indicatie. Daarbovenop komen hosting op jouw naam (meestal €5–€50 per maand) en AI-gebruik tegen normale prijs. De berekening gebeurt in je browser; we slaan niets op.",
+      "planWithNumbers": "Plan gesprek met deze cijfers",
+      "planDirect": "Direct een gesprek plannen",
+      "note": "Pakketten: {tools}. Totaal {total} per maand. Indicatieve besparing {saving} per maand."
     }
   }
 }

@@ -6,7 +6,6 @@
   import { AppShell } from '@/components/shell'
   import SectionIntro from '@/components/sections/pivot/SectionIntro.vue'
   import PivotCtaSection from '@/components/sections/pivot/PivotCtaSection.vue'
-  import IntakeModal from '@/components/ui/IntakeModal.vue'
 
   const { t, locale } = useI18n()
   const route = useRoute()
@@ -149,6 +148,5 @@
       secondary-to="/partners"
       location="about-cta"
     />
-    <IntakeModal />
   </AppShell>
 </template>

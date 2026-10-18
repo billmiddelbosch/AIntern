@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useIntakeModal } from '@/composables/useIntakeModal'
+import { useBookingModal } from '@/composables/useBookingModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
 const props = withDefaults(defineProps<{ bg?: BgColor }>(), { bg: 'light' })
 
 const { t } = useI18n()
-const { openIntakeModal } = useIntakeModal()
+const { openBookingModal } = useBookingModal()
 const { trackEvent } = useAnalytics()
 
 function openEmailClient() {
@@ -54,7 +54,7 @@ function openEmailClient() {
           <h3 class="oac-cta-heading">{{ t('overAIntern.contact.heading') }}</h3>
           <p class="oac-cta-subtext">{{ t('overAIntern.contact.subtext') }}</p>
 
-          <button class="oac-cta-button" @click="() => { trackEvent('cta_click', { location: 'over_aintern' }); openIntakeModal() }">
+          <button class="oac-cta-button" @click="() => { trackEvent('cta_click', { location: 'over_aintern' }); openBookingModal() }">
             {{ t('overAIntern.contact.cta') }}
           </button>
 

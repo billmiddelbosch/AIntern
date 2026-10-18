@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useIntakeModal } from '@/composables/useIntakeModal'
+import { useBookingModal } from '@/composables/useBookingModal'
 import { BRAND_COLORS, type BgColor } from '@/lib/brand'
 
 const props = withDefaults(defineProps<{ bg?: BgColor }>(), { bg: 'light' })
 
 const { t } = useI18n()
-const { openIntakeModal } = useIntakeModal()
+const { openBookingModal } = useBookingModal()
 </script>
 
 <template>
@@ -96,7 +96,7 @@ const { openIntakeModal } = useIntakeModal()
 
       <!-- CTA -->
       <div class="gfo-cta-wrap">
-        <button class="gfo-cta-btn" @click="openIntakeModal">
+        <button class="gfo-cta-btn" @click="openBookingModal">
           {{ t('godfatherOffer.cta') }}
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
             <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

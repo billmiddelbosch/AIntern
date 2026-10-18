@@ -48,3 +48,30 @@ test.describe('Partnerpagina', () => {
     await expect(page.locator('#afspraak button')).toBeVisible()
   })
 })
+
+test.describe('Gesprek plannen en besparing', () => {
+  test('hero-knop opent direct de Calendly-planner', async ({ page }) => {
+    await page.goto('/')
+    await page.getByRole('button', { name: 'Plan je gratis gesprek' }).first().click()
+    await expect(
+      page.getByRole('dialog', { name: 'Gratis kennismakingsgesprek inplannen' }),
+    ).toBeVisible()
+  })
+
+  test('prijsknop opent de besparingscalculator', async ({ page }) => {
+    await page.goto('/')
+    await page.locator('#prijs').getByRole('button', { name: 'Bereken mijn besparing' }).click()
+    const dialog = page.getByRole('dialog', { name: 'Bereken je besparing' })
+    await expect(dialog).toBeVisible()
+
+    await dialog.getByLabel('CRM').check()
+    await dialog.getByLabel('Maandbedrag voor CRM').fill('300')
+    await expect(dialog.getByTestId('savings-monthly')).toContainText('201')
+
+    await dialog.getByRole('button', { name: 'Plan gesprek met deze cijfers' }).click()
+    await expect(dialog).toBeHidden()
+    await expect(
+      page.getByRole('dialog', { name: 'Gratis kennismakingsgesprek inplannen' }),
+    ).toBeVisible()
+  })
+})

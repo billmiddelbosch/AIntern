@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n'
-  import { useIntakeModal } from '@/composables/useIntakeModal'
+  import { useSavingsModal } from '@/composables/useSavingsModal'
   import { useAnalytics } from '@/composables/useAnalytics'
 
   const { t } = useI18n()
-  const { openIntakeModal } = useIntakeModal()
+  const { openSavingsModal } = useSavingsModal()
   const { trackEvent } = useAnalytics()
 
   const points = ['p1', 'p2', 'p3', 'p4'] as const
@@ -12,7 +12,7 @@
 
   function handleCta() {
     trackEvent('cta_click', { location: 'pricing' })
-    openIntakeModal()
+    openSavingsModal()
   }
 </script>
 
