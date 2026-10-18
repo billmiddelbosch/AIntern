@@ -1265,12 +1265,128 @@
       "resources": "Kennis & tools",
       "workflowScan": "Workflow-scan",
       "aiAgent": "AI agent voor MKB",
-      "newsflow": "NewsFlow"
+      "newsflow": "NewsFlow",
+      "company": "Bedrijf",
+      "about": "Over AIntern",
+      "privacy": "Privacy"
     },
     "seo": {
       "title": "AIntern — Stop met huren. Bouw eigen software voor je MKB",
       "description": "Vervang dure softwarepakketten door eigen software die je zelf bezit. Gebouwd en onderhouden door AIntern, de dag na het gesprek al werkend. Vanaf €99 per maand, geen prijs per gebruiker.",
       "ogImageAlt": "AIntern — Stop met huren. Bouw wat van jou is."
+    },
+    "about": {
+      "meta": {
+        "title": "Over AIntern — eigen software voor het MKB",
+        "description": "Waarom AIntern bestaat, waar we voor staan en wie erachter zit. AIntern helpt MKB-bedrijven te stoppen met huren en eigen software te bezitten."
+      },
+      "hero": {
+        "eyebrow": "Over AIntern",
+        "headline": "Software hoort van jou te zijn",
+        "subtext": "AIntern helpt MKB-bedrijven te stoppen met huren en te bouwen wat van hen is: eigen software in plaats van een stapel gehuurde pakketten."
+      },
+      "why": {
+        "eyebrow": "Waarom",
+        "heading": "Waarom AIntern bestaat",
+        "body1": "MKB-bedrijven betalen elk jaar meer voor softwarepakketten die nooit helemaal passen. Ze betalen per gebruiker, passen hun werkwijze aan het pakket aan en zijn alles kwijt als ze opzeggen.",
+        "body2": "Met AI is eigen software bouwen en onderhouden nu snel en betaalbaar genoeg voor het MKB. AIntern maakt dat bereikbaar voor bedrijven zonder eigen developers."
+      },
+      "values": {
+        "eyebrow": "Waar we voor staan",
+        "heading": "Vijf uitgangspunten",
+        "items": {
+          "own": {
+            "title": "Eigendom",
+            "body": "Code, kennis, data en hosting staan op naam van de klant. Altijd."
+          },
+          "prove": {
+            "title": "Eerst bewijzen",
+            "body": "Geen maandenlang project en geen PowerPoint: de dag na het gesprek draait er werkende software."
+          },
+          "language": {
+            "title": "Gewone taal",
+            "body": "Ondernemers praten over offertes, planning en facturen, niet over code."
+          },
+          "safe": {
+            "title": "Veilig en Europees",
+            "body": "Dagelijkse veiligheidscontrole. Desgewenst draait alles, inclusief de AI, in Europa."
+          },
+          "fair": {
+            "title": "Eerlijk geprijsd",
+            "body": "Een vast bedrag, geen prijs per gebruiker en AI-gebruik tegen de normale prijs."
+          }
+        }
+      },
+      "team": {
+        "eyebrow": "Wie erachter zit",
+        "heading": "Gebouwd in Nederland",
+        "body1": "AIntern is opgericht door Bill Middelbosch en gevestigd in Nederland. We werken samen met procesadviseurs, administratiekantoren en IT-dienstverleners die hun klanten werkende software willen leveren.",
+        "body2": "We gebruiken onze eigen aanpak ook intern: een groot deel van het werk wordt gedaan door AI-agents, onder regie van mensen.",
+        "contact": "Vragen? Mail ons op"
+      },
+      "cta": {
+        "heading": "Benieuwd wat je kunt besparen?",
+        "subtext": "In een gratis gesprek van een uur rekenen we het uit met je eigen cijfers.",
+        "button": "Plan je gratis gesprek",
+        "secondary": "Word partner"
+      }
+    },
+    "privacy": {
+      "meta": {
+        "title": "Privacyverklaring — AIntern",
+        "description": "Welke gegevens aintern.nl verwerkt, waarom, met wie we ze delen en welke rechten je hebt onder de AVG."
+      },
+      "eyebrow": "Privacy",
+      "heading": "Privacyverklaring",
+      "intro": "Welke gegevens aintern.nl verwerkt, waarom, en welke rechten je hebt.",
+      "updated": "Laatst bijgewerkt: 18 oktober 2026",
+      "contact": "Vragen of een verzoek? Mail naar",
+      "sections": {
+        "who": {
+          "title": "Wie wij zijn",
+          "body": "AIntern (aintern.nl) is verantwoordelijk voor de verwerking van persoonsgegevens via deze website."
+        },
+        "analytics": {
+          "title": "Websitebezoek (Google Analytics)",
+          "body": "We gebruiken Google Analytics (meet-ID G-QQ7ZCNPB8B) om te zien hoe de website wordt gebruikt, zoals bezochte pagina's, apparaat, browser en globale locatie. Google Analytics wordt op elke pagina geladen en plaatst daarbij cookies. Gebeurtenissen zoals klikken op knoppen meten we alleen als je in de cookiebanner toestemming geeft. Je keuze bewaren we in je eigen browser."
+        },
+        "intake": {
+          "title": "Intakevragen",
+          "body": "Plan je een gesprek, dan stellen we eerst een paar vragen over je bedrijf: bedrijfsgrootte, welk proces je wilt verbeteren, hoeveel tijd het kost, wat je al hebt geprobeerd en wat het oplevert. Deze antwoorden slaan we op in een database bij Amazon Web Services in de regio Londen. We vragen daarbij geen naam of e-mailadres."
+        },
+        "calendly": {
+          "title": "Afspraak plannen (Calendly)",
+          "body": "Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly."
+        },
+        "email": {
+          "title": "E-mail",
+          "body": "Mail je ons, dan gebruiken we je gegevens alleen om je vraag te beantwoorden."
+        },
+        "purpose": {
+          "title": "Waarom we dit doen",
+          "body": "We verwerken gegevens om je aanvraag voor een gesprek te behandelen en voor te bereiden (op jouw verzoek) en om de website te verbeteren (gerechtvaardigd belang, en voor gebeurtenismetingen jouw toestemming). We verkopen je gegevens niet en gebruiken ze niet voor advertenties."
+        },
+        "sharing": {
+          "title": "Met wie we gegevens delen",
+          "body": "Amazon Web Services (hosting en opslag van intakeantwoorden), Google (websitestatistieken) en Calendly (afspraken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
+        },
+        "retention": {
+          "title": "Hoe lang we gegevens bewaren",
+          "body": "We bewaren gegevens niet langer dan nodig voor het doel waarvoor ze zijn verzameld. Wil je dat we je gegevens eerder verwijderen, laat het ons weten."
+        },
+        "rights": {
+          "title": "Je rechten",
+          "body": "Op grond van de AVG heb je het recht om je gegevens in te zien, te laten corrigeren of verwijderen, de verwerking te beperken, bezwaar te maken en je gegevens over te dragen. Gegeven toestemming kun je altijd intrekken door je browseropslag voor aintern.nl te wissen. Ben je het niet eens met hoe we met je gegevens omgaan, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens."
+        },
+        "clients": {
+          "title": "Software van klanten",
+          "body": "Deze verklaring gaat over de website aintern.nl. Software die AIntern voor klanten bouwt, draait in de eigen hosting en database van de klant. De klant is daarvoor verantwoordelijk; afspraken daarover staan in de overeenkomst met de klant."
+        },
+        "changes": {
+          "title": "Wijzigingen",
+          "body": "We kunnen deze verklaring aanpassen. De datum bovenaan laat zien wanneer dat voor het laatst is gebeurd."
+        }
+      }
     }
   }
 }

@@ -22,6 +22,11 @@
     { labelKey: 'pivot.footer.aiAgent', to: '/ai-agent-mkb' },
   ]
 
+  const companyLinks = [
+    { labelKey: 'pivot.footer.about', to: '/about' },
+    { labelKey: 'pivot.footer.privacy', to: '/privacy' },
+  ]
+
   function toggleLocale() {
     locale.value = locale.value === 'nl' ? 'en' : 'nl'
   }
@@ -30,9 +35,9 @@
 <template>
   <footer class="bg-slate-900 text-slate-400">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 py-12">
-      <div class="grid gap-10 md:grid-cols-[2fr_1fr_1fr]">
+      <div class="grid gap-10 sm:grid-cols-3 md:grid-cols-[2fr_1fr_1fr_1fr]">
         <!-- Brand -->
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-3 sm:col-span-3 md:col-span-1">
           <span class="font-heading text-xl font-bold text-white tracking-tight">AIntern</span>
           <p class="text-sm text-slate-400 max-w-xs">{{ t('footer.tagline') }}</p>
         </div>
@@ -57,6 +62,20 @@
           }}</span>
           <RouterLink
             v-for="item in resourceLinks"
+            :key="item.to"
+            :to="item.to"
+            class="text-sm text-slate-400 hover:text-white transition-colors"
+          >
+            {{ t(item.labelKey) }}
+          </RouterLink>
+        </nav>
+
+        <nav class="flex flex-col gap-2" :aria-label="t('pivot.footer.company')">
+          <span class="text-xs font-semibold uppercase tracking-widest text-slate-500 mb-1">{{
+            t('pivot.footer.company')
+          }}</span>
+          <RouterLink
+            v-for="item in companyLinks"
             :key="item.to"
             :to="item.to"
             class="text-sm text-slate-400 hover:text-white transition-colors"

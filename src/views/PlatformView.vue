@@ -34,7 +34,10 @@
         content: computed(() => t('pivot.platform.meta.description')),
       },
     ],
-    link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+    link: [
+      { rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) },
+      { rel: 'alternate', type: 'text/markdown', href: '/platform.md' },
+    ],
     script: [
       {
         type: 'application/ld+json',
