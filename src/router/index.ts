@@ -100,6 +100,18 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/platform',
+    name: 'platform',
+    component: () => import('@/views/PlatformView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/partners',
+    name: 'partners',
+    component: () => import('@/views/PartnersView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/ai-agent-mkb',
     name: 'ai-agent-mkb',
     component: () => import('@/views/AiAgentMkbView.vue'),

@@ -14,7 +14,7 @@
     "title": "About AIntern"
   },
   "footer": {
-    "tagline": "Your AI intern for SMEs — no risk, guaranteed results.",
+    "tagline": "Stop renting. Build what's yours. Your own software for SMEs, built and maintained by AIntern.",
     "rights": "All rights reserved."
   },
   "howItWorks": {
@@ -146,9 +146,9 @@
   },
   "seo": {
     "home": {
-      "title": "AIntern — Your AI Intern for SMEs | No-Cure-No-Pay",
-      "description": "AIntern builds a dedicated AI intern for your SME — automating repetitive processes like an extra employee. You only pay when results are verified.",
-      "ogImageAlt": "AIntern — Your AI Intern for SMEs"
+      "title": "AIntern — Stop renting. Build your own SME software",
+      "description": "Replace expensive software subscriptions with your own software that you own. Built and maintained by AIntern, running the day after your session. From €99 per month, no per-user pricing.",
+      "ogImageAlt": "AIntern — Stop renting. Build what's yours."
     }
   },
   "intakeModal": {
@@ -762,6 +762,515 @@
     "meta": {
       "title": "Free AI Workflow Scan — Discover Your Top 3 Bottlenecks | AIntern",
       "description": "Take the free AI Workflow Scan in 3 minutes. Answer 5 questions and receive your top-3 bottlenecks plus concrete AI recommendations for your business."
+    }
+  },
+  "pivot": {
+    "home": {
+      "hero": {
+        "eyebrow": "Your own software for SMEs",
+        "headline": "Stop renting. Build what's yours.",
+        "subtext": "Replace your expensive software subscriptions with your own software that fits the way you work. We build and maintain it, you own it. For less than a single subscription costs you today.",
+        "cta": "Book your free session",
+        "ctaSecondary": "How it works",
+        "note": "1 hour · see your savings right away · working software the next day"
+      },
+      "problem": {
+        "eyebrow": "The problem",
+        "heading": "You pay more and more for software that never quite fits",
+        "intro": "A CRM here, a planning tool there, a quoting tool on top. More expensive every year, an extra licence for every new hire.",
+        "items": {
+          "perUser": {
+            "title": "Paying per user",
+            "body": "As your team grows, so does your bill. You don't decide the price increases."
+          },
+          "lockIn": {
+            "title": "Cancel and lose everything",
+            "body": "Stop paying and the software stops. Your data lives in their system, not yours."
+          },
+          "fit": {
+            "title": "You adapt to the software",
+            "body": "Workarounds, Excel lists and double data entry, because the tool doesn't quite do what you need."
+          }
+        }
+      },
+      "how": {
+        "eyebrow": "How it works",
+        "heading": "From conversation to working software in one day",
+        "intro": "No months-long project. You see the value first, then you decide.",
+        "steps": {
+          "talk": {
+            "tag": "Day 1",
+            "title": "A free one-hour session",
+            "body": "Together we map your processes and calculate your savings using your own numbers. Your software starts taking shape during the session."
+          },
+          "nextDay": {
+            "tag": "Day 2",
+            "title": "Running the next day",
+            "body": "You get a working first version, your business knowledge neatly documented and your processes worked out on the AIntern Platform."
+          },
+          "parallel": {
+            "tag": "Trial period",
+            "title": "Alongside your current tool",
+            "body": "You run the new software in parallel with what you use today. Only when it works better do you cancel the old subscription."
+          },
+          "build": {
+            "tag": "After that",
+            "title": "Keep building",
+            "body": "Request changes in plain language. We build, test and maintain, you decide what goes live. Then on to the next subscription."
+          }
+        }
+      },
+      "pillars": {
+        "eyebrow": "Why AIntern",
+        "heading": "Three promises",
+        "items": {
+          "own": {
+            "title": "Own instead of rent",
+            "body": "Code, knowledge, data and hosting are in your name. If you ever leave AIntern, everything keeps working."
+          },
+          "proven": {
+            "title": "Proven in a day",
+            "body": "We build the business case during the session, with your numbers. The next day you see working software, not slides."
+          },
+          "safe": {
+            "title": "Secure and European",
+            "body": "Your software is automatically checked for security every day. If you wish, everything, including the AI, runs in Europe only."
+          }
+        }
+      },
+      "replace": {
+        "eyebrow": "What you replace",
+        "heading": "The software you rent today",
+        "intro": "We start with the tool that costs the most or fits the least. Then on to the next one.",
+        "items": {
+          "crm": {
+            "title": "CRM",
+            "body": "Customers, touchpoints and follow-ups"
+          },
+          "quotes": {
+            "title": "Quotes",
+            "body": "From request to signed quote"
+          },
+          "planning": {
+            "title": "Planning",
+            "body": "People, equipment and appointments"
+          },
+          "hours": {
+            "title": "Time tracking",
+            "body": "Hours per client, project or employee"
+          },
+          "invoicing": {
+            "title": "Invoicing",
+            "body": "Invoices based on hours or quotes"
+          },
+          "service": {
+            "title": "Customer service & chatbot",
+            "body": "Answer questions, even after hours"
+          },
+          "website": {
+            "title": "Website",
+            "body": "Hosted and maintained, no separate builder"
+          },
+          "mail": {
+            "title": "Email & internal processes",
+            "body": "Recurring emails and tasks, automated"
+          }
+        },
+        "note": "We don't replace your accounting software: we connect to it."
+      },
+      "compare": {
+        "eyebrow": "Compare",
+        "heading": "How AIntern compares to the alternatives",
+        "columns": {
+          "saas": "SaaS tool",
+          "agency": "Software agency",
+          "nocode": "No-code tool",
+          "aintern": "AIntern"
+        },
+        "rows": {
+          "ownership": {
+            "label": "You own code and data",
+            "saas": "No",
+            "agency": "Yes",
+            "nocode": "Limited",
+            "aintern": "Yes"
+          },
+          "exit": {
+            "label": "After cancelling",
+            "saas": "Everything stops",
+            "agency": "Software stays",
+            "nocode": "Everything stops",
+            "aintern": "Software stays"
+          },
+          "speed": {
+            "label": "Speed",
+            "saas": "Immediate",
+            "agency": "Weeks to months",
+            "nocode": "Days",
+            "aintern": "Day after the session"
+          },
+          "fit": {
+            "label": "Fits your process",
+            "saas": "Limited",
+            "agency": "Fully",
+            "nocode": "Reasonably",
+            "aintern": "Fully"
+          },
+          "cost": {
+            "label": "Cost",
+            "saas": "Per user, rising",
+            "agency": "High per project",
+            "nocode": "Per user",
+            "aintern": "Fixed + usage"
+          },
+          "europe": {
+            "label": "European hosting and AI",
+            "saas": "Varies",
+            "agency": "Depends",
+            "nocode": "Varies",
+            "aintern": "Option"
+          }
+        }
+      },
+      "pricing": {
+        "eyebrow": "Pricing",
+        "heading": "One fixed fee, no per-user pricing",
+        "from": "from",
+        "amount": "€99",
+        "perMonth": "per month",
+        "points": {
+          "p1": "No per-user pricing: your whole team can join",
+          "p2": "AI usage at the provider's normal price, shown as credit",
+          "p3": "Hosting in your name, usually €5 to €50 per month",
+          "p4": "Optional: data migration, EU-only setup and support"
+        },
+        "stackHeading": "What SMEs typically spend on software subscriptions today",
+        "stack": {
+          "small": {
+            "label": "Small business",
+            "value": "± €350 /mo"
+          },
+          "medium": {
+            "label": "Mid-sized",
+            "value": "± €800 /mo"
+          },
+          "large": {
+            "label": "Larger SME",
+            "value": "± €1,540 /mo"
+          }
+        },
+        "footnote": "In the session we calculate what it means for you, using your own numbers.",
+        "cta": "Calculate my savings"
+      },
+      "partnersTeaser": {
+        "eyebrow": "For advisors",
+        "heading": "Process consultant, accountant or IT provider?",
+        "body": "Leave a working system behind at every client, under your own name. Your advice no longer disappears after delivery.",
+        "cta": "Become a partner"
+      },
+      "faq": {
+        "eyebrow": "Frequently asked questions",
+        "heading": "Good questions, straight answers",
+        "items": {
+          "q1": {
+            "q": "We're not a software company. Can we do this?",
+            "a": "Yes. You don't need to code. AIntern builds, tests and maintains your software. You describe what you want in plain language and decide what goes live."
+          },
+          "q2": {
+            "q": "What if something goes wrong?",
+            "a": "You first run the new software alongside your current tool. Only when it works better do you cancel the old one. And every change can be rolled back with one click."
+          },
+          "q3": {
+            "q": "Is it secure?",
+            "a": "We build on a fixed, proven foundation. Your software is automatically checked for vulnerabilities every day and you get a report. A problem blocks going live."
+          },
+          "q4": {
+            "q": "Am I locked in to AIntern?",
+            "a": "No. Code, knowledge, data and hosting are in your name. If you stop using AIntern, your software keeps running."
+          },
+          "q5": {
+            "q": "Where is my data stored?",
+            "a": "In your own database, with your own hosting. Want everything, including the AI, to run in Europe only? That's possible."
+          },
+          "q6": {
+            "q": "What does the AI cost?",
+            "a": "AI usage is charged at the provider's normal price. You see it as credit in the platform, with no surprises."
+          }
+        }
+      },
+      "cta": {
+        "heading": "Find out in one hour what you could save",
+        "subtext": "Free and without obligation. You leave with a business case based on your own numbers, and the next day your software is already running.",
+        "button": "Book your free session",
+        "secondary": "More about the platform"
+      }
+    },
+    "platform": {
+      "meta": {
+        "title": "AIntern Platform — Build your own software without developers",
+        "description": "On the AIntern Platform you build and maintain your own business software in plain language. Preview environment, one-click rollback, daily security checks and everything in your name."
+      },
+      "hero": {
+        "eyebrow": "AIntern Platform",
+        "headline": "Your software, in your language",
+        "subtext": "The platform where your own software is built, maintained and monitored. No technical jargon, just quotes, planning and invoices. You decide, AIntern does the work.",
+        "cta": "Book your free session"
+      },
+      "principles": {
+        "eyebrow": "Design principles",
+        "heading": "Made for business owners, not programmers",
+        "items": {
+          "language": {
+            "title": "Your business language",
+            "body": "You see processes like sending a quote or approving hours, not code or technical terms."
+          },
+          "chat": {
+            "title": "Just ask",
+            "body": "Want something changed? Type it in the chat. The platform proposes a change."
+          },
+          "preview": {
+            "title": "Preview first, then go live",
+            "body": "You see every change in a preview environment first. Going live or rolling back takes one click."
+          },
+          "control": {
+            "title": "You stay in control",
+            "body": "Per task you decide what can happen automatically and what needs your approval first."
+          }
+        }
+      },
+      "screens": {
+        "eyebrow": "What you see",
+        "heading": "Everything in one place",
+        "items": {
+          "today": {
+            "title": "Today",
+            "body": "What's happening and what needs your attention"
+          },
+          "processes": {
+            "title": "Processes",
+            "body": "Your way of working, mapped step by step"
+          },
+          "ask": {
+            "title": "Ask",
+            "body": "Ask questions or request a change"
+          },
+          "changes": {
+            "title": "Changes",
+            "body": "Review, approve, go live or roll back"
+          },
+          "knowledge": {
+            "title": "Knowledge",
+            "body": "Your business knowledge captured and searchable"
+          },
+          "agents": {
+            "title": "Digital colleagues",
+            "body": "Who does what, and what they may do on their own"
+          },
+          "security": {
+            "title": "Security",
+            "body": "A traffic light: green, amber or red"
+          },
+          "costs": {
+            "title": "Costs",
+            "body": "What you spend and what you save"
+          },
+          "ownership": {
+            "title": "Ownership",
+            "body": "Export everything with one button"
+          }
+        }
+      },
+      "agents": {
+        "eyebrow": "Digital colleagues",
+        "heading": "You decide what they may do on their own",
+        "body": "Behind the scenes, AI agents build and maintain your software. Per task you set a slider: let them do it, ask first, or never.",
+        "levels": {
+          "self": {
+            "label": "Allowed",
+            "example": "Small text changes and security updates"
+          },
+          "ask": {
+            "label": "Ask first",
+            "example": "New fields, screens or steps in a process"
+          },
+          "never": {
+            "label": "Never",
+            "example": "Deleting customer data or sending invoices without you"
+          }
+        }
+      },
+      "security": {
+        "eyebrow": "Security",
+        "heading": "Checked every day, by default",
+        "body": "Your software is tested automatically every day: for vulnerable components, for code issues and with regular penetration tests. If something is wrong, it doesn't go live until it's fixed.",
+        "points": {
+          "p1": "Daily checks of the components in use",
+          "p2": "Automatic code analysis on every change",
+          "p3": "Periodic penetration tests",
+          "p4": "A problem blocks going live"
+        }
+      },
+      "ownership": {
+        "eyebrow": "Ownership",
+        "heading": "Everything is yours, even if you leave",
+        "body": "The platform is a management layer, not where your software runs. Your software runs on your side: on your own hosting, with your own database. Export code, knowledge and data with one button.",
+        "points": {
+          "p1": "Code in your own environment",
+          "p2": "Data in your own database",
+          "p3": "Hosting in your name",
+          "p4": "Keeps working after you cancel"
+        }
+      },
+      "europe": {
+        "eyebrow": "Sovereign",
+        "heading": "Fully European, if you wish",
+        "body": "Choose the European option and both hosting and AI run exclusively with European providers. Useful for GDPR, customer requirements or simply peace of mind."
+      },
+      "roles": {
+        "eyebrow": "Roles",
+        "heading": "Everyone sees what fits their role",
+        "items": {
+          "owner": {
+            "title": "Owner",
+            "body": "Overview, costs, savings and the final say"
+          },
+          "employee": {
+            "title": "Employee",
+            "body": "Works with the software and can suggest changes"
+          },
+          "partner": {
+            "title": "Partner",
+            "body": "Your advisor, who follows along and improves processes"
+          },
+          "tech": {
+            "title": "Technical",
+            "body": "For your own developer: full access to the code"
+          }
+        }
+      },
+      "cta": {
+        "heading": "See the platform in action with your own processes",
+        "subtext": "In the free session we build your first version live.",
+        "button": "Book your free session"
+      }
+    },
+    "partners": {
+      "meta": {
+        "title": "Become an AIntern partner — for process consultants and IT providers",
+        "description": "Leave a working, AI-ready system behind at every client, under your own name. AIntern provides the platform, conversation method, standard technology, demo environment and training."
+      },
+      "hero": {
+        "eyebrow": "Partner programme",
+        "headline": "Leave a working system behind at every client",
+        "subtext": "You know your clients' processes. With AIntern you also deliver working software right away, under your own name. Your advice no longer disappears after delivery.",
+        "cta": "Book an introduction",
+        "ctaSub": "30 minutes · online · no obligation"
+      },
+      "who": {
+        "eyebrow": "Who it's for",
+        "heading": "For advisors who want to go beyond a report",
+        "items": {
+          "process": {
+            "title": "Process consultants",
+            "body": "Your process improvements turned directly into software that supports them."
+          },
+          "lean": {
+            "title": "Lean consultants",
+            "body": "Remove waste, and capture the new way of working in a system."
+          },
+          "accountants": {
+            "title": "Accounting firms",
+            "body": "Help clients get rid of scattered tools, connected to their accounting."
+          },
+          "it": {
+            "title": "IT service providers",
+            "body": "Offer custom software without building your own development team."
+          }
+        }
+      },
+      "get": {
+        "eyebrow": "What you get",
+        "heading": "Everything to get started right away",
+        "items": {
+          "platform": {
+            "title": "The AIntern Platform",
+            "body": "Build, manage and monitor your clients' software in one place."
+          },
+          "method": {
+            "title": "The conversation method",
+            "body": "From process to business case and first version in one hour."
+          },
+          "stack": {
+            "title": "A fixed, secure foundation",
+            "body": "Proven standard technology with daily security checks."
+          },
+          "demo": {
+            "title": "Demo environment",
+            "body": "Show prospects what's possible right away."
+          },
+          "training": {
+            "title": "Training",
+            "body": "Your team learns the method and the platform in short sessions."
+          }
+        }
+      },
+      "how": {
+        "eyebrow": "How it works",
+        "heading": "Your client, your name",
+        "steps": {
+          "s1": {
+            "title": "You lead the conversation",
+            "body": "Using the conversation method you map your client's processes and build the business case."
+          },
+          "s2": {
+            "title": "Running the next day",
+            "body": "Your client gets a working first version, built on the platform."
+          },
+          "s3": {
+            "title": "You stay involved",
+            "body": "As a partner you follow along in the platform and keep improving processes."
+          },
+          "s4": {
+            "title": "Your client owns everything",
+            "body": "Code, data and hosting are in the client's name. That builds trust."
+          }
+        }
+      },
+      "earn": {
+        "eyebrow": "Revenue model",
+        "heading": "Recurring revenue on top of your own rate",
+        "body": "You receive a share of the subscription of every client you bring in, for as long as they stay. You set your own consulting and implementation rate. You keep the client relationship, under your own name.",
+        "points": {
+          "p1": "A share of every subscription, monthly",
+          "p2": "Your own rate for advice and guidance",
+          "p3": "The client relationship stays yours"
+        }
+      },
+      "book": {
+        "heading": "Curious whether it fits your practice?",
+        "subtext": "Book a 30-minute introduction right away. We'll show you the platform and discuss what the partnership looks like for you.",
+        "button": "Book a meeting"
+      }
+    },
+    "nav": {
+      "platform": "Platform",
+      "how": "How it works",
+      "pricing": "Pricing",
+      "partners": "Partners",
+      "cta": "Free session"
+    },
+    "footer": {
+      "tagline": "Stop renting. Build what's yours. Your own software for SMEs, built and maintained by AIntern.",
+      "product": "Offering",
+      "resources": "Knowledge & tools",
+      "workflowScan": "Workflow scan",
+      "aiAgent": "AI agent for SMEs",
+      "newsflow": "NewsFlow"
+    },
+    "seo": {
+      "title": "AIntern — Stop renting. Build your own SME software",
+      "description": "Replace expensive software subscriptions with your own software that you own. Built and maintained by AIntern, running the day after your session. From €99 per month, no per-user pricing.",
+      "ogImageAlt": "AIntern — Stop renting. Build what's yours."
     }
   }
 }

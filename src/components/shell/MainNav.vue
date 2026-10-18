@@ -1,54 +1,55 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import { useIntakeModal } from '@/composables/useIntakeModal'
-import { useAnalytics } from '@/composables/useAnalytics'
+  import { ref } from 'vue'
+  import { RouterLink, useRouter } from 'vue-router'
+  import { useI18n } from 'vue-i18n'
+  import { useIntakeModal } from '@/composables/useIntakeModal'
+  import { useAnalytics } from '@/composables/useAnalytics'
 
-const { t, locale } = useI18n()
-const { openIntakeModal } = useIntakeModal()
-const { trackEvent } = useAnalytics()
-const router = useRouter()
+  const { t, locale } = useI18n()
+  const { openIntakeModal } = useIntakeModal()
+  const { trackEvent } = useAnalytics()
+  const router = useRouter()
 
-const mobileMenuOpen = ref(false)
+  const mobileMenuOpen = ref(false)
 
-const navItems = [
-  { labelKey: 'nav.about', anchor: '#over-aintern' },
-  { labelKey: 'nav.nocurenopay', anchor: '#no-cure-no-pay' },
-]
+  const navItems = [
+    { labelKey: 'pivot.nav.how', anchor: '#hoe-werkt-het' },
+    { labelKey: 'pivot.nav.pricing', anchor: '#prijs' },
+  ]
 
-const routeNavItems = [
-  { labelKey: 'nav.kennisbank', to: '/kennisbank' },
-  { labelKey: 'nav.faq', to: '/veelgestelde-vragen' },
-  { labelKey: 'nav.kostencalculator', to: '/wat-kost-handmatig-werk' },
-]
+  const routeNavItems = [
+    { labelKey: 'pivot.nav.platform', to: '/platform' },
+    { labelKey: 'pivot.nav.partners', to: '/partners' },
+    { labelKey: 'nav.kennisbank', to: '/kennisbank' },
+  ]
 
-function scrollTo(anchor: string) {
-  mobileMenuOpen.value = false
-  if (typeof document === 'undefined') return
-  const el = document.querySelector(anchor)
-  if (el) {
-    el.scrollIntoView({ behavior: 'smooth' })
-  } else {
-    router.push('/' + anchor)
+  function scrollTo(anchor: string) {
+    mobileMenuOpen.value = false
+    if (typeof document === 'undefined') return
+    const el = document.querySelector(anchor)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth' })
+    } else {
+      router.push('/' + anchor)
+    }
   }
-}
 
-function handleCta() {
-  mobileMenuOpen.value = false
-  trackEvent('cta_click', { location: 'nav' })
-  openIntakeModal()
-}
+  function handleCta() {
+    mobileMenuOpen.value = false
+    trackEvent('cta_click', { location: 'nav' })
+    openIntakeModal()
+  }
 
-function toggleLocale() {
-  locale.value = locale.value === 'nl' ? 'en' : 'nl'
-}
+  function toggleLocale() {
+    locale.value = locale.value === 'nl' ? 'en' : 'nl'
+  }
 </script>
 
 <template>
-  <header class="fixed top-0 inset-x-0 z-50 h-16 bg-white/90 backdrop-blur border-b border-slate-100">
+  <header
+    class="fixed top-0 inset-x-0 z-50 h-16 bg-white/90 backdrop-blur border-b border-slate-100"
+  >
     <div class="max-w-6xl mx-auto px-4 sm:px-6 h-full flex items-center justify-between gap-8">
-
       <!-- Logo -->
       <!-- TODO WebP: cwebp src/assets/brand/mascot-nav.png -o src/assets/brand/mascot-nav.webp -q 85 -->
       <RouterLink to="/" class="flex items-center gap-2 shrink-0">
@@ -88,7 +89,7 @@ function toggleLocale() {
           class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
           @click="handleCta"
         >
-          {{ t('nav.cta') }}
+          {{ t('pivot.nav.cta') }}
         </button>
       </div>
 
@@ -146,7 +147,7 @@ function toggleLocale() {
           class="flex-1 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors"
           @click="handleCta"
         >
-          {{ t('nav.cta') }}
+          {{ t('pivot.nav.cta') }}
         </button>
       </div>
     </div>
