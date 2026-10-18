@@ -9,7 +9,6 @@ import WorkflowScanProgress from '@/components/workflow-scan/WorkflowScanProgres
 import WorkflowScanPartialResult from '@/components/workflow-scan/WorkflowScanPartialResult.vue'
 import WorkflowScanEmailGate from '@/components/workflow-scan/WorkflowScanEmailGate.vue'
 import WorkflowScanFullReport from '@/components/workflow-scan/WorkflowScanFullReport.vue'
-import BookingModal from '@/components/ui/BookingModal.vue'
 import { useWorkflowScan } from '@/composables/useWorkflowScan'
 
 const { t, locale } = useI18n()
@@ -80,7 +79,6 @@ const canAdvance = computed(() => {
 
 <template>
   <div class="min-h-screen bg-slate-50 py-12 px-4">
-    <BookingModal />
     <div class="max-w-xl mx-auto">
       <!-- Welcome -->
       <WorkflowScanWelcome v-if="stage === 'welcome'" @start="startScan" />

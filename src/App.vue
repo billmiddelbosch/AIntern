@@ -6,6 +6,8 @@ import { useAnalytics } from '@/composables/useAnalytics'
 import { useBookingModal } from '@/composables/useBookingModal'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
+import BookingModal from '@/components/ui/BookingModal.vue'
+import SavingsModal from '@/components/ui/SavingsModal.vue'
 
 useHead()
 
@@ -57,4 +59,7 @@ const layout = computed(() => {
       </template>
     </Suspense>
   </RouterView>
+  <!-- Global modals: any page can open them via useBookingModal / useSavingsModal -->
+  <BookingModal />
+  <SavingsModal />
 </template>

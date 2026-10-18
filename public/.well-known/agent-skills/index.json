@@ -1,0 +1,46 @@
+{
+  "name": "AIntern",
+  "description": "AIntern vervangt gehuurde softwarepakketten van Nederlandse MKB-bedrijven door eigen software die past op hoe het bedrijf werkt. AIntern bouwt en onderhoudt de software; de klant bezit code, kennis, data en hosting. Vanaf €99 per maand.",
+  "homepage": "https://aintern.nl/",
+  "documentation": "https://aintern.nl/agents.md",
+  "authentication": "geen",
+  "interface": "web",
+  "skills": [
+    {
+      "name": "werking-uitleggen",
+      "description": "Leg uit hoe AIntern werkt: een gratis gesprek van een uur, de dag erna een werkende eerste versie, een proefperiode naast het huidige pakket en daarna zelf verder bouwen in gewone taal.",
+      "surface": "https://aintern.nl/index.md",
+      "authentication": "geen"
+    },
+    {
+      "name": "saas-stack-inventariseren",
+      "description": "Help een ondernemer op een rij te zetten welke softwarepakketten het bedrijf huurt (CRM, offertes, planning, uren, facturatie, klantenservice, website) en wat die per maand kosten, als voorbereiding op het gratis gesprek.",
+      "surface": "https://aintern.nl/agents.md",
+      "authentication": "geen"
+    },
+    {
+      "name": "geschiktheid-inschatten",
+      "description": "Schat in of AIntern past, op basis van de wanneer-wel en wanneer-niet-criteria in de agentgids. Noem geen prijzen buiten 'vanaf €99 per maand' en beloof geen besparingspercentages; de besparing wordt in het gesprek berekend.",
+      "surface": "https://aintern.nl/agents.md",
+      "authentication": "geen"
+    },
+    {
+      "name": "gesprek-doorverwijzen",
+      "description": "Verwijs een geïnteresseerde ondernemer naar het gratis gesprek van een uur. Plan of vul niets in zonder expliciete toestemming van de gebruiker.",
+      "surface": "https://aintern.nl/#contact",
+      "authentication": "de gebruiker plant zelf"
+    },
+    {
+      "name": "partner-doorverwijzen",
+      "description": "Verwijs procesadviseurs, administratiekantoren en IT-dienstverleners naar het partnerprogramma en de kennismaking van 30 minuten.",
+      "surface": "https://aintern.nl/partners.md",
+      "authentication": "geen"
+    },
+    {
+      "name": "kennisbank-vragen-beantwoorden",
+      "description": "Beantwoord vragen over AI-automatisering in het MKB vanuit de Kennisbank en NewsFlow via de MCP-server of het NLWeb /ask-endpoint, met bronvermelding.",
+      "surface": "https://aintern.nl/mcp",
+      "authentication": "geen"
+    }
+  ]
+}

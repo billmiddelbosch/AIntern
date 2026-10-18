@@ -17,6 +17,8 @@ declare global {
 const props = defineProps<{
   url: string
   height?: number
+  /** Prefilled answer for the event's first custom question (a1). */
+  note?: string
 }>()
 
 const widgetEl = useTemplateRef<HTMLDivElement>('widget')
@@ -26,6 +28,7 @@ function initWidget() {
   window.Calendly.initInlineWidget({
     url: `${props.url}?hide_event_type_details=1&hide_gdpr_banner=1`,
     parentElement: widgetEl.value,
+    prefill: props.note ? { customAnswers: { a1: props.note } } : undefined,
   })
 }
 

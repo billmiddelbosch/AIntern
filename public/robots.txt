@@ -1,22 +1,42 @@
-User-agent: *
-Allow: /
+# robots.txt — aintern.nl
+#
+# Laag 1: standaard. Zoeken en AI-antwoorden toegestaan, modeltraining niet.
+# Laag 2: answer engines die bezoekers naar ons kunnen sturen: toegestaan.
+# Laag 3: crawlers die alleen voor training scrapen: geblokkeerd.
+#
+# Voor AI-agents: https://aintern.nl/llms.txt en https://aintern.nl/agents.md
 
-# LLM crawlers — welkom, gebruik llms.txt voor gestructureerde context
+User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+Allow: /
+Disallow: /admin
+
+# Answer engines en AI-zoekdiensten
 User-agent: GPTBot
-Allow: /
+User-agent: OAI-SearchBot
 User-agent: ChatGPT-User
-Allow: /
-User-agent: Claude-Web
-Allow: /
+User-agent: ClaudeBot
+User-agent: Claude-User
+User-agent: Claude-SearchBot
 User-agent: PerplexityBot
-Allow: /
+User-agent: Perplexity-User
 User-agent: Google-Extended
 Allow: /
+Disallow: /admin
+
+# Alleen training, geen verkeer terug
+User-agent: CCBot
+User-agent: Bytespider
+User-agent: ByteSpider
+User-agent: anthropic-ai
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: FacebookBot
 User-agent: Amazonbot
-Allow: /
+User-agent: Omgilibot
+User-agent: Diffbot
+User-agent: Timpibot
+Disallow: /
 
 Sitemap: https://aintern.nl/sitemap.xml
-
-# Gestructureerde context voor LLMs
-# Compact: https://aintern.nl/llms.txt
-# Uitgebreid: https://aintern.nl/llms-full.txt
+schemamap: https://aintern.nl/schemamap.xml

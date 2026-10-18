@@ -1,33 +1,62 @@
 <script setup lang="ts">
+  import { computed } from 'vue'
+  import { useI18n } from 'vue-i18n'
+  import { useHead } from '@unhead/vue'
   import { AppShell } from '@/components/shell'
-  import HeroSectionView from '@/views/sections/HeroSectionView.vue'
-  import HowItWorksSectionView from '@/views/sections/HowItWorksSectionView.vue'
-  import ProbleemOplossingSectionView from '@/views/sections/ProbleemOplossingSectionView.vue'
-  import GodfatherOfferSection from '@/components/sections/godfather-offer/GodfatherOfferSection.vue'
-  import PortfolioSection from '@/components/sections/portfolio/PortfolioSection.vue'
-  import ResultatenCasesSectionView from '@/views/sections/ResultatenCasesSectionView.vue'
-  import NoCureNoPayFaqSectionView from '@/views/sections/NoCureNoPayFaqSectionView.vue'
-  import OverAInternContactSectionView from '@/views/sections/OverAInternContactSectionView.vue'
-  import WorkflowScanCtaSection from '@/components/sections/workflow-scan-cta/WorkflowScanCtaSection.vue'
-  import BookingModal from '@/components/ui/BookingModal.vue'
-  import IntakeModal from '@/components/ui/IntakeModal.vue'
+  import PivotHeroSection from '@/components/sections/pivot/PivotHeroSection.vue'
+  import PivotProblemSection from '@/components/sections/pivot/PivotProblemSection.vue'
+  import PivotHowSection from '@/components/sections/pivot/PivotHowSection.vue'
+  import PivotPillarsSection from '@/components/sections/pivot/PivotPillarsSection.vue'
+  import PivotReplaceSection from '@/components/sections/pivot/PivotReplaceSection.vue'
+  import PivotCompareSection from '@/components/sections/pivot/PivotCompareSection.vue'
+  import PivotPricingSection from '@/components/sections/pivot/PivotPricingSection.vue'
+  import PivotPartnersTeaserSection from '@/components/sections/pivot/PivotPartnersTeaserSection.vue'
+  import PivotFaqSection from '@/components/sections/pivot/PivotFaqSection.vue'
+  import PivotCtaSection from '@/components/sections/pivot/PivotCtaSection.vue'
+
+  const { t } = useI18n()
+
+  const FAQ_KEYS = ['q1', 'q2', 'q3', 'q4', 'q5', 'q6'] as const
+
+  useHead({
+    script: [
+      {
+        type: 'application/ld+json',
+        key: 'home-faq',
+        innerHTML: computed(() =>
+          JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: FAQ_KEYS.map((key) => ({
+              '@type': 'Question',
+              name: t(`pivot.home.faq.items.${key}.q`),
+              acceptedAnswer: { '@type': 'Answer', text: t(`pivot.home.faq.items.${key}.a`) },
+            })),
+          }).replace(/</g, '\\u003c'),
+        ),
+      },
+    ],
+  })
 </script>
 
 <template>
   <AppShell>
-    <HeroSectionView bg="light" />
-    <HowItWorksSectionView bg="dark" />
-    <GodfatherOfferSection bg="light" />
-    <PortfolioSection bg="dark" />
-    <!-- <ProbleemOplossingSectionView bg="dark" /> -->
-
-    <WorkflowScanCtaSection />
-
-    <ResultatenCasesSectionView bg="light" />
-    <NoCureNoPayFaqSectionView bg="dark" />
-    <OverAInternContactSectionView bg="light" />
-    <!-- <KennisbankTeaserSection      bg="dark" /> -->
-    <IntakeModal />
-    <BookingModal />
+    <PivotHeroSection />
+    <PivotProblemSection />
+    <PivotHowSection />
+    <PivotPillarsSection />
+    <PivotReplaceSection />
+    <PivotCompareSection />
+    <PivotPricingSection />
+    <PivotPartnersTeaserSection />
+    <PivotFaqSection />
+    <PivotCtaSection
+      :heading="t('pivot.home.cta.heading')"
+      :subtext="t('pivot.home.cta.subtext')"
+      :button="t('pivot.home.cta.button')"
+      :secondary-label="t('pivot.home.cta.secondary')"
+      secondary-to="/platform"
+      location="home-cta"
+    />
   </AppShell>
 </template>

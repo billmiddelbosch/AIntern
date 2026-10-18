@@ -6,16 +6,22 @@
  * Lets AI assistants (Claude, ChatGPT, MCP Inspector, …) search and read the
  * Q&A content of the Kennisbank and NewsFlow pages.
  *
+ * Also exposes GET|POST /ask on the same Lambda (routed via event.resource) —
+ * an NLWeb-protocol-compatible REST search endpoint for AI clients and
+ * NLWeb-aware crawlers that don't want full MCP JSON-RPC. `list` mode only;
+ * see the scope-cut comments in the /ask section below.
+ *
  * Transport: Streamable HTTP in stateless JSON mode — each POST carries one
  * JSON-RPC message (or a batch array, 2025-03-26 compat) and gets a single
  * application/json response. No SSE, no Mcp-Session-Id (stateless servers
  * must not issue one). GET/DELETE answer 405 per spec.
  *
  * CORS note: this handler intentionally deviates from the corsOrigin() echo
- * pattern in utils/cors.ts. It serves non-browser JSON-RPC clients, carries
- * no cookies/auth, and only exposes data that is already world-readable in
- * public S3 — Access-Control-Allow-Origin: * is correct here. Reviewed via
- * the CEO gate (see CLAUDE.md, Lambda Conventions).
+ * pattern in utils/cors.ts. It serves non-browser JSON-RPC/REST clients,
+ * carries no cookies/auth, and only exposes data that is already
+ * world-readable in public S3 — Access-Control-Allow-Origin: * is correct
+ * here for both /mcp and /ask. Reviewed via the CEO gate (see CLAUDE.md,
+ * Lambda Conventions).
  *
  * Data: plain HTTPS fetch of the public S3 aggregates (zero IAM):
  *   {KENNISBANK_BASE_URL}/qa.json   — {items:[{question,answer,slug,title,category,publishedAt}]}
@@ -24,6 +30,7 @@
  */
 
 import type { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from 'aws-lambda'
+import { randomUUID } from 'crypto'
 
 // ── Config ────────────────────────────────────────────────────────────────────
 
@@ -210,11 +217,21 @@ export function scoreQaItem(tokens: string[], phrase: string, item: QaItem): num
   return score
 }
 
-export function searchQa(
+export interface ScoredQaItem {
+  item: QaItem
+  score: number
+}
+
+/**
+ * Shared filter/score/sort core. Kept separate from searchQa so /ask (NLWeb)
+ * can surface a per-hit `score` while search_answers/list_questions keep
+ * returning plain QaItem[]. searchQa's signature/behavior is unchanged.
+ */
+export function searchQaScored(
   items: QaItem[],
   query: string,
   opts: { source?: string; category?: string; limit: number },
-): QaItem[] {
+): ScoredQaItem[] {
   const tokens = tokenize(query)
   const phrase = normalize(query).trim()
   if (tokens.length === 0 && phrase.length === 0) return []
@@ -228,7 +245,14 @@ export function searchQa(
     .filter((s) => s.score > 0)
     .sort((a, b) => b.score - a.score || b.item.publishedAt.localeCompare(a.item.publishedAt))
     .slice(0, opts.limit)
-    .map((s) => s.item)
+}
+
+export function searchQa(
+  items: QaItem[],
+  query: string,
+  opts: { source?: string; category?: string; limit: number },
+): QaItem[] {
+  return searchQaScored(items, query, opts).map((s) => s.item)
 }
 
 // ── Article rendering (pure, exported for tests) ──────────────────────────────
@@ -587,6 +611,134 @@ export async function handleMessage(msg: unknown): Promise<JsonRpcResponse | nul
   }
 }
 
+// ── /ask (NLWeb protocol) — GET query params or POST JSON body ───────────────
+// https://github.com/nlweb-ai/NLWeb — minimal `list`-mode implementation.
+// Scope cuts (deliberate, not bugs):
+//  - `mode` (list|summarize|generate): only `list` is implemented. Any mode
+//    value still returns the list-shaped result — no LLM summarization call.
+//  - `streaming`: always ignored, always a single complete JSON response.
+//    API Gateway REST + Lambda proxy integration (APIGatewayProxyResult)
+//    can't do SSE/chunked streaming — that needs a Function URL with
+//    response streaming, a separate infra shape not justified for this
+//    endpoint.
+//  - `prev` (comma-separated prior queries): accepted but ignored — no
+//    LLM-based decontextualization in this pass.
+
+const ASK_DEFAULT_LIMIT = 10
+
+interface AskResult {
+  url: string
+  name: string
+  site: Source
+  score: number
+  description: string
+  schema_object: {
+    '@type': 'Question'
+    name: string
+    text: string
+    dateCreated: string
+    url: string
+    acceptedAnswer: { '@type': 'Answer'; text: string }
+  }
+}
+
+interface AskResponseBody {
+  query_id: string
+  results: AskResult[]
+}
+
+const ASK_HEADERS: Record<string, string> = {
+  'Content-Type': 'application/json',
+  // Public JSON REST endpoint for non-browser NLWeb clients — same wildcard
+  // CORS policy and CEO-gate rationale as the /mcp JSON-RPC endpoint above
+  // (no cookies/auth, read-only public content).
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Access-Control-Allow-Headers': 'Content-Type, Accept, Authorization',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'Content-Security-Policy': "default-src 'none'",
+  'X-Frame-Options': 'DENY',
+  'X-Content-Type-Options': 'nosniff',
+  'Referrer-Policy': 'strict-origin-when-cross-origin',
+}
+
+function askResponse(statusCode: number, body: unknown): APIGatewayProxyResult {
+  return { statusCode, headers: { ...ASK_HEADERS }, body: JSON.stringify(body) }
+}
+
+function parseAskParams(event: APIGatewayProxyEvent): Record<string, unknown> {
+  if ((event.httpMethod ?? 'GET').toUpperCase() === 'GET') {
+    return { ...(event.queryStringParameters ?? {}) }
+  }
+  try {
+    const body: unknown = JSON.parse(event.body ?? '{}')
+    return typeof body === 'object' && body !== null ? (body as Record<string, unknown>) : {}
+  } catch {
+    return {}
+  }
+}
+
+function buildAskResult(item: QaItem, score: number): AskResult {
+  return {
+    url: item.url,
+    name: item.question,
+    site: item.source,
+    score,
+    description: item.answer,
+    schema_object: {
+      '@type': 'Question',
+      name: item.question,
+      text: item.question,
+      dateCreated: item.publishedAt,
+      url: item.url,
+      acceptedAnswer: { '@type': 'Answer', text: item.answer },
+    },
+  }
+}
+
+async function handleAsk(event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+  const method = (event.httpMethod ?? 'GET').toUpperCase()
+  if (method === 'OPTIONS') return { statusCode: 204, headers: { ...ASK_HEADERS }, body: '' }
+  if (method !== 'GET' && method !== 'POST') {
+    return {
+      statusCode: 405,
+      headers: { ...ASK_HEADERS, Allow: 'GET, POST' },
+      body: JSON.stringify({ error: 'Method not allowed — use GET or POST' }),
+    }
+  }
+
+  const params = parseAskParams(event)
+  const rawQuery = typeof params.query === 'string' ? params.query : ''
+  const decontextualized =
+    typeof params.decontextualized_query === 'string' ? params.decontextualized_query : ''
+  // Caller already decontextualized — prefer it over `query` when present, no LLM call needed here.
+  const query = (decontextualized.trim() || rawQuery).slice(0, 500)
+
+  if (!query.trim()) {
+    return askResponse(400, { error: 'query is required' })
+  }
+
+  // Invalid/absent `site` values fall back to no source filter — same
+  // permissive behavior as search_answers' `source` argument.
+  const site = parseSource(params.site)
+  // Cap mirrors the `query` cap above — query_id is echoed verbatim into the
+  // response body, so an unbounded value would let a caller inflate response
+  // size for free (security-reviewer finding, 2026-07-12).
+  const queryId =
+    typeof params.query_id === 'string' && params.query_id.trim()
+      ? params.query_id.slice(0, 200)
+      : randomUUID()
+
+  const items = await loadQaItems()
+  const hits = searchQaScored(items, query, { source: site, limit: ASK_DEFAULT_LIMIT })
+
+  const responseBody: AskResponseBody = {
+    query_id: queryId,
+    results: hits.map(({ item, score }) => buildAskResult(item, score)),
+  }
+  return askResponse(200, responseBody)
+}
+
 // ── HTTP handler ──────────────────────────────────────────────────────────────
 
 const BASE_HEADERS: Record<string, string> = {
@@ -615,6 +767,10 @@ export const handler = async (
   event: APIGatewayProxyEvent,
   context: Context,
 ): Promise<APIGatewayProxyResult> => {
+  // Same Lambda serves both routes — dispatch on the API Gateway resource,
+  // same pattern as admin-auth.ts's event.resource === '/admin/login' check.
+  if (event.resource === '/ask') return handleAsk(event)
+
   const alias = context.invokedFunctionArn.split(':').pop() ?? 'dev'
   const method = event.httpMethod?.toUpperCase() ?? 'POST'
 
