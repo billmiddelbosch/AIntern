@@ -13,7 +13,6 @@
   import PivotPartnersTeaserSection from '@/components/sections/pivot/PivotPartnersTeaserSection.vue'
   import PivotFaqSection from '@/components/sections/pivot/PivotFaqSection.vue'
   import PivotCtaSection from '@/components/sections/pivot/PivotCtaSection.vue'
-  import IntakeModal from '@/components/ui/IntakeModal.vue'
 
   const { t } = useI18n()
 
@@ -59,6 +58,5 @@
       secondary-to="/platform"
       location="home-cta"
     />
-    <IntakeModal />
   </AppShell>
 </template>

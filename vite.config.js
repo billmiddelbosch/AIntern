@@ -36,13 +36,7 @@ function faqFeedPlugin() {
     };
 }
 export default defineConfig({
-    plugins: [
-        vue(),
-        tailwindcss(),
-        sitemapPlugin(),
-        llmsFullPlugin(),
-        faqFeedPlugin(),
-    ],
+    plugins: [vue(), tailwindcss(), sitemapPlugin(), llmsFullPlugin(), faqFeedPlugin()],
     ssgOptions: {
         // NewsFlowView's SSG-fetched article content is sanitized with DOMPurify
         // during renderToString; DOMPurify needs a `window` global to self-init.

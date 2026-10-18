@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { useI18n } from 'vue-i18n'
-import { useIntakeModal } from '@/composables/useIntakeModal'
+import { useBookingModal } from '@/composables/useBookingModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t } = useI18n()
-const { openIntakeModal } = useIntakeModal()
+const { openBookingModal } = useBookingModal()
 const { trackEvent } = useAnalytics()
 </script>
 
@@ -44,7 +44,7 @@ const { trackEvent } = useAnalytics()
     </ul>
 
     <!-- CTA -->
-    <button class="ncnp-prop__cta" @click="() => { trackEvent('cta_click', { location: 'nocurenopay' }); openIntakeModal() }">
+    <button class="ncnp-prop__cta" @click="() => { trackEvent('cta_click', { location: 'nocurenopay' }); openBookingModal() }">
       {{ t('noCureNoPay.proposition.cta') }}
     </button>
   </div>

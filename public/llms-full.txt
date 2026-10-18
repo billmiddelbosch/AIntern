@@ -312,13 +312,13 @@ AIntern (https://aintern.nl) is verantwoordelijk voor de verwerking van persoons
 
 We gebruiken Google Analytics (meet-ID G-QQ7ZCNPB8B) om te zien hoe de website wordt gebruikt, zoals bezochte pagina's, apparaat, browser en globale locatie. Google Analytics wordt op elke pagina geladen en plaatst daarbij cookies. Gebeurtenissen zoals klikken op knoppen meten we alleen als je in de cookiebanner toestemming geeft. Je keuze bewaren we in je eigen browser (localStorage, sleutel `aintern_consent`).
 
-#### Intakevragen
+#### Besparingscalculator
 
-Plan je een gesprek, dan stellen we eerst een paar vragen over je bedrijf: bedrijfsgrootte, welk proces je wilt verbeteren, hoeveel tijd het kost, wat je al hebt geprobeerd en wat het oplevert. Deze antwoorden slaan we op in een database bij Amazon Web Services in de regio Londen (eu-west-2). We vragen daarbij geen naam of e-mailadres.
+Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan gaat de lijst met pakketten en bedragen als notitie mee naar Calendly.
 
 #### Afspraak plannen (Calendly)
 
-Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly.
+Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, inclusief de pakketlijst uit de besparingscalculator als je die meestuurt, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly.
 
 #### E-mail
 
@@ -333,7 +333,7 @@ We verkopen je gegevens niet en gebruiken ze niet voor advertenties.
 
 ### Met wie we gegevens delen
 
-- Amazon Web Services: hosting van de website en opslag van intakeantwoorden.
+- Amazon Web Services: hosting van de website.
 - Google: websitestatistieken via Google Analytics.
 - Calendly: plannen van afspraken.
 

@@ -2,11 +2,11 @@
   import { ref } from 'vue'
   import { RouterLink, useRouter } from 'vue-router'
   import { useI18n } from 'vue-i18n'
-  import { useIntakeModal } from '@/composables/useIntakeModal'
+  import { useBookingModal } from '@/composables/useBookingModal'
   import { useAnalytics } from '@/composables/useAnalytics'
 
   const { t, locale } = useI18n()
-  const { openIntakeModal } = useIntakeModal()
+  const { openBookingModal } = useBookingModal()
   const { trackEvent } = useAnalytics()
   const router = useRouter()
 
@@ -37,7 +37,7 @@
   function handleCta() {
     mobileMenuOpen.value = false
     trackEvent('cta_click', { location: 'nav' })
-    openIntakeModal()
+    openBookingModal()
   }
 
   function toggleLocale() {

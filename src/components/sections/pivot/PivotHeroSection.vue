@@ -1,10 +1,10 @@
 <script setup lang="ts">
   import { useI18n } from 'vue-i18n'
-  import { useIntakeModal } from '@/composables/useIntakeModal'
+  import { useBookingModal } from '@/composables/useBookingModal'
   import { useAnalytics } from '@/composables/useAnalytics'
 
   const { t } = useI18n()
-  const { openIntakeModal } = useIntakeModal()
+  const { openBookingModal } = useBookingModal()
   const { trackEvent } = useAnalytics()
 
   // Illustrative subscription stack; product names stay generic on purpose.
@@ -19,7 +19,7 @@
 
   function handleCta() {
     trackEvent('cta_click', { location: 'hero' })
-    openIntakeModal()
+    openBookingModal()
   }
 
   function scrollToHow() {

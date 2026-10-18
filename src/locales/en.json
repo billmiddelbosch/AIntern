@@ -1351,12 +1351,12 @@
           "body": "We use Google Analytics (measurement ID G-QQ7ZCNPB8B) to see how the website is used, such as pages visited, device, browser and approximate location. Google Analytics is loaded on every page and sets cookies. Events such as button clicks are only measured if you give consent in the cookie banner. Your choice is stored in your own browser."
         },
         "intake": {
-          "title": "Intake questions",
-          "body": "When you book a conversation, we first ask a few questions about your business: company size, which process you want to improve, how much time it takes, what you have tried and what it would deliver. We store these answers in a database at Amazon Web Services in the London region. We do not ask for your name or email address."
+          "title": "Savings calculator",
+          "body": "In the savings calculator you enter which software you rent and what it costs. The calculation runs in your own browser; we do not store this data. If you then book a call with these numbers, the list of software and amounts is passed to Calendly as a note."
         },
         "calendly": {
           "title": "Booking a meeting (Calendly)",
-          "body": "Meetings are booked through Calendly. Calendly processes the name, email address and any notes you enter there, and sends us a confirmation. Please also read Calendly's privacy policy."
+          "body": "Meetings are booked through Calendly. Calendly processes the name, email address and any comments you enter there, including the software list from the savings calculator if you send it along, and sends us a confirmation. Please also read the Calendly privacy policy."
         },
         "email": {
           "title": "Email",
@@ -1368,7 +1368,7 @@
         },
         "sharing": {
           "title": "Who we share data with",
-          "body": "Amazon Web Services (hosting and storage of intake answers), Google (website statistics) and Calendly (meetings). These parties process data on our behalf or as independent controllers. Some of them may process data outside the European Economic Area; in that case this is done under the safeguards required by the GDPR."
+          "body": "Amazon Web Services (website hosting), Google (website statistics) and Calendly (meetings). These parties process data on our behalf or as independent controllers. Some of them may process data outside the European Economic Area; in that case this is done under the safeguards required by the GDPR."
         },
         "retention": {
           "title": "How long we keep data",
@@ -1387,6 +1387,32 @@
           "body": "We may update this statement. The date at the top shows when it was last changed."
         }
       }
+    },
+    "savings": {
+      "title": "Calculate your savings",
+      "sub": "Tick the software you rent today and enter what you pay for it each month.",
+      "toolsLegend": "Which software do you use now?",
+      "amountLabel": "Monthly amount for {tool}",
+      "amountPlaceholder": "Amount",
+      "perMonthShort": "/mo",
+      "otherLegend": "Other software",
+      "otherNameLabel": "Name of the software",
+      "otherNamePlaceholder": "E.g. Exact, Teamleader, Mailchimp",
+      "otherAmountLabel": "Monthly amount for this software",
+      "otherFallback": "Other software",
+      "addOther": "Add other software",
+      "removeOther": "Remove software",
+      "empty": "Tick a package and enter the monthly amount to see what you could save.",
+      "currentLabel": "You pay now",
+      "ainternLabel": "AIntern",
+      "from": "from",
+      "savingLabel": "Indicative saving",
+      "perYear": "That is {amount} per year.",
+      "lowTotal": "You currently pay no more than our starting price. The gain is then mainly software that fits exactly and that you own. We are happy to talk it through.",
+      "disclaimer": "Indication only. On top come hosting in your name (usually €5–€50 per month) and AI usage at normal prices. The calculation runs in your browser; we store nothing.",
+      "planWithNumbers": "Book a call with these numbers",
+      "planDirect": "Book a call straight away",
+      "note": "Software: {tools}. Total {total} per month. Indicative saving {saving} per month."
     }
   }
 }

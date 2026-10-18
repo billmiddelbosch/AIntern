@@ -4,8 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useHead as useUnhead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
 import AppShell from '@/components/shell/AppShell.vue'
-import IntakeModal from '@/components/ui/IntakeModal.vue'
-import { useIntakeModal } from '@/composables/useIntakeModal'
+import { useBookingModal } from '@/composables/useBookingModal'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t, locale } = useI18n()
@@ -30,7 +29,7 @@ useUnhead({
   ],
   link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
 })
-const { openIntakeModal } = useIntakeModal()
+const { openBookingModal } = useBookingModal()
 const { trackEvent } = useAnalytics()
 
 // ---------------------------------------------------------------------------
@@ -83,7 +82,7 @@ function formatCurrency(value: number): string {
 
 function handleCta() {
   trackEvent('cta_click', { location: 'gratis-tool' })
-  openIntakeModal()
+  openBookingModal()
 }
 
 // ---------------------------------------------------------------------------
@@ -260,7 +259,5 @@ const processCounts = [1, 2, 3, 4, 5]
 
     </div>
 
-    <!-- IntakeModal must be present on any page that calls openIntakeModal -->
-    <IntakeModal />
   </AppShell>
 </template>

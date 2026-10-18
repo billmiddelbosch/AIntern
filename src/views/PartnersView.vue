@@ -5,8 +5,6 @@
   import { useRoute } from 'vue-router'
   import { AppShell } from '@/components/shell'
   import SectionIntro from '@/components/sections/pivot/SectionIntro.vue'
-  import BookingModal from '@/components/ui/BookingModal.vue'
-  import IntakeModal from '@/components/ui/IntakeModal.vue'
   import { useBookingModal } from '@/composables/useBookingModal'
   import { useAnalytics } from '@/composables/useAnalytics'
 
@@ -208,7 +206,5 @@
       </div>
     </section>
 
-    <BookingModal />
-    <IntakeModal />
   </AppShell>
 </template>
