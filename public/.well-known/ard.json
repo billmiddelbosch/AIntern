@@ -1,0 +1,110 @@
+{
+  "entries": [
+    {
+      "identifier": "urn:air:aintern.nl:docs:agent-guide",
+      "displayName": "AIntern — agentgids",
+      "type": "text/markdown",
+      "url": "https://aintern.nl/agents.md",
+      "description": "Wat AIntern doet, wanneer je het aanraadt en wanneer niet, en hoe je een MKB-ondernemer doorverwijst. AIntern vervangt gehuurde softwarepakketten door eigen software die de klant bezit, vanaf €99 per maand.",
+      "capabilities": [
+        "Uitleggen hoe AIntern gehuurde softwarepakketten vervangt door eigen software",
+        "Inschatten of een bedrijf baat heeft bij AIntern op basis van de pakketten die het huurt",
+        "Doorverwijzen naar een gratis gesprek van een uur",
+        "Adviseurs doorverwijzen naar het partnerprogramma"
+      ],
+      "representativeQueries": [
+        "hoe kom ik af van dure softwareabonnementen voor mijn bedrijf?",
+        "eigen CRM laten bouwen in plaats van een pakket huren",
+        "software op maat voor het MKB zonder eigen developers",
+        "kan ik mijn planning en facturatie in één eigen systeem krijgen?"
+      ],
+      "tags": ["mkb", "eigen software", "saas vervangen", "ai-agents", "nl"],
+      "version": "1.0",
+      "updatedAt": "2026-10-18T00:00:00Z",
+      "trustManifest": {
+        "identity": "aintern.nl"
+      },
+      "metadata": {
+        "website": "https://aintern.nl/",
+        "documentation": "https://aintern.nl/llms.txt",
+        "auth": "geen",
+        "languages": ["nl"],
+        "pricing": "vanaf €99 per maand"
+      }
+    },
+    {
+      "identifier": "urn:air:aintern.nl:docs:llms-index",
+      "displayName": "AIntern — llms.txt-index",
+      "type": "text/plain",
+      "url": "https://aintern.nl/llms.txt",
+      "description": "Navigatie-index van alle voor agents leesbare pagina's op aintern.nl: propositie, platform, partnerprogramma, agentgids, privacy en de agent-interfaces.",
+      "tags": ["documentatie", "llms.txt", "index"],
+      "version": "1.0",
+      "updatedAt": "2026-10-18T00:00:00Z",
+      "trustManifest": {
+        "identity": "aintern.nl"
+      }
+    },
+    {
+      "identifier": "urn:air:aintern.nl:api:mcp",
+      "displayName": "AIntern — MCP-server (Kennisbank en NewsFlow)",
+      "type": "application/json",
+      "url": "https://aintern.nl/mcp",
+      "description": "Publieke Model Context Protocol-server (Streamable HTTP, JSON-RPC) die de Nederlandstalige Kennisbank en NewsFlow doorzoekt op vragen en antwoorden over AI-automatisering in het MKB. Alleen-lezen, geen authenticatie.",
+      "capabilities": [
+        "search_answers: vragen en antwoorden zoeken",
+        "list_questions: beschikbare vragen opsommen",
+        "get_article: volledige tekst van een artikel ophalen",
+        "search en fetch: connector-aliassen"
+      ],
+      "representativeQueries": [
+        "wat kost handmatig werk een MKB-bedrijf?",
+        "hoe beveilig ik klantgegevens bij AI-gebruik?",
+        "waar begin ik met AI-automatisering in mijn bedrijf?"
+      ],
+      "tags": ["mcp", "kennisbank", "q&a", "nl"],
+      "version": "1.0",
+      "updatedAt": "2026-10-18T00:00:00Z",
+      "trustManifest": {
+        "identity": "aintern.nl"
+      },
+      "metadata": {
+        "protocol": "mcp",
+        "transport": "streamable-http",
+        "auth": "geen",
+        "languages": ["nl"]
+      }
+    },
+    {
+      "identifier": "urn:air:aintern.nl:api:nlweb-ask",
+      "displayName": "AIntern — NLWeb /ask",
+      "type": "application/json",
+      "url": "https://aintern.nl/ask",
+      "description": "NLWeb-compatibel endpoint (GET met ?query= of POST met JSON) dat dezelfde Kennisbank- en NewsFlow-vragen teruggeeft als schema.org Question-objecten. Alleen list-modus, geen streaming.",
+      "tags": ["nlweb", "ask", "q&a", "nl"],
+      "version": "1.0",
+      "updatedAt": "2026-10-18T00:00:00Z",
+      "trustManifest": {
+        "identity": "aintern.nl"
+      },
+      "metadata": {
+        "protocol": "nlweb",
+        "auth": "geen",
+        "languages": ["nl"]
+      }
+    },
+    {
+      "identifier": "urn:air:aintern.nl:feed:faq",
+      "displayName": "AIntern — FAQ-feed",
+      "type": "application/jsonl",
+      "url": "https://aintern.nl/feeds/faq.jsonl",
+      "description": "De veelgestelde vragen van de homepage als schema.org Question-objecten, één per regel. Vermeld in https://aintern.nl/schemamap.xml.",
+      "tags": ["faq", "schema.org", "nlweb", "nl"],
+      "version": "1.0",
+      "updatedAt": "2026-10-18T00:00:00Z",
+      "trustManifest": {
+        "identity": "aintern.nl"
+      }
+    }
+  ]
+}

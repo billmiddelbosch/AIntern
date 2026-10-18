@@ -7,6 +7,7 @@ import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { generateSitemapXml, getSlugsFromS3, getNewsflowSlugsFromS3 } from './scripts/generate-sitemap'
 import { generateLlmsFullTxt } from './scripts/generate-llms-full'
+import { generateFaqFeed } from './scripts/generate-faq-feed'
 
 function sitemapPlugin(): Plugin {
   return {
@@ -30,13 +31,19 @@ function llmsFullPlugin(): Plugin {
   }
 }
 
+function faqFeedPlugin(): Plugin {
+  return {
+    name: 'generate-faq-feed',
+    apply: 'build',
+    buildStart() {
+      const publicDir = fileURLToPath(new URL('./public', import.meta.url))
+      generateFaqFeed(publicDir)
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [
-    vue(),
-    tailwindcss(),
-    sitemapPlugin(),
-    llmsFullPlugin(),
-  ],
+  plugins: [vue(), tailwindcss(), sitemapPlugin(), llmsFullPlugin(), faqFeedPlugin()],
   ssgOptions: {
     // NewsFlowView's SSG-fetched article content is sanitized with DOMPurify
     // during renderToString; DOMPurify needs a `window` global to self-init.

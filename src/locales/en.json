@@ -1265,12 +1265,128 @@
       "resources": "Knowledge & tools",
       "workflowScan": "Workflow scan",
       "aiAgent": "AI agent for SMEs",
-      "newsflow": "NewsFlow"
+      "newsflow": "NewsFlow",
+      "company": "Company",
+      "about": "About AIntern",
+      "privacy": "Privacy"
     },
     "seo": {
       "title": "AIntern — Stop renting. Build your own SME software",
       "description": "Replace expensive software subscriptions with your own software that you own. Built and maintained by AIntern, running the day after your session. From €99 per month, no per-user pricing.",
       "ogImageAlt": "AIntern — Stop renting. Build what's yours."
+    },
+    "about": {
+      "meta": {
+        "title": "About AIntern — your own software for SMBs",
+        "description": "Why AIntern exists, what we stand for and who is behind it. AIntern helps SMBs stop renting software and own it instead."
+      },
+      "hero": {
+        "eyebrow": "About AIntern",
+        "headline": "Software should be yours",
+        "subtext": "AIntern helps small and medium-sized businesses stop renting and build what they own: their own software instead of a pile of rented subscriptions."
+      },
+      "why": {
+        "eyebrow": "Why",
+        "heading": "Why AIntern exists",
+        "body1": "SMBs pay more every year for software packages that never quite fit. They pay per user, bend their way of working to the package and lose everything when they cancel.",
+        "body2": "With AI, building and maintaining your own software is now fast and affordable enough for SMBs. AIntern makes that accessible to businesses without their own developers."
+      },
+      "values": {
+        "eyebrow": "What we stand for",
+        "heading": "Five principles",
+        "items": {
+          "own": {
+            "title": "Ownership",
+            "body": "Code, knowledge, data and hosting are in the customer's name. Always."
+          },
+          "prove": {
+            "title": "Prove it first",
+            "body": "No months-long project and no slide deck: the day after the conversation, working software is running."
+          },
+          "language": {
+            "title": "Plain language",
+            "body": "Business owners talk about quotes, planning and invoices, not code."
+          },
+          "safe": {
+            "title": "Secure and European",
+            "body": "Daily security checks. If you prefer, everything, including the AI, runs in Europe."
+          },
+          "fair": {
+            "title": "Fair pricing",
+            "body": "A fixed fee, no per-user pricing and AI usage at the normal price."
+          }
+        }
+      },
+      "team": {
+        "eyebrow": "Who is behind it",
+        "heading": "Built in the Netherlands",
+        "body1": "AIntern was founded by Bill Middelbosch and is based in the Netherlands. We work with process consultants, accounting firms and IT service providers who want to deliver working software to their clients.",
+        "body2": "We use our own approach internally too: much of the work is done by AI agents, directed by people.",
+        "contact": "Questions? Email us at"
+      },
+      "cta": {
+        "heading": "Curious what you could save?",
+        "subtext": "In a free one-hour conversation we calculate it with your own numbers.",
+        "button": "Book your free conversation",
+        "secondary": "Become a partner"
+      }
+    },
+    "privacy": {
+      "meta": {
+        "title": "Privacy statement — AIntern",
+        "description": "Which data aintern.nl processes, why, who we share it with and what rights you have under the GDPR."
+      },
+      "eyebrow": "Privacy",
+      "heading": "Privacy statement",
+      "intro": "Which data aintern.nl processes, why, and what rights you have.",
+      "updated": "Last updated: 18 October 2026",
+      "contact": "Questions or a request? Email",
+      "sections": {
+        "who": {
+          "title": "Who we are",
+          "body": "AIntern (aintern.nl) is responsible for processing personal data through this website."
+        },
+        "analytics": {
+          "title": "Website visits (Google Analytics)",
+          "body": "We use Google Analytics (measurement ID G-QQ7ZCNPB8B) to see how the website is used, such as pages visited, device, browser and approximate location. Google Analytics is loaded on every page and sets cookies. Events such as button clicks are only measured if you give consent in the cookie banner. Your choice is stored in your own browser."
+        },
+        "intake": {
+          "title": "Intake questions",
+          "body": "When you book a conversation, we first ask a few questions about your business: company size, which process you want to improve, how much time it takes, what you have tried and what it would deliver. We store these answers in a database at Amazon Web Services in the London region. We do not ask for your name or email address."
+        },
+        "calendly": {
+          "title": "Booking a meeting (Calendly)",
+          "body": "Meetings are booked through Calendly. Calendly processes the name, email address and any notes you enter there, and sends us a confirmation. Please also read Calendly's privacy policy."
+        },
+        "email": {
+          "title": "Email",
+          "body": "If you email us, we only use your details to answer your question."
+        },
+        "purpose": {
+          "title": "Why we do this",
+          "body": "We process data to handle and prepare your request for a conversation (at your request) and to improve the website (legitimate interest, and for event measurement your consent). We do not sell your data and do not use it for advertising."
+        },
+        "sharing": {
+          "title": "Who we share data with",
+          "body": "Amazon Web Services (hosting and storage of intake answers), Google (website statistics) and Calendly (meetings). These parties process data on our behalf or as independent controllers. Some of them may process data outside the European Economic Area; in that case this is done under the safeguards required by the GDPR."
+        },
+        "retention": {
+          "title": "How long we keep data",
+          "body": "We do not keep data longer than needed for the purpose it was collected for. If you want us to delete your data sooner, let us know."
+        },
+        "rights": {
+          "title": "Your rights",
+          "body": "Under the GDPR you have the right to access, correct or delete your data, restrict processing, object and port your data. You can withdraw consent at any time by clearing your browser storage for aintern.nl. If you disagree with how we handle your data, you can file a complaint with the Dutch Data Protection Authority (Autoriteit Persoonsgegevens)."
+        },
+        "clients": {
+          "title": "Client software",
+          "body": "This statement covers the aintern.nl website. Software AIntern builds for clients runs in the client's own hosting and database. The client is responsible for it; arrangements are set out in the agreement with the client."
+        },
+        "changes": {
+          "title": "Changes",
+          "body": "We may update this statement. The date at the top shows when it was last changed."
+        }
+      }
     }
   }
 }

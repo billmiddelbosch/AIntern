@@ -34,7 +34,10 @@
         content: computed(() => t('pivot.partners.meta.description')),
       },
     ],
-    link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
+    link: [
+      { rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) },
+      { rel: 'alternate', type: 'text/markdown', href: '/partners.md' },
+    ],
   })
 
   const who = ['process', 'lean', 'accountants', 'it'] as const

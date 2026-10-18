@@ -19,6 +19,7 @@
     "playwright.config.ts",
     "server.ts",
     "scripts/generate-sitemap.ts",
-    "scripts/generate-llms-full.ts"
+    "scripts/generate-llms-full.ts",
+    "scripts/generate-faq-feed.ts"
   ]
 }
