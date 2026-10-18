@@ -1,4 +1,4 @@
-import { writeFileSync, mkdirSync } from 'node:fs'
+import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { getSlugsFromS3, getNewsflowSlugsFromS3 } from './generate-sitemap'
@@ -69,118 +69,32 @@ async function fetchNewsflowArticle(slug: string): Promise<NewsFlowArticle | nul
   }
 }
 
-function buildStaticHeader(today: string): string {
-  return `# AIntern — Volledige LLM-gids
+// The static part of llms-full.txt is assembled from the markdown pages in
+// public/ so there is one source of truth for the proposition text.
+const STATIC_PAGES = ['index.md', 'platform.md', 'partners.md', 'agents.md', 'about.md', 'privacy.md']
 
-> AIntern bouwt dedicated AI-stagiaires voor MKB-bedrijven in Nederland — no-cure-no-pay.
-> Laatste update: ${today}
+function buildStaticHeader(today: string, publicDir: string): string {
+  const pages = STATIC_PAGES.flatMap((file) => {
+    try {
+      // Demote headings one level so each page nests under the document title
+      const md = readFileSync(resolve(publicDir, file), 'utf-8').replace(/^(#{1,5}) /gm, '#$1 ')
+      return [md.trim(), '', '---', '']
+    } catch {
+      console.warn(`[llms-full] ${file} niet gevonden — overgeslagen`)
+      return []
+    }
+  })
 
-AIntern helpt Nederlandse MKB-bedrijven (1–50 medewerkers) herhaalprocessen automatiseren met een op maat gebouwde AI-stagiaire. Klanten betalen uitsluitend bij meetbaar, bewezen resultaat.
-
----
-
-## Over AIntern
-
-**Missie:** Elk MKB-bedrijf een dedicated AI-stagiaire geven — een die de interne processen van dat specifieke bedrijf uitvoert als een extra medewerker, zonder overhead.
-
-**Model:** No-cure-no-pay. AIntern definieert samen met de klant vooraf meetbare succescriteria. Geen resultaat = geen factuur.
-
-**Aanpak in drie stappen:**
-1. Gratis procesanalyse (30 minuten) — vrijblijvend, geen verkooppraatje
-2. 2-weken pilot — werkende AI-oplossing bouwen voor het gekozen proces
-3. Live implementatie — betaling start pas na verificatie van de resultaten
-
-**Capaciteitsbeperking:** AIntern neemt maximaal 2 nieuwe klanten per kwartaal aan om kwaliteit te garanderen.
-
----
-
-## Bewezen resultaten (geverifieerde cijfers)
-
-- **40% tijdsbesparing** op herhaalprocessen (gemeten over actieve klanttrajecten)
-- **€1.200+ maandelijkse kostenbesparing** (gemiddelde besparing op arbeidskosten per klant)
-- **90% minder gegevensinvoerfouten** na AI-implementatie
-- **Implementatietijd:** 4–8 weken van analyse tot live deployment
-- **Lightspeed case:** productinvoer gereduceerd van 60 minuten naar 5 minuten per batch
-
----
-
-## Dienstverlening
-
-### Geautomatiseerde processen (voorbeelden)
-- Factuurverwerking en boekhoudkundige data-extractie
-- Productteksten schrijven en uploaden (Lightspeed, WooCommerce, Shopify)
-- Klantemails categoriseren en beantwoorden
-- Offertes opstellen op basis van vaste formats
-- Rapportages genereren uit ruwe data
-- Voorraadbeheer en inkoopsignalen
-
-### Sectoren
-- E-commerce / webshops (sterk vertegenwoordigd)
-- Groothandel en distributie
-- Administratieve dienstverleners
-- Retail (fysiek + online)
-
-### Technisch
-- GDPR-conform — klantdata verlaat nooit de afgesproken verwerkingscontext
-- Geen technische kennis vereist van de klant
-- Integratie met bestaande software (Lightspeed, e-mailclients, Google Workspace)
-
----
-
-## Prijsmodel
-
-- **Geen voorinvestering** — nul euro upfront
-- **Gratis analyse** — eerste gesprek en procesanalyse zijn altijd gratis
-- **Resultaatgebaseerde vergoeding** — percentage van behaalde besparing of vaste fee op basis van scope
-- Betaling start pas na meting en verificatie van de afgesproken succescriteria
-
----
-
-## Veelgestelde vragen
-
-**Wat betekent no-cure-no-pay precies?**
-Je betaalt alleen als de AI-oplossing aantoonbaar resultaat oplevert. Wij definiëren samen met jou vooraf meetbare doelen — zoals tijdsbesparing, kostenverlaging of verhoogde output. Halen we die doelen niet? Dan betaal je niets.
-
-**Hoe lang duurt een gemiddeld traject?**
-De meeste trajecten duren vier tot acht weken van analyse tot live implementatie. Complexere processen kunnen langer duren, maar je hebt altijd zicht op de planning en tussentijdse mijlpalen.
-
-**Moet ik technische kennis hebben?**
-Nee. AIntern regelt de volledige technische implementatie. Jij hoeft alleen te vertellen hoe je bedrijfsproces nu werkt en wat je wilt bereiken. Wij vertalen dat naar een werkende AI-oplossing.
-
-**Wat als de AI-oplossing niet werkt voor mijn bedrijf?**
-We beginnen altijd met een gratis analyse van jouw processen. Als we zien dat AI geen significante winst oplevert voor jouw specifieke situatie, zeggen we dat eerlijk — zodat je geen tijd en geld verspilt.
-
-**Zijn mijn bedrijfsgegevens veilig?**
-Ja. We werken uitsluitend met GDPR-conforme oplossingen en verwerken jouw bedrijfsdata nooit buiten de afgesproken context. Vertrouwelijkheid is een basisvereiste, geen optie.
-
-**Wat kost het als het wél resultaat oplevert?**
-De vergoeding is gebaseerd op een percentage van de behaalde besparing of een vaste fee die we samen bepalen op basis van de scope. Je betaalt pas als de resultaten zijn gemeten en geverifieerd.
-
----
-
-## Pagina-overzicht
-
-### Hoofdpagina's
-
-**Homepage** — ${HOSTNAME}/
-Overzicht van de dienst: hero-sectie, hoe het werkt, het aanbod, portfolio van cases, problemen en oplossingen, FAQ, contactsectie.
-
-**AI Agent voor MKB** — ${HOSTNAME}/ai-agent-mkb
-Uitgebreide uitleg over AI-agents voor het MKB: wat een AI-agent doet, concrete use cases (productinvoer, klantvragen, offertes), no-cure-no-pay uitleg.
-
-**Wat kost handmatig werk jou?** — ${HOSTNAME}/wat-kost-handmatig-werk
-Interactieve calculator: voer uren per week, uurtarief en aantal processen in. Toont wekelijkse, maandelijkse en jaarlijkse kostenbesparingen bij 70% AI-automatiseringsgraad.
-
-**Gratis AI Workflow Scan** — ${HOSTNAME}/workflow-scan
-Gratis diagnose-tool in 3 minuten: beantwoord vragen over herhaalprocessen, krijg top-3 knelpunten + concrete aanbevelingen. Leadgeneratie-tool.
-
-**Kennisbank** — ${HOSTNAME}/kennisbank
-Overzicht van alle kennisbankartikelen over AI voor het MKB. Gefilterd op categorie: AI Automatisering, MKB Praktijkcases, Implementatietips, AI Tools & Technologie.
-
-**NewsFlow** — ${HOSTNAME}/newsflow/
-Dagelijkse landingspagina's over actueel nieuws met directe vertaling naar AI-kansen voor MKB-ondernemers.
-
----`
+  return [
+    `# AIntern — Volledige LLM-gids`,
+    ``,
+    `> Stop met huren. Bouw wat van jou is. Eigen software voor het MKB, vanaf €99 per maand.`,
+    `> Laatste update: ${today}`,
+    ``,
+    `---`,
+    ``,
+    ...pages,
+  ].join('\n')
 }
 
 function buildArticleSection(articles: BlogPost[]): string {
@@ -278,7 +192,7 @@ export async function generateLlmsFullTxt(outDir: string): Promise<void> {
   const newsflowSection = buildNewsflowSection(newsflowArticles)
 
   const content = [
-    buildStaticHeader(today),
+    buildStaticHeader(today, outDir),
     ``,
     buildArticleSection(articles),
     ...(newsflowSection ? [``, newsflowSection] : []),
@@ -290,7 +204,10 @@ export async function generateLlmsFullTxt(outDir: string): Promise<void> {
     `- **Kennisbank:** ${HOSTNAME}/kennisbank`,
     `- **Sitemap:** ${HOSTNAME}/sitemap.xml`,
     `- **llms.txt:** ${HOSTNAME}/llms.txt`,
+    `- **Gids voor agents:** ${HOSTNAME}/agents.md`,
+    `- **Schema feeds:** ${HOSTNAME}/schemamap.xml`,
     `- **MCP-server (voor AI-assistenten):** ${HOSTNAME}/mcp — doorzoekbare Q&A over AI-automatisering voor het MKB via het Model Context Protocol (Streamable HTTP, geen authenticatie)`,
+    `- **NLWeb /ask (voor AI-assistenten):** ${HOSTNAME}/ask?query=... — dezelfde Q&A als schema.org Question-resultaten (GET of POST)`,
     ``,
   ].join('\n')
 

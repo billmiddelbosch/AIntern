@@ -14,7 +14,7 @@
     "title": "Over AIntern"
   },
   "footer": {
-    "tagline": "Jouw AI-stagiaire voor het MKB — zonder risico, met gegarandeerd resultaat.",
+    "tagline": "Stop met huren. Bouw wat van jou is. Eigen software voor het MKB, gebouwd en onderhouden door AIntern.",
     "rights": "Alle rechten voorbehouden."
   },
   "howItWorks": {
@@ -146,9 +146,9 @@
   },
   "seo": {
     "home": {
-      "title": "AIntern — Jouw AI-stagiaire voor het MKB | No-Cure-No-Pay",
-      "description": "AIntern bouwt een AI-stagiaire voor jouw MKB — die herhaalprocessen automatiseert als een extra medewerker. Je betaalt pas bij bewezen resultaat.",
-      "ogImageAlt": "AIntern — Jouw AI-stagiaire voor het MKB"
+      "title": "AIntern — Stop met huren. Bouw eigen software voor je MKB",
+      "description": "Vervang dure softwarepakketten door eigen software die je zelf bezit. Gebouwd en onderhouden door AIntern, de dag na het gesprek al werkend. Vanaf €99 per maand, geen prijs per gebruiker.",
+      "ogImageAlt": "AIntern — Stop met huren. Bouw wat van jou is."
     }
   },
   "intakeModal": {
@@ -762,6 +762,657 @@
     "meta": {
       "title": "Gratis AI Workflow Scan — Ontdek je top-3 knelpunten | AIntern",
       "description": "Doe de gratis AI Workflow Scan in 3 minuten. Beantwoord 5 vragen en ontvang direct je top-3 knelpunten plus concrete AI-aanbevelingen voor jouw bedrijf."
+    }
+  },
+  "pivot": {
+    "home": {
+      "hero": {
+        "eyebrow": "Eigen software voor het MKB",
+        "headline": "Stop met huren. Bouw wat van jou is.",
+        "subtext": "Vervang je dure softwarepakketten door eigen software die past op hoe jij werkt. Wij bouwen en onderhouden het, jij bezit het. Voor minder dan wat één pakket je nu kost.",
+        "cta": "Plan je gratis gesprek",
+        "ctaSecondary": "Zo werkt het",
+        "note": "1 uur · je ziet direct wat je bespaart · de dag erna draait er software"
+      },
+      "problem": {
+        "eyebrow": "Het probleem",
+        "heading": "Je betaalt steeds meer voor software die nooit helemaal past",
+        "intro": "Een CRM hier, een planningstool daar, een offertepakket erbij. Elk jaar duurder, elk nieuw teamlid een extra licentie.",
+        "items": {
+          "perUser": {
+            "title": "Betalen per gebruiker",
+            "body": "Groeit je team, dan groeit je rekening mee. Prijsverhogingen bepaal jij niet."
+          },
+          "lockIn": {
+            "title": "Opzeggen = alles kwijt",
+            "body": "Stop je met betalen, dan stopt de software. Je data zit in hun systeem, niet in het jouwe."
+          },
+          "fit": {
+            "title": "Jij past je aan het pakket aan",
+            "body": "Workarounds, Excel-lijstjes en dubbel invoeren, omdat het pakket net niet doet wat jij nodig hebt."
+          }
+        }
+      },
+      "how": {
+        "eyebrow": "Zo werkt het",
+        "heading": "Van gesprek naar werkende software in één dag",
+        "intro": "Geen maandenlang project. Je ziet eerst wat het oplevert, daarna beslis je.",
+        "steps": {
+          "talk": {
+            "tag": "Dag 1",
+            "title": "Gratis gesprek van een uur",
+            "body": "We brengen samen je processen in kaart en rekenen met jouw eigen cijfers uit wat je bespaart. Tijdens het gesprek begint je software al vorm te krijgen."
+          },
+          "nextDay": {
+            "tag": "Dag 2",
+            "title": "De dag erna draait het",
+            "body": "Je krijgt een werkende eerste versie, je bedrijfskennis netjes vastgelegd en je processen uitgewerkt op het AIntern Platform."
+          },
+          "parallel": {
+            "tag": "Proefperiode",
+            "title": "Naast je huidige pakket",
+            "body": "Je draait de nieuwe software parallel aan wat je nu gebruikt. Pas als het beter werkt, zeg je het oude pakket op."
+          },
+          "build": {
+            "tag": "Daarna",
+            "title": "Zelf verder bouwen",
+            "body": "Wijzigingen vraag je gewoon in gewone taal. Wij bouwen, testen en onderhouden, jij bepaalt wat er live gaat. Daarna volgt het volgende pakket."
+          }
+        }
+      },
+      "pillars": {
+        "eyebrow": "Waarom AIntern",
+        "heading": "Drie beloftes",
+        "items": {
+          "own": {
+            "title": "Bezitten in plaats van huren",
+            "body": "Code, kennis, data en hosting staan op jouw naam. Stop je ooit met AIntern, dan blijft alles gewoon werken."
+          },
+          "proven": {
+            "title": "Bewezen in een dag",
+            "body": "De business case maken we in het gesprek, met jouw cijfers. De dag erna zie je werkende software, geen PowerPoint."
+          },
+          "safe": {
+            "title": "Veilig en Europees",
+            "body": "Je software wordt elke dag automatisch op veiligheid gecontroleerd. Desgewenst draait alles, inclusief de AI, alleen in Europa."
+          }
+        }
+      },
+      "replace": {
+        "eyebrow": "Wat je vervangt",
+        "heading": "De pakketten die je nu huurt",
+        "intro": "We beginnen met het pakket dat het meest kost of het minst past. Daarna volgt het volgende.",
+        "items": {
+          "crm": {
+            "title": "CRM",
+            "body": "Klanten, contactmomenten en opvolging"
+          },
+          "quotes": {
+            "title": "Offertes",
+            "body": "Van aanvraag tot getekende offerte"
+          },
+          "planning": {
+            "title": "Planning",
+            "body": "Mensen, materiaal en afspraken"
+          },
+          "hours": {
+            "title": "Urenregistratie",
+            "body": "Uren per klant, project of medewerker"
+          },
+          "invoicing": {
+            "title": "Facturatie",
+            "body": "Facturen op basis van uren of offertes"
+          },
+          "service": {
+            "title": "Klantenservice & chatbot",
+            "body": "Vragen beantwoorden, ook buiten kantoortijd"
+          },
+          "website": {
+            "title": "Website",
+            "body": "Hosten en bijhouden, zonder losse bouwer"
+          },
+          "mail": {
+            "title": "Mail & interne processen",
+            "body": "Terugkerende mails en taken automatisch"
+          }
+        },
+        "note": "Je boekhouding vervangen we niet: die koppelen we."
+      },
+      "compare": {
+        "eyebrow": "Vergelijk",
+        "heading": "Hoe AIntern zich verhoudt tot de alternatieven",
+        "columns": {
+          "saas": "Softwarepakket",
+          "agency": "Softwarebureau",
+          "nocode": "No-code tool",
+          "aintern": "AIntern"
+        },
+        "rows": {
+          "ownership": {
+            "label": "Code en data van jou",
+            "saas": "Nee",
+            "agency": "Ja",
+            "nocode": "Beperkt",
+            "aintern": "Ja"
+          },
+          "exit": {
+            "label": "Na opzeggen",
+            "saas": "Alles stopt",
+            "agency": "Software blijft",
+            "nocode": "Alles stopt",
+            "aintern": "Software blijft"
+          },
+          "speed": {
+            "label": "Snelheid",
+            "saas": "Direct",
+            "agency": "Weken tot maanden",
+            "nocode": "Dagen",
+            "aintern": "Dag na het gesprek"
+          },
+          "fit": {
+            "label": "Past op jouw proces",
+            "saas": "Beperkt",
+            "agency": "Volledig",
+            "nocode": "Redelijk",
+            "aintern": "Volledig"
+          },
+          "cost": {
+            "label": "Kosten",
+            "saas": "Per gebruiker, stijgend",
+            "agency": "Hoog per project",
+            "nocode": "Per gebruiker",
+            "aintern": "Vast + verbruik"
+          },
+          "europe": {
+            "label": "Europese hosting en AI",
+            "saas": "Wisselend",
+            "agency": "Afhankelijk",
+            "nocode": "Wisselend",
+            "aintern": "Optie"
+          }
+        }
+      },
+      "pricing": {
+        "eyebrow": "Prijs",
+        "heading": "Een vast bedrag, geen prijs per gebruiker",
+        "from": "vanaf",
+        "amount": "€99",
+        "perMonth": "per maand",
+        "points": {
+          "p1": "Geen prijs per gebruiker: je hele team werkt mee",
+          "p2": "AI-gebruik tegen de normale prijs, zichtbaar als tegoed",
+          "p3": "Hosting op jouw naam, meestal €5 tot €50 per maand",
+          "p4": "Optioneel: datamigratie, Europese inrichting en support"
+        },
+        "stackHeading": "Wat MKB-ers nu typisch kwijt zijn aan softwarepakketten",
+        "stack": {
+          "small": {
+            "label": "Klein bedrijf",
+            "value": "± €350 /mnd"
+          },
+          "medium": {
+            "label": "Middelgroot",
+            "value": "± €800 /mnd"
+          },
+          "large": {
+            "label": "Groter MKB",
+            "value": "± €1.540 /mnd"
+          }
+        },
+        "footnote": "In het gesprek rekenen we uit wat het voor jou betekent, met jouw eigen cijfers.",
+        "cta": "Bereken mijn besparing"
+      },
+      "partnersTeaser": {
+        "eyebrow": "Voor adviseurs",
+        "heading": "Procesadviseur, accountant of IT-dienstverlener?",
+        "body": "Laat bij elke klant een werkend systeem achter, onder je eigen naam. Je advies verdwijnt niet meer na oplevering.",
+        "cta": "Word partner"
+      },
+      "faq": {
+        "eyebrow": "Veelgestelde vragen",
+        "heading": "Goede vragen, eerlijke antwoorden",
+        "items": {
+          "q1": {
+            "q": "Wij zijn geen softwarebedrijf. Kunnen we dit wel?",
+            "a": "Ja. Je hoeft niet te programmeren. AIntern bouwt, test en onderhoudt je software. Jij vertelt in gewone taal wat je wilt en bepaalt wat er live gaat."
+          },
+          "q2": {
+            "q": "Wat als het misgaat?",
+            "a": "Je draait de nieuwe software eerst naast je huidige pakket. Pas als het beter werkt, zeg je het oude op. En elke wijziging kun je met één klik terugdraaien."
+          },
+          "q3": {
+            "q": "Is het veilig?",
+            "a": "We bouwen op een vaste, beproefde basis. Je software wordt elke dag automatisch gecontroleerd op kwetsbaarheden en je krijgt daar een rapport van. Een probleem blokkeert het live zetten."
+          },
+          "q4": {
+            "q": "Zit ik dan vast aan AIntern?",
+            "a": "Nee. Code, kennis, data en hosting staan op jouw naam. Stop je met AIntern, dan blijft je software gewoon draaien."
+          },
+          "q5": {
+            "q": "Waar staat mijn data?",
+            "a": "In je eigen database, bij je eigen hosting. Wil je dat alles, inclusief de AI, alleen in Europa draait? Dat kan."
+          },
+          "q6": {
+            "q": "Wat kost de AI?",
+            "a": "AI-gebruik reken je af tegen de normale prijs van de aanbieder. Je ziet het als tegoed in het platform, zonder verrassingen."
+          }
+        }
+      },
+      "cta": {
+        "heading": "Ontdek in één uur wat je kunt besparen",
+        "subtext": "Gratis en vrijblijvend. Je gaat weg met een business case op basis van je eigen cijfers, en de dag erna draait er al software.",
+        "button": "Plan je gratis gesprek",
+        "secondary": "Meer over het platform"
+      }
+    },
+    "platform": {
+      "meta": {
+        "title": "AIntern Platform — Eigen software bouwen zonder developers",
+        "description": "Op het AIntern Platform bouw en onderhoud je je eigen bedrijfssoftware in gewone taal. Proefomgeving, terugdraaien met één klik, dagelijkse veiligheidscontrole en alles op jouw naam."
+      },
+      "hero": {
+        "eyebrow": "AIntern Platform",
+        "headline": "Jouw software, in jouw taal",
+        "subtext": "Het platform waar je eigen software wordt gebouwd, onderhouden en bewaakt. Geen technische termen, gewoon offertes, planning en facturen. Jij beslist, AIntern doet het werk.",
+        "cta": "Plan je gratis gesprek"
+      },
+      "principles": {
+        "eyebrow": "Ontwerpprincipes",
+        "heading": "Gemaakt voor ondernemers, niet voor programmeurs",
+        "items": {
+          "language": {
+            "title": "De taal van jouw bedrijf",
+            "body": "Je ziet processen als offerte versturen of uren goedkeuren, geen code of technische termen."
+          },
+          "chat": {
+            "title": "Gewoon vragen",
+            "body": "Wil je iets anders? Typ het in de chat. Het platform stelt een aanpassing voor."
+          },
+          "preview": {
+            "title": "Eerst bekijken, dan live",
+            "body": "Elke aanpassing zie je eerst in een proefomgeving. Live zetten of terugdraaien kan met één klik."
+          },
+          "control": {
+            "title": "Jij houdt de regie",
+            "body": "Per taak bepaal je wat er zelfstandig mag gebeuren en wat eerst langs jou moet."
+          }
+        }
+      },
+      "screens": {
+        "eyebrow": "Wat je ziet",
+        "heading": "Alles op één plek",
+        "items": {
+          "today": {
+            "title": "Vandaag",
+            "body": "Wat er speelt en wat jouw aandacht nodig heeft"
+          },
+          "processes": {
+            "title": "Processen",
+            "body": "Je werkwijze in kaart, stap voor stap"
+          },
+          "ask": {
+            "title": "Vraag het",
+            "body": "Stel vragen of vraag een aanpassing aan"
+          },
+          "changes": {
+            "title": "Aanpassingen",
+            "body": "Bekijken, goedkeuren, live zetten of terugdraaien"
+          },
+          "knowledge": {
+            "title": "Kennis",
+            "body": "Je bedrijfskennis vastgelegd en doorzoekbaar"
+          },
+          "agents": {
+            "title": "Digitale collega's",
+            "body": "Wie wat doet, en wat ze zelf mogen"
+          },
+          "security": {
+            "title": "Veiligheid",
+            "body": "Een stoplicht: groen, oranje of rood"
+          },
+          "costs": {
+            "title": "Kosten",
+            "body": "Wat je uitgeeft én wat je bespaart"
+          },
+          "ownership": {
+            "title": "Eigendom",
+            "body": "Alles exporteren met één knop"
+          }
+        }
+      },
+      "agents": {
+        "eyebrow": "Digitale collega's",
+        "heading": "Jij bepaalt wat ze zelf mogen",
+        "body": "Achter de schermen bouwen en onderhouden AI agents je software. Per taak zet je een schuifje: zelf laten doen, eerst laten vragen, of nooit.",
+        "levels": {
+          "self": {
+            "label": "Mag zelf",
+            "example": "Kleine tekstwijzigingen en veiligheidsupdates"
+          },
+          "ask": {
+            "label": "Eerst vragen",
+            "example": "Nieuwe velden, schermen of stappen in een proces"
+          },
+          "never": {
+            "label": "Nooit",
+            "example": "Klantdata verwijderen of facturen versturen zonder jou"
+          }
+        }
+      },
+      "security": {
+        "eyebrow": "Veiligheid",
+        "heading": "Elke dag gecontroleerd, standaard",
+        "body": "Je software wordt dagelijks automatisch getest: op kwetsbare onderdelen, op fouten in de code en met regelmatige inbraaktests. Is er iets mis, dan gaat het niet live tot het is opgelost.",
+        "points": {
+          "p1": "Dagelijkse controle van gebruikte onderdelen",
+          "p2": "Automatische code-analyse bij elke aanpassing",
+          "p3": "Periodieke inbraaktests",
+          "p4": "Een probleem blokkeert het live zetten"
+        }
+      },
+      "ownership": {
+        "eyebrow": "Eigendom",
+        "heading": "Alles van jou, ook als je vertrekt",
+        "body": "Het platform is een beheerlaag, niet de plek waar je software draait. Je software draait bij jou: in je eigen hosting, met je eigen database. Code, kennis en data exporteer je met één knop.",
+        "points": {
+          "p1": "Code in je eigen omgeving",
+          "p2": "Data in je eigen database",
+          "p3": "Hosting op jouw naam",
+          "p4": "Blijft werken na opzeggen"
+        }
+      },
+      "europe": {
+        "eyebrow": "Soeverein",
+        "heading": "Desgewenst volledig Europees",
+        "body": "Kies je voor de Europese optie, dan draaien hosting én AI uitsluitend bij Europese aanbieders. Handig voor de AVG, klanteisen of gewoon een gerust gevoel."
+      },
+      "roles": {
+        "eyebrow": "Rollen",
+        "heading": "Iedereen ziet wat bij zijn rol past",
+        "items": {
+          "owner": {
+            "title": "Eigenaar",
+            "body": "Overzicht, kosten, besparing en de eindbeslissing"
+          },
+          "employee": {
+            "title": "Medewerker",
+            "body": "Werkt met de software en kan aanpassingen voorstellen"
+          },
+          "partner": {
+            "title": "Partner",
+            "body": "Je adviseur, die meekijkt en processen verbetert"
+          },
+          "tech": {
+            "title": "Technisch",
+            "body": "Voor je eigen developer: volledige toegang tot de code"
+          }
+        }
+      },
+      "cta": {
+        "heading": "Zie het platform in actie met jouw eigen processen",
+        "subtext": "In het gratis gesprek bouwen we live aan jouw eerste versie.",
+        "button": "Plan je gratis gesprek"
+      }
+    },
+    "partners": {
+      "meta": {
+        "title": "Partner worden van AIntern — voor procesadviseurs en IT-dienstverleners",
+        "description": "Laat bij elke klant een werkend, AI-ready systeem achter, onder je eigen naam. AIntern levert platform, gespreksmethode, standaardtechniek, demo-omgeving en training."
+      },
+      "hero": {
+        "eyebrow": "Partnerprogramma",
+        "headline": "Laat bij elke klant een werkend systeem achter",
+        "subtext": "Jij kent de processen van je klanten. Met AIntern lever je er ook direct werkende software bij, onder je eigen naam. Je advies verdwijnt niet meer na oplevering.",
+        "cta": "Plan een kennismaking",
+        "ctaSub": "30 minuten · online · vrijblijvend"
+      },
+      "who": {
+        "eyebrow": "Voor wie",
+        "heading": "Voor adviseurs die verder willen dan een rapport",
+        "items": {
+          "process": {
+            "title": "Procesadviseurs",
+            "body": "Je procesverbetering direct vertaald naar software die het proces ondersteunt."
+          },
+          "lean": {
+            "title": "Lean-consultants",
+            "body": "Verspilling eruit, en de nieuwe werkwijze vastgelegd in een systeem."
+          },
+          "accountants": {
+            "title": "Administratiekantoren",
+            "body": "Help klanten van losse pakketten af, met een koppeling naar de boekhouding."
+          },
+          "it": {
+            "title": "IT-dienstverleners",
+            "body": "Bied maatwerk zonder een eigen ontwikkelteam op te bouwen."
+          }
+        }
+      },
+      "get": {
+        "eyebrow": "Wat je krijgt",
+        "heading": "Alles om direct te starten",
+        "items": {
+          "platform": {
+            "title": "Het AIntern Platform",
+            "body": "Bouw, beheer en bewaak de software van je klanten op één plek."
+          },
+          "method": {
+            "title": "De gespreksmethode",
+            "body": "In één uur van proces naar business case en eerste versie."
+          },
+          "stack": {
+            "title": "Een vaste, veilige basis",
+            "body": "Beproefde standaardtechniek met dagelijkse veiligheidscontrole."
+          },
+          "demo": {
+            "title": "Demo-omgeving",
+            "body": "Laat prospects direct zien wat er mogelijk is."
+          },
+          "training": {
+            "title": "Training",
+            "body": "Je team leert de methode en het platform in korte sessies."
+          }
+        }
+      },
+      "how": {
+        "eyebrow": "Hoe het werkt",
+        "heading": "Jouw klant, jouw naam",
+        "steps": {
+          "s1": {
+            "title": "Jij voert het gesprek",
+            "body": "Met de gespreksmethode breng je de processen van je klant in kaart en maak je de business case."
+          },
+          "s2": {
+            "title": "De dag erna draait het",
+            "body": "Je klant krijgt een werkende eerste versie, gebouwd op het platform."
+          },
+          "s3": {
+            "title": "Jij blijft betrokken",
+            "body": "Als partner kijk je mee in het platform en verbeter je processen doorlopend."
+          },
+          "s4": {
+            "title": "Je klant bezit alles",
+            "body": "Code, data en hosting staan op naam van de klant. Dat bouwt vertrouwen."
+          }
+        }
+      },
+      "earn": {
+        "eyebrow": "Verdienmodel",
+        "heading": "Terugkerende inkomsten bovenop je eigen tarief",
+        "body": "Je ontvangt een deel van het abonnement van elke klant die je aanbrengt, zolang die klant blijft. Je eigen advies- en implementatietarief bepaal je zelf. Je houdt de klantrelatie, onder je eigen naam.",
+        "points": {
+          "p1": "Een deel van elk abonnement, maandelijks",
+          "p2": "Je eigen tarief voor advies en begeleiding",
+          "p3": "De klantrelatie blijft van jou"
+        }
+      },
+      "book": {
+        "heading": "Benieuwd of het bij je praktijk past?",
+        "subtext": "Plan direct een kennismaking van 30 minuten. We laten het platform zien en bespreken hoe het partnerschap er voor jou uitziet.",
+        "button": "Plan een afspraak"
+      }
+    },
+    "nav": {
+      "platform": "Platform",
+      "how": "Hoe het werkt",
+      "pricing": "Prijs",
+      "partners": "Partners",
+      "cta": "Gratis gesprek"
+    },
+    "footer": {
+      "tagline": "Stop met huren. Bouw wat van jou is. Eigen software voor het MKB, gebouwd en onderhouden door AIntern.",
+      "product": "Aanbod",
+      "resources": "Kennis & tools",
+      "workflowScan": "Workflow-scan",
+      "aiAgent": "AI agent voor MKB",
+      "newsflow": "NewsFlow",
+      "company": "Bedrijf",
+      "about": "Over AIntern",
+      "privacy": "Privacy"
+    },
+    "seo": {
+      "title": "AIntern — Stop met huren. Bouw eigen software voor je MKB",
+      "description": "Vervang dure softwarepakketten door eigen software die je zelf bezit. Gebouwd en onderhouden door AIntern, de dag na het gesprek al werkend. Vanaf €99 per maand, geen prijs per gebruiker.",
+      "ogImageAlt": "AIntern — Stop met huren. Bouw wat van jou is."
+    },
+    "about": {
+      "meta": {
+        "title": "Over AIntern — eigen software voor het MKB",
+        "description": "Waarom AIntern bestaat, waar we voor staan en wie erachter zit. AIntern helpt MKB-bedrijven te stoppen met huren en eigen software te bezitten."
+      },
+      "hero": {
+        "eyebrow": "Over AIntern",
+        "headline": "Software hoort van jou te zijn",
+        "subtext": "AIntern helpt MKB-bedrijven te stoppen met huren en te bouwen wat van hen is: eigen software in plaats van een stapel gehuurde pakketten."
+      },
+      "why": {
+        "eyebrow": "Waarom",
+        "heading": "Waarom AIntern bestaat",
+        "body1": "MKB-bedrijven betalen elk jaar meer voor softwarepakketten die nooit helemaal passen. Ze betalen per gebruiker, passen hun werkwijze aan het pakket aan en zijn alles kwijt als ze opzeggen.",
+        "body2": "Met AI is eigen software bouwen en onderhouden nu snel en betaalbaar genoeg voor het MKB. AIntern maakt dat bereikbaar voor bedrijven zonder eigen developers."
+      },
+      "values": {
+        "eyebrow": "Waar we voor staan",
+        "heading": "Vijf uitgangspunten",
+        "items": {
+          "own": {
+            "title": "Eigendom",
+            "body": "Code, kennis, data en hosting staan op naam van de klant. Altijd."
+          },
+          "prove": {
+            "title": "Eerst bewijzen",
+            "body": "Geen maandenlang project en geen PowerPoint: de dag na het gesprek draait er werkende software."
+          },
+          "language": {
+            "title": "Gewone taal",
+            "body": "Ondernemers praten over offertes, planning en facturen, niet over code."
+          },
+          "safe": {
+            "title": "Veilig en Europees",
+            "body": "Dagelijkse veiligheidscontrole. Desgewenst draait alles, inclusief de AI, in Europa."
+          },
+          "fair": {
+            "title": "Eerlijk geprijsd",
+            "body": "Een vast bedrag, geen prijs per gebruiker en AI-gebruik tegen de normale prijs."
+          }
+        }
+      },
+      "team": {
+        "eyebrow": "Wie erachter zit",
+        "heading": "Gebouwd in Nederland",
+        "body1": "AIntern is opgericht door Bill Middelbosch en gevestigd in Nederland. We werken samen met procesadviseurs, administratiekantoren en IT-dienstverleners die hun klanten werkende software willen leveren.",
+        "body2": "We gebruiken onze eigen aanpak ook intern: een groot deel van het werk wordt gedaan door AI-agents, onder regie van mensen.",
+        "contact": "Vragen? Mail ons op"
+      },
+      "cta": {
+        "heading": "Benieuwd wat je kunt besparen?",
+        "subtext": "In een gratis gesprek van een uur rekenen we het uit met je eigen cijfers.",
+        "button": "Plan je gratis gesprek",
+        "secondary": "Word partner"
+      }
+    },
+    "privacy": {
+      "meta": {
+        "title": "Privacyverklaring — AIntern",
+        "description": "Welke gegevens aintern.nl verwerkt, waarom, met wie we ze delen en welke rechten je hebt onder de AVG."
+      },
+      "eyebrow": "Privacy",
+      "heading": "Privacyverklaring",
+      "intro": "Welke gegevens aintern.nl verwerkt, waarom, en welke rechten je hebt.",
+      "updated": "Laatst bijgewerkt: 18 oktober 2026",
+      "contact": "Vragen of een verzoek? Mail naar",
+      "sections": {
+        "who": {
+          "title": "Wie wij zijn",
+          "body": "AIntern (aintern.nl) is verantwoordelijk voor de verwerking van persoonsgegevens via deze website."
+        },
+        "analytics": {
+          "title": "Websitebezoek (Google Analytics)",
+          "body": "We gebruiken Google Analytics (meet-ID G-QQ7ZCNPB8B) om te zien hoe de website wordt gebruikt, zoals bezochte pagina's, apparaat, browser en globale locatie. Google Analytics wordt op elke pagina geladen en plaatst daarbij cookies. Gebeurtenissen zoals klikken op knoppen meten we alleen als je in de cookiebanner toestemming geeft. Je keuze bewaren we in je eigen browser."
+        },
+        "intake": {
+          "title": "Besparingscalculator",
+          "body": "Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan gaat de lijst met pakketten en bedragen als notitie mee naar Calendly."
+        },
+        "calendly": {
+          "title": "Afspraak plannen (Calendly)",
+          "body": "Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, inclusief de pakketlijst uit de besparingscalculator als je die meestuurt, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly."
+        },
+        "email": {
+          "title": "E-mail",
+          "body": "Mail je ons, dan gebruiken we je gegevens alleen om je vraag te beantwoorden."
+        },
+        "purpose": {
+          "title": "Waarom we dit doen",
+          "body": "We verwerken gegevens om je aanvraag voor een gesprek te behandelen en voor te bereiden (op jouw verzoek) en om de website te verbeteren (gerechtvaardigd belang, en voor gebeurtenismetingen jouw toestemming). We verkopen je gegevens niet en gebruiken ze niet voor advertenties."
+        },
+        "sharing": {
+          "title": "Met wie we gegevens delen",
+          "body": "Amazon Web Services (hosting van de website), Google (websitestatistieken) en Calendly (afspraken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
+        },
+        "retention": {
+          "title": "Hoe lang we gegevens bewaren",
+          "body": "We bewaren gegevens niet langer dan nodig voor het doel waarvoor ze zijn verzameld. Wil je dat we je gegevens eerder verwijderen, laat het ons weten."
+        },
+        "rights": {
+          "title": "Je rechten",
+          "body": "Op grond van de AVG heb je het recht om je gegevens in te zien, te laten corrigeren of verwijderen, de verwerking te beperken, bezwaar te maken en je gegevens over te dragen. Gegeven toestemming kun je altijd intrekken door je browseropslag voor aintern.nl te wissen. Ben je het niet eens met hoe we met je gegevens omgaan, dan kun je een klacht indienen bij de Autoriteit Persoonsgegevens."
+        },
+        "clients": {
+          "title": "Software van klanten",
+          "body": "Deze verklaring gaat over de website aintern.nl. Software die AIntern voor klanten bouwt, draait in de eigen hosting en database van de klant. De klant is daarvoor verantwoordelijk; afspraken daarover staan in de overeenkomst met de klant."
+        },
+        "changes": {
+          "title": "Wijzigingen",
+          "body": "We kunnen deze verklaring aanpassen. De datum bovenaan laat zien wanneer dat voor het laatst is gebeurd."
+        }
+      }
+    },
+    "savings": {
+      "title": "Bereken je besparing",
+      "sub": "Vink aan welke pakketten je nu huurt en vul in wat je er per maand voor betaalt.",
+      "toolsLegend": "Welke pakketten gebruik je nu?",
+      "amountLabel": "Maandbedrag voor {tool}",
+      "amountPlaceholder": "Bedrag",
+      "perMonthShort": "/mnd",
+      "otherLegend": "Andere pakketten",
+      "otherNameLabel": "Naam van het pakket",
+      "otherNamePlaceholder": "Bijv. Exact, Teamleader, Mailchimp",
+      "otherAmountLabel": "Maandbedrag voor dit pakket",
+      "otherFallback": "Ander pakket",
+      "addOther": "Ander pakket toevoegen",
+      "removeOther": "Pakket verwijderen",
+      "empty": "Vink een pakket aan en vul het maandbedrag in. Je ziet dan direct wat je kunt besparen.",
+      "currentLabel": "Je betaalt nu",
+      "ainternLabel": "AIntern",
+      "from": "vanaf",
+      "savingLabel": "Indicatieve besparing",
+      "perYear": "Dat is {amount} per jaar.",
+      "lowTotal": "Je betaalt nu niet meer dan onze vanaf-prijs. De winst zit dan vooral in software die precies past en van jou is. Dat bespreken we graag.",
+      "disclaimer": "Indicatie. Daarbovenop komen hosting op jouw naam (meestal €5–€50 per maand) en AI-gebruik tegen normale prijs. De berekening gebeurt in je browser; we slaan niets op.",
+      "planWithNumbers": "Plan gesprek met deze cijfers",
+      "planDirect": "Direct een gesprek plannen",
+      "note": "Pakketten: {tools}. Totaal {total} per maand. Indicatieve besparing {saving} per maand."
     }
   }
 }

@@ -100,6 +100,30 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/platform',
+    name: 'platform',
+    component: () => import('@/views/PlatformView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/partners',
+    name: 'partners',
+    component: () => import('@/views/PartnersView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: () => import('@/views/AboutView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/privacy',
+    name: 'privacy',
+    component: () => import('@/views/PrivacyView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/ai-agent-mkb',
     name: 'ai-agent-mkb',
     component: () => import('@/views/AiAgentMkbView.vue'),

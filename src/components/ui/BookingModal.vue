@@ -4,7 +4,7 @@ import { useBookingModal } from '@/composables/useBookingModal'
 import CalendlyWidget from '@/components/ui/CalendlyWidget.vue'
 
 const { t } = useI18n()
-const { isOpen, closeBookingModal } = useBookingModal()
+const { isOpen, note, closeBookingModal } = useBookingModal()
 
 const calendlyUrl = 'https://calendly.com/w-middelbosch/30min'
 
@@ -40,7 +40,7 @@ function handleBackdropClick(e: MouseEvent) {
           </div>
 
           <!-- Calendly widget -->
-          <CalendlyWidget :url="calendlyUrl" :height="700" />
+          <CalendlyWidget :url="calendlyUrl" :height="700" :note="note" />
         </div>
       </div>
     </Transition>
