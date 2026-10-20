@@ -2,7 +2,7 @@
   import { computed, nextTick, reactive, ref, watch } from 'vue'
   import { useI18n } from 'vue-i18n'
   import { useSavingsModal } from '@/composables/useSavingsModal'
-  import { useBookingModal } from '@/composables/useBookingModal'
+  import { useBookingPage } from '@/composables/useBookingPage'
   import { useAnalytics } from '@/composables/useAnalytics'
   import {
     AINTERN_FROM_PER_MONTH,
@@ -18,7 +18,7 @@
 
   const { t, locale } = useI18n()
   const { isOpen, closeSavingsModal } = useSavingsModal()
-  const { openBookingModal, openBookingModalWithNote } = useBookingModal()
+  const { openBooking, openBookingWithNote } = useBookingPage()
   const { trackEvent } = useAnalytics()
 
   const toolKeys = [
@@ -120,13 +120,13 @@
     })
     const note = buildNote()
     closeSavingsModal()
-    openBookingModalWithNote(note)
+    openBookingWithNote(note)
   }
 
   function planDirect() {
     trackEvent('cta_click', { location: 'savings_skip' })
     closeSavingsModal()
-    openBookingModal()
+    openBooking()
   }
 
   function handleBackdropClick(e: MouseEvent) {

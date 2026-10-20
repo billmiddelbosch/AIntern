@@ -106,9 +106,6 @@
     }
   },
   "bookingModal": {
-    "ariaLabel": "Schedule a free introductory call",
-    "title": "Schedule a free introductory call",
-    "sub": "Pick a time that suits you — no commitment, no obligations.",
     "close": "Close"
   },
   "contactModal": {
@@ -1339,7 +1336,7 @@
       "eyebrow": "Privacy",
       "heading": "Privacy statement",
       "intro": "Which data aintern.nl processes, why, and what rights you have.",
-      "updated": "Last updated: 18 October 2026",
+      "updated": "Last updated: 20 October 2026",
       "contact": "Questions or a request? Email",
       "sections": {
         "who": {
@@ -1352,11 +1349,11 @@
         },
         "intake": {
           "title": "Savings calculator",
-          "body": "In the savings calculator you enter which software you rent and what it costs. The calculation runs in your own browser; we do not store this data. If you then book a call with these numbers, the list of software and amounts is passed to Calendly as a note."
+          "body": "In the savings calculator you enter which packages you rent and what they cost. The calculation runs in your own browser; we do not store this data. If you then choose to book a call with these figures, the list of packages and amounts is filled in as a note in our booking form. You can edit or remove that note before you confirm the appointment."
         },
-        "calendly": {
-          "title": "Booking a meeting (Calendly)",
-          "body": "Meetings are booked through Calendly. Calendly processes the name, email address and any comments you enter there, including the software list from the savings calculator if you send it along, and sends us a confirmation. Please also read the Calendly privacy policy."
+        "booking": {
+          "title": "Booking a call",
+          "body": "When you book a call through our booking page, we store your company name, name, email address and, if you provide them, your phone number, website and note in our own database at Amazon Web Services (EU region). We use this data to schedule and prepare the call. We send the confirmation with a calendar invite to you and to us through Amazon Simple Email Service."
         },
         "email": {
           "title": "Email",
@@ -1368,7 +1365,7 @@
         },
         "sharing": {
           "title": "Who we share data with",
-          "body": "Amazon Web Services (website hosting), Google (website statistics) and Calendly (meetings). These parties process data on our behalf or as independent controllers. Some of them may process data outside the European Economic Area; in that case this is done under the safeguards required by the GDPR."
+          "body": "Amazon Web Services (hosting the website, our database and sending email) and Google (website statistics). These parties process data on our behalf or as independent controllers. Some of them may process data outside the European Economic Area; in that case this happens under the safeguards required by the GDPR."
         },
         "retention": {
           "title": "How long we keep data",
@@ -1413,6 +1410,56 @@
       "planWithNumbers": "Book a call with these numbers",
       "planDirect": "Book a call straight away",
       "note": "Software: {tools}. Total {total} per month. Indicative saving {saving} per month."
+    }
+  },
+  "booking": {
+    "meta": {
+      "title": "Book a free introductory call — AIntern",
+      "description": "Pick a time for a free 30-minute introductory call with AIntern. No obligations."
+    },
+    "eyebrow": "Free introduction",
+    "heading": "Book a free introductory call",
+    "sub": "Pick a time that suits you for a {minutes}-minute video call — no obligations.",
+    "step1": {
+      "title": "1. Pick a time",
+      "timezone": "Times shown in Dutch time (Europe/Amsterdam).",
+      "loading": "Loading available times…",
+      "error": "The available times could not be loaded.",
+      "retry": "Try again",
+      "empty": "There are no times available right now. Email us at info{'@'}aintern.nl.",
+      "taken": "Someone just booked this time. Please pick another one.",
+      "dayLabel": "Pick a day",
+      "timeLabel": "Pick a time"
+    },
+    "step2": {
+      "title": "2. Your details",
+      "noSlot": "Pick a day and time first."
+    },
+    "form": {
+      "companyName": "Company name",
+      "contactName": "Your name",
+      "email": "Email address",
+      "phone": "Phone number",
+      "website": "Website",
+      "websitePlaceholder": "yourcompany.com",
+      "note": "What would you like to discuss?",
+      "notePlaceholder": "For example: which work takes your team the most time?",
+      "consent": "I agree that AIntern uses my details to schedule this call, as described in the",
+      "privacyLink": "privacy statement",
+      "fixErrors": "Please fill in the required fields correctly.",
+      "invalid": "Please check your details and try again.",
+      "too_many": "You have already booked several appointments today. Email us at info{'@'}aintern.nl if you need another time.",
+      "error": "Something went wrong. Please try again or email us at info{'@'}aintern.nl.",
+      "submit": "Confirm appointment",
+      "submitting": "Scheduling…"
+    },
+    "confirmed": {
+      "title": "Your call is scheduled",
+      "emailSent": "We sent a confirmation with a calendar invite to {email}.",
+      "emailFailed": "Your appointment is saved. The confirmation email could not be sent; we will contact you.",
+      "video": "Video link:",
+      "videoLater": "You will receive the video link by email before the call.",
+      "backHome": "Back to the homepage"
     }
   }
 }

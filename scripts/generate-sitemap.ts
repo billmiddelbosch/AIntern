@@ -6,7 +6,7 @@ const HOSTNAME = 'https://aintern.nl'
 const S3_BASE = 'https://aintern-kennisbank.s3.eu-west-2.amazonaws.com'
 const NEWSFLOW_S3_BASE = 'https://aintern-newsflow.s3.eu-west-2.amazonaws.com'
 
-const STATIC_ROUTES = ['/', '/platform', '/partners', '/about', '/privacy', '/kennisbank', '/ai-agent-mkb', '/wat-kost-handmatig-werk', '/workflow-scan', '/newsflow']
+const STATIC_ROUTES = ['/', '/platform', '/partners', '/about', '/privacy', '/afspraak', '/kennisbank', '/ai-agent-mkb', '/wat-kost-handmatig-werk', '/workflow-scan', '/newsflow']
 
 export async function getSlugsFromS3(): Promise<string[]> {
   const response = await fetch(`${S3_BASE}/index.json`)

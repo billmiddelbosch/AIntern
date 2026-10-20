@@ -1,7 +1,7 @@
 # AIntern — Volledige LLM-gids
 
 > Stop met huren. Bouw wat van jou is. Eigen software voor het MKB, vanaf €99 per maand.
-> Laatste update: 2026-10-18
+> Laatste update: 2026-10-20
 
 ---
 
@@ -300,7 +300,7 @@ Zie ook: [Homepage](https://aintern.nl/index.md) · [Privacy](https://aintern.nl
 > Welke gegevens aintern.nl verwerkt, waarom, en welke rechten je hebt.
 
 Pagina: https://aintern.nl/privacy
-Laatst bijgewerkt: 18 oktober 2026
+Laatst bijgewerkt: 20 oktober 2026
 
 ### Wie wij zijn
 
@@ -314,11 +314,11 @@ We gebruiken Google Analytics (meet-ID G-QQ7ZCNPB8B) om te zien hoe de website w
 
 #### Besparingscalculator
 
-Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan gaat de lijst met pakketten en bedragen als notitie mee naar Calendly.
+Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan wordt de lijst met pakketten en bedragen als opmerking ingevuld in ons afsprakenformulier. Je kunt die opmerking aanpassen of wissen voordat je de afspraak bevestigt.
 
-#### Afspraak plannen (Calendly)
+#### Afspraak plannen
 
-Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, inclusief de pakketlijst uit de besparingscalculator als je die meestuurt, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly.
+Plan je een gesprek via onze afsprakenpagina (https://aintern.nl/afspraak), dan slaan we je bedrijfsnaam, naam, e-mailadres en, als je die invult, je telefoonnummer, website en opmerking op in onze eigen database bij Amazon Web Services (regio EU). We gebruiken deze gegevens om het gesprek te plannen en voor te bereiden. De bevestiging met agenda-uitnodiging sturen we via Amazon Simple Email Service naar jou en naar ons.
 
 #### E-mail
 
@@ -333,9 +333,8 @@ We verkopen je gegevens niet en gebruiken ze niet voor advertenties.
 
 ### Met wie we gegevens delen
 
-- Amazon Web Services: hosting van de website.
+- Amazon Web Services: hosting van de website, onze database en het versturen van e-mail.
 - Google: websitestatistieken via Google Analytics.
-- Calendly: plannen van afspraken.
 
 Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft.
 

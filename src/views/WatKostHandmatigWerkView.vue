@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { useHead as useUnhead } from '@unhead/vue'
 import { useRoute } from 'vue-router'
 import AppShell from '@/components/shell/AppShell.vue'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t, locale } = useI18n()
@@ -29,7 +29,7 @@ useUnhead({
   ],
   link: [{ rel: 'canonical', href: computed(() => `${SITE_URL}${route.path}`) }],
 })
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 const { trackEvent } = useAnalytics()
 
 // ---------------------------------------------------------------------------
@@ -82,7 +82,7 @@ function formatCurrency(value: number): string {
 
 function handleCta() {
   trackEvent('cta_click', { location: 'gratis-tool' })
-  openBookingModal()
+  openBooking()
 }
 
 // ---------------------------------------------------------------------------
