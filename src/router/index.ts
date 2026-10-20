@@ -124,6 +124,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'public' },
   },
   {
+    path: '/afspraak',
+    name: 'afspraak',
+    component: () => import('@/views/AfspraakView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
     path: '/ai-agent-mkb',
     name: 'ai-agent-mkb',
     component: () => import('@/views/AiAgentMkbView.vue'),

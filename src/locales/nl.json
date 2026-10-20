@@ -106,9 +106,6 @@
     }
   },
   "bookingModal": {
-    "ariaLabel": "Gratis kennismakingsgesprek inplannen",
-    "title": "Plan een gratis kennismakingsgesprek",
-    "sub": "Kies een moment dat jou uitkomt — geen verplichtingen.",
     "close": "Sluiten"
   },
   "contactModal": {
@@ -1339,7 +1336,7 @@
       "eyebrow": "Privacy",
       "heading": "Privacyverklaring",
       "intro": "Welke gegevens aintern.nl verwerkt, waarom, en welke rechten je hebt.",
-      "updated": "Laatst bijgewerkt: 18 oktober 2026",
+      "updated": "Laatst bijgewerkt: 20 oktober 2026",
       "contact": "Vragen of een verzoek? Mail naar",
       "sections": {
         "who": {
@@ -1352,11 +1349,11 @@
         },
         "intake": {
           "title": "Besparingscalculator",
-          "body": "Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan gaat de lijst met pakketten en bedragen als notitie mee naar Calendly."
+          "body": "Met de besparingscalculator vul je in welke pakketten je huurt en wat ze kosten. De berekening gebeurt in je eigen browser; we slaan deze gegevens niet op. Kies je daarna voor een gesprek met deze cijfers, dan wordt de lijst met pakketten en bedragen als opmerking ingevuld in ons afsprakenformulier. Je kunt die opmerking aanpassen of wissen voordat je de afspraak bevestigt."
         },
-        "calendly": {
-          "title": "Afspraak plannen (Calendly)",
-          "body": "Afspraken plan je via Calendly. Calendly verwerkt de naam, het e-mailadres en eventuele opmerkingen die je daar invult, inclusief de pakketlijst uit de besparingscalculator als je die meestuurt, en stuurt ons een bevestiging. Lees ook de privacyverklaring van Calendly."
+        "booking": {
+          "title": "Afspraak plannen",
+          "body": "Plan je een gesprek via onze afsprakenpagina, dan slaan we je bedrijfsnaam, naam, e-mailadres en, als je die invult, je telefoonnummer, website en opmerking op in onze eigen database bij Amazon Web Services (regio EU). We gebruiken deze gegevens om het gesprek te plannen en voor te bereiden. De bevestiging met agenda-uitnodiging sturen we via Amazon Simple Email Service naar jou en naar ons."
         },
         "email": {
           "title": "E-mail",
@@ -1368,7 +1365,7 @@
         },
         "sharing": {
           "title": "Met wie we gegevens delen",
-          "body": "Amazon Web Services (hosting van de website), Google (websitestatistieken) en Calendly (afspraken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
+          "body": "Amazon Web Services (hosting van de website, onze database en het versturen van e-mail) en Google (websitestatistieken). Deze partijen verwerken gegevens in onze opdracht of als zelfstandig verantwoordelijke. Een deel van hen kan gegevens buiten de Europese Economische Ruimte verwerken; dat gebeurt dan op basis van de waarborgen die de AVG voorschrijft."
         },
         "retention": {
           "title": "Hoe lang we gegevens bewaren",
@@ -1413,6 +1410,56 @@
       "planWithNumbers": "Plan gesprek met deze cijfers",
       "planDirect": "Direct een gesprek plannen",
       "note": "Pakketten: {tools}. Totaal {total} per maand. Indicatieve besparing {saving} per maand."
+    }
+  },
+  "booking": {
+    "meta": {
+      "title": "Plan een gratis kennismakingsgesprek — AIntern",
+      "description": "Kies een moment voor een gratis kennismakingsgesprek van 30 minuten met AIntern. Geen verplichtingen."
+    },
+    "eyebrow": "Gratis kennismaking",
+    "heading": "Plan een gratis kennismakingsgesprek",
+    "sub": "Kies een moment dat jou uitkomt voor een videogesprek van {minutes} minuten — geen verplichtingen.",
+    "step1": {
+      "title": "1. Kies een moment",
+      "timezone": "Tijden in Nederlandse tijd (Europe/Amsterdam).",
+      "loading": "Beschikbare tijden laden…",
+      "error": "De beschikbare tijden konden niet worden geladen.",
+      "retry": "Opnieuw proberen",
+      "empty": "Er zijn op dit moment geen tijden beschikbaar. Mail ons op info{'@'}aintern.nl.",
+      "taken": "Dit moment is net door iemand anders geboekt. Kies een ander tijdstip.",
+      "dayLabel": "Kies een dag",
+      "timeLabel": "Kies een tijd"
+    },
+    "step2": {
+      "title": "2. Jouw gegevens",
+      "noSlot": "Kies eerst een dag en tijd."
+    },
+    "form": {
+      "companyName": "Bedrijfsnaam",
+      "contactName": "Je naam",
+      "email": "E-mailadres",
+      "phone": "Telefoonnummer",
+      "website": "Website",
+      "websitePlaceholder": "jouwbedrijf.nl",
+      "note": "Waar wil je het over hebben?",
+      "notePlaceholder": "Bijvoorbeeld: welk werk kost jullie nu de meeste tijd?",
+      "consent": "Ik ga akkoord dat AIntern mijn gegevens gebruikt om dit gesprek te plannen, zoals beschreven in de",
+      "privacyLink": "privacyverklaring",
+      "fixErrors": "Vul de verplichte velden correct in.",
+      "invalid": "Controleer je gegevens en probeer het opnieuw.",
+      "too_many": "Je hebt vandaag al meerdere afspraken gepland. Mail ons op info{'@'}aintern.nl als je nog een moment wilt.",
+      "error": "Er ging iets mis. Probeer het opnieuw of mail ons op info{'@'}aintern.nl.",
+      "submit": "Afspraak bevestigen",
+      "submitting": "Bezig met plannen…"
+    },
+    "confirmed": {
+      "title": "Je afspraak staat gepland",
+      "emailSent": "We hebben een bevestiging met agenda-uitnodiging gestuurd naar {email}.",
+      "emailFailed": "Je afspraak is vastgelegd. De bevestigingsmail kon niet worden verstuurd; we nemen contact met je op.",
+      "video": "Videolink:",
+      "videoLater": "De videolink ontvang je vóór het gesprek per mail.",
+      "backHome": "Terug naar de homepage"
     }
   }
 }

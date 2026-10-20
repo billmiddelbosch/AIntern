@@ -640,6 +640,80 @@ export class AdminStack extends cdk.Stack {
     workflowScanFn.addAlias('dev')
     workflowScanFn.addAlias('prod')
 
+    // ── Booking Lambda (public) — replaces Calendly ───────────────────────────
+    // GET /booking/slots + POST /booking. Locks the slot in aintern-admin
+    // (pk BOOKING_SLOTS), upserts the lead (pk LEAD#…) and mails lead + Bill (.ics).
+    const bookingFn = new lambda.Function(this, 'BookingFunction', {
+      functionName: 'aintern-booking',
+      handler: 'booking.handler',
+      description: 'Public booking page API — slots, booking, lead upsert, confirmation mails',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+    })
+
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/booking/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/booking/*`,
+        ],
+      }),
+    )
+
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Public endpoint: only the items it needs (slots, rate counters, leads) — never
+    // admin users, settings or other partitions of aintern-admin.
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:UpdateItem'],
+        resources: [adminTable.tableArn],
+        conditions: {
+          'ForAllValues:StringLike': {
+            'dynamodb:LeadingKeys': ['BOOKING_SLOTS', 'BOOKING_RATE', 'LEAD#*'],
+          },
+        },
+      }),
+    )
+    // Listing and releasing slots — never deleting or listing leads
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:DeleteItem', 'dynamodb:Query'],
+        resources: [adminTable.tableArn],
+        conditions: {
+          'ForAllValues:StringEquals': { 'dynamodb:LeadingKeys': ['BOOKING_SLOTS'] },
+        },
+      }),
+    )
+
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ses:SendRawEmail'],
+        resources: [
+          `arn:aws:ses:${this.region}:${this.account}:identity/*`,
+          `arn:aws:ses:${this.region}:${this.account}:configuration-set/*`,
+        ],
+        conditions: {
+          StringEquals: { 'ses:FromAddress': 'sanne@aintern.nl' },
+        },
+      }),
+    )
+
+    bookingFn.addAlias('dev')
+    bookingFn.addAlias('prod')
+
     // ── MCP server Lambda (public) ────────────────────────────────────────────
     // Stateless Model Context Protocol server over Streamable HTTP (JSON mode).
     // Serves Kennisbank + NewsFlow Q&A to AI assistants. Reads only public S3
@@ -1243,6 +1317,11 @@ export class AdminStack extends cdk.Stack {
     const workflowScanResource = api.root.addResource('workflow-scan')
     workflowScanResource.addMethod('POST', aliasIntegration(workflowScanFn))
 
+    // POST /booking + GET /booking/slots (public — no JWT required)
+    const bookingResource = api.root.addResource('booking')
+    bookingResource.addMethod('POST', aliasIntegration(bookingFn))
+    bookingResource.addResource('slots').addMethod('GET', aliasIntegration(bookingFn))
+
     // /mcp (public — no JWT required). MCP clients are non-browser JSON-RPC
     // callers, so this resource overrides the site-origin CORS default with '*'
     // (public read-only content, no cookies/auth — CEO-gate reviewed).
@@ -1304,6 +1383,17 @@ export class AdminStack extends cdk.Stack {
       throttlingBurstLimit: 20,
     }
 
+    // /booking is public with no auth — booking writes + sends 2 mails, so keep
+    // POST tight; slot lookups are cheap reads.
+    const bookingPostThrottle: apigateway.MethodDeploymentOptions = {
+      throttlingRateLimit: 2,
+      throttlingBurstLimit: 5,
+    }
+    const bookingSlotsThrottle: apigateway.MethodDeploymentOptions = {
+      throttlingRateLimit: 10,
+      throttlingBurstLimit: 20,
+    }
+
     const devStage = new apigateway.Stage(this, 'AdminDevStage', {
       deployment,
       stageName: 'dev',
@@ -1311,6 +1401,8 @@ export class AdminStack extends cdk.Stack {
       description: 'Development stage — routes to dev alias',
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
+        '/booking/POST': bookingPostThrottle,
+        '/booking/slots/GET': bookingSlotsThrottle,
         '/mcp/POST': mcpThrottle,
         '/ask/GET': askThrottle,
         '/ask/POST': askThrottle,
@@ -1324,6 +1416,8 @@ export class AdminStack extends cdk.Stack {
       description: 'Production stage — routes to prod alias',
       methodOptions: {
         '/workflow-scan/POST': workflowScanThrottle,
+        '/booking/POST': bookingPostThrottle,
+        '/booking/slots/GET': bookingSlotsThrottle,
         '/mcp/POST': mcpThrottle,
         '/ask/GET': askThrottle,
         '/ask/POST': askThrottle,

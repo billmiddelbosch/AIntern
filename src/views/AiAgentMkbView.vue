@@ -4,12 +4,12 @@ import { useI18n } from 'vue-i18n'
 import { useHead as useUnhead } from '@unhead/vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { AppShell } from '@/components/shell'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 import { useAnalytics } from '@/composables/useAnalytics'
 
 const { t, locale } = useI18n()
 const route = useRoute()
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 const { trackEvent } = useAnalytics()
 
 const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://aintern.nl'
@@ -57,7 +57,7 @@ useUnhead({
 
 function handleCta(location: string) {
   trackEvent('cta_click', { location })
-  openBookingModal()
+  openBooking()
 }
 
 const useCases = computed(() => [

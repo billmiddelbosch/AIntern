@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { useI18n } from 'vue-i18n'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 
 const { bg } = defineProps<{ bg?: 'light' | 'dark' }>()
 
@@ -15,7 +15,7 @@ useIntersectionObserver(sectionRef, ([entry]) => {
   if (entry.isIntersecting) isVisible.value = true
 }, { threshold: 0.15 })
 
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 
 const tags = ['Vue 3', 'AWS Lambda', 'Claude AI', 'Lightspeed API']
 </script>
@@ -127,7 +127,7 @@ const tags = ['Vue 3', 'AWS Lambda', 'Claude AI', 'Lightspeed API']
             'inline-flex items-center font-semibold text-sm transition-colors cursor-pointer',
             bg === 'dark' ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-800',
           ]"
-          @click="openBookingModal()"
+          @click="openBooking()"
         >
           {{ t('portfolio.cta') }}
         </button>
