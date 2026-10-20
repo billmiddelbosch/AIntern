@@ -12,7 +12,7 @@ We werken op no-cure-no-pay basis. Als wij geen aantoonbaar resultaat leveren, b
 
 15 minuten? Dan kijk ik of en hoe we {{pain}} voor jullie kunnen oplossen.
 
-→ Plan direct: https://calendly.com/aintern/kennismaking
+→ Plan direct: https://aintern.nl/afspraak
 
 Groeten,
 Blake

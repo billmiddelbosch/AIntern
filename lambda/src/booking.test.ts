@@ -1,10 +1,12 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import type { APIGatewayProxyEvent, Context } from 'aws-lambda'
 
-const { ddbSend, sesSend, ssmSend } = vi.hoisted(() => ({
+const { ddbSend, sesSend, ssmSend, state } = vi.hoisted(() => ({
   ddbSend: vi.fn(),
   sesSend: vi.fn(),
   ssmSend: vi.fn(),
+  /** Whether the requested block is opened by Bill (BOOKING_OPEN item exists). */
+  state: { blockOpen: true },
 }))
 
 // Vitest 4: constructors must be `function`, not arrow functions
@@ -35,7 +37,18 @@ vi.mock('@aws-sdk/lib-dynamodb', () => {
       return { __type: type, input }
     })
   return {
-    DynamoDBDocumentClient: { from: () => ({ send: ddbSend }) },
+    DynamoDBDocumentClient: {
+      from: () => ({
+        // Every call is recorded in ddbSend; the open-block lookup is answered from state
+        send: async (cmd: { __type: string; input: { Key?: { pk: string; sk: string } } }) => {
+          const res = await ddbSend(cmd)
+          if (cmd.__type === 'Get' && cmd.input.Key?.pk === 'BOOKING_OPEN') {
+            return { Item: state.blockOpen ? { ...cmd.input.Key } : undefined }
+          }
+          return res
+        },
+      }),
+    },
     GetCommand: cmd('Get'),
     PutCommand: cmd('Put'),
     QueryCommand: cmd('Query'),
@@ -79,6 +92,7 @@ const validBody = {
 beforeEach(() => {
   vi.useFakeTimers()
   vi.setSystemTime(new Date('2026-10-20T08:00:00Z'))
+  state.blockOpen = true
   ddbSend.mockReset()
   sesSend.mockReset().mockResolvedValue({})
   ssmSend.mockReset().mockImplementation(async (cmd: Cmd) => {
@@ -118,14 +132,33 @@ describe('rate-limit keys', () => {
 })
 
 describe('GET /booking/slots', () => {
-  it('returns free slots minus booked ones, with CORS echo', async () => {
-    ddbSend.mockResolvedValueOnce({ Items: [{ sk: 'SLOT#2026-10-21T07:00:00.000Z' }] })
+  it('returns only opened blocks that are not booked, with CORS echo', async () => {
+    ddbSend.mockImplementation(async (cmd: Cmd) => {
+      if (cmd.input.ExpressionAttributeValues?.[':pk'] === 'BOOKING_OPEN')
+        return {
+          Items: [
+            { sk: 'OPEN#2026-10-21T07:00:00.000Z' }, // booked below
+            { sk: 'OPEN#2026-10-21T07:30:00.000Z' },
+            { sk: 'OPEN#2026-10-22T08:00:00.000Z' },
+            { sk: 'OPEN#2026-10-20T20:00:00.000Z' }, // outside working hours: never offered
+          ],
+        }
+      if (cmd.input.ExpressionAttributeValues?.[':pk'] === 'BOOKING_SLOTS')
+        return { Items: [{ sk: 'SLOT#2026-10-21T07:00:00.000Z' }] }
+      return {}
+    })
     const res = await handler(ev('GET', '/booking/slots', undefined, 'https://www.aintern.nl'), ctx('prod'))
     expect(res.statusCode).toBe(200)
     expect(res.headers?.['Access-Control-Allow-Origin']).toBe('https://www.aintern.nl')
     const body = JSON.parse(res.body)
-    expect(body.slots[0]).toBe('2026-10-21T07:30:00.000Z')
+    expect(body.slots).toEqual(['2026-10-21T07:30:00.000Z', '2026-10-22T08:00:00.000Z'])
     expect(body.durationMinutes).toBe(30)
+  })
+
+  it('offers nothing when no block is opened', async () => {
+    ddbSend.mockResolvedValue({ Items: [] })
+    const body = JSON.parse((await handler(ev('GET', '/booking/slots'), ctx('prod'))).body)
+    expect(body.slots).toEqual([])
   })
 })
 
@@ -136,7 +169,13 @@ describe('POST /booking', () => {
     expect(res.statusCode).toBe(201)
 
     const put = findCall('Put')!
-    expect(put.input.Item).toMatchObject({ pk: 'BOOKING_SLOTS', sk: 'SLOT#2026-10-21T07:00:00.000Z' })
+    expect(put.input.Item).toMatchObject({
+      pk: 'BOOKING_SLOTS',
+      sk: 'SLOT#2026-10-21T07:00:00.000Z',
+      leadWebsite: 'https://bakkerij.nl',
+      phone: '+31 6 12345678',
+      note: 'Hallo',
+    })
     expect(put.input.ConditionExpression).toBe('attribute_not_exists(pk)')
 
     const update = leadUpdate()!
@@ -251,6 +290,17 @@ describe('POST /booking', () => {
     })
     const res = await handler(ev('POST', '/booking', validBody), ctx('prod'))
     expect(res.statusCode).toBe(409)
+    expect(sesSend).not.toHaveBeenCalled()
+  })
+
+  it('returns 409 for a block that is not opened in the admin', async () => {
+    state.blockOpen = false
+    ddbSend.mockResolvedValue({})
+    const res = await handler(ev('POST', '/booking', validBody), ctx('prod'))
+    expect(res.statusCode).toBe(409)
+    expect(JSON.parse(res.body).error).toBe('slot_unavailable')
+    expect(findCall('Put')).toBeUndefined()
+    expect(findCall('Update')).toBeUndefined()
     expect(sesSend).not.toHaveBeenCalled()
   })
 

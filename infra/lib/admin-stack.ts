@@ -697,6 +697,16 @@ export class AdminStack extends cdk.Stack {
         },
       }),
     )
+    // Read-only: which blocks Bill opened in the admin (only the admin can change them)
+    bookingFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:GetItem', 'dynamodb:Query'],
+        resources: [adminTable.tableArn],
+        conditions: {
+          'ForAllValues:StringEquals': { 'dynamodb:LeadingKeys': ['BOOKING_OPEN'] },
+        },
+      }),
+    )
 
     bookingFn.addToRolePolicy(
       new iam.PolicyStatement({
@@ -713,6 +723,65 @@ export class AdminStack extends cdk.Stack {
 
     bookingFn.addAlias('dev')
     bookingFn.addAlias('prod')
+
+    // ── Booking admin Lambda (JWT) ────────────────────────────────────────────
+    // GET /admin/bookings + PUT /admin/bookings/availability: lists appointments
+    // and opens/closes the blocks that /afspraak may offer.
+    const bookingAdminFn = new lambda.Function(this, 'BookingAdminFunction', {
+      functionName: 'aintern-booking-admin',
+      handler: 'booking-admin.handler',
+      description: 'Admin API for the booking page — appointments list and open blocks',
+      runtime: lambda.Runtime.NODEJS_22_X,
+      code: lambdaCode,
+      timeout: cdk.Duration.seconds(15),
+      environment: {
+        JWT_SECRET_SSM_PREFIX: '/aintern/admin/jwt-secret',
+      },
+    })
+
+    bookingAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['ssm:GetParameter'],
+        resources: [
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/admin/jwt-secret/*`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/dev/dynamodb/table-name`,
+          `arn:aws:ssm:${this.region}:${this.account}:parameter/aintern/prod/dynamodb/table-name`,
+        ],
+      }),
+    )
+
+    bookingAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['kms:Decrypt'],
+        resources: ['*'],
+        conditions: {
+          StringEquals: { 'kms:ViaService': `ssm.${this.region}.amazonaws.com` },
+        },
+      }),
+    )
+
+    // Reads appointments + open blocks; only writes open blocks
+    bookingAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:Query'],
+        resources: [adminTable.tableArn],
+        conditions: {
+          'ForAllValues:StringEquals': { 'dynamodb:LeadingKeys': ['BOOKING_SLOTS', 'BOOKING_OPEN'] },
+        },
+      }),
+    )
+    bookingAdminFn.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ['dynamodb:BatchWriteItem', 'dynamodb:PutItem', 'dynamodb:DeleteItem'],
+        resources: [adminTable.tableArn],
+        conditions: {
+          'ForAllValues:StringEquals': { 'dynamodb:LeadingKeys': ['BOOKING_OPEN'] },
+        },
+      }),
+    )
+
+    bookingAdminFn.addAlias('dev')
+    bookingAdminFn.addAlias('prod')
 
     // ── MCP server Lambda (public) ────────────────────────────────────────────
     // Stateless Model Context Protocol server over Streamable HTTP (JSON mode).
@@ -1191,6 +1260,12 @@ export class AdminStack extends cdk.Stack {
     const leadResource = leadsResource.addResource('{id}')
     leadResource.addMethod('GET', aliasIntegration(leadCrudFn))
     leadResource.addMethod('PUT', aliasIntegration(leadCrudFn))
+
+    // GET /admin/bookings
+    // PUT /admin/bookings/availability
+    const adminBookingsResource = adminResource.addResource('bookings')
+    adminBookingsResource.addMethod('GET', aliasIntegration(bookingAdminFn))
+    adminBookingsResource.addResource('availability').addMethod('PUT', aliasIntegration(bookingAdminFn))
 
     // GET /admin/kennisbank
     // GET|PUT|DELETE /admin/kennisbank/{slug}

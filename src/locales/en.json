@@ -228,7 +228,8 @@
       "groeiSysteem": "Growth System",
       "onboarding": "Onboarding",
       "ainternloop": "AInternLoop",
-      "nieuws": "NewsFlow"
+      "nieuws": "NewsFlow",
+      "bookings": "Appointments"
     },
     "header": {
       "defaultTitle": "Admin",
@@ -460,6 +461,40 @@
         "questionPlaceholder": "E.g. What does no-cure-no-pay mean exactly?",
         "answerPlaceholder": "Give a clear, concise answer…"
       }
+    },
+    "bookings": {
+      "pageTitle": "Appointments",
+      "heading": "Appointments",
+      "subheading": "Planned intro calls and the blocks that can be booked on /afspraak.",
+      "refresh": "Refresh",
+      "loading": "Loading…",
+      "loadError": "Appointments could not be loaded. Please try again.",
+      "saveError": "Saving failed. Your changes are still pending; please try again.",
+      "upcoming": "Planned appointments",
+      "emptyUpcoming": "No appointments planned yet.",
+      "past": "Last 30 days ({count})",
+      "note": "Note",
+      "viewLead": "View lead",
+      "availability": "Availability",
+      "availabilityHint": "Click a block to open or close it. Only open blocks can be booked. Closing a block does not cancel an existing appointment.",
+      "legendOpen": "Open",
+      "legendClosed": "Closed",
+      "legendBooked": "Booked",
+      "legendPending": "Not saved",
+      "bookedBy": "Booked by {company}",
+      "noGrid": "There are no blocks available to open.",
+      "prevWeek": "Previous week",
+      "nextWeek": "Next week",
+      "weekOf": "Week of {date}",
+      "openWeek": "Open whole week",
+      "closeWeek": "Close whole week",
+      "openDay": "Open day",
+      "closeDay": "Close day",
+      "pendingCount": "{count} unsaved change(s)",
+      "saved": "Saved",
+      "discard": "Discard",
+      "save": "Save",
+      "saving": "Saving…"
     }
   },
   "faq": {

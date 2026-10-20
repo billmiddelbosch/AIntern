@@ -1,7 +1,8 @@
 /**
  * Public booking API — replaces the Calendly widget.
  *
- *   GET  /booking/slots  → available 30-min slots (UTC ISO), Europe/Amsterdam working hours
+ *   GET  /booking/slots  → bookable 30-min slots (UTC ISO): blocks Bill opened in the admin
+ *                          (pk BOOKING_OPEN) that are still in the future and not booked
  *   POST /booking        → books a slot, upserts the lead in aintern-admin (CRM),
  *                          e-mails the lead (with .ics) and notifies b.middelbosch@bm-c.nl
  *
@@ -22,7 +23,6 @@ import {
   DeleteCommand,
   GetCommand,
   PutCommand,
-  QueryCommand,
   UpdateCommand,
 } from '@aws-sdk/lib-dynamodb'
 import { createHash, randomUUID } from 'crypto'
@@ -39,12 +39,12 @@ import {
   ORGANIZER_EMAIL,
   type BookingDetails,
 } from './lib/booking-email'
+import { OPEN_PK, OPEN_PREFIX, SLOT_PK, queryStarts } from './lib/booking-store'
 
 const ssm = new SSMClient({ region: 'eu-west-2' })
 const ddb = DynamoDBDocumentClient.from(new DynamoDBClient({ region: 'eu-west-2' }))
 const ses = new SESClient({ region: 'eu-west-2' })
 
-const SLOT_PK = 'BOOKING_SLOTS'
 const RATE_PK = 'BOOKING_RATE'
 const SETTINGS_TTL_MS = 5 * 60 * 1000
 /** Max bookings per day from one IP address and for one email address. */
@@ -132,31 +132,15 @@ async function getSettings(alias: string) {
 
 // ── Slots ────────────────────────────────────────────────────────────────────
 
-async function getBookedStarts(tableName: string, nowMs: number): Promise<Set<string>> {
-  const from = new Date(nowMs).toISOString()
-  const to = new Date(nowMs + (DEFAULT_BOOKING_CONFIG.maxDaysAhead + 2) * 86_400_000).toISOString()
-  const booked = new Set<string>()
-  let startKey: Record<string, unknown> | undefined
-  do {
-    const res = await ddb.send(
-      new QueryCommand({
-        TableName: tableName,
-        KeyConditionExpression: 'pk = :pk AND sk BETWEEN :from AND :to',
-        ExpressionAttributeValues: { ':pk': SLOT_PK, ':from': `SLOT#${from}`, ':to': `SLOT#${to}` },
-        ProjectionExpression: 'sk',
-        ExclusiveStartKey: startKey,
-      }),
-    )
-    for (const item of res.Items ?? []) booked.add(String(item.sk).slice('SLOT#'.length))
-    startKey = res.LastEvaluatedKey
-  } while (startKey)
-  return booked
-}
-
 async function availableSlots(alias: string, nowMs: number): Promise<string[]> {
   const [tableName, settings] = await Promise.all([getTableName(alias), getSettings(alias)])
-  const booked = await getBookedStarts(tableName, nowMs)
-  return generateSlots(nowMs, DEFAULT_BOOKING_CONFIG, settings.blockedDates, booked)
+  const from = new Date(nowMs).toISOString()
+  const to = new Date(nowMs + (DEFAULT_BOOKING_CONFIG.maxDaysAhead + 2) * 86_400_000).toISOString()
+  const [open, booked] = await Promise.all([
+    queryStarts(ddb, tableName, OPEN_PK, from, to),
+    queryStarts(ddb, tableName, SLOT_PK, from, to),
+  ])
+  return generateSlots(nowMs, DEFAULT_BOOKING_CONFIG, settings.blockedDates, booked).filter((s) => open.has(s))
 }
 
 async function handleSlots(alias: string, requestOrigin?: string): Promise<APIGatewayProxyResult> {
@@ -442,6 +426,13 @@ async function handleBook(
   if (!offered.includes(input.start)) {
     return respond(409, { error: 'slot_unavailable' }, alias, requestOrigin)
   }
+  // ...and one Bill opened in the admin
+  const openItem = await ddb.send(
+    new GetCommand({ TableName: tableName, Key: { pk: OPEN_PK, sk: `${OPEN_PREFIX}${input.start}` } }),
+  )
+  if (!openItem.Item) {
+    return respond(409, { error: 'slot_unavailable' }, alias, requestOrigin)
+  }
 
   // Per-client limits: stops one visitor from filling the calendar or using us to mail others
   const day = nowIso.slice(0, 10)
@@ -461,6 +452,7 @@ async function handleBook(
   }
 
   const bookingId = randomUUID()
+  const website = leadWebsite(input)
   const end = new Date(Date.parse(input.start) + DEFAULT_BOOKING_CONFIG.slotMinutes * 60_000).toISOString()
 
   try {
@@ -476,6 +468,11 @@ async function handleBook(
           companyName: input.companyName,
           contactName: input.contactName,
           email: input.email,
+          // Shown in the admin booking list (links to the CRM lead)
+          leadWebsite: website,
+          ...(input.phone ? { phone: input.phone } : {}),
+          ...(input.note ? { note: input.note } : {}),
+          locale: input.locale,
           createdAt: nowIso,
         },
         ConditionExpression: 'attribute_not_exists(pk)',
@@ -489,9 +486,8 @@ async function handleBook(
     throw err
   }
 
-  let website: string
   try {
-    website = await upsertLead(tableName, input, bookingId, settings.meetingUrl, nowIso)
+    await upsertLead(tableName, input, bookingId, settings.meetingUrl, nowIso)
   } catch (err) {
     // Release the slot so the visitor can retry
     await ddb
