@@ -233,7 +233,9 @@
     },
     "header": {
       "defaultTitle": "Admin",
-      "logout": "Sign out"
+      "logout": "Sign out",
+      "openMenu": "Open menu",
+      "closeMenu": "Close menu"
     },
     "login": {
       "heading": "Sign in to AIntern",
@@ -494,7 +496,8 @@
       "saved": "Saved",
       "discard": "Discard",
       "save": "Save",
-      "saving": "Saving…"
+      "saving": "Saving…",
+      "pickDay": "Pick a day"
     }
   },
   "faq": {

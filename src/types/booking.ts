@@ -60,3 +60,17 @@ export interface AvailabilityChange {
   open: string[]
   close: string[]
 }
+
+/** One day as shown in a DayStrip (labels already formatted). */
+export interface DayOption {
+  /** YYYY-MM-DD (Amsterdam) */
+  key: string
+  weekday: string
+  day: string
+  month: string
+  /** Shows a dot, e.g. "has open blocks" */
+  marked?: boolean
+}
+
+/** Values the BookingForm emits (trimmed; empty optionals are undefined). */
+export type BookingFormValues = Omit<BookingRequest, 'start' | 'locale'>
