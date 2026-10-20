@@ -3,17 +3,35 @@ import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import mascotNav from '@/assets/brand/mascot-nav.png'
 
+defineProps<{ open: boolean }>()
+defineEmits<{ close: [] }>()
 const { t } = useI18n()
 </script>
 
 <template>
-  <aside class="w-64 shrink-0 bg-white border-r border-slate-200 flex flex-col">
+  <aside
+    id="admin-sidebar"
+    class="fixed inset-y-0 left-0 z-40 w-64 shrink-0 overflow-y-auto bg-white border-r border-slate-200 flex flex-col transition-transform duration-200 md:static md:translate-x-0 md:overflow-visible"
+    :class="open ? 'translate-x-0 shadow-xl' : '-translate-x-full'"
+    data-testid="admin-sidebar"
+  >
     <!-- Logo area -->
-    <div class="h-16 flex items-center px-6 border-b border-slate-100">
+    <div class="h-16 flex items-center justify-between px-6 border-b border-slate-100">
       <RouterLink to="/admin" class="flex items-center gap-2">
         <img :src="mascotNav" alt="AIntern" class="h-8 w-auto" />
         <span class="font-semibold text-slate-800 text-sm">AIntern</span>
       </RouterLink>
+      <button
+        type="button"
+        class="-mr-3 flex h-11 w-11 items-center justify-center rounded-lg text-slate-500 hover:bg-slate-100 md:hidden"
+        :aria-label="t('admin.header.closeMenu')"
+        @click="$emit('close')"
+      >
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="6" y1="6" x2="18" y2="18" />
+          <line x1="18" y1="6" x2="6" y2="18" />
+        </svg>
+      </button>
     </div>
 
     <!-- Navigation -->
@@ -24,7 +42,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- squares-2x2 icon -->
           <svg
@@ -54,7 +72,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- chart-bar icon -->
           <svg
@@ -82,7 +100,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- document-text icon -->
           <svg
@@ -113,7 +131,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- linkedin / share icon -->
           <svg
@@ -142,7 +160,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- funnel / pipeline icon -->
           <svg
@@ -169,7 +187,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- calendar icon -->
           <svg
@@ -199,7 +217,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- clipboard-check icon -->
           <svg
@@ -228,7 +246,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- arrow-path / flywheel icon -->
           <svg
@@ -258,7 +276,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- users / org icon -->
           <svg
@@ -290,7 +308,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- cpu / agent orchestration icon -->
           <svg
@@ -319,7 +337,7 @@ const { t } = useI18n()
         class="rounded-lg"
       >
         <div
-          class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          class="flex min-h-11 md:min-h-0 items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-colors"
         >
           <!-- newspaper / newsflow icon -->
           <svg

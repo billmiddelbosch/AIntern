@@ -233,7 +233,9 @@
     },
     "header": {
       "defaultTitle": "Beheer",
-      "logout": "Uitloggen"
+      "logout": "Uitloggen",
+      "openMenu": "Menu openen",
+      "closeMenu": "Menu sluiten"
     },
     "login": {
       "heading": "Inloggen bij AIntern",
@@ -494,7 +496,8 @@
       "saved": "Opgeslagen",
       "discard": "Ongedaan maken",
       "save": "Opslaan",
-      "saving": "Opslaan…"
+      "saving": "Opslaan…",
+      "pickDay": "Kies een dag"
     }
   },
   "faq": {
