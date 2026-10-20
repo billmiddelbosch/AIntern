@@ -228,7 +228,8 @@
       "groeiSysteem": "Groei Systeem",
       "onboarding": "Onboarding",
       "ainternloop": "AInternLoop",
-      "nieuws": "Nieuws"
+      "nieuws": "Nieuws",
+      "bookings": "Afspraken"
     },
     "header": {
       "defaultTitle": "Beheer",
@@ -460,6 +461,40 @@
         "questionPlaceholder": "Bijv. Wat betekent no-cure-no-pay precies?",
         "answerPlaceholder": "Geef een duidelijk, beknopt antwoord…"
       }
+    },
+    "bookings": {
+      "pageTitle": "Afspraken",
+      "heading": "Afspraken",
+      "subheading": "Geplande kennismakingen en de blokken die op /afspraak te boeken zijn.",
+      "refresh": "Vernieuwen",
+      "loading": "Laden…",
+      "loadError": "Afspraken konden niet geladen worden. Probeer het opnieuw.",
+      "saveError": "Opslaan is mislukt. Je wijzigingen staan nog klaar; probeer het opnieuw.",
+      "upcoming": "Geplande afspraken",
+      "emptyUpcoming": "Er zijn nog geen afspraken gepland.",
+      "past": "Afgelopen 30 dagen ({count})",
+      "note": "Toelichting",
+      "viewLead": "Bekijk lead",
+      "availability": "Beschikbaarheid",
+      "availabilityHint": "Klik op een blok om het open of dicht te zetten. Alleen open blokken zijn te boeken. Dichtzetten annuleert geen bestaande afspraak.",
+      "legendOpen": "Open",
+      "legendClosed": "Dicht",
+      "legendBooked": "Geboekt",
+      "legendPending": "Niet opgeslagen",
+      "bookedBy": "Geboekt door {company}",
+      "noGrid": "Er zijn geen blokken beschikbaar om open te zetten.",
+      "prevWeek": "Vorige week",
+      "nextWeek": "Volgende week",
+      "weekOf": "Week van {date}",
+      "openWeek": "Hele week openzetten",
+      "closeWeek": "Hele week dichtzetten",
+      "openDay": "Dag open",
+      "closeDay": "Dag dicht",
+      "pendingCount": "{count} wijziging(en) niet opgeslagen",
+      "saved": "Opgeslagen",
+      "discard": "Ongedaan maken",
+      "save": "Opslaan",
+      "saving": "Opslaan…"
     }
   },
   "faq": {

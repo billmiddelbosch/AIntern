@@ -40,11 +40,11 @@ describe('generateSlots', () => {
     expect(slots.some((s) => s.startsWith('2026-10-24') || s.startsWith('2026-10-25'))).toBe(false)
   })
 
-  it('offers 21 days ahead at most (15 weekdays here)', () => {
+  it('has a grid of 8 weeks ahead at most (40 weekdays here)', () => {
     const slots = generateSlots(now)
-    expect(slots).toHaveLength(15 * 16)
-    expect(slots.at(-1)!.startsWith('2026-11-10')).toBe(true)
-    expect(DEFAULT_BOOKING_CONFIG.maxDaysAhead).toBe(21)
+    expect(slots).toHaveLength(40 * 16)
+    expect(slots.at(-1)).toBe('2026-12-15T15:30:00.000Z') // 16:30 winter time
+    expect(DEFAULT_BOOKING_CONFIG.maxDaysAhead).toBe(56)
   })
 
   it('excludes blocked dates and booked starts', () => {

@@ -29,3 +29,34 @@ export interface BookingConfirmation {
 export type BookingSubmitResult =
   | { ok: true; booking: BookingConfirmation }
   | { ok: false; reason: 'slot_unavailable' | 'invalid' | 'too_many' | 'error' }
+
+/** One booked appointment as shown in the admin (GET /admin/bookings). */
+export interface AdminBooking {
+  bookingId: string
+  start: string
+  end: string
+  companyName: string
+  contactName: string
+  email: string
+  phone?: string
+  note?: string
+  leadWebsite?: string
+  createdAt?: string
+}
+
+/** Response of GET /admin/bookings and PUT /admin/bookings/availability. */
+export interface AdminBookingsResponse {
+  timezone: string
+  durationMinutes: number
+  /** Every block that can be opened (working hours, tomorrow up to 8 weeks ahead) */
+  grid: string[]
+  /** Blocks Bill opened — only these are offered on /afspraak */
+  open: string[]
+  /** Booked appointments, last 30 days and upcoming, sorted by start */
+  bookings: AdminBooking[]
+}
+
+export interface AvailabilityChange {
+  open: string[]
+  close: string[]
+}

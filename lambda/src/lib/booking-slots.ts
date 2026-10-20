@@ -1,7 +1,8 @@
 /**
  * Pure slot logic for the public booking page (replaces Calendly).
  *
- * Slots are fixed working hours in Europe/Amsterdam, returned as UTC ISO strings.
+ * The grid is working hours in Europe/Amsterdam, returned as UTC ISO strings.
+ * Only grid blocks that Bill opened in the admin (BOOKING_OPEN items) are bookable.
  * No AWS calls here so it is easy to unit test.
  */
 
@@ -27,7 +28,8 @@ export const DEFAULT_BOOKING_CONFIG: BookingConfig = {
   dayEndMinutes: 17 * 60,
   slotMinutes: 30,
   minDaysAhead: 1,
-  maxDaysAhead: 21,
+  // Bill opens blocks himself, so he can plan up to 8 weeks ahead
+  maxDaysAhead: 56,
 }
 
 const partsFormatter = new Intl.DateTimeFormat('en-US', {
