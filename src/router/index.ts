@@ -94,6 +94,12 @@ export const routes: RouteRecordRaw[] = [
     meta: { layout: 'admin', requiresAuth: true, title: 'leads.form.pageTitle' },
   },
   {
+    path: '/admin/afspraken',
+    name: 'admin-bookings',
+    component: () => import('@/views/admin/AdminAfsprakenView.vue'),
+    meta: { layout: 'admin', requiresAuth: true, title: 'admin.bookings.pageTitle' },
+  },
+  {
     path: '/workflow-scan',
     name: 'workflow-scan',
     component: () => import('@/views/WorkflowScanView.vue'),
@@ -121,6 +127,12 @@ export const routes: RouteRecordRaw[] = [
     path: '/privacy',
     name: 'privacy',
     component: () => import('@/views/PrivacyView.vue'),
+    meta: { layout: 'public' },
+  },
+  {
+    path: '/afspraak',
+    name: 'afspraak',
+    component: () => import('@/views/AfspraakView.vue'),
     meta: { layout: 'public' },
   },
   {

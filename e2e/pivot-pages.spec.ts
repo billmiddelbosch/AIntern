@@ -50,12 +50,14 @@ test.describe('Partnerpagina', () => {
 })
 
 test.describe('Gesprek plannen en besparing', () => {
-  test('hero-knop opent direct de Calendly-planner', async ({ page }) => {
+  test('hero-knop opent de eigen afsprakenpagina', async ({ page }) => {
     await page.goto('/')
     await page.getByRole('button', { name: 'Plan je gratis gesprek' }).first().click()
+    await expect(page).toHaveURL(/\/afspraak$/)
     await expect(
-      page.getByRole('dialog', { name: 'Gratis kennismakingsgesprek inplannen' }),
+      page.getByRole('heading', { level: 1, name: 'Plan een gratis kennismakingsgesprek' }),
     ).toBeVisible()
+    await expect(page.getByLabel('Bedrijfsnaam *')).toBeVisible()
   })
 
   test('prijsknop opent de besparingscalculator', async ({ page }) => {
@@ -70,8 +72,7 @@ test.describe('Gesprek plannen en besparing', () => {
 
     await dialog.getByRole('button', { name: 'Plan gesprek met deze cijfers' }).click()
     await expect(dialog).toBeHidden()
-    await expect(
-      page.getByRole('dialog', { name: 'Gratis kennismakingsgesprek inplannen' }),
-    ).toBeVisible()
+    await expect(page).toHaveURL(/\/afspraak$/)
+    await expect(page.getByLabel('Waar wil je het over hebben?')).toHaveValue(/CRM/)
   })
 })

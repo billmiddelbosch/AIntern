@@ -2,12 +2,12 @@
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useIntakeModal } from '@/composables/useIntakeModal'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 import { submitIntakeAnswers } from '@/composables/useIntakeForm'
 
 const { t } = useI18n()
 const { isOpen, closeIntakeModal } = useIntakeModal()
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 
 const TOTAL_STEPS = 5
 
@@ -78,7 +78,7 @@ function goNext() {
       // Fire-and-forget: don't block UX on submission failure
     })
     handleClose()
-    openBookingModal()
+    openBooking()
   }
 }
 

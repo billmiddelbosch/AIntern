@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { RouterLink } from 'vue-router'
-  import { useBookingModal } from '@/composables/useBookingModal'
+  import { useBookingPage } from '@/composables/useBookingPage'
   import { useAnalytics } from '@/composables/useAnalytics'
 
   const props = withDefaults(
@@ -15,12 +15,12 @@
     { secondaryLabel: undefined, secondaryTo: undefined },
   )
 
-  const { openBookingModal } = useBookingModal()
+  const { openBooking } = useBookingPage()
   const { trackEvent } = useAnalytics()
 
   function handleCta() {
     trackEvent('cta_click', { location: props.location })
-    openBookingModal()
+    openBooking()
   }
 </script>
 

@@ -13,8 +13,8 @@ Technical implementation task — route directly to CTO.
 
 <example>
 Context: A bug is reported.
-user: "The Calendly widget isn't loading on mobile."
-assistant: "I'll use the CTO agent to diagnose and fix the Calendly mobile issue."
+user: "The booking page (/afspraak) isn't loading on mobile."
+assistant: "I'll use the CTO agent to diagnose and fix the booking page mobile issue."
 <commentary>
 Bug fix — CTO owns it.
 </commentary>

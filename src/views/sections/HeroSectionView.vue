@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import data from '@/../product/sections/hero-value-proposition/data.json'
 import type { MetricCard, AutomatedProcess } from '@/../product/sections/hero-value-proposition/types'
 import { HeroSection } from '@/components/sections/hero-value-proposition'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 import { useAnalytics } from '@/composables/useAnalytics'
 import type { BgColor } from '@/lib/brand'
 
@@ -12,12 +12,12 @@ defineProps<{ bg?: BgColor }>()
 const metricCards = ref(data.metricCards as MetricCard[])
 const automatedProcesses = ref(data.automatedProcesses as AutomatedProcess[])
 
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 const { trackEvent } = useAnalytics()
 
 function handleCtaClick() {
   trackEvent('cta_click', { location: 'hero' })
-  openBookingModal()
+  openBooking()
 }
 </script>
 
