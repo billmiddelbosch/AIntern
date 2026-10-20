@@ -33,7 +33,7 @@
     'who',
     'analytics',
     'intake',
-    'calendly',
+    'booking',
     'email',
     'purpose',
     'sharing',

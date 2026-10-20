@@ -1,23 +1,23 @@
 <script setup lang="ts">
 import { computed, onMounted, Suspense } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 import { useHead } from '@/composables/useHead'
 import { useAnalytics } from '@/composables/useAnalytics'
-import { useBookingModal } from '@/composables/useBookingModal'
 import PublicLayout from '@/layouts/PublicLayout.vue'
 import AdminLayout from '@/layouts/AdminLayout.vue'
-import BookingModal from '@/components/ui/BookingModal.vue'
 import SavingsModal from '@/components/ui/SavingsModal.vue'
 
 useHead()
 
 const { trackPageView } = useAnalytics()
-const { openBookingModal } = useBookingModal()
+const router = useRouter()
 
-onMounted(() => {
+onMounted(async () => {
   trackPageView()
+  // Legacy deep link (?booking=1 opened the Calendly modal) → own booking page
   if (new URLSearchParams(window.location.search).get('booking') === '1') {
-    openBookingModal()
+    await router.isReady()
+    void router.replace({ name: 'afspraak' })
   }
 })
 
@@ -59,7 +59,6 @@ const layout = computed(() => {
       </template>
     </Suspense>
   </RouterView>
-  <!-- Global modals: any page can open them via useBookingModal / useSavingsModal -->
-  <BookingModal />
+  <!-- Global modal: any page can open it via useSavingsModal -->
   <SavingsModal />
 </template>

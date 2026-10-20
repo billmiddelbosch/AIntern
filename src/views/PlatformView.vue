@@ -6,12 +6,12 @@
   import { AppShell } from '@/components/shell'
   import SectionIntro from '@/components/sections/pivot/SectionIntro.vue'
   import PivotCtaSection from '@/components/sections/pivot/PivotCtaSection.vue'
-  import { useBookingModal } from '@/composables/useBookingModal'
+  import { useBookingPage } from '@/composables/useBookingPage'
   import { useAnalytics } from '@/composables/useAnalytics'
 
   const { t, locale } = useI18n()
   const route = useRoute()
-  const { openBookingModal } = useBookingModal()
+  const { openBooking } = useBookingPage()
   const { trackEvent } = useAnalytics()
 
   const SITE_URL = import.meta.env.VITE_SITE_URL ?? 'https://aintern.nl'
@@ -85,7 +85,7 @@
 
   function handleCta() {
     trackEvent('cta_click', { location: 'platform-hero' })
-    openBookingModal()
+    openBooking()
   }
 </script>
 

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ScanRecommendation } from '@/types/workflowScan'
-import { useBookingModal } from '@/composables/useBookingModal'
+import { useBookingPage } from '@/composables/useBookingPage'
 
 defineProps<{
   score: number
@@ -8,7 +8,7 @@ defineProps<{
   recommendations: ScanRecommendation[]
 }>()
 
-const { openBookingModal } = useBookingModal()
+const { openBooking } = useBookingPage()
 
 function scoreLabel(score: number): string {
   if (score >= 70) return 'Relatief geoptimaliseerd'
@@ -61,7 +61,7 @@ function scoreLabel(score: number): string {
       <button
         type="button"
         class="block w-full py-3 px-6 bg-white text-indigo-600 font-semibold rounded-xl text-center hover:bg-indigo-50 transition-colors cursor-pointer"
-        @click="openBookingModal"
+        @click="openBooking"
       >
         Plan een gratis gesprek →
       </button>

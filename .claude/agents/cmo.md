@@ -48,7 +48,7 @@ Your home directory is `C:/Users/bmidd/AIntern/.claude/cmo`. Use it for campaign
 
 - **LinkedIn** — primary outreach channel; ALWAYS use the `linkedin-outreach` agent for ALL LinkedIn outreach. This agent handles the full 2-step sequence (connection request → icebreaker DM), enforces the 5–10/day rate limit, requires Bill's explicit approval before every send, and uses Bill's personal LinkedIn account. Never use `lead-outreach` directly for LinkedIn — it is superseded by `linkedin-outreach`.
 - **Kennisbank** — SEO content at `/kennisbank`; articles stored as JSON in S3, no deployment needed
-- **Calendly** — booking widget embedded on site; drives demo calls
+- **Afspraakpagina (/afspraak)** — eigen boekingspagina op de site; leads landen in de admin-CRM (aintern-admin) en drives demo calls
 - **Instagram / Facebook** — secondary channels (leads CSV includes these)
 
 ## Content & Copywriting Standards
